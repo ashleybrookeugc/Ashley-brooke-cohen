@@ -7,12 +7,14 @@
   <title>NYFW Pop-Up Radar · Ashley Brooke Cohen</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
   <link rel="stylesheet" href="/assets/site.css?v=20260909-views">
+  <link rel="stylesheet" href="/assets/castings.css?v=castings-20260909">
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="" defer></script>
   <script src="/assets/tracker.js?v=20260909-views" defer></script>
 </head>
 <body class="radar-page">
   <main class="radar-shell">
     <a class="back-home" href="/">← Ashley Brooke Cohen</a><a class="submit-event-link" href="/submit-event/">Spotted something? Submit an event →</a>
+    <nav class="content-switcher" aria-label="Browse listings"><a href="/nyfw-pop-ups/" aria-current="page">Events</a><a href="/castings/">Castings</a></nav>
     <header class="masthead"><div><p class="eyebrow">SEPTEMBER 2026 · NEW YORK CITY</p><h1>NYFW<br><span>POP-UP RADAR</span></h1></div><div class="count"><strong id="active-count">—</strong><span>active listings</span></div></header>
     <section class="filter-panel"><div class="section-title"><h2>Find events</h2><button class="link-button" id="clear-filters" hidden>Clear</button></div><div class="filters" id="filters" aria-label="Filter events"></div><div class="schedule-controls"><label class="date-control" for="date-filter"><span>Specific date</span><input type="date" id="date-filter" aria-label="Show events on a specific date"></label><label class="date-control" for="time-filter"><span>Going out at</span><input type="time" id="time-filter" aria-label="Show events still happening at this time"></label></div><p class="time-help">Choose a time to see events that are still in progress then — not only events that start at that exact time.</p></section>
     <section class="trust"><strong>Verification rule:</strong> official brand, venue, or host pages come first. Roundups are discovery and secondary evidence. Missing or conflicting facts stay marked <b>UNCLEAR</b>.</section>
