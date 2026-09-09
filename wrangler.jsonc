@@ -2,6 +2,13 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "ashley-brooke-cohen",
   "compatibility_date": "2026-09-09",
+  "main": "src/worker.js",
+  "d1_databases": [{
+    "binding": "DB",
+    "database_name": "events-production",
+    "database_id": "c11e2172-c808-412f-8255-2076490f5646",
+    "migrations_dir": "migrations"
+  }],
   "assets": {
     "directory": "./public",
     "html_handling": "auto-trailing-slash",
