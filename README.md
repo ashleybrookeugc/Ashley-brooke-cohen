@@ -4,7 +4,11 @@ Static personal site with the NYFW Pop-Up Radar at `/nyfw-pop-ups/`.
 
 ## Update the tracker
 
-Edit `public/data/events.json`. Keep valid JSON and preserve every event's source, verification, classification, RSVP, date/time, location, subway, creator-usefulness, and notes fields. Commit to `main`; Cloudflare Workers Builds deploys the change automatically.
+Edit `public/data/events.json`. Shared event facts live in `events`; each open date lives in `occurrences` with its own date, hours, availability, and optional date-specific details. Keep RSVP requirement separate from direct-link actionability and availability. Preserve sources, verification, classification, location, subway, caveats, and notes.
+
+Each occurrence has a matching stable static route at `public/nyfw-pop-ups/event/<occurrence-id>/index.html`. When adding or removing an occurrence, add or remove its matching route directory by copying any existing occurrence page template and changing only the `data-occurrence-id` value.
+
+Commit changes to `main`; Cloudflare Workers Builds deploys automatically.
 
 ## Local preview
 
