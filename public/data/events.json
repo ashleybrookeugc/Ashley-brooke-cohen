@@ -18,36 +18,21 @@
       },
       "neighborhood": "Midtown",
       "address": "20 Rockefeller Plaza, New York, NY 10020",
-      "subway": {
-        "station": "47–50 Sts–Rockefeller Center",
-        "lines": [
-          "B",
-          "D",
-          "F",
-          "M"
-        ]
-      },
-      "categories": [
-        "fashion",
-        "entertainment"
-      ],
+      "subway": { "station": "47–50 Sts–Rockefeller Center", "lines": ["B", "D", "F", "M"] },
+      "categories": ["fashion", "entertainment"],
       "what_it_is": "A public display of film-used clothing, jewelry and accessories being offered in Christie’s charity auction.",
       "admission_free": true,
       "what_is_free": "Free admission to view costumes and accessories from The Devil Wears Prada 2. Nothing tangible is advertised as a giveaway.",
       "purchase_required": false,
-      "classifications": [
-        "FREE EXPERIENCE"
-      ],
+      "classifications": ["FREE EXPERIENCE"],
       "rsvp_status": "none",
       "rsvp_link": null,
       "main_source_url": "https://cpj.org/2026/08/christies-new-york-to-offer-costumes-and-more-from-the-devil-wears-prada-2-in-online-auction/",
       "additional_verification_source": "https://www.nycforfree.co/events/christies-the-devil-wears-prada-2-exhibition",
       "last_verified": "2026-09-08T16:17:05Z",
       "caveats": "The September 10 cocktail and live auction are invitation-only; the public exhibition closes at noon that day.",
-      "creator_usefulness": [
-        "good filming opportunity"
-      ],
-      "practical_notes": "Go on a day other than September 10 if you want a normal five-hour viewing window. Ask staff before filming close-ups. [AUTODEPLOY TEST 2026-09-09T03:30Z]"
+      "creator_usefulness": ["good filming opportunity"],
+      "practical_notes": "Go on a day other than September 10 if you want a normal five-hour viewing window. Ask staff before filming close-ups."
     },
     {
       "id": "soma-vanishing-panty-van-2026",
@@ -61,37 +46,20 @@
       },
       "neighborhood": "Midtown first; then mobile",
       "address": "Bryant Park first stop; later NYC stops UNCLEAR",
-      "subway": {
-        "station": "42 St–Bryant Park (first stop)",
-        "lines": [
-          "B",
-          "D",
-          "F",
-          "M"
-        ]
-      },
-      "categories": [
-        "fashion",
-        "beauty",
-        "food/drink"
-      ],
+      "subway": { "station": "42 St–Bryant Park (first stop)", "lines": ["B", "D", "F", "M"] },
+      "categories": ["fashion", "beauty", "food/drink"],
       "what_it_is": "A mobile branded van touring NYC with Soma’s Vanishing collection.",
       "admission_free": true,
       "what_is_free": "A Soma tote, cotton candy and a complimentary Soma item are advertised.",
       "purchase_required": false,
-      "classifications": [
-        "FREE STUFF",
-        "FREE SAMPLE"
-      ],
+      "classifications": ["FREE STUFF", "FREE SAMPLE"],
       "rsvp_status": "none",
       "rsvp_link": null,
       "main_source_url": "https://www.averagesocialite.com/nyc-events/2026/9/9/soma-vanishing-panty-van-nyc",
       "additional_verification_source": "https://blog.mariahedian.com/nyfw-events-2026-nyc/",
       "last_verified": "2026-09-08T16:17:05Z",
       "caveats": "While supplies last. Only the first stop is currently specific; follow @somaintimates Stories for later locations.",
-      "creator_usefulness": [
-        "good filming opportunity"
-      ],
+      "creator_usefulness": ["good filming opportunity"],
       "practical_notes": "The 9 AM Bryant Park stop is the only dependable location in current sources."
     },
     {
@@ -109,36 +77,20 @@
       },
       "neighborhood": "Midtown East",
       "address": "Vanderbilt Hall, Grand Central Terminal, 89 E 42nd St, New York, NY 10017",
-      "subway": {
-        "station": "Grand Central–42 St",
-        "lines": [
-          "4",
-          "5",
-          "6",
-          "7",
-          "S"
-        ]
-      },
-      "categories": [
-        "fashion",
-        "entertainment"
-      ],
+      "subway": { "station": "Grand Central–42 St", "lines": ["4", "5", "6", "7", "S"] },
+      "categories": ["fashion", "entertainment"],
       "what_it_is": "A citywide photography retrospective of Moncler’s New York moments, culminating in a dedicated Vanderbilt Hall gallery.",
       "admission_free": true,
       "what_is_free": "Free access to the public exhibition; no giveaway is advertised.",
       "purchase_required": false,
-      "classifications": [
-        "FREE EXPERIENCE"
-      ],
+      "classifications": ["FREE EXPERIENCE"],
       "rsvp_status": "none",
       "rsvp_link": null,
       "main_source_url": "https://www.moncler.com/en-cz/new-york-retrospective",
       "additional_verification_source": "https://www.averagesocialite.com/nyc-events/2026/9/9/moncler-exhibition-at-grand-central-nyc",
       "last_verified": "2026-09-08T16:17:05Z",
       "caveats": "Official Moncler source confirms dates and location but does not list daily gallery hours.",
-      "creator_usefulness": [
-        "good filming opportunity"
-      ],
+      "creator_usefulness": ["good filming opportunity"],
       "practical_notes": "Easy to combine with Midtown events. Check Moncler’s page or account the day you go for hours."
     },
     {
@@ -153,33 +105,20 @@
       },
       "neighborhood": "Two Bridges",
       "address": "Null Object, 146 E Broadway, New York, NY 10002",
-      "subway": {
-        "station": "East Broadway",
-        "lines": [
-          "F"
-        ]
-      },
-      "categories": [
-        "fashion",
-        "tech",
-        "entertainment"
-      ],
+      "subway": { "station": "East Broadway", "lines": ["F"] },
+      "categories": ["fashion", "tech", "entertainment"],
       "what_it_is": "A fashion-and-language installation turning commonly mispronounced designer names into a collection.",
       "admission_free": true,
       "what_is_free": "Free admission, pronunciation challenges and collection viewing. Select pieces use a Duolingo-streak auction rather than cash; taking one home is not guaranteed.",
       "purchase_required": false,
-      "classifications": [
-        "FREE EXPERIENCE"
-      ],
+      "classifications": ["FREE EXPERIENCE"],
       "rsvp_status": "none",
       "rsvp_link": null,
       "main_source_url": "https://www.averagesocialite.com/nyc-events/2026/9/2/duolingo-the-phonetic-collection-pop-up-nyc",
       "additional_verification_source": null,
       "last_verified": "2026-09-08T16:17:05Z",
       "caveats": "The available listing says you may take home a piece, but it does not promise a free item to every visitor.",
-      "creator_usefulness": [
-        "good filming opportunity"
-      ],
+      "creator_usefulness": ["good filming opportunity"],
       "practical_notes": "Treat this as an experience, not a guaranteed free-clothing drop."
     },
     {
@@ -195,38 +134,20 @@
       },
       "neighborhood": "SoHo",
       "address": "21 Greene St, New York, NY 10013",
-      "subway": {
-        "station": "Canal St",
-        "lines": [
-          "N",
-          "Q",
-          "R",
-          "W",
-          "6",
-          "J",
-          "Z"
-        ]
-      },
-      "categories": [
-        "beauty",
-        "wellness"
-      ],
+      "subway": { "station": "Canal St", "lines": ["N", "Q", "R", "W", "6", "J", "Z"] },
+      "categories": ["beauty", "wellness"],
       "what_it_is": "An immersive skincare and self-care activation built around Medicube devices and products.",
       "admission_free": true,
       "what_is_free": "Free admission and interactive skincare/wellness experiences. A general take-home giveaway is UNCLEAR.",
       "purchase_required": false,
-      "classifications": [
-        "FREE EXPERIENCE"
-      ],
+      "classifications": ["FREE EXPERIENCE"],
       "rsvp_status": "none",
       "rsvp_link": null,
       "main_source_url": "https://www.instagram.com/p/Dcu4R-qSEmf/",
       "additional_verification_source": "https://www.averagesocialite.com/nyc-events/2026/9/10/medicube-wellness-club-x2-nyc",
       "last_verified": "2026-09-08T16:17:05Z",
       "caveats": "The general pop-up is public; separate creator appearances may use preregistration. No guaranteed giveaway was verified.",
-      "creator_usefulness": [
-        "good filming opportunity"
-      ],
+      "creator_usefulness": ["good filming opportunity"],
       "practical_notes": "Good visual potential, but do not go solely expecting free product."
     },
     {
@@ -242,33 +163,20 @@
       },
       "neighborhood": "SoHo",
       "address": "76 Greene St, New York, NY 10012",
-      "subway": {
-        "station": "Prince St",
-        "lines": [
-          "N",
-          "R",
-          "W"
-        ]
-      },
-      "categories": [
-        "beauty"
-      ],
+      "subway": { "station": "Prince St", "lines": ["N", "R", "W"] },
+      "categories": ["beauty"],
       "what_it_is": "Haus Labs’ first NYC pop-up, with shade matching, consultations, a 51-shade wall and a photo booth.",
       "admission_free": true,
       "what_is_free": "Free admission, shade matching, consultation and photo booth. Free take-home product is UNCLEAR.",
       "purchase_required": false,
-      "classifications": [
-        "FREE EXPERIENCE"
-      ],
+      "classifications": ["FREE EXPERIENCE"],
       "rsvp_status": "none",
       "rsvp_link": null,
       "main_source_url": "https://www.averagesocialite.com/nyc-events/2026/9/3/haus-labs-x-sephora-pop-up-nyc",
       "additional_verification_source": null,
       "last_verified": "2026-09-08T16:17:05Z",
       "caveats": "The public listing does not promise samples or a giveaway.",
-      "creator_usefulness": [
-        "good filming opportunity"
-      ],
+      "creator_usefulness": ["good filming opportunity"],
       "practical_notes": "Strong content stop for the shade wall and photo booth; weak choice if your only goal is free product."
     },
     {
@@ -277,14 +185,7 @@
       "brand": "CHANEL",
       "start_date": "2026-09-11",
       "end_date": "2026-09-20",
-      "open_dates": [
-        "2026-09-11",
-        "2026-09-12",
-        "2026-09-13",
-        "2026-09-18",
-        "2026-09-19",
-        "2026-09-20"
-      ],
+      "open_dates": ["2026-09-11", "2026-09-12", "2026-09-13", "2026-09-18", "2026-09-19", "2026-09-20"],
       "daily_hours": {
         "2026-09-11": "12–7 PM",
         "2026-09-12": "10 AM–7 PM",
@@ -295,36 +196,20 @@
       },
       "neighborhood": "Meatpacking District",
       "address": "873 Washington St, New York, NY 10014",
-      "subway": {
-        "station": "14 St–8 Av",
-        "lines": [
-          "A",
-          "C",
-          "E",
-          "L"
-        ]
-      },
-      "categories": [
-        "beauty",
-        "fashion"
-      ],
+      "subway": { "station": "14 St–8 Av", "lines": ["A", "C", "E", "L"] },
+      "categories": ["beauty", "fashion"],
       "what_it_is": "A café-inspired fragrance discovery experience with CHANEL hair, body and makeup products available to try and buy.",
       "admission_free": true,
       "what_is_free": "Free admission and product discovery/testing. No take-home giveaway is promised.",
       "purchase_required": false,
-      "classifications": [
-        "FREE EXPERIENCE",
-        "RETAIL POP-UP"
-      ],
+      "classifications": ["FREE EXPERIENCE", "RETAIL POP-UP"],
       "rsvp_status": "none",
       "rsvp_link": "https://www.chanel.com/us/fragrance/coco-mademoiselle-event/",
       "main_source_url": "https://www.chanel.com/us/fragrance/coco-mademoiselle-event/",
       "additional_verification_source": "https://www.nycforfree.co/events/chanel-coco-mademoiselle-a-special-event",
       "last_verified": "2026-09-08T16:17:05Z",
       "caveats": "Walk-ins are welcome, but CHANEL recommends appointments. The event is closed September 14–17 and reopens September 18.",
-      "creator_usefulness": [
-        "good filming opportunity"
-      ],
+      "creator_usefulness": ["good filming opportunity"],
       "practical_notes": "The date range has a four-day closure in the middle; use the listed daily hours, not just the headline dates."
     },
     {
@@ -340,35 +225,20 @@
       },
       "neighborhood": "SoHo",
       "address": "489 Broome St, New York, NY 10013",
-      "subway": {
-        "station": "Spring St",
-        "lines": [
-          "C",
-          "E"
-        ]
-      },
-      "categories": [
-        "beauty",
-        "fashion",
-        "food/drink"
-      ],
+      "subway": { "station": "Spring St", "lines": ["C", "E"] },
+      "categories": ["beauty", "fashion", "food/drink"],
       "what_it_is": "An immersive Good Girl fragrance anniversary pop-up with interactive challenges, beauty discovery and a café.",
       "admission_free": true,
       "what_is_free": "Free experience; the first 100 guests can get Carolina Herrera × Myka frozen yogurt. Challenges offer chances to win minis and beauty experiences.",
       "purchase_required": false,
-      "classifications": [
-        "FREE EXPERIENCE",
-        "FREE SAMPLE"
-      ],
+      "classifications": ["FREE EXPERIENCE", "FREE SAMPLE"],
       "rsvp_status": "unclear",
       "rsvp_link": "https://www.eventbrite.com/e/carolina-herrera-good-girl-lab-tickets-1997612868865",
       "main_source_url": "https://www.instagram.com/p/Dc6KVohx1h0/",
       "additional_verification_source": "https://www.nycforfree.co/events/carolina-herrera-the-good-girl-lab",
       "last_verified": "2026-09-08T16:17:05Z",
       "caveats": "CONFLICTING INFO: public guides call it open to the public, while an Eventbrite ticket page also exists. Fro-yo is first 100 guests; prizes are not guaranteed.",
-      "creator_usefulness": [
-        "good filming opportunity"
-      ],
+      "creator_usefulness": ["good filming opportunity"],
       "practical_notes": "Reserve if the ticket page still has space; do not assume every visitor receives a fragrance item."
     },
     {
@@ -382,33 +252,20 @@
       },
       "neighborhood": "Flatiron",
       "address": "Ulta Beauty, 620 Avenue of the Americas, New York, NY 10011",
-      "subway": {
-        "station": "23 St",
-        "lines": [
-          "F",
-          "M"
-        ]
-      },
-      "categories": [
-        "beauty"
-      ],
+      "subway": { "station": "23 St", "lines": ["F", "M"] },
+      "categories": ["beauty"],
       "what_it_is": "A reserved 15-minute styling-bar appointment focused on glossy hair and Rizos Curls’ fall launches.",
       "admission_free": true,
       "what_is_free": "The appointment and product education are free. Ulta says gifts, samples and special offers are with purchase and while quantities last.",
       "purchase_required": true,
-      "classifications": [
-        "FREE EXPERIENCE",
-        "GIFT WITH PURCHASE"
-      ],
+      "classifications": ["FREE EXPERIENCE", "GIFT WITH PURCHASE"],
       "rsvp_status": "required",
       "rsvp_link": "https://www.ulta.com/beautyservices/store-events/rizos-curls/manhattan/749960?eventStyle=TimeSlot",
       "main_source_url": "https://www.ulta.com/beautyservices/store-events/rizos-curls/manhattan/749960?eventStyle=TimeSlot",
       "additional_verification_source": "https://blog.mariahedian.com/nyfw-events-2026-part-2/",
       "last_verified": "2026-09-08T16:17:05Z",
       "caveats": "Purchase is required for the listed gifts/samples/offers; quantities and exact offers vary. Reservation required.",
-      "creator_usefulness": [
-        "unknown"
-      ],
+      "creator_usefulness": ["unknown"],
       "practical_notes": "This is not a straightforward free-sample stop. Book a slot only if the styling experience itself is useful."
     },
     {
@@ -423,34 +280,20 @@
       },
       "neighborhood": "Flatiron",
       "address": "Flatiron Plaza, 23rd St & Broadway, New York, NY 10010",
-      "subway": {
-        "station": "23 St",
-        "lines": [
-          "R",
-          "W"
-        ]
-      },
-      "categories": [
-        "beauty",
-        "fashion"
-      ],
+      "subway": { "station": "23 St", "lines": ["R", "W"] },
+      "categories": ["beauty", "fashion"],
       "what_it_is": "An outdoor launch activation for OLAPLEX Shape Set hairspray with samples, merch and photo moments.",
       "admission_free": true,
       "what_is_free": "Complimentary Shape Set samples and OLAPLEX merch; first 50 attendees each day can receive a full-size 245 ml hairspray.",
       "purchase_required": false,
-      "classifications": [
-        "FREE SAMPLE",
-        "FREE STUFF"
-      ],
+      "classifications": ["FREE SAMPLE", "FREE STUFF"],
       "rsvp_status": "none",
       "rsvp_link": null,
       "main_source_url": "https://clownfish-celery-hfzt.squarespace.com/nyc-events/2026/9/3/the-olaplex-shape-set-style-studio",
       "additional_verification_source": "https://blog.mariahedian.com/nyfw-events-2026-part-2/",
       "last_verified": "2026-09-08T16:17:05Z",
       "caveats": "While supplies last. Full-size product is limited to the first 50 attendees each day.",
-      "creator_usefulness": [
-        "good filming opportunity"
-      ],
+      "creator_usefulness": ["good filming opportunity"],
       "practical_notes": "Arrive before 11 AM if the full-size product matters; later visitors should expect samples only."
     },
     {
@@ -464,41 +307,20 @@
       },
       "neighborhood": "Greenwich Village",
       "address": "Ideal Glass Studios, 9 W 8th St, New York, NY 10011",
-      "subway": {
-        "station": "W 4 St–Washington Sq",
-        "lines": [
-          "A",
-          "B",
-          "C",
-          "D",
-          "E",
-          "F",
-          "M"
-        ]
-      },
-      "categories": [
-        "beauty",
-        "fashion",
-        "entertainment"
-      ],
+      "subway": { "station": "W 4 St–Washington Sq", "lines": ["A", "B", "C", "D", "E", "F", "M"] },
+      "categories": ["beauty", "fashion", "entertainment"],
       "what_it_is": "An in-person model casting, professional shade match, product preview and NYFW photo experience.",
       "admission_free": true,
       "what_is_free": "One full-size Fit Me foundation in your matched shade plus other goodies and giveaways, while supplies last.",
       "purchase_required": false,
-      "classifications": [
-        "FREE EXPERIENCE",
-        "FREE STUFF"
-      ],
+      "classifications": ["FREE EXPERIENCE", "FREE STUFF"],
       "rsvp_status": "none",
       "rsvp_link": null,
       "main_source_url": "https://www.maybelline.com/collections/fitme/fit-me-casting-call",
       "additional_verification_source": "https://blog.mariahedian.com/nyfw-events-2026-part-2/",
       "last_verified": "2026-09-08T16:17:05Z",
       "caveats": "Must be 18 or the age of majority and attend in person. By attending, you agree to Maybelline’s stated image/likeness release. Giveaways are while supplies last.",
-      "creator_usefulness": [
-        "good filming opportunity",
-        "possible networking"
-      ],
+      "creator_usefulness": ["good filming opportunity", "possible networking"],
       "practical_notes": "Read the official likeness-release disclaimer before attending. On-site form and headshot are required to enter the casting."
     },
     {
@@ -512,36 +334,20 @@
       },
       "neighborhood": "Meatpacking District",
       "address": "Chelsea Triangle; exact street-side setup UNCLEAR",
-      "subway": {
-        "station": "14 St–8 Av",
-        "lines": [
-          "A",
-          "C",
-          "E",
-          "L"
-        ]
-      },
-      "categories": [
-        "beauty",
-        "food/drink"
-      ],
+      "subway": { "station": "14 St–8 Av", "lines": ["A", "C", "E", "L"] },
+      "categories": ["beauty", "food/drink"],
       "what_it_is": "A fragrance café translating NEST’s Cardamom Latte scent into a complimentary drink experience.",
       "admission_free": true,
       "what_is_free": "A complimentary Cardamom Latte while supplies last.",
       "purchase_required": false,
-      "classifications": [
-        "FREE STUFF",
-        "FREE EXPERIENCE"
-      ],
+      "classifications": ["FREE STUFF", "FREE EXPERIENCE"],
       "rsvp_status": "none",
       "rsvp_link": null,
       "main_source_url": "https://pulsd.com/new-york/events/meatpacking-district/free-cardamom-lattes",
       "additional_verification_source": "https://blog.mariahedian.com/nyfw-events-2026-part-2/",
       "last_verified": "2026-09-08T16:17:05Z",
       "caveats": "CONFLICTING INFO: one current listing says 5 PM close and another says 9 PM. Supplies are limited; do not go late.",
-      "creator_usefulness": [
-        "good filming opportunity"
-      ],
+      "creator_usefulness": ["good filming opportunity"],
       "practical_notes": "Treat 5 PM as the safer latest possible close until the brand clarifies."
     },
     {
@@ -555,36 +361,20 @@
       },
       "neighborhood": "SoHo",
       "address": "575 Broadway, New York, NY 10012",
-      "subway": {
-        "station": "Prince St",
-        "lines": [
-          "N",
-          "R",
-          "W"
-        ]
-      },
-      "categories": [
-        "beauty",
-        "fashion",
-        "food/drink"
-      ],
+      "subway": { "station": "Prince St", "lines": ["N", "R", "W"] },
+      "categories": ["beauty", "fashion", "food/drink"],
       "what_it_is": "A branded truck introducing eos Dewy Lip Shine with product sampling, treats and photo moments.",
       "admission_free": true,
       "what_is_free": "Dewy Lip Shine product sampling and sweet treats are advertised; exact quantities are UNCLEAR.",
       "purchase_required": false,
-      "classifications": [
-        "FREE SAMPLE",
-        "FREE EXPERIENCE"
-      ],
+      "classifications": ["FREE SAMPLE", "FREE EXPERIENCE"],
       "rsvp_status": "none",
       "rsvp_link": null,
       "main_source_url": "https://www.nycforfree.co/events/eos-x-nylon-dewy-lip-shine-pop-up-truck",
       "additional_verification_source": "https://blog.mariahedian.com/nyfw-events-2026-part-2/",
       "last_verified": "2026-09-08T16:17:05Z",
       "caveats": "Sampling is advertised but no per-person quantity or inventory guarantee is published.",
-      "creator_usefulness": [
-        "good filming opportunity"
-      ],
+      "creator_usefulness": ["good filming opportunity"],
       "practical_notes": "Public walk-up truck; likely visually useful, but expect lines and limited samples."
     },
     {
@@ -593,46 +383,23 @@
       "brand": "The Fashion Week Experiences",
       "start_date": "2026-09-08",
       "end_date": "2026-09-08",
-      "daily_hours": {
-        "2026-09-08": "11 AM–4 PM"
-      },
+      "daily_hours": { "2026-09-08": "11 AM–4 PM" },
       "neighborhood": "Times Square",
       "address": "Father Duffy Square, Broadway & W 47th St, New York, NY 10036",
-      "subway": {
-        "station": "49 St / Times Sq–42 St",
-        "lines": [
-          "N",
-          "Q",
-          "R",
-          "W",
-          "1",
-          "2",
-          "3",
-          "7",
-          "S"
-        ]
-      },
-      "categories": [
-        "fashion",
-        "entertainment"
-      ],
+      "subway": { "station": "49 St / Times Sq–42 St", "lines": ["N", "Q", "R", "W", "1", "2", "3", "7", "S"] },
+      "categories": ["fashion", "entertainment"],
       "what_it_is": "A free outdoor runway program with emerging designers, models, creatives and live entertainment.",
       "admission_free": true,
       "what_is_free": "Free admission to the outdoor runway program; no tangible giveaway is promised.",
       "purchase_required": false,
-      "classifications": [
-        "FREE EXPERIENCE"
-      ],
+      "classifications": ["FREE EXPERIENCE"],
       "rsvp_status": "required",
       "rsvp_link": "https://www.eventbrite.com/e/the-fashion-week-experiences-runways-on-fire-2026-free-tickets-1987863827219",
       "main_source_url": "https://www.eventbrite.com/e/the-fashion-week-experiences-runways-on-fire-2026-free-tickets-1987863827219",
       "additional_verification_source": "https://blog.mariahedian.com/nyfw-events-2026-nyc/",
       "last_verified": "2026-09-08T18:10:00Z",
       "caveats": "A free ticket is required. Eventbrite rate-limited the verification check, so confirm the ticket page still shows availability before leaving.",
-      "creator_usefulness": [
-        "good filming opportunity",
-        "possible networking"
-      ],
+      "creator_usefulness": ["good filming opportunity", "possible networking"],
       "practical_notes": "Outdoor Times Square event. Arrive early for sightlines and allow for street-event crowding."
     },
     {
@@ -641,28 +408,16 @@
       "brand": "Ann Taylor",
       "start_date": "2026-09-08",
       "end_date": "2026-09-08",
-      "daily_hours": {
-        "2026-09-08": "1–5 PM"
-      },
+      "daily_hours": { "2026-09-08": "1–5 PM" },
       "neighborhood": "SoHo",
       "address": "Iconic Magazines, 238 Lafayette St, New York, NY 10012",
-      "subway": {
-        "station": "Spring St",
-        "lines": [
-          "6"
-        ]
-      },
-      "categories": [
-        "fashion"
-      ],
+      "subway": { "station": "Spring St", "lines": ["6"] },
+      "categories": ["fashion"],
       "what_it_is": "An editorial-style NYFW newsstand tied to Ann Taylor's fall campaign.",
       "admission_free": true,
       "what_is_free": "Giveaways, collectible postcards and copies of The Daily Front Row are advertised; exact quantities are UNCLEAR.",
       "purchase_required": false,
-      "classifications": [
-        "FREE STUFF",
-        "FREE EXPERIENCE"
-      ],
+      "classifications": ["FREE STUFF", "FREE EXPERIENCE"],
       "rsvp_status": "none",
       "rsvp_link": null,
       "main_source_url": "https://blog.mariahedian.com/nyfw-events-2026-nyc/",
@@ -670,9 +425,7 @@
       "official_source_url": "https://www.instagram.com/anntaylor/",
       "last_verified": "2026-09-08T18:10:00Z",
       "caveats": "SECONDARY SOURCE ONLY for the event-specific hours and giveaway details; while supplies last is likely but was not stated in a brand page located during verification.",
-      "creator_usefulness": [
-        "good filming opportunity"
-      ],
+      "creator_usefulness": ["good filming opportunity"],
       "practical_notes": "The brand account is linked, but no event-specific official post was located in searchable sources. Recheck Stories before going."
     },
     {
@@ -681,29 +434,16 @@
       "brand": "Oh Polly × Leon’s Bagels",
       "start_date": "2026-09-09",
       "end_date": "2026-09-09",
-      "daily_hours": {
-        "2026-09-09": "Starts 9 AM; end time UNCLEAR"
-      },
+      "daily_hours": { "2026-09-09": "Starts 9 AM; end time UNCLEAR" },
       "neighborhood": "Nolita",
       "address": "Leon’s Bagels, 181 Mulberry St, New York, NY 10012",
-      "subway": {
-        "station": "Spring St",
-        "lines": [
-          "6"
-        ]
-      },
-      "categories": [
-        "fashion",
-        "food/drink"
-      ],
+      "subway": { "station": "Spring St", "lines": ["6"] },
+      "categories": ["fashion", "food/drink"],
       "what_it_is": "A one-morning NYFW bagel-shop collaboration.",
       "admission_free": true,
       "what_is_free": "Complimentary bagels and coffee for the first 100 guests.",
       "purchase_required": false,
-      "classifications": [
-        "FREE STUFF",
-        "FREE EXPERIENCE"
-      ],
+      "classifications": ["FREE STUFF", "FREE EXPERIENCE"],
       "rsvp_status": "none",
       "rsvp_link": null,
       "main_source_url": "https://blog.mariahedian.com/nyfw-events-2026-nyc/",
@@ -711,9 +451,7 @@
       "official_source_url": "https://www.instagram.com/ohpolly/",
       "last_verified": "2026-09-08T18:10:00Z",
       "caveats": "First 100 guests only. SECONDARY SOURCE ONLY for event-specific details; an official event page was not located in searchable results.",
-      "creator_usefulness": [
-        "good filming opportunity"
-      ],
+      "creator_usefulness": ["good filming opportunity"],
       "practical_notes": "Treat 9 AM as arrival time, not a broad service window. Expect a line."
     },
     {
@@ -722,31 +460,16 @@
       "brand": "Live Tinted × Kolkata Chai",
       "start_date": "2026-09-10",
       "end_date": "2026-09-10",
-      "daily_hours": {
-        "2026-09-10": "5–7:30 PM"
-      },
+      "daily_hours": { "2026-09-10": "5–7:30 PM" },
       "neighborhood": "Nolita",
       "address": "Kolkata Chai, 60 Kenmare St, New York, NY 10012",
-      "subway": {
-        "station": "Bowery",
-        "lines": [
-          "J",
-          "Z"
-        ]
-      },
-      "categories": [
-        "beauty",
-        "food/drink",
-        "fashion"
-      ],
+      "subway": { "station": "Bowery", "lines": ["J", "Z"] },
+      "categories": ["beauty", "food/drink", "fashion"],
       "what_it_is": "A beauty-and-chai NYFW meetup with makeup touch-ups.",
       "admission_free": true,
       "what_is_free": "Beauty products advertised as worth $60+ while supplies last, plus iced chai for the first 50 guests.",
       "purchase_required": false,
-      "classifications": [
-        "FREE STUFF",
-        "FREE EXPERIENCE"
-      ],
+      "classifications": ["FREE STUFF", "FREE EXPERIENCE"],
       "rsvp_status": "required",
       "rsvp_link": null,
       "main_source_url": "https://blog.mariahedian.com/nyfw-events-2026-nyc/",
@@ -754,10 +477,7 @@
       "official_source_url": "https://www.instagram.com/livetinted/",
       "last_verified": "2026-09-08T18:10:00Z",
       "caveats": "Confirmed RSVP is required, but the public RSVP link was not exposed in the source. Chai is limited to the first 50; products are while supplies last.",
-      "creator_usefulness": [
-        "good filming opportunity",
-        "possible networking"
-      ],
+      "creator_usefulness": ["good filming opportunity", "possible networking"],
       "practical_notes": "Do not show up without a confirmed RSVP. Check the official brand account for the registration link."
     },
     {
@@ -766,43 +486,23 @@
       "brand": "Later × TikTok",
       "start_date": "2026-09-10",
       "end_date": "2026-09-10",
-      "daily_hours": {
-        "2026-09-10": "6–9 PM"
-      },
+      "daily_hours": { "2026-09-10": "6–9 PM" },
       "neighborhood": "Flatiron",
       "address": "Amber Room, 55 W 21st St, New York, NY 10010",
-      "subway": {
-        "station": "23 St",
-        "lines": [
-          "F",
-          "M",
-          "R",
-          "W",
-          "1"
-        ]
-      },
-      "categories": [
-        "fashion",
-        "tech",
-        "entertainment"
-      ],
+      "subway": { "station": "23 St", "lines": ["F", "M", "R", "W", "1"] },
+      "categories": ["fashion", "tech", "entertainment"],
       "what_it_is": "A creator-and-brand networking night hosted by Later and TikTok for Business.",
       "admission_free": true,
       "what_is_free": "Admission, entertainment, custom fashion illustrations and late-night bites are described; no take-home gift is guaranteed.",
       "purchase_required": false,
-      "classifications": [
-        "FREE EXPERIENCE"
-      ],
+      "classifications": ["FREE EXPERIENCE"],
       "rsvp_status": "required",
       "rsvp_link": "https://luma.com/later-qt8m",
       "main_source_url": "https://luma.com/later-qt8m",
       "additional_verification_source": "https://blog.mariahedian.com/nyfw-events-2026-nyc/",
       "last_verified": "2026-09-08T18:10:00Z",
       "caveats": "Registration is approval-only; submitting the form does not guarantee admission.",
-      "creator_usefulness": [
-        "good filming opportunity",
-        "possible networking"
-      ],
+      "creator_usefulness": ["good filming opportunity", "possible networking"],
       "practical_notes": "The host page now names Amber Room and confirms approval is required. Apply before planning around it."
     },
     {
@@ -811,38 +511,23 @@
       "brand": "Society 18 × Refinery29 × SOMOS",
       "start_date": "2026-09-10",
       "end_date": "2026-09-10",
-      "daily_hours": {
-        "2026-09-10": "6–9 PM"
-      },
+      "daily_hours": { "2026-09-10": "6–9 PM" },
       "neighborhood": "NYC; exact location restricted",
       "address": "Shared after list approval",
-      "subway": {
-        "station": "UNCLEAR",
-        "lines": []
-      },
-      "categories": [
-        "fashion",
-        "entertainment",
-        "food/drink"
-      ],
+      "subway": { "station": "UNCLEAR", "lines": [] },
+      "categories": ["fashion", "entertainment", "food/drink"],
       "what_it_is": "An NYFW industry mixer for creators, press, brands and agencies.",
       "admission_free": true,
       "what_is_free": "Cocktails, DJ, photo booth and curated gift bags are advertised for admitted guests.",
       "purchase_required": false,
-      "classifications": [
-        "FREE STUFF",
-        "FREE EXPERIENCE"
-      ],
+      "classifications": ["FREE STUFF", "FREE EXPERIENCE"],
       "rsvp_status": "required",
       "rsvp_link": "https://partiful.com/e/UmgJLXeXnhA0h3bJqUVn",
       "main_source_url": "https://partiful.com/e/UmgJLXeXnhA0h3bJqUVn",
       "additional_verification_source": "https://blog.mariahedian.com/nyfw-events-2026-nyc/",
       "last_verified": "2026-09-08T18:10:00Z",
       "caveats": "Restricted access and limited space. RSVP does not necessarily mean acceptance; exact location is hidden until access is granted.",
-      "creator_usefulness": [
-        "good filming opportunity",
-        "possible networking"
-      ],
+      "creator_usefulness": ["good filming opportunity", "possible networking"],
       "practical_notes": "Strong networking potential, but do not count it as confirmed until Partiful shows you are on the list."
     },
     {
@@ -851,36 +536,23 @@
       "brand": "Digital Fashion Week",
       "start_date": "2026-09-10",
       "end_date": "2026-09-10",
-      "daily_hours": {
-        "2026-09-10": "10 AM–9 PM"
-      },
+      "daily_hours": { "2026-09-10": "10 AM–9 PM" },
       "neighborhood": "NYC; address after registration",
       "address": "Exact venue shown to registered attendees",
-      "subway": {
-        "station": "UNCLEAR",
-        "lines": []
-      },
-      "categories": [
-        "fashion",
-        "tech"
-      ],
+      "subway": { "station": "UNCLEAR", "lines": [] },
+      "categories": ["fashion", "tech"],
       "what_it_is": "A paid fashion-tech summit, immersive retail gallery and evening runway show.",
       "admission_free": false,
       "what_is_free": "Nothing is inherently free; tickets are sold through the official host page.",
       "purchase_required": true,
-      "classifications": [
-        "PAID EVENT"
-      ],
+      "classifications": ["PAID EVENT"],
       "rsvp_status": "required",
       "rsvp_link": "https://luma.com/dfw26",
       "main_source_url": "https://luma.com/dfw26",
       "additional_verification_source": "https://blog.mariahedian.com/nyfw-events-2026-nyc/",
       "last_verified": "2026-09-08T18:10:00Z",
       "caveats": "Ticketed. Some lower-price tiers have ended; current pricing and remaining ticket types are shown on Luma.",
-      "creator_usefulness": [
-        "good filming opportunity",
-        "possible networking"
-      ],
+      "creator_usefulness": ["good filming opportunity", "possible networking"],
       "practical_notes": "Included because it is public and useful—not because it is free. Verify the exact ticket and venue details before purchase."
     }
   ]
