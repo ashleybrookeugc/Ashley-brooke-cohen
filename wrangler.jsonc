@@ -3,6 +3,9 @@
   "name": "ashley-brooke-cohen",
   "compatibility_date": "2026-09-09",
   "main": "src/worker.js",
+  "rules": [
+    { "type": "Text", "globs": ["**/*.html"], "fallthrough": true }
+  ],
   "d1_databases": [{
     "binding": "DB",
     "database_name": "events-production",
