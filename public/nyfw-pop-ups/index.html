@@ -5,14 +5,14 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="description" content="A practical, source-verified guide to public NYFW pop-ups and activations in NYC.">
   <title>NYFW Pop-Up Radar · Ashley Brooke Cohen</title>
-  <link rel="stylesheet" href="/assets/site.css">
-  <script src="/assets/tracker.js" defer></script>
+  <link rel="stylesheet" href="/assets/site.css?v=20260909-time-filter">
+  <script src="/assets/tracker.js?v=20260909-time-filter" defer></script>
 </head>
 <body class="radar-page">
   <main class="radar-shell">
     <a class="back-home" href="/">← Ashley Brooke Cohen</a><a class="submit-event-link" href="/submit-event/">Spotted something? Submit an event →</a>
     <header class="masthead"><div><p class="eyebrow">SEPTEMBER 2026 · NEW YORK CITY</p><h1>NYFW<br><span>POP-UP RADAR</span></h1></div><div class="count"><strong id="active-count">—</strong><span>active listings</span></div></header>
-    <section class="filter-panel"><div class="section-title"><h2>Find events</h2><button class="link-button" id="clear-filters" hidden>Clear</button></div><div class="filters" id="filters" aria-label="Filter events"></div><label class="date-control" for="date-filter">Specific date <input type="date" id="date-filter" aria-label="Show events on a specific date"></label></section>
+    <section class="filter-panel"><div class="section-title"><h2>Find events</h2><button class="link-button" id="clear-filters" hidden>Clear</button></div><div class="filters" id="filters" aria-label="Filter events"></div><div class="schedule-controls"><label class="date-control" for="date-filter"><span>Specific date</span><input type="date" id="date-filter" aria-label="Show events on a specific date"></label><label class="date-control" for="time-filter"><span>Going out at</span><input type="time" id="time-filter" aria-label="Show events still happening at this time"></label></div><p class="time-help">Choose a time to see events that are still in progress then — not only events that start at that exact time.</p></section>
     <section class="trust"><strong>Verification rule:</strong> official brand, venue, or host pages come first. Roundups are discovery and secondary evidence. Missing or conflicting facts stay marked <b>UNCLEAR</b>.</section>
     <section class="results"><div class="section-title"><h2>Upcoming NYFW events</h2><span id="result-count">Loading…</span></div><div class="cards" id="event-cards"></div><div class="empty" id="empty" hidden>No matching events. Try clearing a filter.</div><button class="expired-toggle" id="expired-toggle">Show expired listings</button></section>
     <footer class="site-footer"><p>Event details can change. Verify with the official source before traveling.</p><nav aria-label="Site information"><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/accessibility/">Accessibility</a><a href="/contact/">Contact</a></nav></footer>
