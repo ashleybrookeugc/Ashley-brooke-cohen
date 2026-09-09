@@ -1,0 +1,72 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-09T22:30:00Z",
+  "events": [
+    {
+      "id": "princess-polly-foreigner-nyc-2026",
+      "event_name": "Princess Polly × Foreigner NYC",
+      "brand": "Princess Polly × Foreigner",
+      "neighborhood": "NoHo",
+      "address": "Foreigner, 31 Bond St, New York, NY 10012",
+      "subway": {"station": "Bleecker St / Broadway-Lafayette St", "lines": ["4", "6", "B", "D", "F", "M"]},
+      "categories": ["fashion", "food/drink", "entertainment"],
+      "what_it_is": "A one-day NYFW takeover of Foreigner in NoHo with custom drinks, DJs and a photo booth.",
+      "admission_free": true,
+      "what_is_free": "The event is open to the public and advertises a free photo booth. Custom drinks are part of the activation, but a free drink for every attendee is not explicitly guaranteed in the verified listing.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE"],
+      "main_source_url": "https://www.averagesocialite.com/nyc-events/2026/9/12/princess-polly-x-foreigner-nyc",
+      "additional_verification_source": "https://www.nycforfree.co/events/",
+      "last_verified": "2026-09-09T22:30:00Z",
+      "caveats": "Open to the public. The verified listings do not state a reservation requirement or guarantee a take-home giveaway.",
+      "practical_notes": "The activation runs 9 AM–4 PM at 31 Bond Street.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    },
+    {
+      "id": "fragrance-com-nyfw-takeover-2026",
+      "event_name": "Fragrance.com NYFW Takeover",
+      "brand": "Fragrance.com × TUMI × Bujairami × Vierro",
+      "neighborhood": "SoHo / West Chelsea / Flatiron",
+      "address": "Multiple downtown Manhattan locations; exact individual stops not published in the verified listing",
+      "subway": {"station": "Multiple locations", "lines": []},
+      "categories": ["beauty", "fashion", "entertainment"],
+      "what_it_is": "A multi-neighborhood Fashion Week activation with short fashion shows, fragrance sampling, staged paparazzi and red-carpet-style photo moments.",
+      "admission_free": true,
+      "what_is_free": "The public activation advertises fragrance sampling and photo opportunities. Exact sample quantities and individual stop inventory are not guaranteed.",
+      "purchase_required": false,
+      "classifications": ["FREE SAMPLE", "FREE EXPERIENCE"],
+      "main_source_url": "https://www.nycforfree.co/events/fragrancecom-nyfw-takeover",
+      "additional_verification_source": "https://popupatlas.com/",
+      "last_verified": "2026-09-09T22:30:00Z",
+      "caveats": "The verified public listing confirms SoHo, West Chelsea and Flatiron but does not publish exact street addresses for each activation stop. No map pin should be inferred from the neighborhood names alone.",
+      "practical_notes": "Treat this as a roaming/multi-stop activation unless Fragrance.com publishes exact stop locations closer to the event.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    },
+    {
+      "id": "peoples-runway-brooklyn-2026",
+      "event_name": "The 2026 People’s Runway",
+      "brand": "Brooklyn Borough President Antonio Reynoso × Colm Dillane / KidSuper",
+      "neighborhood": "Downtown Brooklyn",
+      "address": "Brooklyn Borough Hall Plaza, 209 Joralemon St, Brooklyn, NY 11201",
+      "subway": {"station": "Borough Hall", "lines": ["2", "3", "4", "5", "R"]},
+      "categories": ["fashion", "entertainment"],
+      "what_it_is": "A public outdoor NYFW runway show showcasing five emerging Brooklyn designers, presented by Brooklyn Borough President Antonio Reynoso and Brooklyn Arts Ambassador Colm Dillane of KidSuper.",
+      "admission_free": true,
+      "what_is_free": "Free public admission on a first-come, first-served basis. Registration is available, but it does not guarantee entry.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE"],
+      "main_source_url": "https://www.brooklynbp.nyc.gov/event/the-2026-peoples-runway/",
+      "official_source_url": "https://www.brooklynbp.nyc.gov/event/the-2026-peoples-runway/",
+      "additional_verification_source": "https://form.jotform.com/262223928954061",
+      "last_verified": "2026-09-09T22:30:00Z",
+      "caveats": "First come, first served and standing room only. RSVPing does not guarantee entry. ADA accommodations are available. The official event page lists the program as 6–9:30 PM while the registration form says doors open at 5 PM and showtime is 6 PM.",
+      "practical_notes": "Register in advance, but arrive before showtime because admission remains first-come. Doors open at 5 PM; show begins at 6 PM.",
+      "rsvp": {"requirement": "optional", "actionability": "direct_link_available", "availability": "open", "direct_url": "https://form.jotform.com/262223928954061"}
+    }
+  ],
+  "occurrences": [
+    {"id": "princess-polly-foreigner-nyc-2026--2026-09-12", "event_id": "princess-polly-foreigner-nyc-2026", "date": "2026-09-12", "hours": "9 AM–4 PM", "availability": "open", "details": "One-day Foreigner takeover with custom drinks, DJs and a free photo booth."},
+    {"id": "fragrance-com-nyfw-takeover-2026--2026-09-12", "event_id": "fragrance-com-nyfw-takeover-2026", "date": "2026-09-12", "hours": "10 AM–5 PM", "availability": "open", "details": "Multi-stop downtown Manhattan activation across SoHo, West Chelsea and Flatiron; exact individual stop addresses are not yet published in the verified listing."},
+    {"id": "peoples-runway-brooklyn-2026--2026-09-12", "event_id": "peoples-runway-brooklyn-2026", "date": "2026-09-12", "hours": "5–9:30 PM", "availability": "open", "details": "Doors open at 5 PM; show begins at 6 PM. Official event page lists the program through 9:30 PM. RSVP does not guarantee entry."}
+  ]
+}
