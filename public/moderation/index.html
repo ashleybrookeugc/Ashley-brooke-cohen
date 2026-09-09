@@ -1,1 +1,41 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Submission review</title><link rel="stylesheet" href="/assets/site.css?v=moderation-20260909"></head><body class="legal-page"><main class="legal-shell"><a class="back-home" href="/nyfw-pop-ups/">← NYFW Pop-Up Radar</a><p class="eyebrow">PRIVATE MODERATION</p><h1>Submission review</h1><p>Tips are private. Verify facts and check duplicates before publishing; approval alone does not make anything public.</p><div id="items">Loading…</div></main><script>const E=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));const F=[['event_name','Event name'],['date_time_text','Date / time'],['location_text','Location / venue'],['notes','Submitter notes'],['admin_notes','Private review notes']],S=['pending','under_review','approved','needs_more_info','rejected','published'];async function save(a,status){const q={status};a.querySelectorAll('[data-k]').forEach(x=>q[x.dataset.k]=x.value);const r=await fetch('/api/admin/submissions/'+a.dataset.id,{method:'PATCH',headers:{'content-type':'application/json'},body:JSON.stringify(q)});if(!r.ok)alert((await r.json()).error||'Could not save review.');else L()}async function L(){const r=await fetch('/api/admin/submissions');if(!r.ok){items.textContent='Your admin session has ended. Please sign in again.';return}const d=await r.json();items.innerHTML=d.submissions.map(s=>`<article class="submission-review" data-id="${E(s.id)}"><p class="eyebrow">${E(s.status)} · ${E(s.content_type)}</p><h2>${E(s.event_name||'Untitled submission')}</h2><p><strong>Submitted:</strong> ${E(s.created_at)}</p><p><a href="${E(s.source_url)}" target="_blank" rel="noreferrer">Open submitted source ↗</a></p><p><strong>Platform / handle:</strong> ${E(s.platforms||'Not supplied')} ${s.handles?'· '+E(s.handles):''}</p>${F.map(([k,l])=>`<label>${l}<textarea data-k="${k}">${E(s[k])}</textarea></label>`).join('')}<p><strong>Possible duplicates:</strong> ${E(s.potential_duplicates.map(x=>x.event_name||x.submission_id).join(', ')||'None found')}</p><label>Review status<select data-k="status">${S.map(x=>`<option value="${x}" ${x===s.status?'selected':''}>${x.replace('_',' ')}</option>`).join('')}</select></label><label>Verified event + occurrence JSON <small>Required only to publish a verified Event into the existing tracker.</small><textarea data-k="review_draft_json" rows="8">${E(s.review_draft_json||'')}</textarea></label><div class="review-actions"><button data-action="under_review">Mark under review</button><button data-action="approved">Approve</button><button data-action="rejected">Reject</button><button data-action="published">Publish verified Event</button><button data-action="save">Save edits</button></div></article>`).join('')||'<p>No submissions yet.</p>';document.querySelectorAll('[data-action]').forEach(b=>b.onclick=()=>{const a=b.closest('article');save(a,b.dataset.action==='save'?a.querySelector('[data-k="status"]').value:b.dataset.action)})}L()</script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Submission review</title>
+  <link rel="stylesheet" href="/assets/site.css?v=moderation-20260909b">
+</head>
+<body class="legal-page">
+  <main class="legal-shell">
+    <a class="back-home" href="/nyfw-pop-ups/">← NYFW Pop-Up Radar</a>
+    <p class="eyebrow">PRIVATE MODERATION</p>
+    <h1>Submission review</h1>
+    <p>Tips are private. Verify facts and check duplicates before publishing; approval alone does not make anything public.</p>
+    <p><a href="/admin/logout">Sign out</a></p>
+    <div id="items">Loading…</div>
+  </main>
+  <script>
+    const E=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    const fields=[['event_name','Event name'],['date_time_text','Date / time'],['location_text','Location / venue'],['notes','Submitter notes'],['admin_notes','Private review notes']];
+    const states=['pending','under_review','approved','rejected','published'];
+    async function save(card,status){
+      const payload={status};
+      card.querySelectorAll('[data-k]').forEach(x=>payload[x.dataset.k]=x.value);
+      const response=await fetch('/api/admin/submissions/'+card.dataset.id,{method:'PATCH',headers:{'content-type':'application/json'},body:JSON.stringify(payload)});
+      const result=await response.json().catch(()=>({}));
+      if(!response.ok){alert(result.error||`Could not save review (${response.status}).`);return}
+      await load();
+    }
+    async function load(){
+      const response=await fetch('/api/admin/submissions',{cache:'no-store'});
+      const result=await response.json().catch(()=>({}));
+      if(response.status===401){location.href='/admin/login';return}
+      if(!response.ok){items.innerHTML=`<p role="alert"><strong>Queue could not load (${response.status}).</strong> ${E(result.error||'Please try again.')}</p>`;return}
+      items.innerHTML=result.submissions.map(s=>`<article class="submission-review" data-id="${E(s.id)}"><p class="eyebrow">${E(s.status)} · ${E(s.content_type)}</p><h2>${E(s.event_name||'Untitled submission')}</h2><p><strong>Submission ID:</strong> ${E(s.id)}</p><p><strong>Submitted:</strong> ${E(s.created_at)}</p><p><a href="${E(s.source_url)}" target="_blank" rel="noreferrer">Open submitted source ↗</a></p><p><strong>Platform / handle:</strong> ${E(s.platforms||'Not supplied')} ${s.handles?'· '+E(s.handles):''}</p>${fields.map(([key,label])=>`<label>${label}<textarea data-k="${key}">${E(s[key])}</textarea></label>`).join('')}<p><strong>Possible duplicates:</strong> ${E(s.potential_duplicates.map(x=>x.event_name||x.submission_id).join(', ')||'None found')}</p><label>Review status<select data-k="status">${states.map(x=>`<option value="${x}" ${x===s.status?'selected':''}>${x.replace('_',' ')}</option>`).join('')}</select></label><label>Verified event + occurrence JSON <small>Required only to publish a verified Event into the existing tracker.</small><textarea data-k="review_draft_json" rows="8">${E(s.review_draft_json||'')}</textarea></label><div class="review-actions"><button data-action="under_review">Mark under review</button><button data-action="approved">Approve</button><button data-action="rejected">Reject</button><button data-action="published">Publish verified Event</button><button data-action="save">Save edits</button></div></article>`).join('')||'<p>No submissions yet.</p>';
+      document.querySelectorAll('[data-action]').forEach(button=>button.onclick=()=>{const card=button.closest('article');save(card,button.dataset.action==='save'?card.querySelector('[data-k="status"]').value:button.dataset.action)});
+    }
+    load();
+  </script>
+</body>
+</html>
