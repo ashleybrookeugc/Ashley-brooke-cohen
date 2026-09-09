@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-09-09T23:55:00Z",
+  "castings": [
+    {
+      "id": "indie-fashion-nyfw-model-call-2026",
+      "title": "Indie Fashion NYFW Model Call",
+      "casting_company": "Indie Fashion & Arts Network",
+      "role": "Models",
+      "union_status": "Not stated",
+      "pay": "Not stated",
+      "deadline": "No models allowed in line after 11:30 AM on September 11",
+      "audition_dates": ["2026-09-11 10 AM–12 PM"],
+      "work_dates": [],
+      "location": "Bolex Studio, 227 E 24th St, New York, NY 10010",
+      "format": "In person",
+      "how_to_apply": "Attend the in-person model call. Arrive before the 11:30 AM line cutoff.",
+      "apply_url": "https://indiefash.com/",
+      "requirements": [
+        "Wear all black",
+        "Bring a professional headshot or comp card",
+        "$20 on-site headshot fee applies if you do not bring a professional headshot or comp card",
+        "No models allowed in line after 11:30 AM"
+      ],
+      "source_url": "https://indiefash.com/",
+      "source_note": "Seeded from the screenshot-derived NYFW evidence dataset. Only requirements explicitly recorded from the source flyer are shown.",
+      "last_verified": "2026-09-09T06:30:00Z"
+    },
+    {
+      "id": "maybelline-fit-me-casting-call-2026",
+      "title": "Maybelline Fit Me In-Person Casting Call Experience",
+      "casting_company": "Maybelline New York",
+      "role": "Opportunity to become one of the next faces of Maybelline Fit Me Foundation",
+      "union_status": "Not stated",
+      "pay": "Not stated",
+      "deadline": "Attend in person on September 13",
+      "audition_dates": ["2026-09-13 10 AM–7 PM"],
+      "work_dates": [],
+      "location": "Ideal Glass Studios, 9 W 8th St, New York, NY 10011",
+      "format": "In person",
+      "how_to_apply": "Visit the event in person, complete the on-site entry and information form, get shade-matched, and have a headshot taken.",
+      "apply_url": "https://www.maybelline.com/collections/fitme/fit-me-casting-call",
+      "requirements": [
+        "Must be 18 years old or the age of majority in your jurisdiction, whichever is older",
+        "Must be physically present at the NYC event on September 13",
+        "On-site entry and information form required",
+        "Headshot taken on site",
+        "Attendance is subject to Maybelline's stated name/image/likeness/voice commercial-use release"
+      ],
+      "source_url": "https://www.maybelline.com/collections/fitme/fit-me-casting-call",
+      "source_note": "Verified against Maybelline's official Fit Me Casting Call page on September 9, 2026. The official page does not state union status or compensation.",
+      "last_verified": "2026-09-09T23:55:00Z"
+    }
+  ]
+}
