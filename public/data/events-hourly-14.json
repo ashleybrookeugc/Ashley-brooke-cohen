@@ -1,0 +1,55 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-10T19:04:26-04:00",
+  "events": [
+    {
+      "id": "gucci-westman-good-foundations-2026",
+      "event_name": "Gucci Westman's Good Foundations",
+      "brand": "Westman Atelier × ShopMy",
+      "neighborhood": "Nolita",
+      "address": "251 Elizabeth St, New York, NY 10012",
+      "subway": {"station": "Prince St", "lines": ["N", "R", "W"]},
+      "categories": ["beauty", "fashion", "wellness"],
+      "what_it_is": "A three-day public Good Foundations pop-up centered on Westman Atelier's Suprême Bio-Complex Liquid Foundation, with shade matching, beauty touch-ups and scheduled special programming.",
+      "admission_free": true,
+      "what_is_free": "General public access to the pop-up is advertised as free. Special programming includes a September 11 GRWM session, September 12 Shade Match & Spritz, and a September 13 walk club; individual program capacity may be limited.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "BEAUTY", "RETAIL POP-UP"],
+      "main_source_url": "https://www.nycforfree.co/events",
+      "additional_verification_source": "https://www.averagesocialite.com/nyc-events",
+      "last_verified": "2026-09-10T19:04:26-04:00",
+      "caveats": "Current listings describe the overall pop-up as open to the public, while also publishing RSVP links for specific scheduled programs. Those program RSVPs should not be treated as organizer approval for general pop-up access.",
+      "practical_notes": "September 11–13, 11 AM–6 PM at 251 Elizabeth Street. Special programming: GRWM September 11, 4–6 PM; Shade Match & Spritz September 12, 4–6 PM; Walk Club September 13, 10 AM–12 PM.",
+      "rsvp": {"requirement": "optional", "actionability": "direct_link_not_found", "availability": "open", "direct_url": null}
+    },
+    {
+      "id": "ready-set-serve-skyview-2026",
+      "event_name": "Ready, Set, Serve: A Tennis Fan Experience",
+      "brand": "The Shops at Skyview",
+      "neighborhood": "Flushing",
+      "address": "The Shops at Skyview, 40-24 College Point Blvd, Flushing, NY 11354",
+      "subway": {"station": "Flushing–Main St", "lines": ["7"]},
+      "categories": ["entertainment", "sports", "food/drink"],
+      "what_it_is": "A public tennis fan experience with an immersive photo booth, US Open finals livestreams, and a September 13 finale with a DJ, drinks and giveaways.",
+      "admission_free": true,
+      "what_is_free": "The host advertises free tickets for the fan experience. The immersive tennis photo booth is available through September 13, with finals livestreams September 11–13 and additional drinks/giveaways at the September 13 finale.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE STUFF"],
+      "main_source_url": "https://www.theshopsatskyviewny.com/events/tennis/",
+      "official_source_url": "https://www.theshopsatskyviewny.com/events/tennis/",
+      "additional_verification_source": "https://www.nycforfree.co/events/ready-set-serve-a-us-open-fan-experience",
+      "last_verified": "2026-09-10T19:04:26-04:00",
+      "caveats": "The official host page offers free tickets. The published finals schedule has different start times by date; giveaways and drinks are specifically promoted for the September 13 finale and are not guaranteed for every attendee.",
+      "practical_notes": "September 11: Women's Doubles Final at 12 PM. September 12: Men's Doubles Final at 12 PM and Women's Singles Final at 4 PM. September 13: Men's Singles Final at 2 PM with DJ, drinks and giveaways.",
+      "rsvp": {"requirement": "optional", "actionability": "direct_link_available", "availability": "open", "direct_url": "https://www.theshopsatskyviewny.com/events/tennis/"}
+    }
+  ],
+  "occurrences": [
+    {"id":"gucci-westman-good-foundations-2026--2026-09-11","event_id":"gucci-westman-good-foundations-2026","date":"2026-09-11","hours":"11 AM–6 PM","availability":"open","details":"General pop-up open to the public; GRWM programming runs 4–6 PM."},
+    {"id":"gucci-westman-good-foundations-2026--2026-09-12","event_id":"gucci-westman-good-foundations-2026","date":"2026-09-12","hours":"11 AM–6 PM","availability":"open","details":"General pop-up open to the public; Shade Match & Spritz programming runs 4–6 PM."},
+    {"id":"gucci-westman-good-foundations-2026--2026-09-13","event_id":"gucci-westman-good-foundations-2026","date":"2026-09-13","hours":"11 AM–6 PM","availability":"open","details":"General pop-up open to the public; Walk Club programming is listed 10 AM–12 PM."},
+    {"id":"ready-set-serve-skyview-2026--2026-09-11","event_id":"ready-set-serve-skyview-2026","date":"2026-09-11","hours":"12–4 PM","availability":"open","details":"Women's Doubles Final livestream starts at 12 PM; free-ticket public fan experience."},
+    {"id":"ready-set-serve-skyview-2026--2026-09-12","event_id":"ready-set-serve-skyview-2026","date":"2026-09-12","hours":"12–6 PM","availability":"open","details":"Men's Doubles Final at 12 PM and Women's Singles Final at 4 PM; free-ticket public fan experience."},
+    {"id":"ready-set-serve-skyview-2026--2026-09-13","event_id":"ready-set-serve-skyview-2026","date":"2026-09-13","hours":"2–4 PM","availability":"open","details":"Men's Singles Final at 2 PM with DJ, drinks and giveaways; free-ticket public fan experience."}
+  ]
+}
