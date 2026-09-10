@@ -1,0 +1,51 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-10T18:04:38-04:00",
+  "events": [
+    {
+      "id": "whbm-fashion-week-fueled-saint-coffee-2026",
+      "event_name": "Fashion Week Fueled by WHBM",
+      "brand": "White House Black Market",
+      "neighborhood": "Chelsea",
+      "address": "Saint Coffee, 201 7th Ave, New York, NY 10011",
+      "subway": {"station": "23 St", "lines": ["1"]},
+      "categories": ["fashion", "food/drink"],
+      "what_it_is": "A one-day NYFW pop-up at Saint Coffee featuring a preview of White House Black Market's fall collection alongside complimentary refreshments.",
+      "admission_free": true,
+      "what_is_free": "Complimentary coffee and black-and-white cookies are advertised. NYC Plugged also reports a signature WHBM shirt to take home, but promotional quantities are not guaranteed.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE STUFF"],
+      "main_source_url": "https://nycplugged.com/calendar/white-house-black-market-nyfw-pop-up/",
+      "additional_verification_source": "https://www.nycforfree.co/events",
+      "last_verified": "2026-09-10T18:04:38-04:00",
+      "caveats": "Current listings describe the activation as open to the public. Complimentary items are promotional and may be quantity-limited.",
+      "practical_notes": "Friday, September 11 from 8 AM–1 PM at Saint Coffee, 201 7th Avenue. No advance RSVP or approval requirement is published in the verified listings.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    },
+    {
+      "id": "calzedonia-the-stoop-soho-2026",
+      "event_name": "The Stoop by Calzedonia",
+      "brand": "Calzedonia",
+      "neighborhood": "SoHo",
+      "address": "188 Lafayette St, New York, NY 10013",
+      "subway": {"station": "Spring St", "lines": ["6"]},
+      "categories": ["fashion", "beauty", "food/drink"],
+      "what_it_is": "A two-day NYFW pop-up with a hair and makeup refresh station, photo booth, legwear shopping and customization experiences.",
+      "admission_free": true,
+      "what_is_free": "Complimentary coffee, branded stickers, hairstyle touch-ups, a photo booth and skincare sampling are advertised. Hand embroidery is free with purchase of eligible 20 Denier Hosiery Knee Highs.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE STUFF", "FREE SAMPLE", "RETAIL POP-UP"],
+      "main_source_url": "https://pulsd.com/new-york/events/188-lafayette-street/the-stoop-by-calzedonia-at-fashion-week",
+      "additional_verification_source": "https://www.nycforfree.co/events/the-stoop-by-calzedonia",
+      "last_verified": "2026-09-10T18:04:38-04:00",
+      "caveats": "Multiple current listings describe the pop-up as open to the public. Embroidery is purchase-linked; other promotional services and samples may be capacity- or supply-limited.",
+      "practical_notes": "Saturday and Sunday, September 12–13, from 12–5 PM at 188 Lafayette Street. No RSVP or host-approval requirement is published in the verified sources.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    }
+  ],
+  "occurrences": [
+    {"id":"whbm-fashion-week-fueled-saint-coffee-2026--2026-09-11","event_id":"whbm-fashion-week-fueled-saint-coffee-2026","date":"2026-09-11","hours":"8 AM–1 PM","availability":"open","details":"Open to the public; complimentary coffee and cookies advertised."},
+    {"id":"calzedonia-the-stoop-soho-2026--2026-09-12","event_id":"calzedonia-the-stoop-soho-2026","date":"2026-09-12","hours":"12–5 PM","availability":"open","details":"Open to the public; free coffee, photo booth, stickers and beauty touch-up/sampling experiences advertised."},
+    {"id":"calzedonia-the-stoop-soho-2026--2026-09-13","event_id":"calzedonia-the-stoop-soho-2026","date":"2026-09-13","hours":"12–5 PM","availability":"open","details":"Open to the public; free coffee, photo booth, stickers and beauty touch-up/sampling experiences advertised."}
+  ]
+}
