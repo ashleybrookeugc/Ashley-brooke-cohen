@@ -1,0 +1,31 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-10T08:07:06-04:00",
+  "events": [
+    {
+      "id": "sarti-spritz-meatpacking-2026",
+      "event_name": "Sarti Has Landed in NYC",
+      "brand": "Sarti Spritz",
+      "neighborhood": "Meatpacking District",
+      "address": "480 W 13th St, New York, NY 10014",
+      "subway": {"station": "14 St–8 Av", "lines": ["A", "C", "E", "L"]},
+      "categories": ["fashion", "food/drink", "entertainment"],
+      "what_it_is": "A two-day Sarti Spritz U.S.-launch activation during NYFW with DJ sets, photo moments, branded experiences and giveaways.",
+      "admission_free": true,
+      "what_is_free": "Admission is offered by RSVP, with custom giveaways advertised while supplies last. The event centers on Sarti Spritz cocktails; no specific giveaway is guaranteed to every attendee.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE STUFF"],
+      "main_source_url": "https://www.sartiaperitivo.com/en-us/sarti-is-here/book-now-nyc/",
+      "official_source_url": "https://www.sartiaperitivo.com/en-us/sarti-is-here/book-now-nyc/",
+      "additional_verification_source": "https://www.nycforfree.co/events/sarti-has-landed-in-nyc",
+      "last_verified": "2026-09-10T08:07:06-04:00",
+      "caveats": "21+ only with physical government-issued photo ID. The current event listing explicitly says confirmed RSVP does not guarantee entry, so this is a guest-list style admission path rather than guaranteed entry. Giveaways are while supplies last.",
+      "practical_notes": "Current sources agree on September 12–13, 3–7 PM at 480 W 13th Street. Use Sarti's official booking page for the current RSVP path and arrive early because confirmation does not guarantee entry.",
+      "rsvp": {"requirement": "required", "actionability": "direct_link_available", "availability": "open", "direct_url": "https://www.sartiaperitivo.com/en-us/sarti-is-here/book-now-nyc/"}
+    }
+  ],
+  "occurrences": [
+    {"id":"sarti-spritz-meatpacking-2026--2026-09-12","event_id":"sarti-spritz-meatpacking-2026","date":"2026-09-12","hours":"3–7 PM","availability":"open","details":"21+; confirmed RSVP does not guarantee entry."},
+    {"id":"sarti-spritz-meatpacking-2026--2026-09-13","event_id":"sarti-spritz-meatpacking-2026","date":"2026-09-13","hours":"3–7 PM","availability":"open","details":"21+; confirmed RSVP does not guarantee entry."}
+  ]
+}
