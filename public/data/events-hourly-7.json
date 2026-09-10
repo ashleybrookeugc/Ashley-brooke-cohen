@@ -1,0 +1,51 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-10T11:08:00-04:00",
+  "events": [
+    {
+      "id": "penhaligons-pawn-chess-club-2026",
+      "event_name": "Penhaligon’s × Pawn Chess Club",
+      "brand": "Penhaligon’s × Pawn Chess Club",
+      "neighborhood": "West Village",
+      "address": "Dante West Village, 551 Hudson St, New York, NY 10014",
+      "subway": {"station": "Christopher St–Sheridan Sq", "lines": ["1"]},
+      "categories": ["beauty", "entertainment", "food/drink"],
+      "what_it_is": "A one-day public fragrance-launch pop-up for Penhaligon’s The Manoeuvres of The Baroness, with a Pawn Chess Club experience, fragrance discovery and themed hospitality at Dante West Village.",
+      "admission_free": true,
+      "what_is_free": "Public admission to the fragrance and chess experience is free. Current sources mention signature beverages and pastries, but do not clearly establish that every food or drink item is complimentary, so those are not treated as guaranteed freebies.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE"],
+      "main_source_url": "https://www.nycforfree.co/events/penhaligons-x-pawn-chess-club",
+      "additional_verification_source": "https://www.averagesocialite.com/nyc-events/2026/9/2/penhaligons-pawn-chess-club-pop-up-nyc",
+      "last_verified": "2026-09-10T11:08:00-04:00",
+      "caveats": "Both current event sources describe the September 10 activation as open to the public. A separate Penhaligon’s signature mocktail is advertised at Dante September 10–13 for customers to purchase with a fragrance gift-with-purchase; that retail offer is not a free giveaway.",
+      "practical_notes": "Thursday, September 10 from 2–6 PM at Dante West Village, 551 Hudson Street. No RSVP or organizer-approval requirement is published in the current listings.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    },
+    {
+      "id": "calzedonia-the-stoop-2026",
+      "event_name": "The Stoop by Calzedonia",
+      "brand": "Calzedonia",
+      "neighborhood": "SoHo / Nolita",
+      "address": "188 Lafayette St, New York, NY 10013",
+      "subway": {"station": "Spring St", "lines": ["6"]},
+      "categories": ["fashion", "beauty", "food/drink"],
+      "what_it_is": "A two-day NYFW pop-up built around Calzedonia legwear, with styling touch-ups, a photo booth, coffee, stickers, product discovery and an embroidery customization station.",
+      "admission_free": true,
+      "what_is_free": "Public admission, coffee, branded stickers, hairstyle touch-ups and the photo booth are advertised as free. Embroidery customization is tied to purchase of the 20 Denier Hosiery Knee Highs, so it is not listed as a no-purchase freebie.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE STUFF", "RETAIL POP-UP"],
+      "main_source_url": "https://www.nycforfree.co/events/the-stoop-by-calzedonia",
+      "additional_verification_source": "https://nycplugged.com/calendar/the-stoop-by-calzedonia/",
+      "last_verified": "2026-09-10T11:08:00-04:00",
+      "caveats": "Current sources consistently list September 12–13, noon–5 PM, and describe the pop-up as open to the public. Product inventory, sampling and promotional items remain subject to availability. Embroidery requires purchase of the specified knee highs.",
+      "practical_notes": "Saturday and Sunday, September 12–13, from 12–5 PM at 188 Lafayette Street. No RSVP or approval requirement is published in the verified sources.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    }
+  ],
+  "occurrences": [
+    {"id":"penhaligons-pawn-chess-club-2026--2026-09-10","event_id":"penhaligons-pawn-chess-club-2026","date":"2026-09-10","hours":"2–6 PM","availability":"open","details":"Open to the public; no advance RSVP requirement is published."},
+    {"id":"calzedonia-the-stoop-2026--2026-09-12","event_id":"calzedonia-the-stoop-2026","date":"2026-09-12","hours":"12–5 PM","availability":"open","details":"Open to the public; free coffee, stickers, styling touch-ups and photo booth advertised."},
+    {"id":"calzedonia-the-stoop-2026--2026-09-13","event_id":"calzedonia-the-stoop-2026","date":"2026-09-13","hours":"12–5 PM","availability":"open","details":"Open to the public; free coffee, stickers, styling touch-ups and photo booth advertised."}
+  ]
+}
