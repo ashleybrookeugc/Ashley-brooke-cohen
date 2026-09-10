@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "updated_at": "2026-09-10T04:05:42-04:00",
+  "updated_at": "2026-09-10T05:09:27-04:00",
   "events": [
     {
       "id": "ibm-us-open-madison-square-park-2026",
@@ -18,7 +18,7 @@
       "main_source_url": "https://newsroom.ibm.com/2026-08-27-ibm-brings-ai-powered-us-open-fan-experience-back-to-madison-square-park",
       "official_source_url": "https://newsroom.ibm.com/2026-08-27-ibm-brings-ai-powered-us-open-fan-experience-back-to-madison-square-park",
       "additional_verification_source": "https://www.nycforfree.co/events/us-open-x-ibm-experience",
-      "last_verified": "2026-09-10T04:05:42-04:00",
+      "last_verified": "2026-09-10T05:09:27-04:00",
       "caveats": "The free experience is in Madison Square Park, not inside the USTA Billie Jean King National Tennis Center. Merchandise and any giveaways are subject to their own availability or purchase terms.",
       "practical_notes": "IBM's official newsroom gives date-specific public hours for all four days. No RSVP or approval step is stated for entry to the park activation.",
       "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
@@ -39,7 +39,7 @@
       "main_source_url": "https://www.vivrelle.com/",
       "official_source_url": "https://www.vivrelle.com/",
       "additional_verification_source": "https://www.prnewswire.com/news-releases/vivrelle-and-morgan-stewart-mcgraws-fashion-brand-renggli-join-forces-for-new-york-fashion-week-pop-up-302869092.html",
-      "last_verified": "2026-09-10T04:05:42-04:00",
+      "last_verified": "2026-09-10T05:09:27-04:00",
       "caveats": "The pop-up is public-facing, but borrowing Vivrelle pieces requires Vivrelle membership and merchandise purchases are optional retail transactions.",
       "practical_notes": "Vivrelle's current site and its issued press release both confirm September 10–13, 11 AM–7 PM at 76 Wooster Street.",
       "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
@@ -59,7 +59,7 @@
       "classifications": ["FREE EXPERIENCE", "FREE STUFF", "RETAIL POP-UP"],
       "main_source_url": "https://www.averagesocialite.com/nyc-events/2026/9/10/beautyspace-little-luxuries-opening-day-nyc",
       "additional_verification_source": "https://www.nycforfree.co/events/beautyspaces-little-luxuries",
-      "last_verified": "2026-09-10T04:05:42-04:00",
+      "last_verified": "2026-09-10T05:09:27-04:00",
       "caveats": "The five BÉIS suitcases are sweepstakes prizes, not guaranteed giveaways. The claw machine offers a chance to win products after email signup; retail purchases are otherwise optional.",
       "practical_notes": "Two current event listings independently confirm September 10 at 872 Broadway and public access. Their opening time conflicts (9 AM vs 10 AM), so 10 AM is used as the conservative verified public start.",
       "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
@@ -79,9 +79,50 @@
       "classifications": ["FREE EXPERIENCE", "RETAIL POP-UP"],
       "main_source_url": "https://www.nycforfree.co/events/penhaligons-x-pawn-chess-club",
       "additional_verification_source": "https://www.averagesocialite.com/nyc-events",
-      "last_verified": "2026-09-10T04:05:42-04:00",
+      "last_verified": "2026-09-10T05:09:27-04:00",
       "caveats": "The purchasable mocktail and its fragrance gift are separate from the free September 10 pop-up. No take-home fragrance is promised simply for attending.",
       "practical_notes": "Current event listings state the September 10 experience is open to the public from 2–6 PM at Dante West Village.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    },
+    {
+      "id": "gapbags-rockefeller-center-2026",
+      "event_name": "GapBags at Rockefeller Center",
+      "brand": "Gap × Rockefeller Center",
+      "neighborhood": "Midtown",
+      "address": "Channel Gardens, Rockefeller Center, 30 Rockefeller Plaza, New York, NY 10112",
+      "subway": {"station": "47–50 Sts–Rockefeller Center", "lines": ["B", "D", "F", "M"]},
+      "categories": ["fashion"],
+      "what_it_is": "A limited-time GapBags pop-up featuring the new Five-Pocket Tote, on-site customization, charms, accessories and limited-edition artist-designed drops.",
+      "admission_free": true,
+      "what_is_free": "Public access to browse the pop-up is free. Bags, customization products and merchandise are retail items unless specifically stated otherwise on site.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "RETAIL POP-UP"],
+      "main_source_url": "https://www.rockefellercenter.com/events/gapbags-at-rockefeller-center",
+      "official_source_url": "https://www.rockefellercenter.com/events/gapbags-at-rockefeller-center",
+      "additional_verification_source": "https://www.rockefellercenter.com/events/new-york-fashion-week-at-rockefeller-center",
+      "last_verified": "2026-09-10T05:09:27-04:00",
+      "caveats": "The official page says the pop-up is open to the public. Limited-edition artist drops and customization inventory may be quantity-limited; no free bag is promised.",
+      "practical_notes": "Rockefeller Center confirms September 11–13, 10 AM–6 PM daily in Channel Gardens.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    },
+    {
+      "id": "kay-jewelers-love-all-in-mobile-popup-2026",
+      "event_name": "KAY Jewelers Love All In Mobile Pop-Up",
+      "brand": "KAY Jewelers",
+      "neighborhood": "West Chelsea / SoHo",
+      "address": "Date-specific mobile locations in Manhattan",
+      "subway": {"station": "Date-specific", "lines": []},
+      "categories": ["fashion", "entertainment"],
+      "what_it_is": "A mobile Love All In confessional-style activation with mini-games, interactive prompts, a selfie station and stylized bedazzled photo strips.",
+      "admission_free": true,
+      "what_is_free": "Public participation and the photo-strip/selfie experience are advertised as free. Confessional participants can enter a diamond sweepstakes, but winning is not guaranteed.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE"],
+      "main_source_url": "https://www.averagesocialite.com/nyc-events/2026/9/10/kay-jewelers-love-all-in-mobile-pop-up-nyc",
+      "additional_verification_source": "https://www.nyc.com/events/kay_jewelers_love_all_in_mobile_popup.441727199869939712/",
+      "last_verified": "2026-09-10T05:09:27-04:00",
+      "caveats": "This is a mobile activation with different locations on different dates. Sweepstakes entry is a chance to win, not a guaranteed diamond or giveaway.",
+      "practical_notes": "September 10 is at the Starrett-Lehigh Building on 26th Street at 11th Avenue, 6:30–8:30 PM. September 12 is on West Broadway between Prince and Spring, 11 AM–8 PM.",
       "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
     }
   ],
@@ -95,6 +136,11 @@
     {"id":"vivrelle-renggli-nyfw-soho-2026--2026-09-12","event_id":"vivrelle-renggli-nyfw-soho-2026","date":"2026-09-12","hours":"11 AM–7 PM","availability":"open","details":null},
     {"id":"vivrelle-renggli-nyfw-soho-2026--2026-09-13","event_id":"vivrelle-renggli-nyfw-soho-2026","date":"2026-09-13","hours":"11 AM–7 PM","availability":"open","details":null},
     {"id":"beautyspace-little-luxuries-2026--2026-09-10","event_id":"beautyspace-little-luxuries-2026","date":"2026-09-10","hours":"10 AM–8 PM","availability":"open","details":"Conservative 10 AM start used because current sources conflict between 9 AM and 10 AM."},
-    {"id":"penhaligons-pawn-chess-club-dante-2026--2026-09-10","event_id":"penhaligons-pawn-chess-club-dante-2026","date":"2026-09-10","hours":"2–6 PM","availability":"open","details":null}
+    {"id":"penhaligons-pawn-chess-club-dante-2026--2026-09-10","event_id":"penhaligons-pawn-chess-club-dante-2026","date":"2026-09-10","hours":"2–6 PM","availability":"open","details":null},
+    {"id":"gapbags-rockefeller-center-2026--2026-09-11","event_id":"gapbags-rockefeller-center-2026","date":"2026-09-11","hours":"10 AM–6 PM","availability":"open","details":null},
+    {"id":"gapbags-rockefeller-center-2026--2026-09-12","event_id":"gapbags-rockefeller-center-2026","date":"2026-09-12","hours":"10 AM–6 PM","availability":"open","details":null},
+    {"id":"gapbags-rockefeller-center-2026--2026-09-13","event_id":"gapbags-rockefeller-center-2026","date":"2026-09-13","hours":"10 AM–6 PM","availability":"open","details":null},
+    {"id":"kay-jewelers-love-all-in-mobile-popup-2026--2026-09-10","event_id":"kay-jewelers-love-all-in-mobile-popup-2026","date":"2026-09-10","hours":"6:30–8:30 PM","availability":"open","details":"Starrett-Lehigh Building, 601 W 26th St / 26th St & 11th Ave, New York, NY 10001."},
+    {"id":"kay-jewelers-love-all-in-mobile-popup-2026--2026-09-12","event_id":"kay-jewelers-love-all-in-mobile-popup-2026","date":"2026-09-12","hours":"11 AM–8 PM","availability":"open","details":"West Broadway between Prince and Spring Streets, SoHo."}
   ]
 }
