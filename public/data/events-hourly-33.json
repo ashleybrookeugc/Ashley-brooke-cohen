@@ -1,0 +1,53 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-11T12:08:02-04:00",
+  "events": [
+    {
+      "id": "calzedonia-the-stoop-2026",
+      "event_name": "The Stoop by Calzedonia",
+      "brand": "Calzedonia",
+      "neighborhood": "SoHo",
+      "address": "188 Lafayette St, New York, NY 10013",
+      "subway": {"station": "Spring St", "lines": ["6"]},
+      "categories": ["fashion", "beauty", "food/drink", "retail"],
+      "what_it_is": "A two-day NYFW public pop-up built around Calzedonia legwear, styling refreshes, content creation and a brownstone-inspired photo experience.",
+      "admission_free": true,
+      "what_is_free": "Public admission, coffee, branded stickers, hair and makeup touchups, sampling and the photo booth are advertised as free. Hand embroidery is free with purchase of the 20 Denier Hosiery Knee Highs.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE STUFF", "FREE FOOD/DRINK", "RETAIL POP-UP"],
+      "main_source_url": "https://nycplugged.com/calendar/the-stoop-by-calzedonia/",
+      "official_source_url": null,
+      "additional_verification_source": "https://www.nycforfree.co/events/the-stoop-by-calzedonia",
+      "last_verified": "2026-09-11T12:08:02-04:00",
+      "caveats": "NYC Plugged, NYC for FREE and Average Socialite agree on September 12–13, noon–5 PM at 188 Lafayette Street. Current coverage describes the activation as open to the public and does not publish an advance RSVP or host-approval requirement. Embroidery is tied to purchase of the specified knee highs; free coffee, stickers, touchups and other promotional inventory can run out.",
+      "practical_notes": "Saturday and Sunday, September 12–13, noon–5 PM. Walk-in public activation; arrive earlier if your priority is complimentary promotional items.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    },
+    {
+      "id": "claires-yaya-tea-launch-2026",
+      "event_name": "Claire's × Yaya Tea Launch Party",
+      "brand": "Claire's × Yaya Tea",
+      "neighborhood": "Little Italy / Chinatown",
+      "address": "Yaya Tea, 206 Grand St, New York, NY 10013",
+      "subway": {"station": "Grand St", "lines": ["B", "D"]},
+      "categories": ["fashion", "food/drink", "retail", "family"],
+      "what_it_is": "A one-day public launch event for Claire's boba-inspired Yaya Tea collaboration, with the collection on display and an interactive claw machine.",
+      "admission_free": true,
+      "what_is_free": "The first 50 guests are advertised to receive a complimentary Yaya × Claire's boba drink and an item from the collection. The event itself is open to the public while supplies last.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE STUFF", "FREE FOOD/DRINK", "RETAIL POP-UP"],
+      "main_source_url": "https://www.averagesocialite.com/nyc-events/2026/9/12/claires-x-yaya-tea-launch-party-nyc",
+      "official_source_url": null,
+      "additional_verification_source": "https://www.trumba.com/events-calendar/ny/new-york/wabc",
+      "last_verified": "2026-09-11T12:08:02-04:00",
+      "caveats": "Average Socialite and WABC agree on Saturday, September 12 from noon–3 PM at Yaya Tea, 206 Grand Street, and both describe the event as open to the public. The complimentary drink and collaboration item are limited to the first 50 guests; other claw-machine products and promotional inventory are not guaranteed.",
+      "practical_notes": "Saturday, September 12 from noon–3 PM. No advance RSVP, ticket or approval step is published in the verified sources. Kids are welcome.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    }
+  ],
+  "occurrences": [
+    {"id":"calzedonia-the-stoop-2026--2026-09-12","event_id":"calzedonia-the-stoop-2026","date":"2026-09-12","hours":"12–5 PM","availability":"open","details":"Open to the public; free promotional items are subject to availability."},
+    {"id":"calzedonia-the-stoop-2026--2026-09-13","event_id":"calzedonia-the-stoop-2026","date":"2026-09-13","hours":"12–5 PM","availability":"open","details":"Open to the public; free promotional items are subject to availability."},
+    {"id":"claires-yaya-tea-launch-2026--2026-09-12","event_id":"claires-yaya-tea-launch-2026","date":"2026-09-12","hours":"12–3 PM","availability":"open","details":"First 50 guests receive the advertised complimentary boba drink and collaboration item; event is open to the public while supplies last."}
+  ]
+}
