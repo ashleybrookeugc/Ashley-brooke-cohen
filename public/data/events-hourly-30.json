@@ -1,0 +1,45 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-11T09:04:52-04:00",
+  "events": [
+    {
+      "id": "kemo-sabe-refinery-hotel-2026",
+      "event_name": "Kemo Sabe at Refinery Hotel",
+      "brand": "Kemo Sabe × Refinery Hotel",
+      "neighborhood": "Midtown / Garment District",
+      "address": "Hatbox at Refinery Hotel, 63 W 38th St, New York, NY 10018",
+      "subway": {"station": "42 St–Bryant Park", "lines": ["B", "D", "F", "M"]},
+      "categories": ["fashion", "retail"],
+      "what_it_is": "A limited-run Kemo Sabe Western-fashion pop-up inside Refinery Hotel's Hatbox, with handcrafted hats, boots, buckles and leather goods plus the brand's personalized hat-fitting and styling experience.",
+      "admission_free": true,
+      "what_is_free": "Public access to browse the pop-up and meet Kemo Sabe's sales team is free. Merchandise and custom hat-making are retail purchases; no free product is promised to every visitor.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "RETAIL POP-UP"],
+      "main_source_url": "https://www.refineryhotelnewyork.com/upcoming-event/kemo-sabe/",
+      "official_source_url": "https://www.refineryhotelnewyork.com/upcoming-event/kemo-sabe/",
+      "additional_verification_source": "https://www.averagesocialite.com/nyc-events/2026/9/10/kemo-sabe-refinery-hotel-nyfw",
+      "last_verified": "2026-09-11T09:04:52-04:00",
+      "caveats": "Refinery Hotel confirms the September 10–27 run and Tuesday-through-Sunday hours. Current event coverage describes the pop-up as open to the public. Merchandise and customization are paid retail offerings; no RSVP, ticket or host-approval requirement is published.",
+      "practical_notes": "Open Tuesdays through Sundays from 11 AM–7 PM at Hatbox inside Refinery Hotel. The host says a custom hat experience takes about 45 minutes, so allow extra time if you plan to purchase and personalize a hat.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    }
+  ],
+  "occurrences": [
+    {"id":"kemo-sabe-refinery-hotel-2026--2026-09-10","event_id":"kemo-sabe-refinery-hotel-2026","date":"2026-09-10","hours":"11 AM–7 PM","availability":"open","details":"Open-to-public retail pop-up at Hatbox."},
+    {"id":"kemo-sabe-refinery-hotel-2026--2026-09-11","event_id":"kemo-sabe-refinery-hotel-2026","date":"2026-09-11","hours":"11 AM–7 PM","availability":"open","details":"Open-to-public retail pop-up at Hatbox."},
+    {"id":"kemo-sabe-refinery-hotel-2026--2026-09-12","event_id":"kemo-sabe-refinery-hotel-2026","date":"2026-09-12","hours":"11 AM–7 PM","availability":"open","details":"Open-to-public retail pop-up at Hatbox."},
+    {"id":"kemo-sabe-refinery-hotel-2026--2026-09-13","event_id":"kemo-sabe-refinery-hotel-2026","date":"2026-09-13","hours":"11 AM–7 PM","availability":"open","details":"Open-to-public retail pop-up at Hatbox."},
+    {"id":"kemo-sabe-refinery-hotel-2026--2026-09-15","event_id":"kemo-sabe-refinery-hotel-2026","date":"2026-09-15","hours":"11 AM–7 PM","availability":"open","details":"Open-to-public retail pop-up at Hatbox."},
+    {"id":"kemo-sabe-refinery-hotel-2026--2026-09-16","event_id":"kemo-sabe-refinery-hotel-2026","date":"2026-09-16","hours":"11 AM–7 PM","availability":"open","details":"Open-to-public retail pop-up at Hatbox."},
+    {"id":"kemo-sabe-refinery-hotel-2026--2026-09-17","event_id":"kemo-sabe-refinery-hotel-2026","date":"2026-09-17","hours":"11 AM–7 PM","availability":"open","details":"Open-to-public retail pop-up at Hatbox."},
+    {"id":"kemo-sabe-refinery-hotel-2026--2026-09-18","event_id":"kemo-sabe-refinery-hotel-2026","date":"2026-09-18","hours":"11 AM–7 PM","availability":"open","details":"Open-to-public retail pop-up at Hatbox."},
+    {"id":"kemo-sabe-refinery-hotel-2026--2026-09-19","event_id":"kemo-sabe-refinery-hotel-2026","date":"2026-09-19","hours":"11 AM–7 PM","availability":"open","details":"Open-to-public retail pop-up at Hatbox."},
+    {"id":"kemo-sabe-refinery-hotel-2026--2026-09-20","event_id":"kemo-sabe-refinery-hotel-2026","date":"2026-09-20","hours":"11 AM–7 PM","availability":"open","details":"Open-to-public retail pop-up at Hatbox."},
+    {"id":"kemo-sabe-refinery-hotel-2026--2026-09-22","event_id":"kemo-sabe-refinery-hotel-2026","date":"2026-09-22","hours":"11 AM–7 PM","availability":"open","details":"Open-to-public retail pop-up at Hatbox."},
+    {"id":"kemo-sabe-refinery-hotel-2026--2026-09-23","event_id":"kemo-sabe-refinery-hotel-2026","date":"2026-09-23","hours":"11 AM–7 PM","availability":"open","details":"Open-to-public retail pop-up at Hatbox."},
+    {"id":"kemo-sabe-refinery-hotel-2026--2026-09-24","event_id":"kemo-sabe-refinery-hotel-2026","date":"2026-09-24","hours":"11 AM–7 PM","availability":"open","details":"Open-to-public retail pop-up at Hatbox."},
+    {"id":"kemo-sabe-refinery-hotel-2026--2026-09-25","event_id":"kemo-sabe-refinery-hotel-2026","date":"2026-09-25","hours":"11 AM–7 PM","availability":"open","details":"Open-to-public retail pop-up at Hatbox."},
+    {"id":"kemo-sabe-refinery-hotel-2026--2026-09-26","event_id":"kemo-sabe-refinery-hotel-2026","date":"2026-09-26","hours":"11 AM–7 PM","availability":"open","details":"Open-to-public retail pop-up at Hatbox."},
+    {"id":"kemo-sabe-refinery-hotel-2026--2026-09-27","event_id":"kemo-sabe-refinery-hotel-2026","date":"2026-09-27","hours":"11 AM–7 PM","availability":"open","details":"Open-to-public retail pop-up at Hatbox."}
+  ]
+}
