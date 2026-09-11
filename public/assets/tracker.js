@@ -1,5 +1,5 @@
 const FILTERS=[['now','Happening Now'],['today','Today'],['tomorrow','Tomorrow'],['week','This Week'],['fashion','Fashion'],['beauty','Beauty'],['food-drink','Food/Drink']];
-const INTENT_FILTERS=[['free-stuff','I want freebies'],['free-entry','I don’t want to spend money'],['after-work','After work'],['walk-in','No reservation'],['rsvp','I can RSVP now']];
+const INTENT_FILTERS=[['free-stuff','Get Free Stuff'],['free-entry','Free Entry'],['after-work','After work'],['walk-in','No reservation'],['rsvp','I can RSVP now']];
 const SECONDARY=['averagesocialite.com','mariahedian.com','nycforfree.co','pulsd.com'];
 const DATA_URLS=['/data/events.json','/data/events-supplement.json','/data/events-screenshot-batch-2.json','/data/events-screenshot-batch-3.json','/data/events-screenshot-batch-4.json'];
 const MAP={tileUrl:'https://tile.openstreetmap.org/{z}/{x}/{y}.png',geocoder:'https://nominatim.openstreetmap.org/search'};
