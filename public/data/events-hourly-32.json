@@ -1,28 +1,7 @@
 {
   "schema_version": 2,
-  "updated_at": "2026-09-11T11:08:22-04:00",
+  "updated_at": "2026-09-11T12:08:02-04:00",
   "events": [
-    {
-      "id": "chanel-coco-mademoiselle-crush-absolu-2026",
-      "event_name": "CHANEL COCO MADEMOISELLE CRUSH ABSOLU Event",
-      "brand": "CHANEL",
-      "neighborhood": "Meatpacking District",
-      "address": "873 Washington St, New York, NY 10014",
-      "subway": {"station": "14 St–8 Av", "lines": ["A", "C", "E", "L"]},
-      "categories": ["beauty", "fashion", "retail"],
-      "what_it_is": "A café-inspired public fragrance experience for the launch of COCO MADEMOISELLE CRUSH ABSOLU, with personalized fragrance discovery, the wider COCO MADEMOISELLE line, CHANEL hair/body products, makeup and on-site shopping.",
-      "admission_free": true,
-      "what_is_free": "Admission and the fragrance-discovery experience are free. Products are available to purchase; no free take-home product is promised to every visitor.",
-      "purchase_required": false,
-      "classifications": ["FREE EXPERIENCE", "RETAIL POP-UP"],
-      "main_source_url": "https://www.chanel.com/us/fragrance/coco-mademoiselle-event/",
-      "official_source_url": "https://www.chanel.com/us/fragrance/coco-mademoiselle-event/",
-      "additional_verification_source": "https://www.nycforfree.co/events/chanel-coco-mademoiselle-a-special-event",
-      "last_verified": "2026-09-11T11:08:22-04:00",
-      "caveats": "CHANEL states that appointments are limited but walk-ins are encouraged during event hours. An appointment is therefore optional rather than an approval requirement or guaranteed-admission claim. Normal capacity can still apply.",
-      "practical_notes": "September 11 from noon–7 PM; September 12–13 from 10 AM–7 PM; September 18 from noon–7 PM; September 19–20 from 10 AM–7 PM. Use CHANEL's official event page for current appointment availability.",
-      "rsvp": {"requirement": "optional", "actionability": "direct_link_available", "availability": "open", "direct_url": "https://www.chanel.com/us/fragrance/coco-mademoiselle-event/"}
-    },
     {
       "id": "whbm-fashion-week-fueled-2026",
       "event_name": "Fashion Week Fueled by WHBM",
@@ -67,12 +46,6 @@
     }
   ],
   "occurrences": [
-    {"id":"chanel-coco-mademoiselle-crush-absolu-2026--2026-09-11","event_id":"chanel-coco-mademoiselle-crush-absolu-2026","date":"2026-09-11","hours":"12–7 PM","availability":"open","details":"Appointments are optional; CHANEL encourages walk-ins."},
-    {"id":"chanel-coco-mademoiselle-crush-absolu-2026--2026-09-12","event_id":"chanel-coco-mademoiselle-crush-absolu-2026","date":"2026-09-12","hours":"10 AM–7 PM","availability":"open","details":"Appointments are optional; CHANEL encourages walk-ins."},
-    {"id":"chanel-coco-mademoiselle-crush-absolu-2026--2026-09-13","event_id":"chanel-coco-mademoiselle-crush-absolu-2026","date":"2026-09-13","hours":"10 AM–7 PM","availability":"open","details":"Appointments are optional; CHANEL encourages walk-ins."},
-    {"id":"chanel-coco-mademoiselle-crush-absolu-2026--2026-09-18","event_id":"chanel-coco-mademoiselle-crush-absolu-2026","date":"2026-09-18","hours":"12–7 PM","availability":"open","details":"Appointments are optional; CHANEL encourages walk-ins."},
-    {"id":"chanel-coco-mademoiselle-crush-absolu-2026--2026-09-19","event_id":"chanel-coco-mademoiselle-crush-absolu-2026","date":"2026-09-19","hours":"10 AM–7 PM","availability":"open","details":"Appointments are optional; CHANEL encourages walk-ins."},
-    {"id":"chanel-coco-mademoiselle-crush-absolu-2026--2026-09-20","event_id":"chanel-coco-mademoiselle-crush-absolu-2026","date":"2026-09-20","hours":"10 AM–7 PM","availability":"open","details":"Appointments are optional; CHANEL encourages walk-ins."},
     {"id":"whbm-fashion-week-fueled-2026--2026-09-11","event_id":"whbm-fashion-week-fueled-2026","date":"2026-09-11","hours":"8 AM–1 PM","availability":"open","details":"Open to the public; complimentary items are subject to availability."},
     {"id":"wang-contemporary-guest-house-2026--2026-09-11","event_id":"wang-contemporary-guest-house-2026","date":"2026-09-11","hours":"12–6 PM","availability":"open","details":"Opening-day hours use the narrower overlap supported across current sources."}
   ]
