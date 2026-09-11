@@ -1,0 +1,32 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-10T20:05:38-04:00",
+  "events": [
+    {
+      "id": "ibm-us-open-madison-square-park-2026",
+      "event_name": "IBM US Open Fan Experience",
+      "brand": "IBM × US Open",
+      "neighborhood": "Flatiron / Madison Square Park",
+      "address": "Madison Square Park, Fifth Ave & Broadway at 23rd St, New York, NY 10010",
+      "subway": {"station": "23 St", "lines": ["N", "R", "W", "6"]},
+      "categories": ["entertainment", "sports", "technology"],
+      "what_it_is": "A free four-day US Open fan hub from IBM with AI-powered tennis activations, live match viewing, an AI photo booth, serve-speed testing and an AI-enabled ping-pong experience.",
+      "admission_free": true,
+      "what_is_free": "Public admission to the fan experience and advertised IBM activations is free. The event also promotes giveaways and live US Open viewing; giveaway inventory is not guaranteed to every attendee.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "SPORTS", "TECH"],
+      "main_source_url": "https://newsroom.ibm.com/2026-08-27-ibm-brings-ai-powered-us-open-fan-experience-back-to-madison-square-park",
+      "official_source_url": "https://newsroom.ibm.com/2026-08-27-ibm-brings-ai-powered-us-open-fan-experience-back-to-madison-square-park",
+      "additional_verification_source": "https://nycforfree.co/events/us-open-x-ibm-experience",
+      "last_verified": "2026-09-10T20:05:38-04:00",
+      "caveats": "IBM's official announcement explicitly describes this as a free public four-day fan experience. Match-viewing start times differ by date, and giveaways are promotional rather than guaranteed.",
+      "practical_notes": "September 11: 9 AM–9 PM with men's semifinals coverage beginning at 3 PM. September 12: 11 AM–8 PM with the women's final at 4 PM. September 13: 11 AM–7 PM with the men's final at 2 PM. The activation is at the southeast corner of Madison Square Park adjacent to IBM's One Madison Avenue office.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    }
+  ],
+  "occurrences": [
+    {"id":"ibm-us-open-madison-square-park-2026--2026-09-11","event_id":"ibm-us-open-madison-square-park-2026","date":"2026-09-11","hours":"9 AM–9 PM","availability":"open","details":"Free public activation; men's semifinals coverage begins at 3 PM."},
+    {"id":"ibm-us-open-madison-square-park-2026--2026-09-12","event_id":"ibm-us-open-madison-square-park-2026","date":"2026-09-12","hours":"11 AM–8 PM","availability":"open","details":"Free public activation; women's singles final coverage begins at 4 PM."},
+    {"id":"ibm-us-open-madison-square-park-2026--2026-09-13","event_id":"ibm-us-open-madison-square-park-2026","date":"2026-09-13","hours":"11 AM–7 PM","availability":"open","details":"Free public activation; men's singles final coverage begins at 2 PM."}
+  ]
+}
