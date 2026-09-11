@@ -1,0 +1,54 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-11T18:05:42-04:00",
+  "events": [
+    {
+      "id": "olaplex-shape-set-style-studio-2026",
+      "event_name": "OLAPLEX Shape Set Style Studio",
+      "brand": "OLAPLEX",
+      "neighborhood": "Flatiron",
+      "address": "Flatiron Plaza, 23rd Street and Broadway, New York, NY 10010",
+      "subway": {"station": "23 St", "lines": ["R", "W", "F", "M", "6"]},
+      "categories": ["beauty", "fashion"],
+      "what_it_is": "A two-day OLAPLEX pop-up celebrating the launch of Shape Set hairspray with a photo activation, product sampling and promotional merchandise.",
+      "admission_free": true,
+      "what_is_free": "Public admission is free. Complimentary Shape Set samples and OLAPLEX merchandise are advertised, and the first 50 attendees each day can receive a full-size 245 ml Shape Set Hairspray while supplies last.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE SAMPLE", "FREE STUFF"],
+      "main_source_url": "https://nycplugged.com/calendar/olaplex-shape-set-style-studio/",
+      "official_source_url": null,
+      "additional_verification_source": "https://www.averagesocialite.com/nyc-events/2026/9/3/the-olaplex-shape-set-style-studio",
+      "last_verified": "2026-09-11T18:05:42-04:00",
+      "caveats": "Current independent listings agree that the event is open to the public September 12–13 from 11 AM–5 PM. Full-size hairspray is limited to the first 50 attendees each day and all samples or merch are subject to availability.",
+      "practical_notes": "Saturday and Sunday, September 12–13, 11 AM–5 PM at Flatiron Plaza. No advance RSVP or host-approval requirement is published in the verified listings.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    },
+    {
+      "id": "house-of-sally-hansen-rockefeller-2026",
+      "event_name": "The House of Sally Hansen",
+      "brand": "Sally Hansen × Rockefeller Center",
+      "neighborhood": "Midtown",
+      "address": "North Esplanade by The Rink, Rockefeller Center, New York, NY 10111",
+      "subway": {"station": "47–50 Sts–Rockefeller Center", "lines": ["B", "D", "F", "M"]},
+      "categories": ["beauty", "fashion"],
+      "what_it_is": "A public NYFW nail activation at Rockefeller Center presented as part of the venue's Fashion Week programming.",
+      "admission_free": true,
+      "what_is_free": "Rockefeller Center lists the activation as part of its free, open-to-the-public NYFW programming. Specific manicure services, samples or giveaways are not itemized on the official page, so no take-home benefit is guaranteed.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE"],
+      "main_source_url": "https://www.rockefellercenter.com/pt-br/events/new-york-fashion-week-at-rockefeller-center",
+      "official_source_url": "https://www.rockefellercenter.com/pt-br/events/new-york-fashion-week-at-rockefeller-center",
+      "additional_verification_source": "https://nycplugged.com/calendar/new-york-fashion-week-at-rockefeller-center-2026/",
+      "last_verified": "2026-09-11T18:05:42-04:00",
+      "caveats": "The official Rockefeller Center page confirms the dates, hours and North Esplanade location and places the activation within programming that is free and open to the public. It does not publish an advance RSVP requirement or guarantee a specific free product or service.",
+      "practical_notes": "Saturday, September 12 from 12–6 PM and Sunday, September 13 from 10 AM–6 PM on the North Esplanade by The Rink.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    }
+  ],
+  "occurrences": [
+    {"id":"olaplex-shape-set-style-studio-2026--2026-09-12","event_id":"olaplex-shape-set-style-studio-2026","date":"2026-09-12","hours":"11 AM–5 PM","availability":"open","details":"Open to the public; first 50 attendees can receive a full-size Shape Set Hairspray while supplies last."},
+    {"id":"olaplex-shape-set-style-studio-2026--2026-09-13","event_id":"olaplex-shape-set-style-studio-2026","date":"2026-09-13","hours":"11 AM–5 PM","availability":"open","details":"Open to the public; first 50 attendees can receive a full-size Shape Set Hairspray while supplies last."},
+    {"id":"house-of-sally-hansen-rockefeller-2026--2026-09-12","event_id":"house-of-sally-hansen-rockefeller-2026","date":"2026-09-12","hours":"12–6 PM","availability":"open","details":"Free public NYFW activation at Rockefeller Center; specific services or giveaways are not guaranteed by the official listing."},
+    {"id":"house-of-sally-hansen-rockefeller-2026--2026-09-13","event_id":"house-of-sally-hansen-rockefeller-2026","date":"2026-09-13","hours":"10 AM–6 PM","availability":"open","details":"Free public NYFW activation at Rockefeller Center; specific services or giveaways are not guaranteed by the official listing."}
+  ]
+}
