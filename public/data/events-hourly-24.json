@@ -1,0 +1,30 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-11T03:05:40-04:00",
+  "events": [
+    {
+      "id": "moxy-times-square-nyfw-photobooth-2026",
+      "event_name": "NYFW Photobooth with Velvet Turtle Events",
+      "brand": "Moxy Times Square × Velvet Turtle Events",
+      "neighborhood": "Times Square / Garment District",
+      "address": "Moxy Times Square, 485 7th Ave, New York, NY 10018",
+      "subway": {"station": "34 St–Penn Station", "lines": ["1", "2", "3", "A", "C", "E"]},
+      "categories": ["fashion", "entertainment"],
+      "what_it_is": "A one-evening NYFW photo activation at Bar Moxy with a complimentary photobooth and take-home printed or digital photo keepsake.",
+      "admission_free": true,
+      "what_is_free": "The event is advertised as free, including use of the NYFW photobooth and a printed or digital photo keepsake.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE STUFF"],
+      "main_source_url": "https://happeningnext.com/event/nyfw-photobooth-with-velvet-turtle-events-eid1ef0l4twvqfa",
+      "official_source_url": null,
+      "additional_verification_source": "https://www.averagesocialite.com/nyc-events",
+      "last_verified": "2026-09-11T03:05:40-04:00",
+      "caveats": "Current event listings consistently identify Moxy Times Square as the host and show free admission. A reservation path is advertised, but no organizer-approval language is established. Capacity can still apply at the venue.",
+      "practical_notes": "Friday, September 11 from 5–8 PM at Moxy Times Square, 485 Seventh Avenue. A free reservation is available through the current event listing.",
+      "rsvp": {"requirement": "optional", "actionability": "direct_link_available", "availability": "open", "direct_url": "https://happeningnext.com/event/nyfw-photobooth-with-velvet-turtle-events-eid1ef0l4twvqfa"}
+    }
+  ],
+  "occurrences": [
+    {"id":"moxy-times-square-nyfw-photobooth-2026--2026-09-11","event_id":"moxy-times-square-nyfw-photobooth-2026","date":"2026-09-11","hours":"5–8 PM","availability":"open","details":"Free photobooth; reservation available, no approval requirement established."}
+  ]
+}
