@@ -1,0 +1,58 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-11T15:08:37-04:00",
+  "events": [
+    {
+      "id": "chanel-coco-mademoiselle-crush-absolu-nyc-2026",
+      "event_name": "CHANEL COCO MADEMOISELLE CRUSH ABSOLU Event",
+      "brand": "CHANEL",
+      "neighborhood": "Meatpacking District",
+      "address": "873 Washington St, New York, NY 10014",
+      "subway": {"station": "14 St–8 Av", "lines": ["A", "C", "E", "L"]},
+      "categories": ["beauty", "fashion"],
+      "what_it_is": "An immersive fragrance experience celebrating CHANEL COCO MADEMOISELLE CRUSH ABSOLU in the Meatpacking District.",
+      "admission_free": true,
+      "what_is_free": "Admission to the fragrance experience is free; CHANEL offers limited appointment slots and explicitly encourages walk-ins during event hours.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE"],
+      "main_source_url": "https://www.chanel.com/us/fragrance/coco-mademoiselle-event/",
+      "official_source_url": "https://www.chanel.com/us/fragrance/coco-mademoiselle-event/",
+      "additional_verification_source": "https://www.nycforfree.co/events",
+      "last_verified": "2026-09-11T15:08:37-04:00",
+      "caveats": "CHANEL states that appointments are limited but walk-ins are encouraged during event hours. Walk-in entry remains subject to on-site capacity.",
+      "practical_notes": "September 11 noon–7 PM; September 12–13 10 AM–7 PM; the activation returns September 18 noon–7 PM and September 19–20 10 AM–7 PM at the same address.",
+      "rsvp": {"requirement": "optional", "actionability": "direct_link_available", "availability": "open", "direct_url": "https://www.chanel.com/us/fragrance/coco-mademoiselle-event/"}
+    },
+    {
+      "id": "estee-lauder-glimmer-experience-nyc-2026",
+      "event_name": "Estée Lauder: The Glimmer Experience",
+      "brand": "Estée Lauder",
+      "neighborhood": "West Village",
+      "address": "711 Greenwich St, New York, NY 10014",
+      "subway": {"station": "Christopher St–Sheridan Sq", "lines": ["1"]},
+      "categories": ["beauty", "fashion"],
+      "what_it_is": "A two-day public pop-up for Estée Lauder's new Glimmer Eau de Parfum with fragrance discovery, treats and gifts.",
+      "admission_free": true,
+      "what_is_free": "Public admission is free. The current event listing advertises street treats and gifts, but exact items and quantities are not guaranteed.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE STUFF"],
+      "main_source_url": "https://nycplugged.com/calendar/estee-lauder-the-glimmer-experience/",
+      "official_source_url": null,
+      "additional_verification_source": "https://www.elcompanies.com/en/news-and-media/newsroom/press-releases/2026/07-28-2026-150028287",
+      "last_verified": "2026-09-11T15:08:37-04:00",
+      "caveats": "NYC Plugged lists the pop-up as open to the public. Gifts and treats are promotional inventory and may run out; no advance RSVP or host-approval step is published in the verified listing.",
+      "practical_notes": "Friday September 11, 12:30–7 PM; Saturday September 12, 11 AM–7 PM at 711 Greenwich Street.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    }
+  ],
+  "occurrences": [
+    {"id":"chanel-coco-mademoiselle-crush-absolu-nyc-2026--2026-09-11","event_id":"chanel-coco-mademoiselle-crush-absolu-nyc-2026","date":"2026-09-11","hours":"12–7 PM","availability":"open","details":"Appointments are limited; walk-ins are encouraged during event hours."},
+    {"id":"chanel-coco-mademoiselle-crush-absolu-nyc-2026--2026-09-12","event_id":"chanel-coco-mademoiselle-crush-absolu-nyc-2026","date":"2026-09-12","hours":"10 AM–7 PM","availability":"open","details":"Appointments are limited; walk-ins are encouraged during event hours."},
+    {"id":"chanel-coco-mademoiselle-crush-absolu-nyc-2026--2026-09-13","event_id":"chanel-coco-mademoiselle-crush-absolu-nyc-2026","date":"2026-09-13","hours":"10 AM–7 PM","availability":"open","details":"Appointments are limited; walk-ins are encouraged during event hours."},
+    {"id":"chanel-coco-mademoiselle-crush-absolu-nyc-2026--2026-09-18","event_id":"chanel-coco-mademoiselle-crush-absolu-nyc-2026","date":"2026-09-18","hours":"12–7 PM","availability":"open","details":"Appointments are limited; walk-ins are encouraged during event hours."},
+    {"id":"chanel-coco-mademoiselle-crush-absolu-nyc-2026--2026-09-19","event_id":"chanel-coco-mademoiselle-crush-absolu-nyc-2026","date":"2026-09-19","hours":"10 AM–7 PM","availability":"open","details":"Appointments are limited; walk-ins are encouraged during event hours."},
+    {"id":"chanel-coco-mademoiselle-crush-absolu-nyc-2026--2026-09-20","event_id":"chanel-coco-mademoiselle-crush-absolu-nyc-2026","date":"2026-09-20","hours":"10 AM–7 PM","availability":"open","details":"Appointments are limited; walk-ins are encouraged during event hours."},
+    {"id":"estee-lauder-glimmer-experience-nyc-2026--2026-09-11","event_id":"estee-lauder-glimmer-experience-nyc-2026","date":"2026-09-11","hours":"12:30–7 PM","availability":"open","details":"Open to the public; promotional treats and gifts are subject to availability."},
+    {"id":"estee-lauder-glimmer-experience-nyc-2026--2026-09-12","event_id":"estee-lauder-glimmer-experience-nyc-2026","date":"2026-09-12","hours":"11 AM–7 PM","availability":"open","details":"Open to the public; promotional treats and gifts are subject to availability."}
+  ]
+}
