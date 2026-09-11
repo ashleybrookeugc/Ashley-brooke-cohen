@@ -1,35 +1,6 @@
 {
   "schema_version": 2,
-  "updated_at": "2026-09-11T02:07:47-04:00",
-  "events": [
-    {
-      "id": "chanel-coco-mademoiselle-crush-absolu-nyc-2026",
-      "event_name": "CHANEL COCO MADEMOISELLE CRUSH ABSOLU Event",
-      "brand": "CHANEL",
-      "neighborhood": "Meatpacking District",
-      "address": "873 Washington St, New York, NY 10014",
-      "subway": {"station": "14 St–8 Av", "lines": ["A", "C", "E", "L"]},
-      "categories": ["beauty", "fashion"],
-      "what_it_is": "A café-inspired CHANEL fragrance experience celebrating COCO MADEMOISELLE CRUSH ABSOLU, with personalized fragrance discovery, the broader COCO MADEMOISELLE line, makeup exploration and photo moments.",
-      "admission_free": true,
-      "what_is_free": "Admission and the in-person fragrance discovery experience are free. CHANEL products are available to purchase onsite; no take-home giveaway is established by the official source.",
-      "purchase_required": false,
-      "classifications": ["FREE EXPERIENCE", "BEAUTY"],
-      "main_source_url": "https://www.chanel.com/us/fragrance/coco-mademoiselle-event/",
-      "official_source_url": "https://www.chanel.com/us/fragrance/coco-mademoiselle-event/",
-      "additional_verification_source": "https://www.nycforfree.co/events/chanel-coco-mademoiselle-a-special-event",
-      "last_verified": "2026-09-11T02:07:47-04:00",
-      "caveats": "CHANEL says appointments are limited but walk-ins are encouraged during event hours. An appointment is therefore optional rather than an approval step or guaranteed-entry claim. Normal capacity limits can still apply.",
-      "practical_notes": "September 11: noon–7 PM; September 12–13: 10 AM–7 PM; September 18: noon–7 PM; September 19–20: 10 AM–7 PM. The official CHANEL event page provides the current appointment path.",
-      "rsvp": {"requirement": "optional", "actionability": "direct_link_available", "availability": "open", "direct_url": "https://www.chanel.com/us/fragrance/coco-mademoiselle-event/"}
-    }
-  ],
-  "occurrences": [
-    {"id":"chanel-coco-mademoiselle-crush-absolu-nyc-2026--2026-09-11","event_id":"chanel-coco-mademoiselle-crush-absolu-nyc-2026","date":"2026-09-11","hours":"12–7 PM","availability":"open","details":"Appointments are optional; CHANEL explicitly encourages walk-ins."},
-    {"id":"chanel-coco-mademoiselle-crush-absolu-nyc-2026--2026-09-12","event_id":"chanel-coco-mademoiselle-crush-absolu-nyc-2026","date":"2026-09-12","hours":"10 AM–7 PM","availability":"open","details":"Appointments are optional; CHANEL explicitly encourages walk-ins."},
-    {"id":"chanel-coco-mademoiselle-crush-absolu-nyc-2026--2026-09-13","event_id":"chanel-coco-mademoiselle-crush-absolu-nyc-2026","date":"2026-09-13","hours":"10 AM–7 PM","availability":"open","details":"Appointments are optional; CHANEL explicitly encourages walk-ins."},
-    {"id":"chanel-coco-mademoiselle-crush-absolu-nyc-2026--2026-09-18","event_id":"chanel-coco-mademoiselle-crush-absolu-nyc-2026","date":"2026-09-18","hours":"12–7 PM","availability":"open","details":"Appointments are optional; CHANEL explicitly encourages walk-ins."},
-    {"id":"chanel-coco-mademoiselle-crush-absolu-nyc-2026--2026-09-19","event_id":"chanel-coco-mademoiselle-crush-absolu-nyc-2026","date":"2026-09-19","hours":"10 AM–7 PM","availability":"open","details":"Appointments are optional; CHANEL explicitly encourages walk-ins."},
-    {"id":"chanel-coco-mademoiselle-crush-absolu-nyc-2026--2026-09-20","event_id":"chanel-coco-mademoiselle-crush-absolu-nyc-2026","date":"2026-09-20","hours":"10 AM–7 PM","availability":"open","details":"Appointments are optional; CHANEL explicitly encourages walk-ins."}
-  ]
+  "updated_at": "2026-09-11T03:05:40-04:00",
+  "events": [],
+  "occurrences": []
 }
