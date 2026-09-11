@@ -1,0 +1,53 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-11T08:09:10-04:00",
+  "events": [
+    {
+      "id": "whbm-saint-coffee-nyfw-2026",
+      "event_name": "Fashion Week Fueled by WHBM",
+      "brand": "White House Black Market × Saint Coffee",
+      "neighborhood": "Chelsea",
+      "address": "Saint Coffee, 201 7th Ave, New York, NY 10011",
+      "subway": {"station": "23 St", "lines": ["1"]},
+      "categories": ["fashion", "food/drink"],
+      "what_it_is": "A one-morning NYFW coffee pop-up where White House Black Market previews its fall collection at Saint Coffee.",
+      "admission_free": true,
+      "what_is_free": "Complimentary coffee is advertised, with the first 150 guests receiving the signature latte. Black-and-white cookies are also advertised, with current listings noting limited quantities.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE FOOD", "LIMITED QUANTITY"],
+      "main_source_url": "https://nycplugged.com/calendar/white-house-black-market-nyfw-pop-up/",
+      "official_source_url": null,
+      "additional_verification_source": "https://fashionista.com/2026/09/new-york-fashion-week-free-events-september-2026",
+      "last_verified": "2026-09-11T08:09:10-04:00",
+      "caveats": "Current sources describe the event as open to the public. Promotional coffee and cookies are quantity-limited, so specific freebies may run out before the listed end time. No advance RSVP or host-approval requirement is published.",
+      "practical_notes": "Friday, September 11 from 8 AM–1 PM at Saint Coffee, 201 Seventh Avenue. Walk-in public access; arrive early for the limited complimentary items.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    },
+    {
+      "id": "calzedonia-the-stoop-2026",
+      "event_name": "The Stoop by Calzedonia",
+      "brand": "Calzedonia",
+      "neighborhood": "SoHo",
+      "address": "188 Lafayette St, New York, NY 10013",
+      "subway": {"station": "Spring St", "lines": ["6"]},
+      "categories": ["fashion", "beauty", "food/drink"],
+      "what_it_is": "A two-day NYFW public pop-up built as a between-shows refresh space with Calzedonia legwear, content moments, beauty touch-ups and refreshments.",
+      "admission_free": true,
+      "what_is_free": "Current listings advertise free coffee beverages, branded stickers, hairstyle touch-ups, a photobooth and beauty-partner sampling. Embroidery is tied to purchase of selected hosiery.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE SAMPLE", "RETAIL POP-UP"],
+      "main_source_url": "https://nycplugged.com/calendar/the-stoop-by-calzedonia/",
+      "official_source_url": null,
+      "additional_verification_source": "https://www.nycforfree.co/events/the-stoop-by-calzedonia",
+      "last_verified": "2026-09-11T08:09:10-04:00",
+      "caveats": "Public-event sources describe the pop-up as open to the public. Free samples, coffee and other promotional items are subject to on-site availability. Free embroidery requires purchase of the specified Calzedonia hosiery item.",
+      "practical_notes": "Saturday, September 12 and Sunday, September 13 from 12–5 PM at 188 Lafayette Street. No advance RSVP or approval requirement is established in the current public listings.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    }
+  ],
+  "occurrences": [
+    {"id":"whbm-saint-coffee-nyfw-2026--2026-09-11","event_id":"whbm-saint-coffee-nyfw-2026","date":"2026-09-11","hours":"8 AM–1 PM","availability":"open","details":"Open to the public; complimentary items are limited while supplies last."},
+    {"id":"calzedonia-the-stoop-2026--2026-09-12","event_id":"calzedonia-the-stoop-2026","date":"2026-09-12","hours":"12–5 PM","availability":"open","details":"Walk-in public pop-up; promotional items and services are subject to availability."},
+    {"id":"calzedonia-the-stoop-2026--2026-09-13","event_id":"calzedonia-the-stoop-2026","date":"2026-09-13","hours":"12–5 PM","availability":"open","details":"Walk-in public pop-up; promotional items and services are subject to availability."}
+  ]
+}
