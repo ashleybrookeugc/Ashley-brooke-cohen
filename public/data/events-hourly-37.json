@@ -1,0 +1,60 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-11T16:08:02-04:00",
+  "events": [
+    {
+      "id": "moxy-nyfw-photobooth-velvet-turtle-2026",
+      "event_name": "NYFW Photobooth with Velvet Turtle Events",
+      "brand": "Moxy Times Square × Velvet Turtle Events",
+      "neighborhood": "Times Square",
+      "address": "Moxy Times Square, 485 7th Ave, New York, NY 10018",
+      "subway": {"station": "34 St–Penn Station", "lines": ["1", "2", "3", "A", "C", "E"]},
+      "categories": ["fashion", "entertainment"],
+      "what_it_is": "A one-night NYFW photobooth activation at Bar Moxy with printed and digital keepsake photos.",
+      "admission_free": true,
+      "what_is_free": "The photobooth experience and photo keepsake are advertised as free; the current ticket listing shows a $0 ticket.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE STUFF"],
+      "main_source_url": "https://happeningnext.com/event/nyfw-photobooth-with-velvet-turtle-events-eid1ef0l4twvqfa",
+      "official_source_url": null,
+      "additional_verification_source": "https://www.averagesocialite.com/nyc-events",
+      "last_verified": "2026-09-11T16:08:02-04:00",
+      "caveats": "Current listings agree on Friday September 11 from 5–8 PM and describe the event as free. The ticket page exposes a free-ticket path; capacity may still apply on site.",
+      "practical_notes": "Friday September 11, 5–8 PM at Moxy Times Square. Reserve a free spot through the current ticket listing before heading over.",
+      "rsvp": {"requirement": "optional", "actionability": "direct_link_available", "availability": "open", "direct_url": "https://happeningnext.com/event/nyfw-photobooth-with-velvet-turtle-events-eid1ef0l4twvqfa"}
+    },
+    {
+      "id": "wang-contemporary-guest-house-zhou-xuerong-2026",
+      "event_name": "Guest House: Welcome Home",
+      "brand": "The Wang Contemporary × Zhou Xuerong",
+      "neighborhood": "Chinatown / Lower East Side",
+      "address": "The Wang Contemporary, 58 Bowery, New York, NY 10013",
+      "subway": {"station": "Bowery", "lines": ["J", "Z"]},
+      "categories": ["art", "fashion", "entertainment"],
+      "what_it_is": "A free public exhibition of life-size wax sculptures by Zhou Xuerong, marking the artist's institutional debut in the United States.",
+      "admission_free": true,
+      "what_is_free": "Public exhibition admission is free. The Wang Contemporary's official event page provides a ticket/reservation path.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE"],
+      "main_source_url": "https://thewangcontemporary.org/events/zhou-xuerong-guest-house-welcome-home",
+      "official_source_url": "https://thewangcontemporary.org/events/zhou-xuerong-guest-house-welcome-home",
+      "additional_verification_source": "https://www.averagesocialite.com/nyc-events/2026/9/11/guest-house-welcome-home-exhibit-at-the-wang-contemporary-nyc",
+      "last_verified": "2026-09-11T16:08:02-04:00",
+      "caveats": "The official event page confirms September 11–27 and shows a Get Tickets path. It lists opening-day hours as 12–6 PM; current event listings describe the recurring Friday–Sunday schedule after opening day as 11 AM–6 PM. Reservation is treated as optional because the exhibition is explicitly described as free and open to the public, with no approval requirement established.",
+      "practical_notes": "Opening day Friday September 11 is 12–6 PM. Current listings show Friday–Sunday hours of 11 AM–6 PM for the remaining weekends through September 27. Use the official event page for the current reservation path and any same-day hour changes.",
+      "rsvp": {"requirement": "optional", "actionability": "direct_link_available", "availability": "open", "direct_url": "https://thewangcontemporary.org/events/zhou-xuerong-guest-house-welcome-home"}
+    }
+  ],
+  "occurrences": [
+    {"id":"moxy-nyfw-photobooth-velvet-turtle-2026--2026-09-11","event_id":"moxy-nyfw-photobooth-velvet-turtle-2026","date":"2026-09-11","hours":"5–8 PM","availability":"open","details":"Free photobooth; free-ticket reservation path available."},
+    {"id":"wang-contemporary-guest-house-zhou-xuerong-2026--2026-09-11","event_id":"wang-contemporary-guest-house-zhou-xuerong-2026","date":"2026-09-11","hours":"12–6 PM","availability":"open","details":"Official opening-day hours."},
+    {"id":"wang-contemporary-guest-house-zhou-xuerong-2026--2026-09-12","event_id":"wang-contemporary-guest-house-zhou-xuerong-2026","date":"2026-09-12","hours":"11 AM–6 PM","availability":"open","details":"Recurring weekend hours from current event listings; verify official page before travel."},
+    {"id":"wang-contemporary-guest-house-zhou-xuerong-2026--2026-09-13","event_id":"wang-contemporary-guest-house-zhou-xuerong-2026","date":"2026-09-13","hours":"11 AM–6 PM","availability":"open","details":"Recurring weekend hours from current event listings; verify official page before travel."},
+    {"id":"wang-contemporary-guest-house-zhou-xuerong-2026--2026-09-18","event_id":"wang-contemporary-guest-house-zhou-xuerong-2026","date":"2026-09-18","hours":"11 AM–6 PM","availability":"open","details":"Recurring weekend hours from current event listings; verify official page before travel."},
+    {"id":"wang-contemporary-guest-house-zhou-xuerong-2026--2026-09-19","event_id":"wang-contemporary-guest-house-zhou-xuerong-2026","date":"2026-09-19","hours":"11 AM–6 PM","availability":"open","details":"Recurring weekend hours from current event listings; verify official page before travel."},
+    {"id":"wang-contemporary-guest-house-zhou-xuerong-2026--2026-09-20","event_id":"wang-contemporary-guest-house-zhou-xuerong-2026","date":"2026-09-20","hours":"11 AM–6 PM","availability":"open","details":"Recurring weekend hours from current event listings; verify official page before travel."},
+    {"id":"wang-contemporary-guest-house-zhou-xuerong-2026--2026-09-25","event_id":"wang-contemporary-guest-house-zhou-xuerong-2026","date":"2026-09-25","hours":"11 AM–6 PM","availability":"open","details":"Recurring weekend hours from current event listings; verify official page before travel."},
+    {"id":"wang-contemporary-guest-house-zhou-xuerong-2026--2026-09-26","event_id":"wang-contemporary-guest-house-zhou-xuerong-2026","date":"2026-09-26","hours":"11 AM–6 PM","availability":"open","details":"Recurring weekend hours from current event listings; verify official page before travel."},
+    {"id":"wang-contemporary-guest-house-zhou-xuerong-2026--2026-09-27","event_id":"wang-contemporary-guest-house-zhou-xuerong-2026","date":"2026-09-27","hours":"11 AM–6 PM","availability":"open","details":"Recurring weekend hours from current event listings; verify official page before travel."}
+  ]
+}
