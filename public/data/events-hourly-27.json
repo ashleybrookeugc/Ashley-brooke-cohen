@@ -1,0 +1,30 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-11T06:04:14-04:00",
+  "events": [
+    {
+      "id": "rokstar-mikes-hot-honey-student-giveaway-2026",
+      "event_name": "Rokstar Chicken × Mike's Hot Honey Free Chicken & Fries",
+      "brand": "Rokstar Chicken × Mike's Hot Honey",
+      "neighborhood": "NoHo / Greenwich Village",
+      "address": "Rokstar Chicken NoHo, 52 E 8th St, New York, NY 10003",
+      "subway": {"station": "8 St–NYU", "lines": ["N", "R", "W"]},
+      "categories": ["food/drink", "community"],
+      "what_it_is": "A one-hour student-only giveaway at Rokstar Chicken NoHo in partnership with Mike's Hot Honey.",
+      "admission_free": true,
+      "what_is_free": "The first 100 eligible students are advertised to receive free chicken and fries.",
+      "purchase_required": false,
+      "classifications": ["FREE FOOD", "LIMITED QUANTITY"],
+      "main_source_url": "https://www.nycforfree.co/events",
+      "official_source_url": null,
+      "additional_verification_source": null,
+      "last_verified": "2026-09-11T06:04:14-04:00",
+      "caveats": "Student ID is required. The giveaway is limited to the first 100 eligible students, first come first served, so availability can end before the listed closing time. No advance RSVP or organizer-approval requirement is published in the current listing.",
+      "practical_notes": "Friday, September 11 at 3 PM at Rokstar Chicken NoHo, 52 East 8th Street. Bring a valid student ID and arrive early because the offer is capped at 100 redemptions.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    }
+  ],
+  "occurrences": [
+    {"id":"rokstar-mikes-hot-honey-student-giveaway-2026--2026-09-11","event_id":"rokstar-mikes-hot-honey-student-giveaway-2026","date":"2026-09-11","hours":"3–4 PM","availability":"open","details":"Students only with ID; first 100 eligible guests receive free chicken and fries."}
+  ]
+}
