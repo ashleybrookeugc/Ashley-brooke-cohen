@@ -1,0 +1,52 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-11T19:09:20-04:00",
+  "events": [
+    {
+      "id": "love-kelly-crocs-nyfw-runway-2026",
+      "event_name": "Love, Kelly × Crocs NYFW Runway Show",
+      "brand": "Love, Kelly × Crocs",
+      "neighborhood": "Midtown",
+      "address": "15 W 36th St, New York, NY 10018",
+      "subway": {"station": "34 St–Herald Sq", "lines": ["B", "D", "F", "M", "N", "Q", "R", "W"]},
+      "categories": ["fashion", "entertainment"],
+      "what_it_is": "Love, Kelly's Season 4 New York Fashion Week runway show in collaboration with Crocs, featuring one-of-one collection pieces, Crocs footwear and the release of the first song from the Love, Kelly album.",
+      "admission_free": true,
+      "what_is_free": "The current listing presents RSVP as the access path and does not advertise a paid ticket price. No merchandise or giveaway is promised.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FASHION SHOW"],
+      "main_source_url": "https://www.nycforfree.co/events/love-kelly-x-crocs-nyfw-runway-show",
+      "official_source_url": null,
+      "additional_verification_source": "https://eventim.us/event/Love-Kelly-X-Crocs-NYFW-Runway-Show/704530",
+      "last_verified": "2026-09-11T19:09:20-04:00",
+      "caveats": "RSVP is required, but acceptance is not automatic: the event copy says to RSVP for the chance to secure your name on the list. Treat this as approval-required access and do not assume submission confirms admission.",
+      "practical_notes": "Saturday, September 12 from 8:00–8:30 PM at 15 W 36th Street. Use the Eventim RSVP page and wait for confirmation before treating attendance as confirmed.",
+      "rsvp": {"requirement": "required", "actionability": "direct_link_available", "availability": "open", "direct_url": "https://eventim.us/event/Love-Kelly-X-Crocs-NYFW-Runway-Show/704530"}
+    },
+    {
+      "id": "maison-madison-mug-launch-pop-up-2026",
+      "event_name": "Maison Madison Mug Collection Pop-Up",
+      "brand": "Maison Madison",
+      "neighborhood": "SoHo",
+      "address": "Revelie Luncheonette, 179 Prince St, New York, NY 10012",
+      "subway": {"station": "Prince St", "lines": ["N", "R", "W"]},
+      "categories": ["art", "food/drink", "retail"],
+      "what_it_is": "A two-hour Maison Madison launch pop-up for the brand's new mug collection at Revelie Luncheonette.",
+      "admission_free": true,
+      "what_is_free": "Entry to browse the pop-up is listed as free and open to the public. The mugs and other merchandise are retail products; no free product is promised.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "RETAIL POP-UP"],
+      "main_source_url": "https://www.averagesocialite.com/nyc-events/2026/9/12/maison-madison-mug-collection-pop-up-nyc",
+      "official_source_url": "https://www.maisonmadisonhome.com/",
+      "additional_verification_source": "https://www.cityguideny.com/event/Revelie-Lunchenonette-2026-09-12-2026-09-12",
+      "last_verified": "2026-09-11T19:09:20-04:00",
+      "caveats": "Current listings agree on the September 12 date, 11 AM–1 PM hours and 179 Prince Street location and describe the event as free/open to the public. The brand's current site confirms the mug launch but does not itself publish the pop-up logistics.",
+      "practical_notes": "Saturday, September 12 from 11 AM–1 PM at Revelie Luncheonette, 179 Prince Street. No RSVP or host-approval requirement is published in the verified listings.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    }
+  ],
+  "occurrences": [
+    {"id":"love-kelly-crocs-nyfw-runway-2026--2026-09-12","event_id":"love-kelly-crocs-nyfw-runway-2026","date":"2026-09-12","hours":"8–8:30 PM","availability":"open","details":"RSVP is required for a chance to secure your name on the list; submission does not establish admission."},
+    {"id":"maison-madison-mug-launch-pop-up-2026--2026-09-12","event_id":"maison-madison-mug-launch-pop-up-2026","date":"2026-09-12","hours":"11 AM–1 PM","availability":"open","details":"Free public retail pop-up; no advance RSVP requirement is published."}
+  ]
+}
