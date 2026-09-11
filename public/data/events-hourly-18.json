@@ -1,0 +1,59 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-10T22:09:48-04:00",
+  "events": [
+    {
+      "id": "chanel-coco-mademoiselle-crush-absolu-2026",
+      "event_name": "CHANEL COCO MADEMOISELLE CRUSH ABSOLU Event",
+      "brand": "CHANEL",
+      "neighborhood": "Meatpacking District",
+      "address": "873 Washington St, New York, NY 10014",
+      "subway": {"station": "14 St–8 Av", "lines": ["A", "C", "E", "L"]},
+      "categories": ["beauty", "fashion"],
+      "what_it_is": "A limited-time CHANEL fragrance experience built around COCO MADEMOISELLE CRUSH ABSOLU, with personalized fragrance discovery, the wider COCO MADEMOISELLE line, hair and body products, makeup, and photo moments.",
+      "admission_free": true,
+      "what_is_free": "Public entry and the fragrance experience are free. Products are available to purchase onsite.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "BEAUTY"],
+      "main_source_url": "https://www.chanel.com/us/fragrance/coco-mademoiselle-event/",
+      "official_source_url": "https://www.chanel.com/us/fragrance/coco-mademoiselle-event/",
+      "additional_verification_source": "https://www.nycforfree.co/events/chanel-coco-mademoiselle-a-special-event",
+      "last_verified": "2026-09-10T22:09:48-04:00",
+      "caveats": "CHANEL says appointments are limited but walk-ins are encouraged during event hours. A current NYC event source explicitly describes the event as free and open to the public.",
+      "practical_notes": "Appointments are recommended, not required. Use CHANEL's official event page to check appointment availability, or walk in during the listed hours.",
+      "rsvp": {"requirement": "optional", "actionability": "direct_link_available", "availability": "open", "direct_url": "https://www.chanel.com/us/fragrance/coco-mademoiselle-event/"}
+    },
+    {
+      "id": "carolina-herrera-good-girl-lab-2026",
+      "event_name": "Carolina Herrera Good Girl Lab",
+      "brand": "Carolina Herrera",
+      "neighborhood": "SoHo",
+      "address": "489 Broome St, New York, NY 10013",
+      "subway": {"station": "Spring St", "lines": ["6"]},
+      "categories": ["beauty", "fashion", "food/drink"],
+      "what_it_is": "An immersive Good Girl fragrance pop-up celebrating the scent's 10th anniversary, with fragrance discovery, interactive challenges, beauty activities and the Good Girl Café.",
+      "admission_free": true,
+      "what_is_free": "Timed tickets are free. Walk-ins are also allowed based on capacity. Interactive challenges can yield prizes such as miniatures and makeup services; the first 100 guests can receive Carolina Herrera x Myka frozen yogurt.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE STUFF", "BEAUTY"],
+      "main_source_url": "https://www.eventbrite.com/e/carolina-herrera-good-girl-lab-tickets-1997612868865",
+      "official_source_url": null,
+      "additional_verification_source": "https://nycplugged.com/calendar/carolina-herrera-good-girl-lab/",
+      "last_verified": "2026-09-10T22:09:48-04:00",
+      "caveats": "Walk-ins are capacity-dependent. Prize inventory and the frozen-yogurt offer are limited; the first-100 frozen-yogurt offer can end early.",
+      "practical_notes": "Use the free Eventbrite timed-ticket page if you want a reservation. Current event listings explicitly state walk-ins are allowed based on capacity, so this is not approval-required access.",
+      "rsvp": {"requirement": "optional", "actionability": "direct_link_available", "availability": "open", "direct_url": "https://www.eventbrite.com/e/carolina-herrera-good-girl-lab-tickets-1997612868865"}
+    }
+  ],
+  "occurrences": [
+    {"id":"chanel-coco-mademoiselle-crush-absolu-2026--2026-09-11","event_id":"chanel-coco-mademoiselle-crush-absolu-2026","date":"2026-09-11","hours":"12–7 PM","availability":"open","details":"Appointments are recommended; walk-ins are encouraged."},
+    {"id":"chanel-coco-mademoiselle-crush-absolu-2026--2026-09-12","event_id":"chanel-coco-mademoiselle-crush-absolu-2026","date":"2026-09-12","hours":"10 AM–7 PM","availability":"open","details":"Appointments are recommended; walk-ins are encouraged."},
+    {"id":"chanel-coco-mademoiselle-crush-absolu-2026--2026-09-13","event_id":"chanel-coco-mademoiselle-crush-absolu-2026","date":"2026-09-13","hours":"10 AM–7 PM","availability":"open","details":"Appointments are recommended; walk-ins are encouraged."},
+    {"id":"chanel-coco-mademoiselle-crush-absolu-2026--2026-09-18","event_id":"chanel-coco-mademoiselle-crush-absolu-2026","date":"2026-09-18","hours":"12–7 PM","availability":"open","details":"Appointments are recommended; walk-ins are encouraged."},
+    {"id":"chanel-coco-mademoiselle-crush-absolu-2026--2026-09-19","event_id":"chanel-coco-mademoiselle-crush-absolu-2026","date":"2026-09-19","hours":"10 AM–7 PM","availability":"open","details":"Appointments are recommended; walk-ins are encouraged."},
+    {"id":"chanel-coco-mademoiselle-crush-absolu-2026--2026-09-20","event_id":"chanel-coco-mademoiselle-crush-absolu-2026","date":"2026-09-20","hours":"10 AM–7 PM","availability":"open","details":"Appointments are recommended; walk-ins are encouraged."},
+    {"id":"carolina-herrera-good-girl-lab-2026--2026-09-11","event_id":"carolina-herrera-good-girl-lab-2026","date":"2026-09-11","hours":"12–6 PM","availability":"open","details":"Free timed tickets available; walk-ins based on capacity."},
+    {"id":"carolina-herrera-good-girl-lab-2026--2026-09-12","event_id":"carolina-herrera-good-girl-lab-2026","date":"2026-09-12","hours":"11 AM–6 PM","availability":"open","details":"Free timed tickets available; walk-ins based on capacity."},
+    {"id":"carolina-herrera-good-girl-lab-2026--2026-09-13","event_id":"carolina-herrera-good-girl-lab-2026","date":"2026-09-13","hours":"11 AM–3 PM","availability":"open","details":"Free timed tickets available; walk-ins based on capacity."}
+  ]
+}
