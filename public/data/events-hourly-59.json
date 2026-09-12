@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "updated_at": "2026-09-12T14:04:56-04:00",
+  "updated_at": "2026-09-12T15:04:27-04:00",
   "events": [
     {
       "id": "house-of-sally-hansen-rockefeller-2026",
@@ -64,6 +64,27 @@
       "caveats": "The Eventbrite listing is organized by Urban Outfitters and confirms the date, time and address. Average Socialite advertises a free RSVP. The sources do not state that RSVP approval is required or that a reservation guarantees entry. Free activations are while supplies last; customization requires purchase.",
       "practical_notes": "Saturday, September 12 from 12–3 PM at Urban Outfitters, 1333 Broadway. A free Eventbrite RSVP is available; treat it as optional because the verified sources do not explicitly state that registration is mandatory for store entry.",
       "rsvp": {"requirement": "optional", "actionability": "direct_link_available", "availability": "open", "direct_url": "https://www.eventbrite.com/e/beauty-break-with-urban-outfitters-and-yes-day-tickets-1999503199896"}
+    },
+    {
+      "id": "scoop-the-city-ice-cream-truck-2026",
+      "event_name": "Scoop the City Ice Cream Truck Tour",
+      "brand": "Piece of Cake Moving × StreetEasy",
+      "neighborhood": "Multiple NYC neighborhoods",
+      "address": "Multiple NYC stops; see dated occurrence details",
+      "subway": {"station": "Varies by stop", "lines": []},
+      "categories": ["food/drink", "community", "entertainment"],
+      "what_it_is": "A two-day mobile ice-cream truck tour from Piece of Cake Moving and StreetEasy highlighting NYC neighborhoods from their 2026 neighborhood data.",
+      "admission_free": true,
+      "what_is_free": "Free ice cream treats are offered at the scheduled truck stops. Visitors can also enter giveaways for Knicks tickets, restaurant gift cards, MTA passes, merchandise and other prizes; giveaway wins are not guaranteed.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE FOOD/DRINK", "FREE STUFF"],
+      "main_source_url": "https://mypieceofcakemove.com/events/streeteasy-scoop-the-city/",
+      "official_source_url": "https://mypieceofcakemove.com/events/streeteasy-scoop-the-city/",
+      "additional_verification_source": "https://www.averagesocialite.com/nyc-events/2026/9/12/scoop-the-city-ice-cream-truck-tour-nyc",
+      "last_verified": "2026-09-12T15:04:27-04:00",
+      "caveats": "This is a moving truck with short neighborhood windows rather than one fixed venue. Free treats and giveaway inventory can run out. The official event page says to follow @pieceofcakemoving for exact live locations if the truck route changes.",
+      "practical_notes": "Saturday stops: Financial District 11–11:45 AM; Lower East Side 12:15–1 PM; East Village 1:30–2:15 PM; Chelsea 2:45–3:30 PM; Upper West Side 4:05–6 PM. Sunday stops: Windsor Terrace 11–11:36 AM; Carroll Gardens 12:06–12:42 PM; Fort Greene 1:02–1:38 PM; Downtown Brooklyn 1:53–2:28 PM; Ridgewood 3:13–3:49 PM; Sunnyside 4:19–4:54 PM; Long Island City 5:24–6 PM.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
     }
   ],
   "occurrences": [
@@ -71,6 +92,8 @@
     {"id":"house-of-sally-hansen-rockefeller-2026--2026-09-13","event_id":"house-of-sally-hansen-rockefeller-2026","date":"2026-09-13","hours":"10 AM–6 PM","availability":"open","details":"Open to the public; no advance RSVP requirement is published."},
     {"id":"calzedonia-stoop-soho-2026--2026-09-12","event_id":"calzedonia-stoop-soho-2026","date":"2026-09-12","hours":"12–5 PM","availability":"open","details":"Open to the public; embroidery requires an eligible hosiery purchase."},
     {"id":"calzedonia-stoop-soho-2026--2026-09-13","event_id":"calzedonia-stoop-soho-2026","date":"2026-09-13","hours":"12–5 PM","availability":"open","details":"Open to the public; embroidery requires an eligible hosiery purchase."},
-    {"id":"urban-outfitters-yes-day-beauty-break-2026--2026-09-12","event_id":"urban-outfitters-yes-day-beauty-break-2026","date":"2026-09-12","hours":"12–3 PM","availability":"open","details":"Free RSVP available; free activations are while supplies last, and customization requires purchase."}
+    {"id":"urban-outfitters-yes-day-beauty-break-2026--2026-09-12","event_id":"urban-outfitters-yes-day-beauty-break-2026","date":"2026-09-12","hours":"12–3 PM","availability":"open","details":"Free RSVP available; free activations are while supplies last, and customization requires purchase."},
+    {"id":"scoop-the-city-ice-cream-truck-2026--2026-09-12","event_id":"scoop-the-city-ice-cream-truck-2026","date":"2026-09-12","hours":"11 AM–6 PM","availability":"open","details":"Route: Financial District 11–11:45 AM at Washington Market Park (Greenwich St & Duane St); Lower East Side 12:15–1 PM at Sara D. Roosevelt Park (E Houston St & Chrystie St); East Village 1:30–2:15 PM at Tompkins Square Park (Avenue A & St. Marks Pl); Chelsea 2:45–3:30 PM at Hudson River 14th Street Park (SW corner W 15th St & 10th Ave); Upper West Side 4:05–6 PM at Tecumseh Playground (W 77th St & Amsterdam Ave)."},
+    {"id":"scoop-the-city-ice-cream-truck-2026--2026-09-13","event_id":"scoop-the-city-ice-cream-truck-2026","date":"2026-09-13","hours":"11 AM–6 PM","availability":"open","details":"Route: Windsor Terrace 11–11:36 AM at Bartel Pritchard Square; Carroll Gardens 12:06–12:42 PM at Carroll Park; Fort Greene 1:02–1:38 PM at Fort Greene Park; Downtown Brooklyn 1:53–2:28 PM at Albee Square; Ridgewood 3:13–3:49 PM at Myrtle Ave & Seneca Ave; Sunnyside 4:19–4:54 PM at Lou Lodati Playground; Long Island City 5:24–6 PM at Gantry Plaza State Park."}
   ]
 }
