@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Submission review</title>
-  <link rel="stylesheet" href="/assets/site.css?v=moderation-20260912d">
+  <link rel="stylesheet" href="/assets/site.css?v=moderation-20260912e">
   <style>
     .moderation-shell{max-width:820px}
     .moderation-shell>p{max-width:680px}
@@ -95,6 +95,9 @@
     const states=['pending','under_review','approved','rejected','published'];
     async function api(url,options){const response=await fetch(url,options);const result=await response.json().catch(()=>({}));if(response.status===401){location.href='/admin/login';throw Error('Unauthorized')}if(!response.ok)throw Error(result.error||result.message||`Request failed (${response.status})`);return result}
     function setCardStatus(card,message,type=''){const el=card.querySelector('.action-status');if(!el)return;el.textContent=message;el.className='action-status'+(type?' '+type:'')}
+    function visibleSignals(d){return (d.signals||[]).filter(x=>x!=='manual_verification_required')}
+    function resultTone(d){if(d.verification_status==='verified_automatically')return visibleSignals(d).length?'warning':'success';if(d.verification_status==='manual_verification_required'||d.verification_status==='temporarily_unavailable')return'warning';return'error'}
+    function resultText(d){const signals=visibleSignals(d);return d.message+(signals.length?' Flags: '+signals.map(x=>x.replaceAll('_',' ')).join(', ')+'.':'')}
     async function verifySource(card,button){
       const buttons=[...card.querySelectorAll('button')];
       buttons.forEach(b=>b.disabled=true);
@@ -103,8 +106,7 @@
       setCardStatus(card,'Checking the submitted source…');
       try{
         const d=await api('/api/admin/submissions/'+card.dataset.id+'/verify-source',{method:'POST'});
-        const signalText=d.signals?.length?' Flags: '+d.signals.map(x=>x.replaceAll('_',' ')).join(', ')+'.':'';
-        setCardStatus(card,d.message+signalText,d.reachable?(d.signals?.length?'warning':'success'):'error');
+        setCardStatus(card,resultText(d),resultTone(d));
       }catch(err){
         setCardStatus(card,'Verification failed: '+err.message,'error');
       }finally{
@@ -119,7 +121,7 @@
       if(!cards.length){status.textContent='No submissions in the queue to check.';return}
       button.disabled=true;
       const original=button.textContent;
-      let checked=0,reachable=0,flagged=0,failed=0;
+      let checked=0,automatic=0,manual=0,unavailable=0,temporary=0,flagged=0,errors=0;
       try{
         for(const card of cards){
           checked++;
@@ -128,17 +130,20 @@
           setCardStatus(card,'Checking the submitted source…');
           try{
             const d=await api('/api/admin/submissions/'+card.dataset.id+'/verify-source',{method:'POST'});
-            const signals=d.signals||[];
-            if(d.reachable)reachable++; else failed++;
+            const signals=visibleSignals(d);
+            if(d.verification_status==='verified_automatically')automatic++;
+            else if(d.verification_status==='manual_verification_required')manual++;
+            else if(d.verification_status==='unavailable')unavailable++;
+            else if(d.verification_status==='temporarily_unavailable')temporary++;
+            else errors++;
             if(signals.length)flagged++;
-            const signalText=signals.length?' Flags: '+signals.map(x=>x.replaceAll('_',' ')).join(', ')+'.':'';
-            setCardStatus(card,d.message+signalText,d.reachable?(signals.length?'warning':'success'):'error');
+            setCardStatus(card,resultText(d),resultTone(d));
           }catch(err){
-            failed++;
+            errors++;
             setCardStatus(card,'Verification failed: '+err.message,'error');
           }
         }
-        status.textContent=`Finished. Checked ${cards.length} queue source${cards.length===1?'':'s'}: ${reachable} reachable, ${flagged} flagged, ${failed} unavailable/failed.`;
+        status.textContent=`Finished. ${automatic} auto-verified, ${manual} need manual verification, ${unavailable} unavailable/removed, ${temporary} temporarily unavailable, ${flagged} with source flags, ${errors} verifier errors.`;
         await loadAlerts();
       }finally{
         button.disabled=false;
