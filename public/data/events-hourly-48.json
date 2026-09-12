@@ -1,0 +1,69 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-12T03:05:57-04:00",
+  "events": [
+    {
+      "id": "slam-jam-wrangler-blue-bell-social-2026",
+      "event_name": "Slam Jam × Wrangler Blue Bell Social",
+      "brand": "Slam Jam × Wrangler",
+      "neighborhood": "Lower East Side",
+      "address": "Slam Jam NYC, 292 Broome St, New York, NY 10002",
+      "subway": {"station": "Delancey St–Essex St", "lines": ["F", "M", "J", "Z"]},
+      "categories": ["fashion", "food/drink", "entertainment"],
+      "what_it_is": "A public NYFW social at Slam Jam NYC with Wrangler, featuring BBQ, drinks, live music and custom denim.",
+      "admission_free": true,
+      "what_is_free": "Public entry is advertised as open. BBQ, drinks, music and customization are part of the event programming, but the source does not guarantee specific quantities or items to every attendee.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE"],
+      "main_source_url": "https://nycplugged.com/calendar/slam-jam-x-wrangler-blue-bell-social/",
+      "last_verified": "2026-09-12T03:05:57-04:00",
+      "caveats": "NYC Plugged explicitly lists the event as open to the public. No RSVP, ticket, approval or guaranteed giveaway is stated in the verified listing. Capacity and promotional inventory may still be limited onsite.",
+      "practical_notes": "Saturday, September 12 from 2–7 PM at Slam Jam NYC, 292 Broome Street.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    },
+    {
+      "id": "olaplex-shape-set-style-studio-2026",
+      "event_name": "OLAPLEX Shape Set Style Studio",
+      "brand": "OLAPLEX",
+      "neighborhood": "Flatiron",
+      "address": "Flatiron Plaza, 23rd St and Fifth Ave, New York, NY 10010",
+      "subway": {"station": "23 St", "lines": ["R", "W", "F", "M"]},
+      "categories": ["beauty", "fashion"],
+      "what_it_is": "A two-day public OLAPLEX pop-up celebrating the launch of Shape Set hairspray with a photo activation, samples and branded merchandise.",
+      "admission_free": true,
+      "what_is_free": "Complimentary Shape Set samples and OLAPLEX merch are advertised. The first 50 attendees each day can receive a full-size 245ml Shape Set Hairspray while supplies last.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE STUFF", "FREE SAMPLE"],
+      "main_source_url": "https://nycplugged.com/calendar/olaplex-shape-set-style-studio/",
+      "last_verified": "2026-09-12T03:05:57-04:00",
+      "caveats": "NYC Plugged explicitly lists the activation as open to the public. Full-size hairspray is limited to the first 50 attendees each day and all promotional inventory is while supplies last.",
+      "practical_notes": "September 12–13, 11 AM–5 PM daily at Flatiron Plaza, 23rd Street and Fifth Avenue. No RSVP or approval requirement is published in the verified listing.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    },
+    {
+      "id": "estee-lauder-glimmer-experience-2026",
+      "event_name": "Estée Lauder: The Glimmer Experience",
+      "brand": "Estée Lauder",
+      "neighborhood": "West Village",
+      "address": "711 Greenwich St, New York, NY 10014",
+      "subway": {"station": "14 St–8 Av", "lines": ["A", "C", "E", "L"]},
+      "categories": ["beauty", "food/drink", "fashion"],
+      "what_it_is": "A public fragrance activation for Estée Lauder's Glimmer Eau de Parfum with fragrance discovery, street treats and promotional gifts.",
+      "admission_free": true,
+      "what_is_free": "Public entry, fragrance discovery, street treats and gifts are advertised. The source does not guarantee gift quantities or specific items to every attendee.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE STUFF", "FREE SAMPLE"],
+      "main_source_url": "https://nycplugged.com/calendar/estee-lauder-the-glimmer-experience/",
+      "last_verified": "2026-09-12T03:05:57-04:00",
+      "caveats": "NYC Plugged explicitly lists the event as open to the public. Promotional gifts and treats may be limited by inventory and capacity. No RSVP or host-approval step is stated in the verified listing.",
+      "practical_notes": "Saturday, September 12 from 11 AM–7 PM at 711 Greenwich Street. The prior Friday session has already passed.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    }
+  ],
+  "occurrences": [
+    {"id":"slam-jam-wrangler-blue-bell-social-2026--2026-09-12","event_id":"slam-jam-wrangler-blue-bell-social-2026","date":"2026-09-12","hours":"2–7 PM","availability":"open","details":"Open to the public; no RSVP requirement published."},
+    {"id":"olaplex-shape-set-style-studio-2026--2026-09-12","event_id":"olaplex-shape-set-style-studio-2026","date":"2026-09-12","hours":"11 AM–5 PM","availability":"open","details":"First 50 attendees can receive a full-size Shape Set Hairspray while supplies last."},
+    {"id":"olaplex-shape-set-style-studio-2026--2026-09-13","event_id":"olaplex-shape-set-style-studio-2026","date":"2026-09-13","hours":"11 AM–5 PM","availability":"open","details":"First 50 attendees can receive a full-size Shape Set Hairspray while supplies last."},
+    {"id":"estee-lauder-glimmer-experience-2026--2026-09-12","event_id":"estee-lauder-glimmer-experience-2026","date":"2026-09-12","hours":"11 AM–7 PM","availability":"open","details":"Open to the public; gifts and treats subject to availability."}
+  ]
+}
