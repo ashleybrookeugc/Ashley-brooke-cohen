@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Submission review</title>
-  <link rel="stylesheet" href="/assets/site.css?v=moderation-20260912c">
+  <link rel="stylesheet" href="/assets/site.css?v=moderation-20260912d">
   <style>
     .moderation-shell{max-width:820px}
     .moderation-shell>p{max-width:680px}
@@ -17,12 +17,12 @@
     .submission-review textarea[data-k="review_draft_json"]{min-height:260px;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:.82rem}
     .submission-review small{display:block;font-weight:500;line-height:1.4;color:#444}
     .review-actions{display:flex;flex-wrap:wrap;gap:.55rem;margin-top:1rem}
-    .review-actions button,.verification-alert button,#discovery-form button{border:1.5px solid #101010;border-radius:8px;background:#101010;color:#fff;padding:.72rem .85rem;font-weight:850;cursor:pointer}
-    .review-actions button[data-verify-source]{background:#bdeac6;color:#101010}
+    .review-actions button,.verification-alert button,#discovery-form button,.queue-tools button{border:1.5px solid #101010;border-radius:8px;background:#101010;color:#fff;padding:.72rem .85rem;font-weight:850;cursor:pointer}
+    .review-actions button[data-verify-source],.queue-tools button{background:#bdeac6;color:#101010}
     .review-actions button[data-action="published"]{background:#ffef59;color:#101010}
     .review-actions button[data-action="rejected"]{background:#ffe3db;color:#101010}
     .review-actions button[data-action="save"]{background:#dedaff;color:#101010}
-    .review-actions button:disabled,#discovery-form button:disabled,.verification-alert button:disabled{opacity:.55;cursor:wait}
+    .review-actions button:disabled,#discovery-form button:disabled,.verification-alert button:disabled,.queue-tools button:disabled{opacity:.55;cursor:wait}
     .action-status{min-height:1.4em;margin:.7rem 0 0!important;font-size:.88rem!important;font-weight:800}
     .action-status.success{color:#176b2c}.action-status.error{color:#a1261d}.action-status.warning{color:#805500}
     .verification-alert{margin:.75rem 0;padding:.85rem;background:#fff4c2;border:1.5px solid #101010;border-radius:10px}
@@ -32,6 +32,8 @@
     #discovery-sources li{margin:.55rem 0;overflow-wrap:anywhere}
     .submission-review a{overflow-wrap:anywhere}
     .admin-note{padding:.7rem .8rem;background:#f3f0ff;border-left:4px solid #5e49ff;font-size:.9rem!important;line-height:1.4!important}
+    .queue-tools{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;margin:.45rem 0 .8rem}
+    .queue-tools p{margin:0;font-size:.88rem;font-weight:800;line-height:1.35}
     @media (max-width:600px){
       .moderation-shell{padding:1rem .8rem 2rem}
       .moderation-shell .back-home{margin:-1rem -.8rem 0}
@@ -43,6 +45,8 @@
       .review-actions button{width:100%;min-height:46px}
       #discovery-form .review-actions{grid-template-columns:1fr}
       .submission-review select{min-height:46px}
+      .queue-tools{display:grid;grid-template-columns:1fr}
+      .queue-tools button{width:100%;min-height:46px}
     }
     @media (max-width:390px){.review-actions{grid-template-columns:1fr}}
   </style>
@@ -79,6 +83,10 @@
     </section>
 
     <h2>Submission queue</h2>
+    <div class="queue-tools">
+      <button type="button" id="verify-queue-sources">Check all submission queue sources</button>
+      <p id="queue-verification-status" role="status" aria-live="polite"></p>
+    </div>
     <div id="items">Loading…</div>
   </main>
   <script>
@@ -101,6 +109,39 @@
         setCardStatus(card,'Verification failed: '+err.message,'error');
       }finally{
         buttons.forEach(b=>b.disabled=false);
+        button.textContent=original;
+      }
+    }
+    async function verifyQueueSources(){
+      const button=document.querySelector('#verify-queue-sources');
+      const status=document.querySelector('#queue-verification-status');
+      const cards=[...document.querySelectorAll('#items article[data-id]')];
+      if(!cards.length){status.textContent='No submissions in the queue to check.';return}
+      button.disabled=true;
+      const original=button.textContent;
+      let checked=0,reachable=0,flagged=0,failed=0;
+      try{
+        for(const card of cards){
+          checked++;
+          button.textContent=`Checking ${checked} of ${cards.length}…`;
+          status.textContent=`Checking submission ${checked} of ${cards.length}…`;
+          setCardStatus(card,'Checking the submitted source…');
+          try{
+            const d=await api('/api/admin/submissions/'+card.dataset.id+'/verify-source',{method:'POST'});
+            const signals=d.signals||[];
+            if(d.reachable)reachable++; else failed++;
+            if(signals.length)flagged++;
+            const signalText=signals.length?' Flags: '+signals.map(x=>x.replaceAll('_',' ')).join(', ')+'.':'';
+            setCardStatus(card,d.message+signalText,d.reachable?(signals.length?'warning':'success'):'error');
+          }catch(err){
+            failed++;
+            setCardStatus(card,'Verification failed: '+err.message,'error');
+          }
+        }
+        status.textContent=`Finished. Checked ${cards.length} queue source${cards.length===1?'':'s'}: ${reachable} reachable, ${flagged} flagged, ${failed} unavailable/failed.`;
+        await loadAlerts();
+      }finally{
+        button.disabled=false;
         button.textContent=original;
       }
     }
@@ -128,6 +169,7 @@
     async function loadAlerts(){try{const d=await api('/api/admin/verification-alerts',{cache:'no-store'});document.querySelector('#verification-alerts').innerHTML=d.alerts.length?d.alerts.map(a=>`<article class="verification-alert" data-alert-id="${E(a.id)}"><p><strong>${E(a.kind.replaceAll('_',' '))}</strong> · ${E(a.content_type)} · ${E(a.event_name||a.submission_id)}</p><p>${E(a.summary)}</p><p><a href="${E(a.source_url)}" target="_blank" rel="noreferrer">Open source ↗</a> <button type="button" data-resolve-alert>Mark reviewed</button></p></article>`).join(''):'<p>No open verification alerts.</p>';document.querySelectorAll('[data-resolve-alert]').forEach(b=>b.onclick=async()=>{b.disabled=true;const original=b.textContent;b.textContent='Saving…';try{await api('/api/admin/verification-alerts/'+b.closest('[data-alert-id]').dataset.alertId,{method:'PATCH'});await loadAlerts()}catch(err){b.disabled=false;b.textContent=original;alert(err.message)}})}catch(err){document.querySelector('#verification-alerts').textContent=err.message}}
     document.querySelector('#discovery-form').addEventListener('submit',async e=>{e.preventDefault();const body=Object.fromEntries(new FormData(e.target));try{await api('/api/admin/discovery-sources',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(body)});e.target.reset();document.querySelector('#discovery-status').textContent='Source added.';await loadSources()}catch(err){document.querySelector('#discovery-status').textContent=err.message}});
     document.querySelector('#run-discovery').onclick=async()=>{const b=document.querySelector('#run-discovery'),s=document.querySelector('#discovery-status'),original=b.textContent;b.disabled=true;b.textContent='Running…';s.textContent='Running discovery and rechecking published sources…';try{const d=await api('/api/admin/discovery/run',{method:'POST'});s.textContent=`Finished. Checked ${d.discovery.checked} discovery sources, found ${d.discovery.discovered} new candidates; rechecked ${d.reverification.checked} published sources and raised ${d.reverification.alerts} alert(s).`;await Promise.all([loadSources(),loadAlerts(),loadSubmissions()])}catch(err){s.textContent='Discovery/recheck failed: '+err.message}finally{b.disabled=false;b.textContent=original}};
+    document.querySelector('#verify-queue-sources').onclick=verifyQueueSources;
     Promise.all([loadSubmissions(),loadSources(),loadAlerts()]);
   </script>
 </body>
