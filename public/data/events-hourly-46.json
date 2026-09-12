@@ -1,0 +1,50 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-12T01:05:10-04:00",
+  "events": [
+    {
+      "id": "maison-madison-mug-collection-soho-2026",
+      "event_name": "Maison Madison Mug Collection Pop-Up",
+      "brand": "Maison Madison",
+      "neighborhood": "SoHo",
+      "address": "Revelie Luncheonette, 179 Prince St, New York, NY 10012",
+      "subway": {"station": "Spring St", "lines": ["C", "E"]},
+      "categories": ["fashion", "food/drink", "shopping"],
+      "what_it_is": "A two-hour launch pop-up for Maison Madison's new mug collection at Revelie Luncheonette in SoHo.",
+      "admission_free": true,
+      "what_is_free": "Admission to browse the launch pop-up is free; mugs and other merchandise are retail products.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "RETAIL POP-UP"],
+      "main_source_url": "https://www.averagesocialite.com/nyc-events/2026/9/12/maison-madison-mug-collection-pop-up-nyc",
+      "additional_verification_source": "https://www.cityguideny.com/event/Revelie-Lunchenonette-2026-09-12-2026-09-12",
+      "last_verified": "2026-09-12T01:05:10-04:00",
+      "caveats": "Current listings explicitly describe the pop-up as open to the public/free admission. Merchandise is for sale; no giveaway or free product is established by the verified sources.",
+      "practical_notes": "Saturday, September 12 from 11 AM–1 PM at Revelie Luncheonette, 179 Prince Street. No advance RSVP or approval requirement is published.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    },
+    {
+      "id": "slam-jam-wrangler-blue-bell-social-2026",
+      "event_name": "Slam Jam × Wrangler Blue Bell Social",
+      "brand": "Slam Jam × Wrangler",
+      "neighborhood": "Lower East Side",
+      "address": "Slam Jam NYC, 292 Broome St, New York, NY 10002",
+      "subway": {"station": "Delancey St–Essex St", "lines": ["F", "M", "J", "Z"]},
+      "categories": ["fashion", "food/drink", "entertainment"],
+      "what_it_is": "A public Slam Jam and Wrangler NYFW social with BBQ, drinks, live music, and custom denim at Slam Jam's Broome Street location.",
+      "admission_free": true,
+      "what_is_free": "Public admission is advertised. The event listing promotes BBQ, drinks, live music, and custom denim, but it does not establish that every food, drink, or customization item is complimentary.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE"],
+      "main_source_url": "https://nycplugged.com/calendar/slam-jam-x-wrangler-blue-bell-social/",
+      "additional_verification_source": "https://slamjam.com/",
+      "last_verified": "2026-09-12T01:05:10-04:00",
+      "caveats": "NYC Plugged explicitly marks the event open to the public. Slam Jam's own social post, surfaced on its official site, confirms September 12, 2–7 PM, 292 Broome Street, BBQ, drinks, live music, and custom denim. No RSVP or approval requirement is published in the verified sources.",
+      "practical_notes": "Saturday, September 12 from 2–7 PM at Slam Jam NYC, 292 Broome Street. Walk-in public access is the verified admission path.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    }
+  ],
+  "occurrences": [
+    {"id":"maison-madison-mug-collection-soho-2026--2026-09-12","event_id":"maison-madison-mug-collection-soho-2026","date":"2026-09-12","hours":"11 AM–1 PM","availability":"open","details":"Open to the public; shopping launch at Revelie Luncheonette."},
+    {"id":"slam-jam-wrangler-blue-bell-social-2026--2026-09-12","event_id":"slam-jam-wrangler-blue-bell-social-2026","date":"2026-09-12","hours":"2–7 PM","availability":"open","details":"Open to the public; BBQ, drinks, live music, and custom denim advertised."}
+  ]
+}
