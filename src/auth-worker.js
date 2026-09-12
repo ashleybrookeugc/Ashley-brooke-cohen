@@ -200,6 +200,16 @@ async function verifySubmissionSource(request, env, id) {
   });
 }
 
+function eventDetailPage(occurrenceId) {
+  const id = String(occurrenceId || '').replace(/[^a-zA-Z0-9_-]/g, '');
+  return new Response(`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>NYFW Pop-Up Radar · Ashley Brooke Cohen</title><link rel="stylesheet" href="/assets/site.css?v=event-detail-20260912"><script src="/assets/event-detail.js?v=event-detail-20260912" defer></script></head><body class="radar-page" data-occurrence-id="${id}"><main class="detail-shell" id="event-detail"><p class="loading">Loading event details…</p></main></body></html>`, {
+    headers: {
+      'content-type': 'text/html;charset=UTF-8',
+      'cache-control': 'no-store',
+    },
+  });
+}
+
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
@@ -214,6 +224,9 @@ export default {
         },
       });
     }
+
+    const eventMatch = path.match(/^\/nyfw-pop-ups\/event\/([a-zA-Z0-9_-]+)$/);
+    if (eventMatch) return eventDetailPage(eventMatch[1]);
 
     const verifyMatch = path.match(/^\/api\/admin\/submissions\/([\w-]+)\/verify-source$/);
     if (verifyMatch) return verifySubmissionSource(request, env, verifyMatch[1]);
