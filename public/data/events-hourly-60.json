@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "updated_at": "2026-09-12T16:07:03-04:00",
+  "updated_at": "2026-09-12T17:04:38-04:00",
   "events": [
     {
       "id": "chanel-coco-mademoiselle-crush-absolu-2026",
@@ -22,27 +22,6 @@
       "caveats": "Appointments are limited; walk-ins are encouraged, so advance booking is optional rather than approval-based. On-site purchases may be available but are not required for entry.",
       "practical_notes": "Official CHANEL event page confirms September 11–13 and 18–20 at 873 Washington Street. September 12–13 and 19–20 run 10 AM–7 PM; September 18 runs noon–7 PM.",
       "rsvp": {"requirement": "optional", "actionability": "direct_link_available", "availability": "open", "direct_url": "https://www.chanel.com/us/fragrance/coco-mademoiselle-event/"}
-    },
-    {
-      "id": "sally-hansen-house-rockefeller-2026",
-      "event_name": "The House of Sally Hansen",
-      "brand": "Sally Hansen",
-      "neighborhood": "Midtown",
-      "address": "North Esplanade by The Rink, Rockefeller Center, New York, NY 10111",
-      "subway": {"station": "47–50 Sts–Rockefeller Center", "lines": ["B", "D", "F", "M"]},
-      "categories": ["beauty", "fashion"],
-      "what_it_is": "A New York Fashion Week Sally Hansen activation at Rockefeller Center focused on the Miracle Gel Bold Glam collection, with nail touch-ups and photo moments.",
-      "admission_free": true,
-      "what_is_free": "Public access to the activation, including nail touch-ups and photo moments as available on site.",
-      "purchase_required": false,
-      "classifications": ["FREE EXPERIENCE"],
-      "main_source_url": "https://www.rockefellercenter.com/events/new-york-fashion-week-at-rockefeller-center/",
-      "official_source_url": "https://www.rockefellercenter.com/events/new-york-fashion-week-at-rockefeller-center/",
-      "additional_verification_source": "https://www.nycforfree.co/events",
-      "last_verified": "2026-09-12T16:07:03-04:00",
-      "caveats": "Rockefeller Center lists the activation as part of its public NYFW programming. No RSVP, ticket, or approval requirement is published for this activation.",
-      "practical_notes": "Saturday, September 12 from 12–6 PM and Sunday, September 13 from 10 AM–6 PM at the North Esplanade by The Rink.",
-      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
     },
     {
       "id": "calzedonia-stoop-soho-2026",
@@ -71,8 +50,6 @@
     {"id":"chanel-coco-mademoiselle-crush-absolu-2026--2026-09-18","event_id":"chanel-coco-mademoiselle-crush-absolu-2026","date":"2026-09-18","hours":"12–7 PM","availability":"open","details":"Appointments optional; walk-ins encouraged by CHANEL."},
     {"id":"chanel-coco-mademoiselle-crush-absolu-2026--2026-09-19","event_id":"chanel-coco-mademoiselle-crush-absolu-2026","date":"2026-09-19","hours":"10 AM–7 PM","availability":"open","details":"Appointments optional; walk-ins encouraged by CHANEL."},
     {"id":"chanel-coco-mademoiselle-crush-absolu-2026--2026-09-20","event_id":"chanel-coco-mademoiselle-crush-absolu-2026","date":"2026-09-20","hours":"10 AM–7 PM","availability":"open","details":"Appointments optional; walk-ins encouraged by CHANEL."},
-    {"id":"sally-hansen-house-rockefeller-2026--2026-09-12","event_id":"sally-hansen-house-rockefeller-2026","date":"2026-09-12","hours":"12–6 PM","availability":"open","details":"Public Rockefeller Center NYFW activation."},
-    {"id":"sally-hansen-house-rockefeller-2026--2026-09-13","event_id":"sally-hansen-house-rockefeller-2026","date":"2026-09-13","hours":"10 AM–6 PM","availability":"open","details":"Public Rockefeller Center NYFW activation."},
     {"id":"calzedonia-stoop-soho-2026--2026-09-12","event_id":"calzedonia-stoop-soho-2026","date":"2026-09-12","hours":"12–5 PM","availability":"open","details":"Open to the public; promotional services and items may be supply-limited."},
     {"id":"calzedonia-stoop-soho-2026--2026-09-13","event_id":"calzedonia-stoop-soho-2026","date":"2026-09-13","hours":"12–5 PM","availability":"open","details":"Open to the public; promotional services and items may be supply-limited."}
   ]
