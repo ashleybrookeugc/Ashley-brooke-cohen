@@ -66,6 +66,23 @@ function sourceSignals(body, status) {
   return signals;
 }
 
+function hostFor(value) {
+  try { return new URL(value).hostname.toLowerCase(); } catch { return ''; }
+}
+
+function botProtectedSource(value) {
+  const host = hostFor(value);
+  return host.includes('instagram.com') || host.includes('tiktok.com') || host.includes('facebook.com') || host.includes('eventbrite.');
+}
+
+function classifyHttpStatus(status, sourceUrl) {
+  if (status >= 200 && status < 300) return 'verified_automatically';
+  if (status === 404 || status === 410) return 'unavailable';
+  if (botProtectedSource(sourceUrl) || [401, 403, 405, 406, 409, 418, 429].includes(status)) return 'manual_verification_required';
+  if (status === 408 || status >= 500) return 'temporarily_unavailable';
+  return 'manual_verification_required';
+}
+
 async function fingerprint(value) {
   const cleaned = String(value || '').replace(/\s+/g, ' ').slice(0, 250000);
   return b64(await crypto.subtle.digest('SHA-256', enc.encode(cleaned)));
@@ -93,17 +110,30 @@ async function verifySubmissionSource(request, env, id) {
     });
     body = await response.text();
   } catch (err) {
+    const verificationStatus = botProtectedSource(row.source_url)
+      ? 'manual_verification_required'
+      : 'temporarily_unavailable';
     return json({
       ok: false,
-      reachable: false,
+      reachable: verificationStatus === 'manual_verification_required',
+      verification_status: verificationStatus,
+      manual_required: verificationStatus === 'manual_verification_required',
+      unavailable: false,
       source_url: row.source_url,
       checked_at: checkedAt,
-      message: 'The source could not be reached automatically. Open it manually before publishing.',
+      signals: verificationStatus === 'manual_verification_required' ? ['manual_verification_required'] : [],
+      message: verificationStatus === 'manual_verification_required'
+        ? 'Automatic verification was blocked by the source. The link may still be valid; open it manually before publishing.'
+        : 'The source could not be reached right now. This is a temporary verification failure, not proof that the listing is gone.',
       error: String(err?.message || err),
     });
   }
 
-  const signals = sourceSignals(body, response.status);
+  const verificationStatus = classifyHttpStatus(response.status, row.source_url);
+  const contentSignals = sourceSignals(body, response.status);
+  const signals = verificationStatus === 'manual_verification_required'
+    ? [...contentSignals, 'manual_verification_required']
+    : contentSignals;
   const fp = await fingerprint(body);
   await env.DB.exec(`CREATE TABLE IF NOT EXISTS source_checks (
     submission_id TEXT PRIMARY KEY REFERENCES submissions(id),
@@ -134,20 +164,39 @@ async function verifySubmissionSource(request, env, id) {
        END`
   ).bind(id, response.status, fp, JSON.stringify(signals), checkedAt, changed ? checkedAt : null).run();
 
-  const reachable = response.ok;
+  const verifiedAutomatically = verificationStatus === 'verified_automatically';
+  const manualRequired = verificationStatus === 'manual_verification_required';
+  const unavailable = verificationStatus === 'unavailable';
+  const temporarilyUnavailable = verificationStatus === 'temporarily_unavailable';
+
+  let message;
+  if (verifiedAutomatically) {
+    message = contentSignals.length
+      ? `Source reached (HTTP ${response.status}), but review the flagged source signals before publishing.`
+      : `Source reached successfully (HTTP ${response.status}). This confirms source availability, not every event fact; compare the source against the fields before publishing.`;
+  } else if (manualRequired) {
+    message = `Automatic verification was blocked or challenged (HTTP ${response.status}). The link may still be valid; open it manually before publishing.`;
+  } else if (unavailable) {
+    message = `Source returned HTTP ${response.status} and appears unavailable or removed.`;
+  } else if (temporarilyUnavailable) {
+    message = `Source returned HTTP ${response.status}. Treat this as temporarily unavailable, not proof that the listing is gone.`;
+  } else {
+    message = `Source returned HTTP ${response.status}. Manual verification is required.`;
+  }
+
   return json({
-    ok: reachable,
-    reachable,
+    ok: verifiedAutomatically,
+    reachable: verifiedAutomatically || manualRequired,
+    verification_status: verificationStatus,
+    manual_required: manualRequired,
+    unavailable,
+    temporarily_unavailable: temporarilyUnavailable,
     source_url: row.source_url,
     http_status: response.status,
     checked_at: checkedAt,
     signals,
     changed,
-    message: reachable
-      ? (signals.length
-          ? `Source reached (HTTP ${response.status}), but review the flagged source signals before publishing.`
-          : `Source reached successfully (HTTP ${response.status}). This confirms source availability, not every event fact; compare the source against the fields before publishing.`)
-      : `Source responded HTTP ${response.status}. Open it manually before publishing.`,
+    message,
   });
 }
 
