@@ -1,5 +1,5 @@
 const $=s=>document.querySelector(s),SECONDARY=['averagesocialite.com','mariahedian.com','nycforfree.co','pulsd.com'];
-const FEEDS=['/data/events.json','/data/events-supplement.json','/data/events-screenshot-batch-2.json','/data/events-screenshot-batch-3.json','/data/events-screenshot-batch-4.json','/data/events-screenshot-batch-5.json','/data/events-screenshot-batch-6.json','/data/events-hourly.json',...Array.from({length:44},(_,i)=>'/data/events-hourly-'+(i+1)+'.json')];
+const FEEDS=['/data/events.json','/data/events-supplement.json','/data/events-screenshot-batch-2.json','/data/events-screenshot-batch-3.json','/data/events-screenshot-batch-4.json','/data/events-screenshot-batch-5.json','/data/events-screenshot-batch-6.json','/data/events-hourly.json',...Array.from({length:45},(_,i)=>'/data/events-hourly-'+(i+1)+'.json')];
 const APPROVAL_OVERRIDES=new Set(['fml-issue-iii-launch-party-2026','love-kelly-crocs-nyfw-2026']);
 function esc(v=''){return String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#39;'}[c]))}
 function safe(v){try{const u=new URL(v);return['http:','https:'].includes(u.protocol)?u.href:''}catch{return''}}
