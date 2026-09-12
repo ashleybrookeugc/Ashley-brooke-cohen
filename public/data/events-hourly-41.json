@@ -1,0 +1,54 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-11T20:07:26-04:00",
+  "events": [
+    {
+      "id": "calzedonia-stoop-soho-2026",
+      "event_name": "The Stoop by Calzedonia",
+      "brand": "Calzedonia",
+      "neighborhood": "SoHo",
+      "address": "188 Lafayette St, New York, NY 10013",
+      "subway": {"station": "Spring St", "lines": ["6"]},
+      "categories": ["fashion", "beauty", "food/drink"],
+      "what_it_is": "A two-day NYFW pop-up built around Calzedonia legwear, with beauty and hair touch-ups, a photo booth, coffee, branded stickers and on-site customization.",
+      "admission_free": true,
+      "what_is_free": "Public entry, coffee, branded stickers, hairstyle touch-ups and the photo booth are advertised as complimentary. Embroidery is free with purchase of the 20 Denier Hosiery Knee Highs; skincare sampling is also advertised.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE STUFF", "FREE SAMPLE", "RETAIL POP-UP"],
+      "main_source_url": "https://www.nycforfree.co/events/the-stoop-by-calzedonia",
+      "official_source_url": null,
+      "additional_verification_source": "https://www.averagesocialite.com/nyc-events/2026/9/12/the-stoop-by-calzedonia-nyc",
+      "last_verified": "2026-09-11T20:07:26-04:00",
+      "caveats": "Multiple current listings agree that the event is open to the public. The free embroidery is purchase-dependent, and samples or promotional items may be inventory-limited.",
+      "practical_notes": "Saturday and Sunday, September 12-13, 12-5 PM at 188 Lafayette Street. No RSVP or approval requirement is published in the current listings.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    },
+    {
+      "id": "estee-lauder-glimmer-west-village-2026",
+      "event_name": "Estée Lauder: The Glimmer Experience",
+      "brand": "Estée Lauder",
+      "neighborhood": "West Village",
+      "address": "711 Greenwich St, New York, NY 10014",
+      "subway": {"station": "Christopher St–Sheridan Sq", "lines": ["1"]},
+      "categories": ["beauty", "food/drink"],
+      "what_it_is": "A public pop-up for Estée Lauder's new Glimmer Eau de Parfum with fragrance discovery, photo moments, street treats and promotional gifts.",
+      "admission_free": true,
+      "what_is_free": "Public admission is free; current listings advertise treats, gifts and a chance to receive Estée Lauder product, but quantities are not guaranteed.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE STUFF", "FREE SAMPLE"],
+      "main_source_url": "https://nycplugged.com/calendar/estee-lauder-the-glimmer-experience/",
+      "official_source_url": null,
+      "additional_verification_source": "https://www.averagesocialite.com/nyc-events",
+      "last_verified": "2026-09-11T20:07:26-04:00",
+      "caveats": "Current event listings agree that the pop-up is open to the public. Promotional product and gifts are chance- or inventory-dependent rather than guaranteed to every visitor.",
+      "practical_notes": "Friday, September 11 from 12:30-7 PM and Saturday, September 12 from 11 AM-7 PM at 711 Greenwich Street. No advance RSVP or approval requirement is published.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    }
+  ],
+  "occurrences": [
+    {"id":"calzedonia-stoop-soho-2026--2026-09-12","event_id":"calzedonia-stoop-soho-2026","date":"2026-09-12","hours":"12–5 PM","availability":"open","details":"Open to the public; complimentary coffee, photo booth and select beauty/hair experiences are advertised."},
+    {"id":"calzedonia-stoop-soho-2026--2026-09-13","event_id":"calzedonia-stoop-soho-2026","date":"2026-09-13","hours":"12–5 PM","availability":"open","details":"Open to the public; complimentary coffee, photo booth and select beauty/hair experiences are advertised."},
+    {"id":"estee-lauder-glimmer-west-village-2026--2026-09-11","event_id":"estee-lauder-glimmer-west-village-2026","date":"2026-09-11","hours":"12:30–7 PM","availability":"open","details":"Open to the public; gifts and promotional product are subject to availability."},
+    {"id":"estee-lauder-glimmer-west-village-2026--2026-09-12","event_id":"estee-lauder-glimmer-west-village-2026","date":"2026-09-12","hours":"11 AM–7 PM","availability":"open","details":"Open to the public; gifts and promotional product are subject to availability."}
+  ]
+}
