@@ -1,0 +1,226 @@
+{
+  "analyzed_at": "2026-09-12",
+  "method": "Existing analyzer output verified and refined against retrieved video content and sampled frames.",
+  "results": [
+    {
+      "original_url": "https://www.tiktok.com/t/ZP83DgrXF/",
+      "suggested_title": "The Odyssey in 4DX: Out-of-Theater Reaction",
+      "description": "Ashley reacts outside the theater to The Odyssey's Regal 4DX experience, including moving seats, water effects, and battle-scene immersion.",
+      "inferred_category": "Moviegoing Experience Review",
+      "format_style": "Direct-to-camera reaction with theater B-roll",
+      "hook": "I don't watch many 4D movies because I have AMC A-List, but this one felt necessary.",
+      "strongest_qualities": ["specific first-person review", "clear entertainment POV", "immediate on-location context"],
+      "portfolio_recommendation": "Keep",
+      "status": "COMPLETE"
+    },
+    {
+      "original_url": "https://www.tiktok.com/t/ZP83DbJpX/",
+      "suggested_title": "The Outfit Montage That Did Not Go as Planned",
+      "description": "A fast try-on montage turns several awkward or ill-fitting outfits into a playful fashion-and-relationship moment.",
+      "inferred_category": "Fashion Try-On Comedy",
+      "format_style": "Reply video with quick outfit montage",
+      "hook": "We tried a whole movie montage of outfits that either didn't fit right or were just weird.",
+      "strongest_qualities": ["visual variety", "self-aware humor", "quick transformation pacing"],
+      "portfolio_recommendation": "Keep",
+      "status": "COMPLETE"
+    },
+    {
+      "original_url": "https://www.tiktok.com/t/ZP83DxGV2/",
+      "suggested_title": "The Lorax Would Not Approve of This Graffiti",
+      "description": "Ashley documents Lorax-themed graffiti carved into a Lower East Side tree and challenges the contradiction in its message.",
+      "inferred_category": "NYC Environmental Commentary",
+      "format_style": "On-location visual commentary",
+      "hook": "I don't think the Lorax would want people graffitiing trees either.",
+      "strongest_qualities": ["clear visual premise", "recognizable cultural reference", "concise point of view"],
+      "portfolio_recommendation": "Keep",
+      "status": "COMPLETE"
+    },
+    {
+      "original_url": "https://www.tiktok.com/t/ZP83DaGSt/",
+      "suggested_title": "A Possible Replacement for AMC Kips Bay",
+      "description": "Ashley proposes turning a nearby former Mount Sinai complex into an IMAX theater after the AMC Kips Bay closing.",
+      "inferred_category": "NYC Movie-Theater Advocacy",
+      "format_style": "Direct-to-camera local solution pitch",
+      "hook": "I think I solved what to do about the AMC Kips Bay closing.",
+      "strongest_qualities": ["strong problem-solution structure", "specific local knowledge", "distinct personal POV"],
+      "portfolio_recommendation": "Feature",
+      "status": "COMPLETE"
+    },
+    {
+      "original_url": "https://www.tiktok.com/t/ZP83DseUq/",
+      "suggested_title": "A Tiffany Billboard Powered by a Truck Projector",
+      "description": "A five-second NYC street clip captures a surprisingly makeshift truck projector illuminating a Tiffany & Co. billboard.",
+      "inferred_category": "NYC Brand Sighting",
+      "format_style": "Short observational street clip",
+      "hook": "This honestly seems too scrappy for such a luxurious ad campaign.",
+      "strongest_qualities": ["instant visual oddity", "brand recognition", "NYC specificity"],
+      "portfolio_recommendation": "Keep",
+      "status": "COMPLETE"
+    },
+    {
+      "original_url": "https://www.tiktok.com/t/ZP83DG9rv/",
+      "suggested_title": "Dunkin Weather Whiplash",
+      "description": "Ashley jokes that an August temperature swing has her choosing between a frozen vanilla drink and a hot chai latte in the same day.",
+      "inferred_category": "Seasonal Food-and-Weather Humor",
+      "format_style": "Direct-to-camera observational joke",
+      "hook": "It's August; I should be getting a vanilla bean Coolatta, not a hot chai latte.",
+      "strongest_qualities": ["relatable premise", "brand-specific detail", "quick seasonal observation"],
+      "portfolio_recommendation": "Skip",
+      "status": "COMPLETE"
+    },
+    {
+      "original_url": "https://www.tiktok.com/t/ZP83DpWvf/",
+      "suggested_title": "Background Actor Core: Every Possible Wardrobe Option",
+      "description": "A wardrobe-table montage jokes about the huge number of clothing options background actors are asked to bring to set.",
+      "inferred_category": "Behind-the-Scenes Actor Life",
+      "format_style": "Text-led on-set wardrobe montage",
+      "hook": "Why does every production need every possible movie and TV look as wardrobe options?",
+      "strongest_qualities": ["insider perspective", "clear visual evidence", "niche professional humor"],
+      "portfolio_recommendation": "Feature",
+      "status": "COMPLETE"
+    },
+    {
+      "original_url": "https://www.tiktok.com/t/ZP83DWM1q/",
+      "suggested_title": "Why Background Actors Should Receive Credits",
+      "description": "Ashley answers a commenter by arguing that competitive, paid background work still contributes to a film and deserves formal credit.",
+      "inferred_category": "Actor-Industry Commentary",
+      "format_style": "Comment reply with direct-to-camera argument",
+      "hook": "I was still cast and I still worked on the movie, so why isn't that enough to earn a credit?",
+      "strongest_qualities": ["clear argument", "firsthand industry experience", "conversation-driven format"],
+      "portfolio_recommendation": "Feature",
+      "status": "COMPLETE"
+    },
+    {
+      "original_url": "https://www.tiktok.com/t/ZP83Dq6Ut/",
+      "suggested_title": "Why Overcast Light Makes iPhone Video Look Cinematic",
+      "description": "Ashley uses an outdoor iPhone clip to explain how cloud cover acts like a giant diffuser and creates flattering production-ready light.",
+      "inferred_category": "Mobile Filming and Lighting",
+      "format_style": "Direct-to-camera production tip with visual demonstration",
+      "hook": "This is the perfect weather for filming anything outside.",
+      "strongest_qualities": ["useful takeaway", "visual proof", "actor-to-creator authority"],
+      "portfolio_recommendation": "Feature",
+      "status": "COMPLETE"
+    },
+    {
+      "original_url": "https://www.tiktok.com/t/ZP83Du8nk/",
+      "suggested_title": "One Actor, Many Background Looks",
+      "description": "A photo-trend montage presents Ashley in multiple background-actor looks to demonstrate range and on-set versatility.",
+      "inferred_category": "Acting Range Showcase",
+      "format_style": "Photo trend with role-and-look montage",
+      "hook": "This many hairstyles of me doing background work, from period pieces to modern day.",
+      "strongest_qualities": ["fast proof of versatility", "strong visual range", "clear actor positioning"],
+      "portfolio_recommendation": "Feature",
+      "status": "COMPLETE"
+    },
+    {
+      "original_url": "https://www.tiktok.com/t/ZP83D5NT5/",
+      "suggested_title": "A Self-Tape With No Gear and My Grandparents as Crew",
+      "description": "Ashley explains how she improvised a self-tape in a cluttered room using window light while her grandparents handled the camera and sides.",
+      "inferred_category": "Resourceful Self-Tape Story",
+      "format_style": "Direct-to-camera story with self-tape context",
+      "hook": "If I can do a self-tape while on vacation with my grandparents, you can too.",
+      "strongest_qualities": ["resourcefulness", "personal storytelling", "practical actor relevance"],
+      "portfolio_recommendation": "Feature",
+      "status": "COMPLETE"
+    },
+    {
+      "original_url": "https://www.tiktok.com/t/ZP83DnwFy/",
+      "suggested_title": "Has the Tribeca Film Festival Outgrown Its Name?",
+      "description": "Ashley argues that Tribeca's expansion across neighborhoods and into television and podcasts makes its current name less accurate.",
+      "inferred_category": "Film-Festival Commentary",
+      "format_style": "On-location direct-to-camera opinion",
+      "hook": "The Tribeca Film Festival would be so much better if they did this.",
+      "strongest_qualities": ["specific cultural observation", "clear thesis", "on-location credibility"],
+      "portfolio_recommendation": "Keep",
+      "status": "COMPLETE"
+    },
+    {
+      "original_url": "https://www.tiktok.com/t/ZP83DXVCu/",
+      "suggested_title": "The Thing Walks Through a Fantastic Four NYC Pop-Up",
+      "description": "Ashley captures Ben Grimm/The Thing appearing at a Fantastic Four: First Steps promotional pop-up in Manhattan.",
+      "inferred_category": "Entertainment Pop-Up Coverage",
+      "format_style": "Event B-roll with character sighting",
+      "hook": "You never know who you'll see walking around New York.",
+      "strongest_qualities": ["recognizable visual subject", "timely entertainment tie-in", "event discovery value"],
+      "portfolio_recommendation": "Keep",
+      "status": "COMPLETE"
+    },
+    {
+      "original_url": "https://www.tiktok.com/t/ZP83DHGy7/",
+      "suggested_title": "Tribeca Needs More Than Popcorn and Water",
+      "description": "Ashley proposes food vendors or a food truck for Tribeca attendees who have little time between screenings and few concession options.",
+      "inferred_category": "Event-Experience Critique",
+      "format_style": "On-location direct-to-camera solution pitch",
+      "hook": "I'm at Tribeca, and it's strange that there is free popcorn and water but no other concessions.",
+      "strongest_qualities": ["audience-centered problem", "concrete solution", "event-specific reporting"],
+      "portfolio_recommendation": "Keep",
+      "status": "COMPLETE"
+    },
+    {
+      "original_url": "https://www.tiktok.com/t/ZP83DpJSr/",
+      "suggested_title": "What's the Deal With Airline Concourses?",
+      "description": "A travel-weary airport observation turns rows of unavailable or awkward seating into a short visual joke.",
+      "inferred_category": "Airport Observational Comedy",
+      "format_style": "Travel B-roll with comedic commentary",
+      "hook": "What's the deal with airline concourses?",
+      "strongest_qualities": ["immediate comedic framing", "visual setup", "relatable travel frustration"],
+      "portfolio_recommendation": "Keep",
+      "status": "COMPLETE"
+    },
+    {
+      "original_url": "https://www.tiktok.com/t/ZP83DWuPb/",
+      "suggested_title": "The Real Dead Outlaw Behind the Musical",
+      "description": "Ashley documents an Elmer McCurdy exhibit timed to Tony season and connects the preserved outlaw story to the Broadway musical.",
+      "inferred_category": "Theatre History and Culture",
+      "format_style": "Exhibit B-roll with contextual text",
+      "hook": "Just in time for the Tonys, I found this exhibit of Elmer McCurdy.",
+      "strongest_qualities": ["timely theatre connection", "unusual subject", "visual cultural context"],
+      "portfolio_recommendation": "Keep",
+      "status": "COMPLETE"
+    },
+    {
+      "original_url": "https://www.tiktok.com/t/ZP83DfPxA/",
+      "suggested_title": "Did I Feel the Energy at a Sedona Vortex?",
+      "description": "Ashley visits a Sedona energy vortex, weighs the promised spiritual experience against what she actually felt, and keeps the conclusion open-ended.",
+      "inferred_category": "Wellness Travel Experiment",
+      "format_style": "First-person travel reflection with location B-roll",
+      "hook": "Is it the spiritual experience I hoped it would be? Sort of.",
+      "strongest_qualities": ["curious beginner perspective", "honest ambiguity", "strong destination visuals"],
+      "portfolio_recommendation": "Feature",
+      "status": "COMPLETE"
+    },
+    {
+      "original_url": "https://www.tiktok.com/t/ZP83Dt99p/",
+      "suggested_title": "A Robot Made My Dirty Chai—but Forgot One Thing",
+      "description": "Ashley follows a robot coffee arm making a dirty chai and reviews the novelty alongside the practical problem that the drink is not properly stirred.",
+      "inferred_category": "Food-Tech Experience Review",
+      "format_style": "Long-form demonstration with first-person review",
+      "hook": "I have mixed feelings about this dirty chai not being mixed.",
+      "strongest_qualities": ["complete product demonstration", "clear consumer takeaway", "novel visual subject"],
+      "portfolio_recommendation": "Feature",
+      "status": "COMPLETE"
+    },
+    {
+      "original_url": "https://www.tiktok.com/t/ZP83Dmumv/",
+      "suggested_title": "The Passenger-Seat View Through Sedona",
+      "description": "A scenic driving montage captures Sedona's red-rock landscape from the passenger seat using a trend-aware travel format.",
+      "inferred_category": "Scenic Travel Montage",
+      "format_style": "Road-trip B-roll with trending audio",
+      "hook": "We don't have this at home.",
+      "strongest_qualities": ["strong natural scenery", "simple visual storytelling", "destination appeal"],
+      "portfolio_recommendation": "Keep",
+      "status": "COMPLETE"
+    },
+    {
+      "original_url": "https://www.tiktok.com/t/ZP83Dy2Uy/",
+      "suggested_title": "A Surprisingly Sketchy Denver Alley",
+      "description": "Ashley contrasts a pleasant downtown Denver block with an unexpectedly rough-looking alley in a quick travel observation.",
+      "inferred_category": "Urban Travel Observation",
+      "format_style": "Short location B-roll with voiceover",
+      "hook": "It seems like a nice little area, and then there is this alley.",
+      "strongest_qualities": ["clear visual contrast", "fast setup and payoff", "location-specific perspective"],
+      "portfolio_recommendation": "Skip",
+      "status": "COMPLETE"
+    }
+  ]
+}
