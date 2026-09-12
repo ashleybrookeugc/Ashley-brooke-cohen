@@ -2,7 +2,7 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "ashley-brooke-cohen",
   "compatibility_date": "2026-09-09",
-  "main": "src/auth-worker.js",
+  "main": "src/router-worker.js",
   "rules": [
     { "type": "Text", "globs": ["**/*.html"], "fallthrough": true }
   ],
@@ -17,7 +17,7 @@
   },
   "assets": {
     "directory": "./public",
-    "run_worker_first": ["/admin", "/admin/*", "/moderation", "/moderation/*", "/api/*", "/nyfw-pop-ups/event/*"],
+    "run_worker_first": ["/admin", "/admin/*", "/moderation", "/moderation/*", "/api/*", "/nyfw-pop-ups/event", "/nyfw-pop-ups/event/*", "/nyfw-pop-ups/event.html"],
     "html_handling": "auto-trailing-slash",
     "not_found_handling": "404-page"
   }
