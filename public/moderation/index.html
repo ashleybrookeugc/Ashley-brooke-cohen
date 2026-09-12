@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Submission review</title>
-  <link rel="stylesheet" href="/assets/site.css?v=moderation-20260912b">
+  <link rel="stylesheet" href="/assets/site.css?v=moderation-20260912c">
   <style>
     .moderation-shell{max-width:820px}
     .moderation-shell>p{max-width:680px}
@@ -18,18 +18,20 @@
     .submission-review small{display:block;font-weight:500;line-height:1.4;color:#444}
     .review-actions{display:flex;flex-wrap:wrap;gap:.55rem;margin-top:1rem}
     .review-actions button,.verification-alert button,#discovery-form button{border:1.5px solid #101010;border-radius:8px;background:#101010;color:#fff;padding:.72rem .85rem;font-weight:850;cursor:pointer}
+    .review-actions button[data-verify-source]{background:#bdeac6;color:#101010}
     .review-actions button[data-action="published"]{background:#ffef59;color:#101010}
     .review-actions button[data-action="rejected"]{background:#ffe3db;color:#101010}
     .review-actions button[data-action="save"]{background:#dedaff;color:#101010}
     .review-actions button:disabled,#discovery-form button:disabled,.verification-alert button:disabled{opacity:.55;cursor:wait}
     .action-status{min-height:1.4em;margin:.7rem 0 0!important;font-size:.88rem!important;font-weight:800}
-    .action-status.success{color:#176b2c}.action-status.error{color:#a1261d}
+    .action-status.success{color:#176b2c}.action-status.error{color:#a1261d}.action-status.warning{color:#805500}
     .verification-alert{margin:.75rem 0;padding:.85rem;background:#fff4c2;border:1.5px solid #101010;border-radius:10px}
     #discovery-form{display:grid;gap:.1rem}
     #discovery-status{min-height:1.4em;font-weight:800}
     #discovery-sources ul{padding-left:1.2rem}
     #discovery-sources li{margin:.55rem 0;overflow-wrap:anywhere}
     .submission-review a{overflow-wrap:anywhere}
+    .admin-note{padding:.7rem .8rem;background:#f3f0ff;border-left:4px solid #5e49ff;font-size:.9rem!important;line-height:1.4!important}
     @media (max-width:600px){
       .moderation-shell{padding:1rem .8rem 2rem}
       .moderation-shell .back-home{margin:-1rem -.8rem 0}
@@ -57,12 +59,13 @@
       <p class="eyebrow">AUTOMATED DISCOVERY</p>
       <h2>Discovery sources</h2>
       <p>Add public RSS/Atom feeds or pages that expose structured <code>Event</code> or <code>JobPosting</code> JSON-LD. New candidates enter this moderation queue as <strong>pending</strong>; they never auto-publish.</p>
+      <p class="admin-note"><strong>This section does not verify pending submissions.</strong> The button below discovers new candidates from configured feeds and rechecks sources for listings that are already published.</p>
       <form id="discovery-form">
         <label>Type<select name="content_type"><option value="event">Event</option><option value="casting">Casting</option></select></label>
         <label>Public source URL<input name="url" type="url" required placeholder="https://"></label>
         <label>Platform / source name<input name="source_platform" placeholder="Official site, venue feed…"></label>
         <label>Source account / handle<input name="source_handle"></label>
-        <div class="review-actions"><button type="submit">Add source</button><button type="button" id="run-discovery">Run discovery + reverification now</button></div>
+        <div class="review-actions"><button type="submit">Add source</button><button type="button" id="run-discovery">Discover + recheck published sources</button></div>
         <p id="discovery-status" role="status" aria-live="polite"></p>
       </form>
       <div id="discovery-sources">Loading sources…</div>
@@ -79,11 +82,28 @@
     <div id="items">Loading…</div>
   </main>
   <script>
-    const E=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    const E=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#39;'}[c]));
     const fields=[['event_name','Event / project name'],['date_time_text','Date / time'],['location_text','Location / venue'],['notes','Submitter notes'],['admin_notes','Private review notes']];
     const states=['pending','under_review','approved','rejected','published'];
-    async function api(url,options){const response=await fetch(url,options);const result=await response.json().catch(()=>({}));if(response.status===401){location.href='/admin/login';throw Error('Unauthorized')}if(!response.ok)throw Error(result.error||`Request failed (${response.status})`);return result}
+    async function api(url,options){const response=await fetch(url,options);const result=await response.json().catch(()=>({}));if(response.status===401){location.href='/admin/login';throw Error('Unauthorized')}if(!response.ok)throw Error(result.error||result.message||`Request failed (${response.status})`);return result}
     function setCardStatus(card,message,type=''){const el=card.querySelector('.action-status');if(!el)return;el.textContent=message;el.className='action-status'+(type?' '+type:'')}
+    async function verifySource(card,button){
+      const buttons=[...card.querySelectorAll('button')];
+      buttons.forEach(b=>b.disabled=true);
+      const original=button.textContent;
+      button.textContent='Verifying…';
+      setCardStatus(card,'Checking the submitted source…');
+      try{
+        const d=await api('/api/admin/submissions/'+card.dataset.id+'/verify-source',{method:'POST'});
+        const signalText=d.signals?.length?' Flags: '+d.signals.map(x=>x.replaceAll('_',' ')).join(', ')+'.':'';
+        setCardStatus(card,d.message+signalText,d.reachable?(d.signals?.length?'warning':'success'):'error');
+      }catch(err){
+        setCardStatus(card,'Verification failed: '+err.message,'error');
+      }finally{
+        buttons.forEach(b=>b.disabled=false);
+        button.textContent=original;
+      }
+    }
     async function save(card,status,button){
       const payload={};
       card.querySelectorAll('[data-k]').forEach(x=>{if(x.dataset.k!=='status')payload[x.dataset.k]=x.value});
@@ -103,11 +123,11 @@
       }
     }
     function draftHelp(s){return s.content_type==='casting'?'Verified casting JSON. Use { "casting": { "title" or "project", "casting_company", "role", "union_status", "pay", "deadline", "work_dates": [], "audition_dates": [], "location", "format", "apply_url" or "apply_email", "requirements": [], "source_url", "last_verified" } }. Only include requirements explicitly stated by the source.':'Verified event + occurrence JSON. Required to publish into the existing event/occurrence model.'}
-    async function loadSubmissions(highlightId='',message=''){try{const result=await api('/api/admin/submissions',{cache:'no-store'});items.innerHTML=result.submissions.map(s=>`<article class="submission-review" data-id="${E(s.id)}"><p class="eyebrow">${E(s.status)} · ${E(s.content_type)}</p><h2>${E(s.event_name||'Untitled submission')}</h2><p><strong>Submission ID:</strong> ${E(s.id)}</p><p><strong>Submitted:</strong> ${E(s.created_at)}</p><p><a href="${E(s.source_url)}" target="_blank" rel="noreferrer">Open submitted source ↗</a></p><p><strong>Platform / handle:</strong> ${E(s.platforms||'Not supplied')} ${s.handles?'· '+E(s.handles):''}</p>${fields.map(([key,label])=>`<label>${label}<textarea data-k="${key}">${E(s[key])}</textarea></label>`).join('')}<p><strong>Possible duplicates:</strong> ${E(s.potential_duplicates.map(x=>x.event_name||x.submission_id).join(', ')||'None found')}</p><label>Review status<select data-k="status">${states.map(x=>`<option value="${x}" ${x===s.status?'selected':''}>${x.replace('_',' ')}</option>`).join('')}</select></label><label>Verified structured JSON <small>${E(draftHelp(s))}</small><textarea data-k="review_draft_json" rows="10">${E(s.review_draft_json||'')}</textarea></label><div class="review-actions"><button type="button" data-action="under_review">Mark under review</button><button type="button" data-action="approved">Approve</button><button type="button" data-action="rejected">Reject</button><button type="button" data-action="published">Publish verified ${s.content_type==='casting'?'Casting':'Event'}</button><button type="button" data-action="save">Save edits</button></div><p class="action-status" role="status" aria-live="polite"></p></article>`).join('')||'<p>No submissions yet.</p>';document.querySelectorAll('[data-action]').forEach(button=>button.onclick=()=>{const card=button.closest('article');const requestedStatus=button.dataset.action==='save'?card.querySelector('[data-k="status"]').value:button.dataset.action;save(card,requestedStatus,button)});if(highlightId&&message){const card=[...document.querySelectorAll('article[data-id]')].find(x=>x.dataset.id===highlightId);if(card)setCardStatus(card,message,'success')}}catch(err){items.innerHTML=`<p role="alert"><strong>Queue could not load.</strong> ${E(err.message)}</p>`}}
+    async function loadSubmissions(highlightId='',message=''){try{const result=await api('/api/admin/submissions',{cache:'no-store'});items.innerHTML=result.submissions.map(s=>`<article class="submission-review" data-id="${E(s.id)}"><p class="eyebrow">${E(s.status)} · ${E(s.content_type)}</p><h2>${E(s.event_name||'Untitled submission')}</h2><p><strong>Submission ID:</strong> ${E(s.id)}</p><p><strong>Submitted:</strong> ${E(s.created_at)}</p><p><a href="${E(s.source_url)}" target="_blank" rel="noreferrer">Open submitted source ↗</a></p><p><strong>Platform / handle:</strong> ${E(s.platforms||'Not supplied')} ${s.handles?'· '+E(s.handles):''}</p>${fields.map(([key,label])=>`<label>${label}<textarea data-k="${key}">${E(s[key])}</textarea></label>`).join('')}<p><strong>Possible duplicates:</strong> ${E(s.potential_duplicates.map(x=>x.event_name||x.submission_id).join(', ')||'None found')}</p><label>Review status<select data-k="status">${states.map(x=>`<option value="${x}" ${x===s.status?'selected':''}>${x.replace('_',' ')}</option>`).join('')}</select></label><label>Verified structured JSON <small>${E(draftHelp(s))}</small><textarea data-k="review_draft_json" rows="10">${E(s.review_draft_json||'')}</textarea></label><div class="review-actions"><button type="button" data-verify-source>Verify submitted source</button><button type="button" data-action="under_review">Mark under review</button><button type="button" data-action="approved">Approve</button><button type="button" data-action="rejected">Reject</button><button type="button" data-action="published">Publish verified ${s.content_type==='casting'?'Casting':'Event'}</button><button type="button" data-action="save">Save edits</button></div><p class="action-status" role="status" aria-live="polite"></p></article>`).join('')||'<p>No submissions yet.</p>';document.querySelectorAll('[data-action]').forEach(button=>button.onclick=()=>{const card=button.closest('article');const requestedStatus=button.dataset.action==='save'?card.querySelector('[data-k="status"]').value:button.dataset.action;save(card,requestedStatus,button)});document.querySelectorAll('[data-verify-source]').forEach(button=>button.onclick=()=>verifySource(button.closest('article'),button));if(highlightId&&message){const card=[...document.querySelectorAll('article[data-id]')].find(x=>x.dataset.id===highlightId);if(card)setCardStatus(card,message,'success')}}catch(err){items.innerHTML=`<p role="alert"><strong>Queue could not load.</strong> ${E(err.message)}</p>`}}
     async function loadSources(){try{const d=await api('/api/admin/discovery-sources',{cache:'no-store'});document.querySelector('#discovery-sources').innerHTML=d.sources.length?'<ul>'+d.sources.map(s=>`<li><strong>${E(s.content_type)}</strong> · <a href="${E(s.url)}" target="_blank" rel="noreferrer">${E(s.source_platform||s.url)}</a> · ${s.enabled?'enabled':'disabled'}${s.last_checked_at?' · last checked '+E(s.last_checked_at):''}${s.last_error?' · <strong>error:</strong> '+E(s.last_error):''}</li>`).join('')+'</ul>':'<p>No automated discovery sources configured yet.</p>'}catch(err){document.querySelector('#discovery-sources').textContent=err.message}}
     async function loadAlerts(){try{const d=await api('/api/admin/verification-alerts',{cache:'no-store'});document.querySelector('#verification-alerts').innerHTML=d.alerts.length?d.alerts.map(a=>`<article class="verification-alert" data-alert-id="${E(a.id)}"><p><strong>${E(a.kind.replaceAll('_',' '))}</strong> · ${E(a.content_type)} · ${E(a.event_name||a.submission_id)}</p><p>${E(a.summary)}</p><p><a href="${E(a.source_url)}" target="_blank" rel="noreferrer">Open source ↗</a> <button type="button" data-resolve-alert>Mark reviewed</button></p></article>`).join(''):'<p>No open verification alerts.</p>';document.querySelectorAll('[data-resolve-alert]').forEach(b=>b.onclick=async()=>{b.disabled=true;const original=b.textContent;b.textContent='Saving…';try{await api('/api/admin/verification-alerts/'+b.closest('[data-alert-id]').dataset.alertId,{method:'PATCH'});await loadAlerts()}catch(err){b.disabled=false;b.textContent=original;alert(err.message)}})}catch(err){document.querySelector('#verification-alerts').textContent=err.message}}
     document.querySelector('#discovery-form').addEventListener('submit',async e=>{e.preventDefault();const body=Object.fromEntries(new FormData(e.target));try{await api('/api/admin/discovery-sources',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(body)});e.target.reset();document.querySelector('#discovery-status').textContent='Source added.';await loadSources()}catch(err){document.querySelector('#discovery-status').textContent=err.message}});
-    document.querySelector('#run-discovery').onclick=async()=>{const b=document.querySelector('#run-discovery'),s=document.querySelector('#discovery-status'),original=b.textContent;b.disabled=true;b.textContent='Verifying…';s.textContent='Running discovery and reverification…';try{const d=await api('/api/admin/discovery/run',{method:'POST'});s.textContent=`Finished. Checked ${d.discovery.checked} discovery sources, found ${d.discovery.discovered} new candidates; rechecked ${d.reverification.checked} published sources and raised ${d.reverification.alerts} alert(s).`;await Promise.all([loadSources(),loadAlerts(),loadSubmissions()])}catch(err){s.textContent='Verification failed: '+err.message}finally{b.disabled=false;b.textContent=original}};
+    document.querySelector('#run-discovery').onclick=async()=>{const b=document.querySelector('#run-discovery'),s=document.querySelector('#discovery-status'),original=b.textContent;b.disabled=true;b.textContent='Running…';s.textContent='Running discovery and rechecking published sources…';try{const d=await api('/api/admin/discovery/run',{method:'POST'});s.textContent=`Finished. Checked ${d.discovery.checked} discovery sources, found ${d.discovery.discovered} new candidates; rechecked ${d.reverification.checked} published sources and raised ${d.reverification.alerts} alert(s).`;await Promise.all([loadSources(),loadAlerts(),loadSubmissions()])}catch(err){s.textContent='Discovery/recheck failed: '+err.message}finally{b.disabled=false;b.textContent=original}};
     Promise.all([loadSubmissions(),loadSources(),loadAlerts()]);
   </script>
 </body>
