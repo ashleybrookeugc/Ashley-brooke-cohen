@@ -1,0 +1,52 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-12T08:04:22-04:00",
+  "events": [
+    {
+      "id": "calzedonia-stoop-soho-2026",
+      "event_name": "The Stoop by Calzedonia",
+      "brand": "Calzedonia",
+      "neighborhood": "SoHo / Nolita",
+      "address": "188 Lafayette St, New York, NY 10013",
+      "subway": {"station": "Prince St", "lines": ["N", "R", "W"]},
+      "categories": ["fashion", "beauty", "food/drink"],
+      "what_it_is": "A two-day NYFW pop-up where Calzedonia is turning a SoHo space into a brownstone-inspired stop for styling refreshes, content creation and legwear discovery.",
+      "admission_free": true,
+      "what_is_free": "Public entry, coffee, branded stickers, hairstyle touchups, skincare sampling/touchups and a photo-booth experience are advertised. Hand embroidery is free with purchase of eligible 20 Denier Hosiery Knee Highs.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE STUFF", "FREE SAMPLE", "RETAIL POP-UP"],
+      "main_source_url": "https://www.nycforfree.co/events/the-stoop-by-calzedonia",
+      "additional_verification_source": "https://www.averagesocialite.com/nyc-events/2026/9/12/the-stoop-by-calzedonia-nyc",
+      "last_verified": "2026-09-12T08:04:22-04:00",
+      "caveats": "Multiple current sources agree the pop-up is open to the public September 12–13 from 12–5 PM at 188 Lafayette Street. Embroidery is tied to a knee-high purchase; free coffee, stickers, photo booth and beauty/hair touchups are promotional and may be capacity- or supply-dependent.",
+      "practical_notes": "Walk-in public access; no advance RSVP or approval requirement is published in the current listings.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    },
+    {
+      "id": "olaplex-shape-set-style-studio-2026",
+      "event_name": "OLAPLEX Shape Set Style Studio",
+      "brand": "OLAPLEX",
+      "neighborhood": "Flatiron",
+      "address": "Flatiron Plaza, 23rd Street and Broadway, New York, NY 10010",
+      "subway": {"station": "23 St", "lines": ["R", "W"]},
+      "categories": ["beauty", "fashion"],
+      "what_it_is": "A two-day public OLAPLEX pop-up celebrating the launch of Shape Set hairspray with a photo activation, product samples, merchandise and early-arrival giveaways.",
+      "admission_free": true,
+      "what_is_free": "Complimentary Shape Set samples and OLAPLEX promotional merchandise are advertised. The first 50 attendees each day can receive a full-size 245 ml Shape Set Hairspray while supplies last.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE STUFF", "FREE SAMPLE"],
+      "main_source_url": "https://nycplugged.com/calendar/olaplex-shape-set-style-studio/",
+      "additional_verification_source": "https://www.trumba.com/events-calendar/ny/new-york/wabc",
+      "last_verified": "2026-09-12T08:04:22-04:00",
+      "caveats": "Current sources agree on September 12–13, 11 AM–5 PM, and open public access. One secondary listing describes the plaza as 23rd Street and Fifth Avenue, while WABC and another current event listing identify Flatiron Plaza at 23rd Street and Broadway; the latter is used here. Full-size hairspray is limited to the first 50 attendees per day while supplies last.",
+      "practical_notes": "Walk-in public access; no advance RSVP or approval requirement is published. Arrive early for the first-50 full-size giveaway.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    }
+  ],
+  "occurrences": [
+    {"id":"calzedonia-stoop-soho-2026--2026-09-12","event_id":"calzedonia-stoop-soho-2026","date":"2026-09-12","hours":"12–5 PM","availability":"open","details":"Open to the public; promotional items and services may be capacity- or supply-dependent."},
+    {"id":"calzedonia-stoop-soho-2026--2026-09-13","event_id":"calzedonia-stoop-soho-2026","date":"2026-09-13","hours":"12–5 PM","availability":"open","details":"Open to the public; promotional items and services may be capacity- or supply-dependent."},
+    {"id":"olaplex-shape-set-style-studio-2026--2026-09-12","event_id":"olaplex-shape-set-style-studio-2026","date":"2026-09-12","hours":"11 AM–5 PM","availability":"open","details":"Open to the public; first 50 attendees can receive a full-size Shape Set while supplies last."},
+    {"id":"olaplex-shape-set-style-studio-2026--2026-09-13","event_id":"olaplex-shape-set-style-studio-2026","date":"2026-09-13","hours":"11 AM–5 PM","availability":"open","details":"Open to the public; first 50 attendees can receive a full-size Shape Set while supplies last."}
+  ]
+}
