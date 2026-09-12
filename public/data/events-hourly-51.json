@@ -1,0 +1,53 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-12T06:04:26-04:00",
+  "events": [
+    {
+      "id": "sally-hansen-house-rockefeller-2026",
+      "event_name": "The House of Sally Hansen",
+      "brand": "Sally Hansen × Rockefeller Center",
+      "neighborhood": "Midtown",
+      "address": "North Esplanade by The Rink, Rockefeller Center, New York, NY 10111",
+      "subway": {"station": "47–50 Sts–Rockefeller Center", "lines": ["B", "D", "F", "M"]},
+      "categories": ["beauty", "fashion"],
+      "what_it_is": "A two-day NYFW beauty activation at Rockefeller Center centered on Sally Hansen's Miracle Gel Bold Glam collection, with nail touch-ups and public-facing brand experiences.",
+      "admission_free": true,
+      "what_is_free": "Rockefeller Center lists the activation as part of its free public NYFW programming. Nail touch-ups and the on-site experience are free; promotional inventory is subject to availability.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "BEAUTY"],
+      "main_source_url": "https://www.rockefellercenter.com/pt-br/events/new-york-fashion-week-at-rockefeller-center",
+      "official_source_url": "https://www.rockefellercenter.com/pt-br/events/new-york-fashion-week-at-rockefeller-center",
+      "additional_verification_source": "https://www.nycforfree.co/events",
+      "last_verified": "2026-09-12T06:04:26-04:00",
+      "caveats": "Rockefeller Center confirms the activation, dates, location and hours as part of its free NYFW programming. The host page does not publish an RSVP or approval requirement. Any samples or promotional items remain subject to on-site availability.",
+      "practical_notes": "Saturday, September 12 from 12–6 PM and Sunday, September 13 from 10 AM–6 PM at the North Esplanade by The Rink. Walk-in public access is the published admission path.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    },
+    {
+      "id": "nyfw-african-heritage-festival-bronx-2026",
+      "event_name": "NYFW African Heritage Festival Fashion Show",
+      "brand": "Jellabiya × BAMBA SPORTS",
+      "neighborhood": "Concourse / Bronx",
+      "address": "Lou Gehrig Plaza, E 161st St at Grand Concourse, Bronx, NY 10451",
+      "subway": {"station": "161 St–Yankee Stadium", "lines": ["4", "B", "D"]},
+      "categories": ["fashion", "entertainment", "community"],
+      "what_it_is": "A free African fashion presentation during the Bronx African Heritage Festival, highlighting contemporary African style, heritage and community in an outdoor public plaza.",
+      "admission_free": true,
+      "what_is_free": "Attendance is free. The host's Luma page says registration is encouraged rather than required.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FASHION SHOW"],
+      "main_source_url": "https://luma.com/frrpdgst",
+      "official_source_url": "https://luma.com/frrpdgst",
+      "additional_verification_source": "https://juicy-times.com/events/56078-nyfw-african-heritage-festival",
+      "last_verified": "2026-09-12T06:04:26-04:00",
+      "caveats": "The host page explicitly says attendance is free and registration is encouraged. It does not state host approval, invite-only access or a required ticket. Outdoor-event conditions can still affect capacity or timing.",
+      "practical_notes": "Saturday, September 12. The host lists the fashion presentation from about 12:20 PM to 5 PM at Lou Gehrig Plaza. Registration is available on Luma but is not established as mandatory for admission.",
+      "rsvp": {"requirement": "optional", "actionability": "direct_link_available", "availability": "open", "direct_url": "https://luma.com/frrpdgst"}
+    }
+  ],
+  "occurrences": [
+    {"id":"sally-hansen-house-rockefeller-2026--2026-09-12","event_id":"sally-hansen-house-rockefeller-2026","date":"2026-09-12","hours":"12–6 PM","availability":"open","details":"Free public Rockefeller Center NYFW activation; no RSVP requirement published."},
+    {"id":"sally-hansen-house-rockefeller-2026--2026-09-13","event_id":"sally-hansen-house-rockefeller-2026","date":"2026-09-13","hours":"10 AM–6 PM","availability":"open","details":"Free public Rockefeller Center NYFW activation; no RSVP requirement published."},
+    {"id":"nyfw-african-heritage-festival-bronx-2026--2026-09-12","event_id":"nyfw-african-heritage-festival-bronx-2026","date":"2026-09-12","hours":"12:20–5 PM","availability":"open","details":"Free attendance; registration encouraged but not established as required."}
+  ]
+}
