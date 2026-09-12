@@ -2,7 +2,7 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "ashley-brooke-cohen",
   "compatibility_date": "2026-09-09",
-  "main": "src/worker.js",
+  "main": "src/auth-worker.js",
   "rules": [
     { "type": "Text", "globs": ["**/*.html"], "fallthrough": true }
   ],
