@@ -1,0 +1,30 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-12T09:09:45-04:00",
+  "events": [
+    {
+      "id": "lola-blankets-nyc-flagship-opening-2026",
+      "event_name": "Lola Blankets NYC Flagship Grand Opening",
+      "brand": "Lola Blankets",
+      "neighborhood": "SoHo / Nolita",
+      "address": "273 Lafayette St, New York, NY 10012",
+      "subway": {"station": "Prince St", "lines": ["N", "R", "W"]},
+      "categories": ["fashion", "home/design", "food/drink"],
+      "what_it_is": "The grand opening of Lola Blankets' first New York City flagship store, with a live DJ, coffee bar, giveaways and opening-day retail promotions.",
+      "admission_free": true,
+      "what_is_free": "Public entry is free. The first 30 people in line are advertised to receive a free Lola Blanket; additional giveaways and coffee are also advertised, subject to availability.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE STUFF", "RETAIL POP-UP"],
+      "main_source_url": "https://www.averagesocialite.com/nyc-events",
+      "official_source_url": null,
+      "additional_verification_source": "https://www.nycforfree.co/events",
+      "last_verified": "2026-09-12T09:09:45-04:00",
+      "caveats": "Two current NYC event listings agree on the September 12 opening, 12–4 PM at 273 Lafayette Street, and describe it as open to the public. Free blankets are limited to the first 30 people in line; other giveaways and coffee are promotional and may run out. No advance RSVP or organizer-approval requirement is published.",
+      "practical_notes": "Saturday, September 12 from 12–4 PM. Walk-in public access is the advertised admission path. Arrive before noon if the first-30 free blanket is the priority.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    }
+  ],
+  "occurrences": [
+    {"id":"lola-blankets-nyc-flagship-opening-2026--2026-09-12","event_id":"lola-blankets-nyc-flagship-opening-2026","date":"2026-09-12","hours":"12–4 PM","availability":"open","details":"Open to the public; first 30 people in line are advertised to receive a free Lola Blanket while supplies last."}
+  ]
+}
