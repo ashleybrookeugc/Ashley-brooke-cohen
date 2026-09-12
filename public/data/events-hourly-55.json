@@ -1,0 +1,51 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-12T10:09:58-04:00",
+  "events": [
+    {
+      "id": "calzedonia-stoop-soho-2026",
+      "event_name": "The Stoop by Calzedonia",
+      "brand": "Calzedonia",
+      "neighborhood": "SoHo",
+      "address": "188 Lafayette St, New York, NY 10013",
+      "subway": {"station": "Spring St", "lines": ["6"]},
+      "categories": ["fashion", "beauty", "food/drink"],
+      "what_it_is": "A two-day NYFW pop-up with a hair and makeup refresh station, photo booth, legwear displays, personalization, coffee and branded stickers.",
+      "admission_free": true,
+      "what_is_free": "Public entry, complimentary coffee, branded stickers, hairstyle touchups and the photo booth are advertised as free. Embroidery is tied to purchase of the 20 Denier Hosiery Knee Highs.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE STUFF", "RETAIL POP-UP"],
+      "main_source_url": "https://www.nycforfree.co/events/the-stoop-by-calzedonia",
+      "additional_verification_source": "https://www.averagesocialite.com/nyc-events/2026/9/12/the-stoop-by-calzedonia-nyc",
+      "last_verified": "2026-09-12T10:09:58-04:00",
+      "caveats": "Current public-event sources agree that the pop-up is open to the public. Free embroidery requires purchase of the qualifying knee highs. Promotional items and services can be capacity- or supply-limited.",
+      "practical_notes": "September 12 and 13 from 12–5 PM at 188 Lafayette Street. No advance RSVP or organizer approval requirement is published in the verified sources.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    },
+    {
+      "id": "claires-yaya-tea-launch-2026",
+      "event_name": "Claire's × Yaya Tea Launch Party",
+      "brand": "Claire's × Yaya Tea",
+      "neighborhood": "Little Italy",
+      "address": "Yaya Tea, 206 Grand St, New York, NY 10013",
+      "subway": {"station": "Grand St", "lines": ["B", "D"]},
+      "categories": ["fashion", "food/drink", "family"],
+      "what_it_is": "A public launch event for the Claire's × Yaya Tea boba-inspired collection with an interactive claw machine and early-guest giveaway.",
+      "admission_free": true,
+      "what_is_free": "The first 50 guests are advertised to receive a complimentary Yaya × Claire's boba drink and one item from the collection. The claw-machine experience is also part of the event while supplies last.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE STUFF"],
+      "main_source_url": "https://www.averagesocialite.com/nyc-events/2026/9/12/claires-x-yaya-tea-launch-party-nyc",
+      "additional_verification_source": "https://www.trumba.com/events-calendar/ny/new-york/wabc",
+      "last_verified": "2026-09-12T10:09:58-04:00",
+      "caveats": "The event is described as open to the public and runs while supplies last. The complimentary boba drink and collection item are limited to the first 50 guests. Kids are welcome.",
+      "practical_notes": "Saturday, September 12 from 12–3 PM at Yaya Tea, 206 Grand Street. No advance RSVP or organizer approval requirement is published in the verified sources.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    }
+  ],
+  "occurrences": [
+    {"id":"calzedonia-stoop-soho-2026--2026-09-12","event_id":"calzedonia-stoop-soho-2026","date":"2026-09-12","hours":"12–5 PM","availability":"open","details":"Public walk-in pop-up; promotional services and items are subject to capacity or supplies."},
+    {"id":"calzedonia-stoop-soho-2026--2026-09-13","event_id":"calzedonia-stoop-soho-2026","date":"2026-09-13","hours":"12–5 PM","availability":"open","details":"Public walk-in pop-up; promotional services and items are subject to capacity or supplies."},
+    {"id":"claires-yaya-tea-launch-2026--2026-09-12","event_id":"claires-yaya-tea-launch-2026","date":"2026-09-12","hours":"12–3 PM","availability":"open","details":"Open to the public while supplies last; first 50 guests receive the advertised boba drink and collection item."}
+  ]
+}
