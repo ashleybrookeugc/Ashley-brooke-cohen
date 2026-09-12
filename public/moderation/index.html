@@ -4,10 +4,45 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Submission review</title>
-  <link rel="stylesheet" href="/assets/site.css?v=moderation-20260909d">
+  <link rel="stylesheet" href="/assets/site.css?v=moderation-20260912">
+  <style>
+    .moderation-shell{max-width:820px}
+    .moderation-shell>p{max-width:680px}
+    .submission-review{margin:1.25rem 0;padding:1rem;background:#fff;border:1.5px solid #101010;border-radius:14px;box-shadow:3px 3px 0 #101010;overflow:hidden}
+    .submission-review h2{font-size:1.35rem;margin:.3rem 0 .85rem;overflow-wrap:anywhere}
+    .submission-review p{margin:.55rem 0;overflow-wrap:anywhere}
+    .submission-review label,#discovery-form label{display:grid;gap:.4rem;margin:.85rem 0;font-weight:800;line-height:1.25}
+    .submission-review input,.submission-review textarea,.submission-review select,#discovery-form input,#discovery-form textarea,#discovery-form select{display:block;width:100%;max-width:100%;min-width:0;border:1.5px solid #777;border-radius:8px;background:#fff;color:#101010;padding:.7rem;font:inherit}
+    .submission-review textarea{min-height:88px;resize:vertical;line-height:1.35}
+    .submission-review textarea[data-k="review_draft_json"]{min-height:260px;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:.82rem}
+    .submission-review small{display:block;font-weight:500;line-height:1.4;color:#444}
+    .review-actions{display:flex;flex-wrap:wrap;gap:.55rem;margin-top:1rem}
+    .review-actions button,.verification-alert button,#discovery-form button{border:1.5px solid #101010;border-radius:8px;background:#101010;color:#fff;padding:.72rem .85rem;font-weight:850;cursor:pointer}
+    .review-actions button[data-action="published"]{background:#ffef59;color:#101010}
+    .review-actions button[data-action="rejected"]{background:#ffe3db;color:#101010}
+    .review-actions button[data-action="save"]{background:#dedaff;color:#101010}
+    .verification-alert{margin:.75rem 0;padding:.85rem;background:#fff4c2;border:1.5px solid #101010;border-radius:10px}
+    #discovery-form{display:grid;gap:.1rem}
+    #discovery-sources ul{padding-left:1.2rem}
+    #discovery-sources li{margin:.55rem 0;overflow-wrap:anywhere}
+    .submission-review a{overflow-wrap:anywhere}
+    @media (max-width:600px){
+      .moderation-shell{padding:1rem .8rem 2rem}
+      .moderation-shell .back-home{margin:-1rem -.8rem 0}
+      .moderation-shell h1{font-size:2.55rem;margin:1.25rem 0 .8rem}
+      .submission-review{margin:1rem 0;padding:.9rem;border-radius:12px;box-shadow:2px 2px 0 #101010}
+      .submission-review h2{font-size:1.25rem}
+      .submission-review p,.submission-review label{font-size:.95rem}
+      .review-actions{display:grid;grid-template-columns:1fr 1fr}
+      .review-actions button{width:100%;min-height:46px}
+      #discovery-form .review-actions{grid-template-columns:1fr}
+      .submission-review select{min-height:46px}
+    }
+    @media (max-width:390px){.review-actions{grid-template-columns:1fr}}
+  </style>
 </head>
 <body class="legal-page">
-  <main class="legal-shell">
+  <main class="legal-shell moderation-shell">
     <a class="back-home" href="/nyfw-pop-ups/">← NYFW Pop-Up Radar</a>
     <p class="eyebrow">PRIVATE MODERATION</p>
     <h1>Submission review</h1>
