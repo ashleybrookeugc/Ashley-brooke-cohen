@@ -1,0 +1,53 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-12T13:07:37-04:00",
+  "events": [
+    {
+      "id": "alani-nu-coven-club-2026",
+      "event_name": "The Coven Club by Alani Nu",
+      "brand": "Alani Nu",
+      "neighborhood": "SoHo / Nolita",
+      "address": "214 Lafayette St, New York, NY 10012",
+      "subway": {"station": "Spring St", "lines": ["6"]},
+      "categories": ["food/drink", "wellness", "entertainment"],
+      "what_it_is": "A five-story immersive Alani Nu fall-flavor activation built around Witch's Brew, Ruby Apple and Voodoo Vanilla, with themed mocktails, sampling, interactive rooms and rooftop programming.",
+      "admission_free": true,
+      "what_is_free": "The official Alani Nu event page offers free RSVP links for each date and advertises themed drinks, flavor sampling and the immersive experience. Specific merchandise or giveaway inventory is not guaranteed.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE SAMPLE", "FREE FOOD/DRINK"],
+      "main_source_url": "https://www.alaninu.com/pages/coven-club",
+      "official_source_url": "https://www.alaninu.com/pages/coven-club",
+      "additional_verification_source": "https://www.averagesocialite.com/nyc-events",
+      "last_verified": "2026-09-12T13:07:37-04:00",
+      "caveats": "18+ only. Alani Nu explicitly says space is limited and RSVP does not guarantee admission, so this should be treated as a free guest-list style event rather than guaranteed entry.",
+      "practical_notes": "September 12 and 13 from 9 AM-7 PM at 214 Lafayette Street. Use the official Alani Nu page for the correct date-specific RSVP. Arrive early because RSVP does not guarantee admission.",
+      "rsvp": {"requirement": "required", "actionability": "direct_link_available", "availability": "open", "direct_url": "https://www.alaninu.com/pages/coven-club"}
+    },
+    {
+      "id": "slam-jam-wrangler-blue-bell-social-2026",
+      "event_name": "Slam Jam × Wrangler Blue Bell Social",
+      "brand": "Slam Jam × Wrangler",
+      "neighborhood": "Lower East Side",
+      "address": "Slam Jam NYC, 292 Broome St, New York, NY 10002",
+      "subway": {"station": "Grand St", "lines": ["B", "D"]},
+      "categories": ["fashion", "food/drink", "entertainment"],
+      "what_it_is": "A public Blue Bell Social at Slam Jam NYC with Wrangler, featuring BBQ, drinks, live music and custom denim programming.",
+      "admission_free": true,
+      "what_is_free": "Public access to the event is advertised. The current listing names BBQ, drinks, live music and custom denim as on-site programming, but does not promise that every food, drink or customization item is complimentary.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "RETAIL POP-UP"],
+      "main_source_url": "https://nycplugged.com/calendar/slam-jam-x-wrangler-blue-bell-social/",
+      "official_source_url": null,
+      "additional_verification_source": null,
+      "last_verified": "2026-09-12T13:07:37-04:00",
+      "caveats": "NYC Plugged explicitly lists the event as open to the public. No advance RSVP or approval requirement is published there. Food, drinks and customization may still be subject to capacity, purchase rules or availability on site.",
+      "practical_notes": "Saturday, September 12 from 2-7 PM at Slam Jam NYC, 292 Broome Street. Walk-in public access is the published admission path.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    }
+  ],
+  "occurrences": [
+    {"id":"alani-nu-coven-club-2026--2026-09-12","event_id":"alani-nu-coven-club-2026","date":"2026-09-12","hours":"9 AM-7 PM","availability":"open","details":"18+; free RSVP is available, but the official host says RSVP does not guarantee admission because space is limited."},
+    {"id":"alani-nu-coven-club-2026--2026-09-13","event_id":"alani-nu-coven-club-2026","date":"2026-09-13","hours":"9 AM-7 PM","availability":"open","details":"18+; free RSVP is available, but the official host says RSVP does not guarantee admission because space is limited."},
+    {"id":"slam-jam-wrangler-blue-bell-social-2026--2026-09-12","event_id":"slam-jam-wrangler-blue-bell-social-2026","date":"2026-09-12","hours":"2-7 PM","availability":"open","details":"Open to the public; no advance RSVP requirement is published in the verified listing."}
+  ]
+}
