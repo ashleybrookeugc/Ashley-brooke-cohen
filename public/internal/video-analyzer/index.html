@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Video Link Analyzer</title>
+  <link rel="stylesheet" href="/assets/video-analyzer.css?v=20260912">
+</head>
+<body>
+  <main class="analyzer-shell">
+    <p class="eyebrow">PRIVATE PORTFOLIO TOOL</p>
+    <h1>Video Link Analyzer</h1>
+    <form id="analyzer-form">
+      <label for="urls">TikTok, Instagram Reel, or YouTube URLs</label>
+      <textarea id="urls" name="urls" rows="8" placeholder="One public URL per line" required></textarea>
+      <button type="submit">Analyze</button>
+    </form>
+    <p id="status" role="status" aria-live="polite"></p>
+    <section id="results" aria-label="Analysis results"></section>
+  </main>
+  <script src="/assets/video-analyzer.js?v=20260912" defer></script>
+</body>
+</html>
