@@ -1,0 +1,53 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-12T11:09:32-04:00",
+  "events": [
+    {
+      "id": "scoop-the-city-ice-cream-tour-2026",
+      "event_name": "Scoop the City Ice Cream Truck Tour",
+      "brand": "Piece of Cake Moving × StreetEasy",
+      "neighborhood": "Multiple NYC neighborhoods",
+      "address": "Mobile route; see date-specific stop details",
+      "subway": {"station": "Varies by stop", "lines": []},
+      "categories": ["food/drink", "entertainment", "community"],
+      "what_it_is": "A two-day mobile ice-cream truck tour highlighting NYC neighborhoods from Piece of Cake Moving and StreetEasy's 2026 neighborhood data, with free ice cream and sweepstakes-style giveaways.",
+      "admission_free": true,
+      "what_is_free": "Free ice cream treats are advertised at each scheduled stop while supplies last. Visitors can also enter to win Knicks tickets, restaurant gift cards, MTA passes, merchandise and other prizes; prize entry does not guarantee a win.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE FOOD/DRINK", "FREE STUFF"],
+      "main_source_url": "https://mypieceofcakemove.com/events/streeteasy-scoop-the-city/",
+      "official_source_url": "https://mypieceofcakemove.com/events/streeteasy-scoop-the-city/",
+      "additional_verification_source": "https://www.averagesocialite.com/nyc-events/2026/9/12/scoop-the-city-ice-cream-truck-tour-nyc",
+      "last_verified": "2026-09-12T11:09:32-04:00",
+      "caveats": "The official host schedule says the truck is open to the public and hands out free ice cream, but treats are first-come/while supplies last at each stop. The truck moves throughout the day, so use the date-specific route rather than a single address.",
+      "practical_notes": "September 12 Manhattan stops: 11–11:45 AM Greenwich St & Duane St; 12:15–1 PM E Houston St & Chrystie St; 1:30–2:15 PM Avenue A & St. Marks Pl; 2:45–3:30 PM W 15th St & 10th Ave; 4:05–6 PM W 77th St & Amsterdam Ave. September 13 Brooklyn/Queens stops: 11–11:36 AM Prospect Park West & 15th St; 12:06–12:42 PM Carroll St & Smith St; 1:02–1:38 PM Myrtle Ave & St. Edwards St; 1:53–2:28 PM Fulton St & Bond St; 3:13–3:49 PM Myrtle Ave & Seneca Ave; 4:19–4:54 PM Skillman Ave & 43rd St; 5:24–6 PM 51st Ave & Center Blvd.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    },
+    {
+      "id": "urban-outfitters-yes-day-beauty-break-2026",
+      "event_name": "Beauty Break with Urban Outfitters and Yes Day",
+      "brand": "Urban Outfitters × Yes Day",
+      "neighborhood": "Herald Square",
+      "address": "Urban Outfitters, 1333 Broadway, New York, NY 10018",
+      "subway": {"station": "34 St–Herald Sq", "lines": ["B", "D", "F", "M", "N", "Q", "R", "W"]},
+      "categories": ["fashion", "beauty", "food/drink"],
+      "what_it_is": "A three-hour Urban Outfitters and Yes Day beauty break with an Aura photo booth, Dirty Soda Bar, bouquet bar and product customization.",
+      "admission_free": true,
+      "what_is_free": "The Eventbrite listing says the photo booth, Dirty Soda Bar, bouquet bar and other activations are free while supplies last. Customization by Original Rose is complimentary only with a Yes Day purchase.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE FOOD/DRINK", "RETAIL POP-UP"],
+      "main_source_url": "https://www.eventbrite.com/e/beauty-break-with-urban-outfitters-and-yes-day-tickets-1999503199896",
+      "official_source_url": "https://www.eventbrite.com/e/beauty-break-with-urban-outfitters-and-yes-day-tickets-1999503199896",
+      "additional_verification_source": "https://www.nycforfree.co/events/yes-day-at-urban-outfitters",
+      "last_verified": "2026-09-12T11:09:32-04:00",
+      "caveats": "Urban Outfitters' Eventbrite page confirms the event, time and address and does not state organizer approval. Free activations are while supplies last. Customization is not a no-purchase freebie: it requires a Yes Day purchase.",
+      "practical_notes": "Saturday, September 12 from 12–3 PM at Urban Outfitters, 1333 Broadway. A live Eventbrite registration page is available; no organizer-selection or approval step is established in the verified listing.",
+      "rsvp": {"requirement": "required", "actionability": "direct_link_available", "availability": "open", "direct_url": "https://www.eventbrite.com/e/beauty-break-with-urban-outfitters-and-yes-day-tickets-1999503199896"}
+    }
+  ],
+  "occurrences": [
+    {"id":"scoop-the-city-ice-cream-tour-2026--2026-09-12","event_id":"scoop-the-city-ice-cream-tour-2026","date":"2026-09-12","hours":"11 AM–6 PM","availability":"open","details":"Manhattan mobile route with five scheduled stops; free ice cream is first-come while supplies last at each stop."},
+    {"id":"scoop-the-city-ice-cream-tour-2026--2026-09-13","event_id":"scoop-the-city-ice-cream-tour-2026","date":"2026-09-13","hours":"11 AM–6 PM","availability":"open","details":"Brooklyn and Queens mobile route with seven scheduled stops; free ice cream is first-come while supplies last at each stop."},
+    {"id":"urban-outfitters-yes-day-beauty-break-2026--2026-09-12","event_id":"urban-outfitters-yes-day-beauty-break-2026","date":"2026-09-12","hours":"12–3 PM","availability":"open","details":"Free Eventbrite registration; free activations are while supplies last, while customization requires a Yes Day purchase."}
+  ]
+}
