@@ -1,0 +1,52 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-13T14:04:19-04:00",
+  "events": [
+    {
+      "id": "hempz-ulta-herald-square-2026",
+      "event_name": "Hempz × Ulta Beauty Serene Waters Pop-Up",
+      "brand": "Hempz × Ulta Beauty",
+      "neighborhood": "Herald Square",
+      "address": "Ulta Beauty Herald Square, 51 W 34th St / 2 Herald Square, New York, NY 10001",
+      "subway": {"station": "34 St–Herald Sq", "lines": ["B", "D", "F", "M", "N", "Q", "R", "W"]},
+      "categories": ["beauty", "retail", "wellness"],
+      "what_it_is": "A one-day Hempz pop-up at Ulta Beauty centered on the Serene Waters Magnesium Body Lotion, with a public calm-down experience, product discovery and an outdoor beverage-truck component.",
+      "admission_free": true,
+      "what_is_free": "General pop-up access is listed as open to the public. No guaranteed free product is established for every attendee in the verified public listing; promotional surprises are not treated as guaranteed freebies.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "RETAIL POP-UP"],
+      "main_source_url": "https://www.averagesocialite.com/nyc-events/2026/9/15/hempz-x-ulta-beauty-pop-up-nyc",
+      "official_source_url": null,
+      "additional_verification_source": "https://www.eventbrite.com/e/meet-greet-with-influencer-tonya-michelle-at-hempz-x-ulta-beauty-pop-up-tickets-1998505222920",
+      "last_verified": "2026-09-13T14:04:19-04:00",
+      "caveats": "The general Hempz × Ulta pop-up is listed as open to the public from 12:30–6:30 PM. A separate 4–6:30 PM Tonya Michelle meet-and-greet requires a $25 Eventbrite ticket; that ticket includes a $25 Ulta gift card and is not the same as general pop-up admission. Gifts tied to the meet-and-greet or purchases should not be presented as free general-admission giveaways.",
+      "practical_notes": "Tuesday, September 15 from 12:30–6:30 PM at Ulta Beauty Herald Square. Visit the public activation without treating the separate influencer meet-and-greet as required admission.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    },
+    {
+      "id": "buzzballz-buzzbagz-lispenard-2026",
+      "event_name": "BuzzBallz Limited-Edition BuzzBagz NYFW Pop-Up",
+      "brand": "BuzzBallz",
+      "neighborhood": "Tribeca / Canal Street",
+      "address": "45 Lispenard St, New York, NY 10013",
+      "subway": {"station": "Canal St", "lines": ["A", "C", "E", "N", "Q", "R", "W", "J", "Z", "6"]},
+      "categories": ["fashion", "retail", "food/drink"],
+      "what_it_is": "A limited NYFW retail activation for BuzzBallz's BuzzBagz, handbag-style accessories inspired by recognizable fashion silhouettes and built around the brand's round cocktail format.",
+      "admission_free": true,
+      "what_is_free": "The pop-up itself is listed as open to the public. The BuzzBagz merchandise is not free; bags are advertised at $100 and available while supplies last.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "RETAIL POP-UP"],
+      "main_source_url": "https://www.averagesocialite.com/nyc-events/2026/9/15/buzzballs",
+      "official_source_url": null,
+      "additional_verification_source": null,
+      "last_verified": "2026-09-13T14:04:19-04:00",
+      "caveats": "Current event reporting describes the activation as open to the public for guests age 21+. BuzzBagz cost $100 each and are limited-quantity retail items, so this should not be presented as a free-product giveaway. Availability may end before the posted window if inventory sells out.",
+      "practical_notes": "Tuesday, September 15 from 3–5 PM at 45 Lispenard Street. 21+; arrive early if the goal is to purchase one of the limited BuzzBagz.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    }
+  ],
+  "occurrences": [
+    {"id":"hempz-ulta-herald-square-2026--2026-09-15","event_id":"hempz-ulta-herald-square-2026","date":"2026-09-15","hours":"12:30–6:30 PM","availability":"open","details":"General pop-up is open to the public; separate paid influencer meet-and-greet runs 4–6:30 PM."},
+    {"id":"buzzballz-buzzbagz-lispenard-2026--2026-09-15","event_id":"buzzballz-buzzbagz-lispenard-2026","date":"2026-09-15","hours":"3–5 PM","availability":"open","details":"21+ public retail activation; BuzzBagz are $100 and limited while supplies last."}
+  ]
+}
