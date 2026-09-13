@@ -1,0 +1,30 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-12T22:08:00-04:00",
+  "events": [
+    {
+      "id": "sally-hansen-house-rockefeller-center-2026",
+      "event_name": "The House of Sally Hansen",
+      "brand": "Sally Hansen × Rockefeller Center",
+      "neighborhood": "Midtown / Rockefeller Center",
+      "address": "North Esplanade by The Rink, 30 Rockefeller Plaza, New York, NY 10111",
+      "subway": {"station": "47–50 Sts–Rockefeller Center", "lines": ["B", "D", "F", "M"]},
+      "categories": ["beauty", "fashion"],
+      "what_it_is": "A New York Fashion Week Sally Hansen activation celebrating the Miracle Gel Bold Glam collection with nail touch-ups, photo moments and opportunities to try the new shades.",
+      "admission_free": true,
+      "what_is_free": "Public admission is free. The activation includes nail touch-ups, photo moments and opportunities to experience the Miracle Gel Bold Glam shades.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE"],
+      "main_source_url": "https://www.rockefellercenter.com/pt-br/events/new-york-fashion-week-at-rockefeller-center",
+      "official_source_url": "https://www.rockefellercenter.com/pt-br/events/new-york-fashion-week-at-rockefeller-center",
+      "additional_verification_source": "https://www.averagesocialite.com/nyc-events/2026/9/12/the-house-of-sally-hensen-nyc",
+      "last_verified": "2026-09-12T22:08:00-04:00",
+      "caveats": "Rockefeller Center's official NYFW page lists the activation at the North Esplanade by The Rink and confirms Sunday hours of 10 AM–6 PM. No RSVP, host approval or ticket requirement is published. Specific products or services may still be subject to on-site capacity or availability.",
+      "practical_notes": "Sunday, September 13 from 10 AM–6 PM at Rockefeller Center's North Esplanade by The Rink. Walk in; no advance registration is stated by the official host.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    }
+  ],
+  "occurrences": [
+    {"id":"sally-hansen-house-rockefeller-center-2026--2026-09-13","event_id":"sally-hansen-house-rockefeller-center-2026","date":"2026-09-13","hours":"10 AM–6 PM","availability":"open","details":"Free and open to the public at the North Esplanade by The Rink; no RSVP stated."}
+  ]
+}
