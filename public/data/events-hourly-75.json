@@ -1,0 +1,52 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-13T10:09:34-04:00",
+  "events": [
+    {
+      "id": "calzedonia-the-stoop-soho-2026",
+      "event_name": "The Stoop by Calzedonia",
+      "brand": "Calzedonia",
+      "neighborhood": "SoHo",
+      "address": "188 Lafayette St, New York, NY 10013",
+      "subway": {"station": "Spring St", "lines": ["4", "6"]},
+      "categories": ["fashion", "beauty", "food/drink", "retail"],
+      "what_it_is": "A two-day NYFW pop-up where visitors can refresh their look, create content, browse Calzedonia legwear and use on-site beauty, coffee and photo activations.",
+      "admission_free": true,
+      "what_is_free": "Public access to the pop-up is free. Current event listings advertise complimentary coffee, branded stickers, hairstyle touchups, a photo booth and beauty sampling. Free embroidery is tied to purchase of 20 Denier Hosiery Knee Highs.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE STUFF", "FREE SAMPLE", "RETAIL POP-UP"],
+      "main_source_url": "https://www.nycforfree.co/events/the-stoop-by-calzedonia",
+      "official_source_url": null,
+      "additional_verification_source": "https://pulsd.com/new-york/events/188-lafayette-street/the-stoop-by-calzedonia-at-fashion-week",
+      "last_verified": "2026-09-13T10:09:34-04:00",
+      "caveats": "Multiple current NYC event sources agree on September 12–13, 12–5 PM at 188 Lafayette Street and describe the activation as public. Complimentary items and services are subject to on-site availability. Embroidery is not free without the qualifying knee-high purchase.",
+      "practical_notes": "Sunday, September 13 from 12–5 PM. No RSVP, approval or paid-ticket requirement is published in the verified current listings.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    },
+    {
+      "id": "creative-time-sandcastle-rockaway-2026",
+      "event_name": "Creative Time 2026 Sandcastle Competition",
+      "brand": "Creative Time",
+      "neighborhood": "Rockaway Beach",
+      "address": "Rockaway Beach at Beach 108th St, Queens, NY 11694",
+      "subway": {"station": "Beach 105 St", "lines": ["A"]},
+      "categories": ["art", "entertainment", "family"],
+      "what_it_is": "Creative Time's public artist sandcastle competition, where invited artists build large-scale works on Rockaway Beach before a judging panel awards the winning team.",
+      "admission_free": true,
+      "what_is_free": "Watching the public beach competition is free. A separate post-event Benefit Bash is ticketed and is not included in the free beach event.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE"],
+      "main_source_url": "https://creativetime.org/events/creative-time-2026-sandcastle-competition/2026-sandcastle-competition-artists-judges/",
+      "official_source_url": "https://creativetime.org/events/creative-time-2026-sandcastle-competition/2026-sandcastle-competition-artists-judges/",
+      "additional_verification_source": "https://www.averagesocialite.com/nyc-events/2026/9/6/rockaway-beach-sandcastle-competition-nyc",
+      "last_verified": "2026-09-13T10:09:34-04:00",
+      "caveats": "Creative Time's official page confirms Sunday, September 13 from 1–4 PM at Rockaway Beach. Secondary listings offer a free RSVP, but the official page does not establish RSVP as a condition of public beach access. The separate 5–7 PM Benefit Bash is sold separately.",
+      "practical_notes": "Sunday, September 13 from 1–4 PM at the Beach 108th Street shoreline. Treat this as a public walk-in beach event; the optional/free RSVP path is not required by the official source.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    }
+  ],
+  "occurrences": [
+    {"id":"calzedonia-the-stoop-soho-2026--2026-09-13","event_id":"calzedonia-the-stoop-soho-2026","date":"2026-09-13","hours":"12–5 PM","availability":"open","details":"Public NYFW pop-up; complimentary services and items subject to availability."},
+    {"id":"creative-time-sandcastle-rockaway-2026--2026-09-13","event_id":"creative-time-sandcastle-rockaway-2026","date":"2026-09-13","hours":"1–4 PM","availability":"open","details":"Free public beach competition; separate Benefit Bash is ticketed."}
+  ]
+}
