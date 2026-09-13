@@ -174,6 +174,22 @@ Before major portfolio design/copy changes:
 
 ---
 
+## 2026-09-13 — Large calibration evidence JSON silently truncated during upload
+
+### Symptom
+A GitHub file-create action returned success for a generated evidence JSON, but the remote file was incomplete and could not be parsed.
+
+### Root cause
+Reading a 1.67 MB local file through `exec_command` returned only about 1,048,364 characters without an explicit truncation warning. The truncated tool output was passed to the GitHub create-file action.
+
+### Verified fix
+Compact the evidence package below the command-output cap (reduced-resolution representative frames, compressed full audio, compact JSON); parse the **entire** returned content and verify all 12 records before GitHub update. A subsequent branch-specific fetch parsed successfully with 12 records at source retrieval 2/2.
+
+### Prevention rule
+For large generated artifacts, compare expected byte/character count or parse the complete tool output **before** upload; then fetch and parse the remote artifact afterward. A successful GitHub write response alone does not establish file integrity. Never print base64 media into user-facing output.
+
+---
+
 ## Stop-loss protocol for future loops
 
 If the same failure is encountered **twice after applying the same class of fix**, stop repeating the attempt.
