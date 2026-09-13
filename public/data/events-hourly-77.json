@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "updated_at": "2026-09-13T12:05:28-04:00",
+  "updated_at": "2026-09-13T13:09:55-04:00",
   "events": [
     {
       "id": "ibm-us-open-madison-square-park-2026",
@@ -106,6 +106,27 @@
       "caveats": "The Hershey announcement confirms the September 14–15 NYC pop-up; current local reporting places it at Astor Place and says service begins at 11 AM each day, with drinks available while supplies last. Promotional quantities are finite.",
       "practical_notes": "Monday, September 14 and Tuesday, September 15 starting at 11 AM at Astor Place Plaza in front of 26 Astor Place. Arrive early for the first-100 koozie and before the daily drink allotment runs out.",
       "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    },
+    {
+      "id": "headcount-national-voter-registration-block-party-2026",
+      "event_name": "National Voter Registration Day NYC Block Party",
+      "brand": "HeadCount",
+      "neighborhood": "Greenwich Village",
+      "address": "LaGuardia Pl between W 4th St and W 3rd St, New York, NY 10012",
+      "subway": {"station": "W 4 St–Washington Sq", "lines": ["A", "B", "C", "D", "E", "F", "M"]},
+      "categories": ["entertainment", "community", "food/drink"],
+      "what_it_is": "HeadCount's National Voter Registration Day NYC block party with live music, art, civic-registration partners and brand activations adjacent to Washington Square Park.",
+      "admission_free": true,
+      "what_is_free": "Public access is free. Current listings advertise brand freebies and chocolate alongside live music, art and voter-registration resources; specific giveaway quantities are not guaranteed.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE STUFF"],
+      "main_source_url": "https://www.nycforfree.co/events/national-voter-registration-day-nyc-block-party",
+      "official_source_url": null,
+      "additional_verification_source": "https://www.broadwayworld.com/bwwtv/article/CURE-FOR-PARANOIA-to-Launch-A-Verse-A-Day-Voter-Registration-Countdown-20260901",
+      "last_verified": "2026-09-13T13:09:55-04:00",
+      "caveats": "Current sources agree on Tuesday, September 15 from 10 AM–6 PM. A detailed event announcement places the block party on LaGuardia Place between West 4th and West 3rd Streets, adjacent to Washington Square Park; broader event listings label the location as Washington Square Park. Giveaways are promotional inventory and should be treated as while supplies last.",
+      "practical_notes": "Tuesday, September 15 from 10 AM–6 PM on LaGuardia Place beside Washington Square Park. No ticket, RSVP or organizer-approval requirement is published in the verified sources.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
     }
   ],
   "occurrences": [
@@ -114,6 +135,7 @@
     {"id":"calzedonia-stoop-soho-2026--2026-09-13","event_id":"calzedonia-stoop-soho-2026","date":"2026-09-13","hours":"12–5 PM","availability":"open","details":"Open-to-public NYFW pop-up; some complimentary items are while supplies last."},
     {"id":"nest-cardamom-latte-chelsea-triangle-2026--2026-09-14","event_id":"nest-cardamom-latte-chelsea-triangle-2026","date":"2026-09-14","hours":"10 AM–while supplies last","availability":"open","details":"Sources conflict on closing time; start time and while-supplies-last condition are consistent."},
     {"id":"reeses-nitro-bar-astor-place-2026--2026-09-14","event_id":"reeses-nitro-bar-astor-place-2026","date":"2026-09-14","hours":"11 AM–while supplies last","availability":"open","details":"Up to 1,000 complimentary lattes advertised for the day."},
-    {"id":"reeses-nitro-bar-astor-place-2026--2026-09-15","event_id":"reeses-nitro-bar-astor-place-2026","date":"2026-09-15","hours":"11 AM–while supplies last","availability":"open","details":"Up to 1,000 complimentary lattes advertised for the day."}
+    {"id":"reeses-nitro-bar-astor-place-2026--2026-09-15","event_id":"reeses-nitro-bar-astor-place-2026","date":"2026-09-15","hours":"11 AM–while supplies last","availability":"open","details":"Up to 1,000 complimentary lattes advertised for the day."},
+    {"id":"headcount-national-voter-registration-block-party-2026--2026-09-15","event_id":"headcount-national-voter-registration-block-party-2026","date":"2026-09-15","hours":"10 AM–6 PM","availability":"open","details":"Free public block party with music, civic partners and brand activations."}
   ]
 }
