@@ -1,0 +1,53 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-13T18:08:35-04:00",
+  "events": [
+    {
+      "id": "nest-cardamom-latte-chelsea-triangle-2026",
+      "event_name": "NEST NYFW Cardamom Latte Pop-Up",
+      "brand": "NEST New York",
+      "neighborhood": "Meatpacking District",
+      "address": "Chelsea Triangle, New York, NY 10014",
+      "subway": {"station": "14 St–8 Av", "lines": ["A", "C", "E", "L"]},
+      "categories": ["beauty", "fashion", "food/drink"],
+      "what_it_is": "A one-day NYFW fragrance-and-coffee activation for NEST New York's Cardamom Latte Eau de Parfum, pairing scent discovery with a complimentary Cardamom Latte café experience.",
+      "admission_free": true,
+      "what_is_free": "Complimentary Cardamom Lattes and fragrance sampling are advertised while supplies last.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE SAMPLE", "FREE STUFF"],
+      "main_source_url": "https://www.nycforfree.co/events/nests-nyfw-cardamom-launch",
+      "official_source_url": null,
+      "additional_verification_source": "https://www.cityguideny.com/event/chelsea-triangle-2026-09-14-2026-09-14",
+      "last_verified": "2026-09-13T18:08:35-04:00",
+      "caveats": "Open to the public with no advance RSVP requirement stated. Complimentary lattes and samples are while supplies last. Current secondary sources agree on a 10 AM start but conflict on the published end time: NYC for FREE lists 9 PM while Average Socialite lists 5 PM, so verify the closing time before making a late trip.",
+      "practical_notes": "Monday, September 14 at Chelsea Triangle in the Meatpacking District. The dedicated NYC for FREE listing publishes 10 AM–9 PM; another current event listing publishes 10 AM–5 PM.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    },
+    {
+      "id": "century21-walk-the-runway-2026",
+      "event_name": "Walk the Runway at Century 21",
+      "brand": "Century 21 NYC",
+      "neighborhood": "Financial District",
+      "address": "Century 21 NYC, 22 Cortlandt St, New York, NY 10007",
+      "subway": {"station": "Fulton St / Cortlandt St", "lines": ["A", "C", "J", "Z", "2", "3", "4", "5", "R", "W", "1"]},
+      "categories": ["fashion", "entertainment"],
+      "what_it_is": "A two-day public Fashion Week runway experience on Century 21's main floor where anyone can walk the runway and be filmed for the store's social stories.",
+      "admission_free": true,
+      "what_is_free": "Every walker is advertised to receive a free Century 21 tote, up to five iron-on patches pressed on-site, and a $21-off-$100 in-store card; totes and patches are while supplies last.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE STUFF", "RETAIL POP-UP"],
+      "main_source_url": "https://c21stores.com/blogs/century-21-nyc-flash-events/walk-the-runway-fashion-week-nyc",
+      "official_source_url": "https://c21stores.com/blogs/century-21-nyc-flash-events/walk-the-runway-fashion-week-nyc",
+      "additional_verification_source": "https://www.averagesocialite.com/nyc-events/2026/9/15/walk-the-runway-at-century-21-nyc",
+      "last_verified": "2026-09-13T18:08:35-04:00",
+      "caveats": "No ticket, invitation or registration is required. Walking the runway means being filmed for Century 21's Instagram and TikTok stories. Free totes and patches are while supplies last; the $21-off-$100 card requires a qualifying in-store purchase to redeem.",
+      "practical_notes": "Tuesday, September 15 and Wednesday, September 16 from 12–6 PM on the main floor, Dey Street side. The official Century 21 page says anyone can participate by getting in line during event hours.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    }
+  ],
+  "occurrences": [
+    {"id":"nest-cardamom-latte-chelsea-triangle-2026--2026-09-14","event_id":"nest-cardamom-latte-chelsea-triangle-2026","date":"2026-09-14","hours":"10 AM–9 PM","availability":"open","details":"Walk-in; free Cardamom Lattes and fragrance sampling while supplies last. A secondary source conflict exists on closing time, so verify before a late visit."},
+    {"id":"century21-walk-the-runway-2026--2026-09-15","event_id":"century21-walk-the-runway-2026","date":"2026-09-15","hours":"12–6 PM","availability":"open","details":"Walk-in; no ticket or invitation required. Free tote and patches while supplies last."},
+    {"id":"century21-walk-the-runway-2026--2026-09-16","event_id":"century21-walk-the-runway-2026","date":"2026-09-16","hours":"12–6 PM","availability":"open","details":"Walk-in; no ticket or invitation required. Free tote and patches while supplies last."}
+  ]
+}
