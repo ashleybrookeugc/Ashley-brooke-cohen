@@ -1,0 +1,51 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-13T01:08:32-04:00",
+  "events": [
+    {
+      "id": "calzedonia-stoop-soho-2026",
+      "event_name": "The Stoop by Calzedonia",
+      "brand": "Calzedonia",
+      "neighborhood": "SoHo",
+      "address": "188 Lafayette Street, New York, NY 10013",
+      "subway": {"station": "Spring St", "lines": ["4", "6"]},
+      "categories": ["fashion", "beauty", "food/drink"],
+      "what_it_is": "A two-day NYFW pop-up with beauty and hair touch-ups, a photo booth, legwear shopping and customization, coffee, sampling and branded giveaways.",
+      "admission_free": true,
+      "what_is_free": "Public admission, coffee, branded stickers, hairstyle touch-ups, photo-booth access and partner skincare sampling are advertised as free. Embroidery is free with purchase of eligible 20 Denier Hosiery Knee Highs.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE STUFF", "FREE SAMPLE", "RETAIL POP-UP"],
+      "main_source_url": "https://www.averagesocialite.com/nyc-events/2026/9/12/the-stoop-by-calzedonia-nyc",
+      "additional_verification_source": "https://nycforfree.squarespace.com/events/the-stoop-by-calzedonia",
+      "last_verified": "2026-09-13T01:08:32-04:00",
+      "caveats": "Current listings describe the pop-up as open to the public. Embroidery is tied to purchase of the eligible knee highs; other promotional items and samples can be limited by supply.",
+      "practical_notes": "Sunday, September 13 from 12–5 PM at 188 Lafayette Street. No RSVP, ticket or approval requirement is published in the current listings.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    },
+    {
+      "id": "house-of-sally-hansen-rockefeller-2026",
+      "event_name": "The House of Sally Hansen",
+      "brand": "Sally Hansen",
+      "neighborhood": "Midtown / Rockefeller Center",
+      "address": "North Esplanade by The Rink, 30 Rockefeller Plaza, New York, NY 10111",
+      "subway": {"station": "47–50 Sts–Rockefeller Center", "lines": ["B", "D", "F", "M"]},
+      "categories": ["beauty", "fashion"],
+      "what_it_is": "A NYFW beauty activation for Sally Hansen's Miracle Gel Bold Glam collection with nail touch-ups, photo moments and shade discovery.",
+      "admission_free": true,
+      "what_is_free": "Public access, nail touch-ups and photo moments are advertised as part of the activation; no purchase requirement is stated.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE SAMPLE"],
+      "main_source_url": "https://www.rockefellercenter.com/pt-br/events/new-york-fashion-week-at-rockefeller-center",
+      "official_source_url": "https://www.rockefellercenter.com/pt-br/events/new-york-fashion-week-at-rockefeller-center",
+      "additional_verification_source": "https://www.averagesocialite.com/nyc-events/2026/9/12/the-house-of-sally-hensen-nyc",
+      "last_verified": "2026-09-13T01:08:32-04:00",
+      "caveats": "Rockefeller Center's official NYFW page confirms the Sunday activation hours and location. The host describes the broader NYFW experience as free and open to the public, and no separate RSVP or approval requirement is published for the Sally Hansen activation.",
+      "practical_notes": "Sunday, September 13 from 10 AM–6 PM at the North Esplanade by The Rink at Rockefeller Center. Walk in; normal capacity and promotional-supply limits can still apply.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    }
+  ],
+  "occurrences": [
+    {"id":"calzedonia-stoop-soho-2026--2026-09-13","event_id":"calzedonia-stoop-soho-2026","date":"2026-09-13","hours":"12–5 PM","availability":"open","details":"Open to the public; free coffee, touch-ups, photo booth and sampling advertised. Embroidery requires an eligible purchase."},
+    {"id":"house-of-sally-hansen-rockefeller-2026--2026-09-13","event_id":"house-of-sally-hansen-rockefeller-2026","date":"2026-09-13","hours":"10 AM–6 PM","availability":"open","details":"Free public NYFW beauty activation at Rockefeller Center; no RSVP requirement published."}
+  ]
+}
