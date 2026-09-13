@@ -1,0 +1,59 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-13T15:06:21-04:00",
+  "events": [
+    {
+      "id": "maison-perrier-atelier-west-village-2026",
+      "event_name": "Maison Perrier Atelier",
+      "brand": "Maison Perrier",
+      "neighborhood": "West Village",
+      "address": "Jack & Charlie’s No. 118, 118 Greenwich Ave, New York, NY 10011",
+      "subway": {"station": "14 St", "lines": ["1", "2", "3", "L"]},
+      "categories": ["fashion", "food/drink"],
+      "what_it_is": "A one-day NYFW Maison Perrier atelier at Jack & Charlie’s with a resident seamstress creating custom hat-and-scarf combinations for guests.",
+      "admission_free": true,
+      "what_is_free": "Current event reporting advertises free on-site custom hat and scarf combinations hand-crafted by the resident seamstress.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE STUFF"],
+      "main_source_url": "https://www.averagesocialite.com/nyc-events",
+      "official_source_url": null,
+      "additional_verification_source": "https://www.jackandcharlies118.com/",
+      "last_verified": "2026-09-13T15:06:21-04:00",
+      "caveats": "The current NYC event listing describes the activation as open to the public from 11 AM–5 PM. No mandatory RSVP or approval step is published. Complimentary custom items are promotional inventory, so availability can end before the posted closing time.",
+      "practical_notes": "Sunday, September 13 from 11 AM–5 PM at Jack & Charlie’s No. 118, 118 Greenwich Avenue in the West Village.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    },
+    {
+      "id": "aesop-nomad-fragrant-fables-2026",
+      "event_name": "Aesop Nomad Perfumery: Fragrant Fables",
+      "brand": "Aesop",
+      "neighborhood": "NoMad",
+      "address": "Aesop Nomad, 1165 Broadway, New York, NY 10001",
+      "subway": {"station": "28 St", "lines": ["R", "W"]},
+      "categories": ["beauty", "retail", "entertainment"],
+      "what_it_is": "A temporary Fragrant Fables takeover of Aesop Nomad with a sensory fragrance installation, personalized consultations and live literary readings on select dates.",
+      "admission_free": true,
+      "what_is_free": "Public access to the installation, fragrance discovery and consultations is free. Live Fable Readings are scheduled September 11–13 and 18–20. Complimentary bottle engraving is offered with a fragrance purchase on those weekends.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "RETAIL POP-UP"],
+      "main_source_url": "https://www.averagesocialite.com/nyc-events/2026/9/10/aesop-nomad-perfumery-fragrant-fables-nyc",
+      "official_source_url": null,
+      "additional_verification_source": null,
+      "last_verified": "2026-09-13T15:06:21-04:00",
+      "caveats": "The current event listing states the takeover is open to the public September 10–20. Bottle engraving is not a free standalone giveaway; it requires a fragrance purchase and is offered on September 11–13 and 18–20.",
+      "practical_notes": "The takeover is listed from 11 AM–7 PM through Sunday, September 20 at 1165 Broadway. Live Fable Readings occur September 11–13 and 18–20.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    }
+  ],
+  "occurrences": [
+    {"id":"maison-perrier-atelier-west-village-2026--2026-09-13","event_id":"maison-perrier-atelier-west-village-2026","date":"2026-09-13","hours":"11 AM–5 PM","availability":"open","details":"Open-to-public one-day NYFW atelier; promotional custom items are subject to availability."},
+    {"id":"aesop-nomad-fragrant-fables-2026--2026-09-13","event_id":"aesop-nomad-fragrant-fables-2026","date":"2026-09-13","hours":"11 AM–7 PM","availability":"open","details":"Live Fable Reading date; bottle engraving requires a fragrance purchase."},
+    {"id":"aesop-nomad-fragrant-fables-2026--2026-09-14","event_id":"aesop-nomad-fragrant-fables-2026","date":"2026-09-14","hours":"11 AM–7 PM","availability":"open","details":"Public Fragrant Fables installation and fragrance consultations."},
+    {"id":"aesop-nomad-fragrant-fables-2026--2026-09-15","event_id":"aesop-nomad-fragrant-fables-2026","date":"2026-09-15","hours":"11 AM–7 PM","availability":"open","details":"Public Fragrant Fables installation and fragrance consultations."},
+    {"id":"aesop-nomad-fragrant-fables-2026--2026-09-16","event_id":"aesop-nomad-fragrant-fables-2026","date":"2026-09-16","hours":"11 AM–7 PM","availability":"open","details":"Public Fragrant Fables installation and fragrance consultations."},
+    {"id":"aesop-nomad-fragrant-fables-2026--2026-09-17","event_id":"aesop-nomad-fragrant-fables-2026","date":"2026-09-17","hours":"11 AM–7 PM","availability":"open","details":"Public Fragrant Fables installation and fragrance consultations."},
+    {"id":"aesop-nomad-fragrant-fables-2026--2026-09-18","event_id":"aesop-nomad-fragrant-fables-2026","date":"2026-09-18","hours":"11 AM–7 PM","availability":"open","details":"Live Fable Reading date; bottle engraving requires a fragrance purchase."},
+    {"id":"aesop-nomad-fragrant-fables-2026--2026-09-19","event_id":"aesop-nomad-fragrant-fables-2026","date":"2026-09-19","hours":"11 AM–7 PM","availability":"open","details":"Live Fable Reading date; bottle engraving requires a fragrance purchase."},
+    {"id":"aesop-nomad-fragrant-fables-2026--2026-09-20","event_id":"aesop-nomad-fragrant-fables-2026","date":"2026-09-20","hours":"11 AM–7 PM","availability":"open","details":"Live Fable Reading date; bottle engraving requires a fragrance purchase."}
+  ]
+}
