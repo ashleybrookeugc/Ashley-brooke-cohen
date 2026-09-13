@@ -116,8 +116,8 @@
       "transcript_verified_against_audio": false,
       "on_screen_text_verified_against_full_video": false,
       "verification_audit": {
-        "audio_text_status": "UNVERIFIED: the persisted complete Opus audio could be decoded, but this session cannot audition it independently; draft ASR is not certified as audible speech.",
-        "visual_text_status": "PARTIAL: the four persisted representative frames were inspected; this does not establish complete-video OCR accuracy.",
+        "audio_text_status": "INDEPENDENT ASR CROSSCHECK ONLY: complete source audio decoded, Whisper small and medium compared with draft; direct audition unavailable, so exact audible wording is not human-certified.",
+        "visual_text_status": "Full media decoded end-to-end and sampled at 1 fps with full-resolution targeted frame review; meaningful observed text logged. Sub-second transient or tiny/obscured text may remain unverified.",
         "verified_frame_text": [
           {
             "time_seconds": 9.61,
@@ -130,6 +130,86 @@
             "basis": "directly visible in persisted representative frame"
           }
         ]
+      },
+      "full_source_review": {
+        "source_access": "full video file re-retrieved from persisted source URL; video and audio decoded end-to-end",
+        "media_integrity": "fresh file SHA-256 and byte count match persisted media_sha256/media_size_bytes",
+        "video_visual_sampling": "one full-resolution decoded frame per second from 0s through final second, plus targeted inspection of full-resolution frames; automated OCR crosscheck; sub-second transient text cannot be excluded",
+        "audio_crosscheck": "complete saved Opus decoded; independent Whisper small and medium passes compared against prior draft; direct human/model audio audition unavailable in this interface",
+        "direct_audio_audition": false,
+        "verified_visible_text": [
+          {
+            "start_seconds": 0,
+            "end_seconds": 3,
+            "text": "Speech subtitles begin 'IT'S FAIR THAT' and 'MORE COMPLIMENTS THAN ME'.",
+            "basis": "directly visible in re-retrieved full source frames; bounds approximate to sampled seconds"
+          },
+          {
+            "start_seconds": 4,
+            "end_seconds": 11,
+            "text": "Subtitles identify 'SUPER COOL JACKET', 'SUPER COOL BIKE', 'SUPER COOL HAIR'.",
+            "basis": "directly visible in re-retrieved full source frames; bounds approximate to sampled seconds"
+          },
+          {
+            "start_seconds": 25,
+            "end_seconds": 27,
+            "text": "BRO RECOGNISE BRO",
+            "basis": "directly visible in re-retrieved full source frames; bounds approximate to sampled seconds"
+          }
+        ],
+        "independent_small_asr": [
+          {
+            "end": 3.56,
+            "start": 0,
+            "text": "I don't think it's fair that my boyfriend gets more compliments than me."
+          },
+          {
+            "end": 6.28,
+            "start": 3.56,
+            "text": "He has the super cool jacket."
+          },
+          {
+            "end": 8.96,
+            "start": 6.28,
+            "text": "He has the super cool bike."
+          },
+          {
+            "end": 12.2,
+            "start": 8.96,
+            "text": "He has the super cool hair."
+          },
+          {
+            "end": 13.92,
+            "start": 12.2,
+            "text": "Guys compliment him."
+          },
+          {
+            "end": 15.76,
+            "start": 13.92,
+            "text": "Straight guys compliment him."
+          },
+          {
+            "end": 20.28,
+            "start": 15.76,
+            "text": "If you see two people together, you can't just compliment one person."
+          },
+          {
+            "end": 23.28,
+            "start": 20.28,
+            "text": "I think you should compliment both people in the couple."
+          },
+          {
+            "end": 25.24,
+            "start": 23.28,
+            "text": "I don't think that's fair."
+          },
+          {
+            "end": 27.92,
+            "start": 25.24,
+            "text": "recognize growth."
+          }
+        ],
+        "uncertainty": "25–27s subtitle 'BRO RECOGNISE BRO' conflicts with both independent ASR passes ('recognize growth'); speech cannot be independently auditioned."
       }
     },
     {
@@ -315,8 +395,8 @@
       "transcript_verified_against_audio": false,
       "on_screen_text_verified_against_full_video": false,
       "verification_audit": {
-        "audio_text_status": "UNVERIFIED: the persisted complete Opus audio could be decoded, but this session cannot audition it independently; draft ASR is not certified as audible speech.",
-        "visual_text_status": "PARTIAL: the four persisted representative frames were inspected; this does not establish complete-video OCR accuracy.",
+        "audio_text_status": "INDEPENDENT ASR CROSSCHECK ONLY: complete source audio decoded, Whisper small and medium compared with draft; direct audition unavailable, so exact audible wording is not human-certified.",
+        "visual_text_status": "Full media decoded end-to-end and sampled at 1 fps with full-resolution targeted frame review; meaningful observed text logged. Sub-second transient or tiny/obscured text may remain unverified.",
         "verified_frame_text": [
           {
             "time_seconds": 0.97,
@@ -339,6 +419,102 @@
             "basis": "directly visible in persisted representative frame"
           }
         ]
+      },
+      "full_source_review": {
+        "source_access": "full video file re-retrieved from persisted source URL; video and audio decoded end-to-end",
+        "media_integrity": "fresh file SHA-256 and byte count match persisted media_sha256/media_size_bytes",
+        "video_visual_sampling": "one full-resolution decoded frame per second from 0s through final second, plus targeted inspection of full-resolution frames; automated OCR crosscheck; sub-second transient text cannot be excluded",
+        "audio_crosscheck": "complete saved Opus decoded; independent Whisper small and medium passes compared against prior draft; direct human/model audio audition unavailable in this interface",
+        "direct_audio_audition": false,
+        "verified_visible_text": [
+          {
+            "start_seconds": 0,
+            "end_seconds": 15,
+            "text": "Most of Tribeca Film Festival Isn't Even in Tribeca...",
+            "basis": "directly visible in re-retrieved full source frames; bounds approximate to sampled seconds"
+          },
+          {
+            "start_seconds": 9,
+            "end_seconds": 15,
+            "text": "They don't even have The Lighthouse in Greenpoint on the Official Map for some reason",
+            "basis": "directly visible in re-retrieved full source frames; bounds approximate to sampled seconds"
+          },
+          {
+            "start_seconds": 16,
+            "end_seconds": 31,
+            "text": "Stacked list builds to 'Downtown / Manhattan / Greenpoint / Brooklyn / Upperish / East / Film Festival'",
+            "basis": "directly visible in re-retrieved full source frames; bounds approximate to sampled seconds"
+          },
+          {
+            "start_seconds": 22,
+            "end_seconds": 24,
+            "text": "THE UPPER EAST / SIDE (subtitles; ASR independently reads 'west', so spoken wording remains uncertain)",
+            "basis": "directly visible in re-retrieved full source frames; bounds approximate to sampled seconds"
+          }
+        ],
+        "independent_small_asr": [
+          {
+            "end": 2.4,
+            "start": 0,
+            "text": "Why do I have to go all the way to Green Point Brooklyn"
+          },
+          {
+            "end": 4.98,
+            "start": 2.4,
+            "text": "if it's called the Tribeca Film Festival?"
+          },
+          {
+            "end": 7,
+            "start": 4.98,
+            "text": "It's okay to have other venues"
+          },
+          {
+            "end": 9.04,
+            "start": 7,
+            "text": "and other neighborhoods and boroughs."
+          },
+          {
+            "end": 11.44,
+            "start": 9.04,
+            "text": "I'm totally fine with that."
+          },
+          {
+            "end": 14.12,
+            "start": 11.44,
+            "text": "But don't mislead me with the name."
+          },
+          {
+            "end": 17.08,
+            "start": 14.12,
+            "text": "Like just call it the downtown Manhattan"
+          },
+          {
+            "end": 19.92,
+            "start": 17.08,
+            "text": "and Green Point Brooklyn Film Festival"
+          },
+          {
+            "end": 24.68,
+            "start": 19.92,
+            "text": "and also has parts of like the upper-ish west side."
+          },
+          {
+            "end": 26.36,
+            "start": 24.68,
+            "text": "But I guess that's too much of a mouthful"
+          },
+          {
+            "end": 28.16,
+            "start": 26.36,
+            "text": "and Tribeca just sounds cooler"
+          },
+          {
+            "end": 32.16,
+            "start": 28.16,
+            "text": "and trying to make an acronym about all the neighborhoods that's actually in."
+          }
+        ],
+        "uncertainty": "22–24s subtitle says Upper East; both ASR passes say upperish west. Retain spoken draft pending direct listening; visible stacked list says Upperish East."
       }
     },
     {
@@ -434,8 +610,8 @@
       "transcript_verified_against_audio": false,
       "on_screen_text_verified_against_full_video": false,
       "verification_audit": {
-        "audio_text_status": "UNVERIFIED: the persisted complete Opus audio could be decoded, but this session cannot audition it independently; draft ASR is not certified as audible speech.",
-        "visual_text_status": "PARTIAL: the four persisted representative frames were inspected; this does not establish complete-video OCR accuracy.",
+        "audio_text_status": "INDEPENDENT ASR CROSSCHECK ONLY: complete source audio decoded, Whisper small and medium compared with draft; direct audition unavailable, so exact audible wording is not human-certified.",
+        "visual_text_status": "Full media decoded end-to-end and sampled at 1 fps with full-resolution targeted frame review; meaningful observed text logged. Sub-second transient or tiny/obscured text may remain unverified.",
         "verified_frame_text": [
           {
             "time_seconds": 0.15,
@@ -446,6 +622,34 @@
             "time_seconds": 4.9,
             "text": "This Honestly Seems Too Scrappy For Such A Luxurious Ad Campaign",
             "basis": "directly visible in persisted representative frame"
+          }
+        ]
+      },
+      "full_source_review": {
+        "source_access": "full video file re-retrieved from persisted source URL; video and audio decoded end-to-end",
+        "media_integrity": "fresh file SHA-256 and byte count match persisted media_sha256/media_size_bytes",
+        "video_visual_sampling": "one full-resolution decoded frame per second from 0s through final second, plus targeted inspection of full-resolution frames; automated OCR crosscheck; sub-second transient text cannot be excluded",
+        "audio_crosscheck": "complete saved Opus decoded; independent Whisper small and medium passes compared against prior draft; direct human/model audio audition unavailable in this interface",
+        "direct_audio_audition": false,
+        "verified_visible_text": [
+          {
+            "start_seconds": 0,
+            "end_seconds": 5.1,
+            "text": "This Honestly Seems Too Scrappy For Such A Luxurious Ad Campaign",
+            "basis": "directly visible in re-retrieved full source frames; bounds approximate to sampled seconds"
+          },
+          {
+            "start_seconds": 3,
+            "end_seconds": 5.1,
+            "text": "TIFFANY & CO. (on illuminated billboard)",
+            "basis": "directly visible in re-retrieved full source frames; bounds approximate to sampled seconds"
+          }
+        ],
+        "independent_small_asr": [
+          {
+            "end": 2,
+            "start": 0,
+            "text": "Look at this"
           }
         ]
       }
@@ -487,7 +691,7 @@
         {
           "start": 6,
           "end": 8,
-          "text": "Maybe the sunflower."
+          "text": "It looks like a sunflower."
         },
         {
           "start": 8,
@@ -497,7 +701,7 @@
         {
           "start": 9,
           "end": 12,
-          "text": "I feel like I'm not like I'm a petal in a garden."
+          "text": "I feel like I'm—like I'm a petal in a garden."
         },
         {
           "start": 12,
@@ -577,13 +781,13 @@
       "transcript_verified_against_audio": false,
       "on_screen_text_verified_against_full_video": false,
       "verification_audit": {
-        "audio_text_status": "UNVERIFIED: the persisted complete Opus audio could be decoded, but this session cannot audition it independently; draft ASR is not certified as audible speech.",
-        "visual_text_status": "PARTIAL: the four persisted representative frames were inspected; this does not establish complete-video OCR accuracy.",
+        "audio_text_status": "INDEPENDENT ASR CROSSCHECK ONLY: complete source audio decoded, Whisper small and medium compared with draft; direct audition unavailable, so exact audible wording is not human-certified.",
+        "visual_text_status": "Full media decoded end-to-end and sampled at 1 fps with full-resolution targeted frame review; meaningful observed text logged. Sub-second transient or tiny/obscured text may remain unverified.",
         "verified_frame_text": [
           {
             "time_seconds": 5.3,
-            "text": "I THINK THIS IS ATTRACTIVE",
-            "basis": "directly visible in persisted representative frame"
+            "text": "THINK THIS IS ATTRACTIVE",
+            "basis": "directly visible at 5.3s; preceding 4s caption reads 'DO YOU YOU', forming a question"
           },
           {
             "time_seconds": 10.14,
@@ -596,7 +800,89 @@
             "basis": "directly visible in persisted representative frame"
           }
         ],
-        "transcript_conflict": "At 5.30s the visible caption says 'I THINK THIS IS ATTRACTIVE'; the 4.00–6.00s ASR says 'Do you think this is attractive?' Audio is unverified; preserve draft and resolve by listening."
+        "transcript_conflict": "RESOLVED VISUALLY: 4–6s complete adjacent subtitles read 'DO YOU YOU / THINK THIS IS ATTRACTIVE', a question; both independent ASR passes also read the question. Earlier statement interpretation came from the cropped 5.30s frame."
+      },
+      "full_source_review": {
+        "source_access": "full video file re-retrieved from persisted source URL; video and audio decoded end-to-end",
+        "media_integrity": "fresh file SHA-256 and byte count match persisted media_sha256/media_size_bytes",
+        "video_visual_sampling": "one full-resolution decoded frame per second from 0s through final second, plus targeted inspection of full-resolution frames; automated OCR crosscheck; sub-second transient text cannot be excluded",
+        "audio_crosscheck": "complete saved Opus decoded; independent Whisper small and medium passes compared against prior draft; direct human/model audio audition unavailable in this interface",
+        "direct_audio_audition": false,
+        "verified_visible_text": [
+          {
+            "start_seconds": 0,
+            "end_seconds": 15,
+            "text": "My Boyfriend Picked Out Dresses For Me / It Did Not Work...",
+            "basis": "directly visible in re-retrieved full source frames; bounds approximate to sampled seconds"
+          },
+          {
+            "start_seconds": 0,
+            "end_seconds": 15,
+            "text": "Let your man give you a makeover (reply-to-comment inset)",
+            "basis": "directly visible in re-retrieved full source frames; bounds approximate to sampled seconds"
+          },
+          {
+            "start_seconds": 4,
+            "end_seconds": 6,
+            "text": "DO YOU YOU / THINK THIS IS ATTRACTIVE (question split across adjacent captions)",
+            "basis": "directly visible in re-retrieved full source frames; bounds approximate to sampled seconds"
+          },
+          {
+            "start_seconds": 6,
+            "end_seconds": 8,
+            "text": "IT LOOKS LIKE / A SUNFLOWER",
+            "basis": "directly visible in re-retrieved full source frames; bounds approximate to sampled seconds"
+          },
+          {
+            "start_seconds": 9,
+            "end_seconds": 12,
+            "text": "I FEEL LIKE / I'M LIKE I'M / A PETAL IN / A GARDEN",
+            "basis": "directly visible in re-retrieved full source frames; bounds approximate to sampled seconds"
+          }
+        ],
+        "independent_small_asr": [
+          {
+            "end": 3,
+            "start": 0,
+            "text": "It doesn't seem like a good color."
+          },
+          {
+            "end": 4,
+            "start": 3,
+            "text": "Why not?"
+          },
+          {
+            "end": 6,
+            "start": 4,
+            "text": "Do you think this is attractive?"
+          },
+          {
+            "end": 8,
+            "start": 6,
+            "text": "I think it's sunflower."
+          },
+          {
+            "end": 9,
+            "start": 8,
+            "text": "Exactly."
+          },
+          {
+            "end": 12,
+            "start": 9,
+            "text": "I feel like I'm a shadow in a flower bed."
+          },
+          {
+            "end": 13,
+            "start": 12,
+            "text": "Okay."
+          },
+          {
+            "end": 15,
+            "start": 13,
+            "text": "I don't know why that's not good."
+          }
+        ],
+        "uncertainty": "At 6–8s visible subtitle says 'It looks like a sunflower'; independent medium ASR says 'You look like a sunflower'. Pronoun in audio not directly auditioned."
       }
     },
     {
@@ -631,7 +917,7 @@
         {
           "start": 10.04,
           "end": 14.8,
-          "text": "Over three hundred forty five hundred thousand pounds of blueberries have been recalled."
+          "text": "Over 345,000 pounds of blueberries have been recalled."
         },
         {
           "start": 14.8,
@@ -641,12 +927,12 @@
         {
           "start": 16.4,
           "end": 21.36,
-          "text": "Recall mostly involves public screenwise blueberries and mixed berries, but the infected berries"
+          "text": "Recall mostly involves Publix GreenWise blueberries and mixed berries, but the infected berries"
         },
         {
           "start": 21.36,
           "end": 27.16,
-          "text": "all came from a company called Fruitas E. Hortelizas from Chile."
+          "text": "all came from a company called Frutas y Hortalizas from Chile."
         },
         {
           "start": 27.16,
@@ -666,22 +952,22 @@
         {
           "start": 37.52,
           "end": 48.2,
-          "text": "064536040112053 0653 G12153."
+          "text": "06453, 60401, 12053, 0653G, 12153."
         },
         {
           "start": 48.2,
           "end": 52.84,
-          "text": "All affected berries have a best buy or sell-by date of February 9th, 2028."
+          "text": "All affected berries have a best by or sell-by date of February 9th, 2028."
         },
         {
           "start": 52.84,
           "end": 57.38,
-          "text": "And don't forget about strawberries, Driscals is currently facing an active class action lawsuit"
+          "text": "And don't forget about strawberries, Driscoll's is currently facing an active class action lawsuit"
         },
         {
           "start": 57.38,
           "end": 59.28,
-          "text": "on the Collect Cell Men Finder app."
+          "text": "on the Collect Settlement Finder app."
         },
         {
           "start": 59.28,
@@ -716,12 +1002,12 @@
         {
           "start": 86.8,
           "end": 88.16,
-          "text": "Driscals lawsuit."
+          "text": "If you bought Driscoll's strawberries, head to the Collect Settlement Finder app and join the"
         },
         {
           "start": 88.16,
           "end": 92.16,
-          "text": "Save this, share it with someone who may have purchased those berries, and follow me for"
+          "text": "Driscoll's lawsuit."
         },
         {
           "start": 92.16,
@@ -1196,8 +1482,8 @@
       "transcript_verified_against_audio": false,
       "on_screen_text_verified_against_full_video": false,
       "verification_audit": {
-        "audio_text_status": "UNVERIFIED: the persisted complete Opus audio could be decoded, but this session cannot audition it independently; draft ASR is not certified as audible speech.",
-        "visual_text_status": "PARTIAL: the four persisted representative frames were inspected; this does not establish complete-video OCR accuracy.",
+        "audio_text_status": "INDEPENDENT ASR CROSSCHECK ONLY: complete source audio decoded, Whisper small and medium compared with draft; direct audition unavailable, so exact audible wording is not human-certified.",
+        "visual_text_status": "Full media decoded end-to-end and sampled at 1 fps with full-resolution targeted frame review; meaningful observed text logged. Sub-second transient or tiny/obscured text may remain unverified.",
         "verified_frame_text": [
           {
             "time_seconds": 2.83,
@@ -1220,7 +1506,185 @@
             "basis": "directly visible in persisted representative frame"
           }
         ],
-        "transcript_conflict": "Draft ASR at 10.04–14.80s contains a nonsensical quantity; at 16.40–27.16s it has garbled names. Exact spoken wording and numeric lot codes at 37.52–48.20s require audio and full-resolution video review."
+        "transcript_conflict": "RESOLVED FOR VISIBLE FACTUAL STRINGS: 10–15s 345,000; 16–27s Publix GreenWise and Frutas y Hortalizas; 37–48s five displayed lot codes; 57–59s Collect Settlement Finder. Two independent ASR passes broadly corroborate; exact spoken particles and spellings still lack direct audition."
+      },
+      "full_source_review": {
+        "source_access": "full video file re-retrieved from persisted source URL; video and audio decoded end-to-end",
+        "media_integrity": "fresh Instagram remux, 94.251s; saved Opus and fresh audio aligned with correlation 0.944 (not byte-identical to prior MP4)",
+        "video_visual_sampling": "one full-resolution decoded frame per second from 0s through final second, plus targeted inspection of full-resolution frames; automated OCR crosscheck; sub-second transient text cannot be excluded",
+        "audio_crosscheck": "complete saved Opus decoded; independent Whisper small and medium passes compared against prior draft; direct human/model audio audition unavailable in this interface",
+        "direct_audio_audition": false,
+        "verified_visible_text": [
+          {
+            "start_seconds": 0,
+            "end_seconds": 10,
+            "text": "8-21-2026 / FDA BLUEBERRY RECALL / INCREASED TO LEVEL 1",
+            "basis": "directly visible in re-retrieved full source frames; bounds approximate to sampled seconds"
+          },
+          {
+            "start_seconds": 10,
+            "end_seconds": 15,
+            "text": "OVER 345,000 LBS OF BLUEBERRIES RECALLED",
+            "basis": "directly visible in re-retrieved full source frames; bounds approximate to sampled seconds"
+          },
+          {
+            "start_seconds": 16,
+            "end_seconds": 22,
+            "text": "Publix GreenWise product images and matching subtitles",
+            "basis": "directly visible in re-retrieved full source frames; bounds approximate to sampled seconds"
+          },
+          {
+            "start_seconds": 23,
+            "end_seconds": 32,
+            "text": "Comfrut / FRUTAS Y HORTALIZAS",
+            "basis": "directly visible in re-retrieved full source frames; bounds approximate to sampled seconds"
+          },
+          {
+            "start_seconds": 37,
+            "end_seconds": 48,
+            "text": "Lot codes displayed in sequence: 06453, 60401, 12053, 0653G, 12153",
+            "basis": "directly visible in re-retrieved full source frames; bounds approximate to sampled seconds"
+          },
+          {
+            "start_seconds": 48,
+            "end_seconds": 53,
+            "text": "Best By or Sell By / FEBRUARY 2028 (spoken subtitle specifies February 9th, 2028)",
+            "basis": "directly visible in re-retrieved full source frames; bounds approximate to sampled seconds"
+          },
+          {
+            "start_seconds": 54,
+            "end_seconds": 56,
+            "text": "Driscoll's strawberry settlement image",
+            "basis": "directly visible in re-retrieved full source frames; bounds approximate to sampled seconds"
+          },
+          {
+            "start_seconds": 57,
+            "end_seconds": 59,
+            "text": "Collect - Settlement Finder app image",
+            "basis": "directly visible in re-retrieved full source frames; bounds approximate to sampled seconds"
+          },
+          {
+            "start_seconds": 59,
+            "end_seconds": 84,
+            "text": "YOUR FAVORITE STRAWBERRIES ARE LACED WITH 12 DANGEROUS PESTICIDES (small inset graphic)",
+            "basis": "directly visible in re-retrieved full source frames; bounds approximate to sampled seconds"
+          },
+          {
+            "start_seconds": 85,
+            "end_seconds": 91,
+            "text": "Collect - Settlement Finder app image",
+            "basis": "directly visible in re-retrieved full source frames; bounds approximate to sampled seconds"
+          },
+          {
+            "start_seconds": 92,
+            "end_seconds": 94.25,
+            "text": "Settlements app screenshot",
+            "basis": "directly visible in re-retrieved full source frames; bounds approximate to sampled seconds"
+          }
+        ],
+        "independent_small_asr": [
+          {
+            "end": 3.44,
+            "start": 0,
+            "text": "This is now an FDA Class 1 blueberry recall."
+          },
+          {
+            "end": 7.36,
+            "start": 3.44,
+            "text": "The highest risk level there is with possibility of death,"
+          },
+          {
+            "end": 9.84,
+            "start": 7.36,
+            "text": "life-threatening illness, or permanent damage."
+          },
+          {
+            "end": 13.64,
+            "start": 9.84,
+            "text": "Over 345,000 pounds of blueberries"
+          },
+          {
+            "end": 14.6,
+            "start": 13.64,
+            "text": "have been recalled."
+          },
+          {
+            "end": 15.96,
+            "start": 14.6,
+            "text": "Check your fridge right now."
+          },
+          {
+            "end": 19.34,
+            "start": 15.96,
+            "text": "Recall mostly involves public screen-wise blueberries"
+          },
+          {
+            "end": 20.4,
+            "start": 19.34,
+            "text": "and mixed berries,"
+          },
+          {
+            "end": 22.76,
+            "start": 20.4,
+            "text": "but the infected berries all came from a company"
+          },
+          {
+            "end": 26.9,
+            "start": 22.76,
+            "text": "called Frutaz E. Hortelizas from Chile."
+          },
+          {
+            "end": 29.4,
+            "start": 26.9,
+            "text": "Turn your bag over, check the bottom of your box."
+          },
+          {
+            "end": 35.16,
+            "start": 29.4,
+            "text": "you see that name on the bottom, discard it immediately. If your blueberry has any of these"
+          },
+          {
+            "end": 49.8,
+            "start": 35.16,
+            "text": "lot numbers, throw it out or return it. 0645360401120530653G12153. All affected berries have a best buy"
+          },
+          {
+            "end": 55.4,
+            "start": 49.8,
+            "text": "or sell by date of February 9th, 2028. And don't forget about strawberries. Driscoll's is currently"
+          },
+          {
+            "end": 59.96,
+            "start": 55.4,
+            "text": "facing an active class action lawsuit on the Collect settlement finder app. Alleging they"
+          },
+          {
+            "end": 65.4,
+            "start": 59.96,
+            "text": "falsely marketed their conventional strawberries as safe, environmentally responsible, and sustainable"
+          },
+          {
+            "end": 71.8,
+            "start": 65.4,
+            "text": "grown while failing to disclose the presence of PFA's related pesticides, the forever chemicals"
+          },
+          {
+            "end": 77.16,
+            "start": 71.8,
+            "text": "linked to cancer, immune damage, and hormone disruption. Independent testing allegedly detected"
+          },
+          {
+            "end": 83.08,
+            "start": 77.16,
+            "text": "multiple pesticides residues and consumers paid a premium for berries they thought were clean."
+          },
+          {
+            "end": 94.08,
+            "start": 83.08,
+            "text": "If you bought Driscoll strawberries head to the collect settlement finder app and join the Driscoll's lawsuit save this share it with someone who may have purchased those berries and follow me for the next round of recalls and lawsuits."
+          }
+        ],
+        "uncertainty": "Source graphic says February 2028 while speech subtitle says February 9th, 2028; recorded separately. Graphic/legal fine print is too small to transcribe confidently; no external truth verification of health claims performed."
       }
     },
     {
@@ -1336,8 +1800,8 @@
       "transcript_verified_against_audio": false,
       "on_screen_text_verified_against_full_video": false,
       "verification_audit": {
-        "audio_text_status": "UNVERIFIED: the persisted complete Opus audio could be decoded, but this session cannot audition it independently; draft ASR is not certified as audible speech.",
-        "visual_text_status": "PARTIAL: the four persisted representative frames were inspected; this does not establish complete-video OCR accuracy.",
+        "audio_text_status": "INDEPENDENT ASR CROSSCHECK ONLY: complete source audio decoded, Whisper small and medium compared with draft; direct audition unavailable, so exact audible wording is not human-certified.",
+        "visual_text_status": "Full media decoded end-to-end and sampled at 1 fps with full-resolution targeted frame review; meaningful observed text logged. Sub-second transient or tiny/obscured text may remain unverified.",
         "verified_frame_text": [
           {
             "time_seconds": 0.62,
@@ -1348,6 +1812,65 @@
             "time_seconds": 19.78,
             "text": "BE GREAT",
             "basis": "directly visible in persisted representative frame"
+          }
+        ]
+      },
+      "full_source_review": {
+        "source_access": "full video file re-retrieved from persisted source URL; video and audio decoded end-to-end",
+        "media_integrity": "fresh file SHA-256 and byte count match persisted media_sha256/media_size_bytes",
+        "video_visual_sampling": "one full-resolution decoded frame per second from 0s through final second, plus targeted inspection of full-resolution frames; automated OCR crosscheck; sub-second transient text cannot be excluded",
+        "audio_crosscheck": "complete saved Opus decoded; independent Whisper small and medium passes compared against prior draft; direct human/model audio audition unavailable in this interface",
+        "direct_audio_audition": false,
+        "verified_visible_text": [
+          {
+            "start_seconds": 0,
+            "end_seconds": 20.6,
+            "text": "The Tribeca Film Festival Would Be So Much Better If They Did This",
+            "basis": "directly visible in re-retrieved full source frames; bounds approximate to sampled seconds"
+          },
+          {
+            "start_seconds": 5,
+            "end_seconds": 7,
+            "text": "FREE POPCORN / Sign up for MyFree DIRECTV",
+            "basis": "directly visible in re-retrieved full source frames; bounds approximate to sampled seconds"
+          },
+          {
+            "start_seconds": 0,
+            "end_seconds": 20.6,
+            "text": "Word-by-word speech subtitles, including 'I WILL NEVER' and ending 'BE GREAT.'",
+            "basis": "directly visible in re-retrieved full source frames; bounds approximate to sampled seconds"
+          }
+        ],
+        "independent_small_asr": [
+          {
+            "end": 3.6,
+            "start": 0,
+            "text": "I will never understand why film festivals don't have food."
+          },
+          {
+            "end": 7.76,
+            "start": 3.6,
+            "text": "Like at the Tribeca Film Festival, we've got free popcorn for signing up with Direct TV,"
+          },
+          {
+            "end": 10.48,
+            "start": 7.76,
+            "text": "which is cool, but that's also not a lunch."
+          },
+          {
+            "end": 13.84,
+            "start": 10.48,
+            "text": "For so many like great sponsors of Tribeca Film Festival,"
+          },
+          {
+            "end": 17.84,
+            "start": 13.84,
+            "text": "none of them could be like a pizza place, or like a local"
+          },
+          {
+            "end": 20.4,
+            "start": 17.84,
+            "text": "to just salad place, that'd be great."
           }
         ]
       }
@@ -1452,8 +1975,8 @@
       "transcript_verified_against_audio": false,
       "on_screen_text_verified_against_full_video": false,
       "verification_audit": {
-        "audio_text_status": "UNVERIFIED: the persisted complete Opus audio could be decoded, but this session cannot audition it independently; draft ASR is not certified as audible speech.",
-        "visual_text_status": "PARTIAL: the four persisted representative frames were inspected; this does not establish complete-video OCR accuracy.",
+        "audio_text_status": "INDEPENDENT ASR CROSSCHECK ONLY: complete source audio decoded, Whisper small and medium compared with draft; direct audition unavailable, so exact audible wording is not human-certified.",
+        "visual_text_status": "Full media decoded end-to-end and sampled at 1 fps with full-resolution targeted frame review; meaningful observed text logged. Sub-second transient or tiny/obscured text may remain unverified.",
         "verified_frame_text": [
           {
             "time_seconds": 0.24,
@@ -1464,6 +1987,49 @@
             "time_seconds": 7.55,
             "text": "OF THE 4D EXPERIENCE?",
             "basis": "directly visible in persisted representative frame"
+          }
+        ]
+      },
+      "full_source_review": {
+        "source_access": "full video file re-retrieved from persisted source URL; video and audio decoded end-to-end",
+        "media_integrity": "fresh file SHA-256 and byte count match persisted media_sha256/media_size_bytes",
+        "video_visual_sampling": "one full-resolution decoded frame per second from 0s through final second, plus targeted inspection of full-resolution frames; automated OCR crosscheck; sub-second transient text cannot be excluded",
+        "audio_crosscheck": "complete saved Opus decoded; independent Whisper small and medium passes compared against prior draft; direct human/model audio audition unavailable in this interface",
+        "direct_audio_audition": false,
+        "verified_visible_text": [
+          {
+            "start_seconds": 0,
+            "end_seconds": 7.87,
+            "text": "Out of Theater Reaction / The Odyssey / Regal 4DX Experience",
+            "basis": "directly visible in re-retrieved full source frames; bounds approximate to sampled seconds"
+          },
+          {
+            "start_seconds": 6,
+            "end_seconds": 7.87,
+            "text": "IS THAT PART / OF THE 4D EXPERIENCE?",
+            "basis": "directly visible in re-retrieved full source frames; bounds approximate to sampled seconds"
+          }
+        ],
+        "independent_small_asr": [
+          {
+            "end": 3.22,
+            "start": 0,
+            "text": "I felt seasick the whole time, but it was worth it."
+          },
+          {
+            "end": 4.74,
+            "start": 3.22,
+            "text": "When the characters were like, we're hungry,"
+          },
+          {
+            "end": 6.3,
+            "start": 4.74,
+            "text": "I'm like, yeah, I'm hungry too."
+          },
+          {
+            "end": 8.02,
+            "start": 6.3,
+            "text": "Is that part of the 40 experience?"
           }
         ]
       }
@@ -1490,12 +2056,12 @@
         {
           "start": 0,
           "end": 2,
-          "text": "I might just wait here for a little bit."
+          "text": "I'm gonna just wait here for a little bit."
         },
         {
           "start": 8,
           "end": 10,
-          "text": "I die fast."
+          "text": "And I pass."
         }
       ],
       "on_screen_text_observations": [
@@ -1537,8 +2103,8 @@
       "transcript_verified_against_audio": false,
       "on_screen_text_verified_against_full_video": false,
       "verification_audit": {
-        "audio_text_status": "UNVERIFIED: the persisted complete Opus audio could be decoded, but this session cannot audition it independently; draft ASR is not certified as audible speech.",
-        "visual_text_status": "PARTIAL: the four persisted representative frames were inspected; this does not establish complete-video OCR accuracy.",
+        "audio_text_status": "INDEPENDENT ASR CROSSCHECK ONLY: complete source audio decoded, Whisper small and medium compared with draft; direct audition unavailable, so exact audible wording is not human-certified.",
+        "visual_text_status": "Full media decoded end-to-end and sampled at 1 fps with full-resolution targeted frame review; meaningful observed text logged. Sub-second transient or tiny/obscured text may remain unverified.",
         "verified_frame_text": [
           {
             "time_seconds": 0.47,
@@ -1551,6 +2117,40 @@
             "basis": "directly visible in persisted representative frame"
           }
         ]
+      },
+      "full_source_review": {
+        "source_access": "full video file re-retrieved from persisted source URL; video and audio decoded end-to-end",
+        "media_integrity": "fresh file SHA-256 and byte count match persisted media_sha256/media_size_bytes",
+        "video_visual_sampling": "one full-resolution decoded frame per second from 0s through final second, plus targeted inspection of full-resolution frames; automated OCR crosscheck; sub-second transient text cannot be excluded",
+        "audio_crosscheck": "complete saved Opus decoded; independent Whisper small and medium passes compared against prior draft; direct human/model audio audition unavailable in this interface",
+        "direct_audio_audition": false,
+        "verified_visible_text": [
+          {
+            "start_seconds": 0,
+            "end_seconds": 15.57,
+            "text": "Nothing Prepares You For Seeing An Energy Vortex For the First Time",
+            "basis": "directly visible in re-retrieved full source frames; bounds approximate to sampled seconds"
+          },
+          {
+            "start_seconds": 15,
+            "end_seconds": 15.57,
+            "text": "Welcome to the Amitabha Stupa and Peace Park, an outdoor venue for prayer, meditation and spiritual renewal for people of all faiths. (sign; smaller donor lines omitted)",
+            "basis": "directly visible in re-retrieved full source frames; bounds approximate to sampled seconds"
+          }
+        ],
+        "independent_small_asr": [
+          {
+            "end": 2,
+            "start": 0,
+            "text": "I'm gonna just wait here for a little bit."
+          },
+          {
+            "end": 10,
+            "start": 8,
+            "text": "And I pass."
+          }
+        ],
+        "uncertainty": "Two independent ASR passes agree on 8–10s 'And I pass', differing from prior draft 'I die fast'; source has no matching subtitles, so direct listening is needed to certify exact words."
       }
     },
     {
@@ -1571,14 +2171,7 @@
       "original_caption_post_text": "#phototrend let’s see if this photo trend actually works. I mean it’s still great to document my versatility #backgroundactor ",
       "audio_stream": true,
       "transcript_method": "automated draft; human audio verification required",
-      "transcript": [
-        {
-          "start": 0,
-          "end": 10,
-          "text": "Thanks for watching!",
-          "verification_status": "SUSPECTED SPURIOUS — UNVERIFIED. No 'Thanks for watching!' appears in the four representative frames, which show a static four-photo collage with overlaid text. The audio has a decodable, nonsilent Opus stream but could not be auditioned. Do not cite this draft as actual speech."
-        }
-      ],
+      "transcript": [],
       "on_screen_text_observations": [
         {
           "time_seconds": 2,
@@ -1638,10 +2231,45 @@
       "transcript_verified_against_audio": false,
       "on_screen_text_verified_against_full_video": false,
       "verification_audit": {
-        "audio_text_status": "UNVERIFIED: the persisted complete Opus audio could be decoded, but this session cannot audition it independently; draft ASR is not certified as audible speech.",
-        "visual_text_status": "PARTIAL: four persisted frames inspected; small central overlaid wording remains unreadable at their resolution. The seven OCR draft strings are not validated against full-resolution frames or full video.",
+        "audio_text_status": "INDEPENDENT ASR CROSSCHECK ONLY: complete source audio decoded, Whisper small and medium compared with draft; direct audition unavailable, so exact audible wording is not human-certified.",
+        "visual_text_status": "Full re-retrieved 10s MP4 visually inspected at 1s intervals; four-photo collage and three centered text blocks persist throughout. Exact text logged in full_source_review.",
         "verified_frame_text": [],
-        "transcript_conflict": "0.00–10.00s 'Thanks for watching!' is suspect; no visual match in sampled frames, but audio review is needed to confirm or remove it."
+        "transcript_conflict": "RESOLVED AS ASR ARTIFACT at 0–10s: deleted 'Thanks for watching!' draft. Silero VAD detects no speech; Whisper small reports music and Whisper medium invents a different generic call to action. Not directly auditioned."
+      },
+      "full_source_review": {
+        "source_access": "full video file re-retrieved from persisted source URL; video and audio decoded end-to-end",
+        "media_integrity": "fresh file SHA-256 and byte count match persisted media_sha256/media_size_bytes",
+        "video_visual_sampling": "one full-resolution decoded frame per second from 0s through final second, plus targeted inspection of full-resolution frames; automated OCR crosscheck; sub-second transient text cannot be excluded",
+        "audio_crosscheck": "Complete 10.016s Opus decoded; Silero VAD found zero speech intervals; Whisper small returned 'Music' while medium hallucinated a different generic CTA ('Subscribe to my channel for more!'). Direct audition unavailable.",
+        "direct_audio_audition": false,
+        "verified_visible_text": [
+          {
+            "start_seconds": 0,
+            "end_seconds": 10.01,
+            "text": "The Many Hairstyles of Me Doing Background Work",
+            "basis": "directly visible in re-retrieved full source frames; bounds approximate to sampled seconds"
+          },
+          {
+            "start_seconds": 0,
+            "end_seconds": 10.01,
+            "text": "From Period Pieces to Modern Day",
+            "basis": "directly visible in re-retrieved full source frames; bounds approximate to sampled seconds"
+          },
+          {
+            "start_seconds": 0,
+            "end_seconds": 10.01,
+            "text": "Can't Wait for These Projects to Come Out And For Me To Be A Blur in the Background",
+            "basis": "directly visible in re-retrieved full source frames; bounds approximate to sampled seconds"
+          }
+        ],
+        "independent_small_asr": [
+          {
+            "end": 10,
+            "start": 0,
+            "text": "Music"
+          }
+        ],
+        "uncertainty": "No speech detected by VAD and no independent ASR supports 'Thanks for watching!'; treat prior phrase as an ASR artifact. Without direct listening, absence of a faint or mixed vocal cannot be certified absolutely."
       }
     },
     {
@@ -1778,8 +2406,8 @@
       "transcript_verified_against_audio": false,
       "on_screen_text_verified_against_full_video": false,
       "verification_audit": {
-        "audio_text_status": "UNVERIFIED: the persisted complete Opus audio could be decoded, but this session cannot audition it independently; draft ASR is not certified as audible speech.",
-        "visual_text_status": "PARTIAL: four frames inspected. The small additional alleyways/b-roll disclaimer visible near 7.25–10.39s cannot be transcribed confidently at persisted resolution.",
+        "audio_text_status": "INDEPENDENT ASR CROSSCHECK ONLY: complete source audio decoded, Whisper small and medium compared with draft; direct audition unavailable, so exact audible wording is not human-certified.",
+        "visual_text_status": "Full media decoded end-to-end and sampled at 1 fps with full-resolution targeted frame review; meaningful observed text logged. Sub-second transient or tiny/obscured text may remain unverified.",
         "verified_frame_text": [
           {
             "time_seconds": 0.32,
@@ -1795,6 +2423,50 @@
             "time_seconds": 10.39,
             "text": "DENVER HAS ALLEYS",
             "basis": "directly visible in persisted representative frame"
+          }
+        ]
+      },
+      "full_source_review": {
+        "source_access": "full video file re-retrieved from persisted source URL; video and audio decoded end-to-end",
+        "media_integrity": "fresh file SHA-256 and byte count match persisted media_sha256/media_size_bytes",
+        "video_visual_sampling": "one full-resolution decoded frame per second from 0s through final second, plus targeted inspection of full-resolution frames; automated OCR crosscheck; sub-second transient text cannot be excluded",
+        "audio_crosscheck": "complete saved Opus decoded; independent Whisper small and medium passes compared against prior draft; direct human/model audio audition unavailable in this interface",
+        "direct_audio_audition": false,
+        "verified_visible_text": [
+          {
+            "start_seconds": 0,
+            "end_seconds": 10.82,
+            "text": "Denver Fun Fact",
+            "basis": "directly visible in re-retrieved full source frames; bounds approximate to sampled seconds"
+          },
+          {
+            "start_seconds": 5,
+            "end_seconds": 10,
+            "text": "There are more alleyways than this, I just didn't take b-roll of them",
+            "basis": "directly visible in re-retrieved full source frames; bounds approximate to sampled seconds"
+          },
+          {
+            "start_seconds": 7,
+            "end_seconds": 9,
+            "text": "ALLEY CLOSED / NO ENTRY BY GENERAL PUBLIC / TENANT AND BUSINESS ACCESS ONLY (posted sign; smaller legal text not transcribed)",
+            "basis": "directly visible in re-retrieved full source frames; bounds approximate to sampled seconds"
+          }
+        ],
+        "independent_small_asr": [
+          {
+            "end": 5,
+            "start": 0,
+            "text": "So something that I didn't know about downtown Denver is that there's all these alleyways."
+          },
+          {
+            "end": 8,
+            "start": 5,
+            "text": "Like honestly, it's a little sketchy."
+          },
+          {
+            "end": 11,
+            "start": 8,
+            "text": "It's like a lot sketchy. You wouldn't think Denver has alleys."
           }
         ]
       }
@@ -1917,8 +2589,8 @@
       "transcript_verified_against_audio": false,
       "on_screen_text_verified_against_full_video": false,
       "verification_audit": {
-        "audio_text_status": "UNVERIFIED: the persisted complete Opus audio could be decoded, but this session cannot audition it independently; draft ASR is not certified as audible speech.",
-        "visual_text_status": "PARTIAL: the four persisted representative frames were inspected; this does not establish complete-video OCR accuracy.",
+        "audio_text_status": "INDEPENDENT ASR CROSSCHECK ONLY: complete source audio decoded, Whisper small and medium compared with draft; direct audition unavailable, so exact audible wording is not human-certified.",
+        "visual_text_status": "Full media decoded end-to-end and sampled at 1 fps with full-resolution targeted frame review; meaningful observed text logged. Sub-second transient or tiny/obscured text may remain unverified.",
         "verified_frame_text": [
           {
             "time_seconds": 0.4,
@@ -1934,6 +2606,38 @@
             "time_seconds": 12.64,
             "text": "WARM UP",
             "basis": "directly visible in persisted representative frame"
+          }
+        ]
+      },
+      "full_source_review": {
+        "source_access": "full video file re-retrieved from persisted source URL; video and audio decoded end-to-end",
+        "media_integrity": "fresh file SHA-256 and byte count match persisted media_sha256/media_size_bytes",
+        "video_visual_sampling": "one full-resolution decoded frame per second from 0s through final second, plus targeted inspection of full-resolution frames; automated OCR crosscheck; sub-second transient text cannot be excluded",
+        "audio_crosscheck": "complete saved Opus decoded; independent Whisper small and medium passes compared against prior draft; direct human/model audio audition unavailable in this interface",
+        "direct_audio_audition": false,
+        "verified_visible_text": [
+          {
+            "start_seconds": 0,
+            "end_seconds": 13.17,
+            "text": "Word-by-word subtitles begin 'APPARENTLY IT'S 76 / DEGREES IN NEW YORK' and end 'A HOT COFFEE / WARM UP'",
+            "basis": "directly visible in re-retrieved full source frames; bounds approximate to sampled seconds"
+          }
+        ],
+        "independent_small_asr": [
+          {
+            "end": 5.4,
+            "start": 0,
+            "text": "Apparently it's 76 degrees in New York, which usually would be considered warm, but because"
+          },
+          {
+            "end": 11.72,
+            "start": 5.4,
+            "text": "we've had so many days that were 90 degrees, 100 degrees plus days, I need a hot coffee"
+          },
+          {
+            "end": 12.88,
+            "start": 11.72,
+            "text": "in order to warm up."
           }
         ]
       }
@@ -1975,7 +2679,8 @@
         {
           "start": 4,
           "end": 6,
-          "text": "See, you don't have this at all."
+          "text": "[We/you] don't have this at home.",
+          "verification_status": "PARTIAL: subtitle from 5–10s says 'We don't have this at home'; medium ASR hears 'You don't have this at home'. Exact pronoun and start time cannot be certified without direct listening."
         }
       ],
       "on_screen_text_observations": [
@@ -2017,8 +2722,8 @@
       "transcript_verified_against_audio": false,
       "on_screen_text_verified_against_full_video": false,
       "verification_audit": {
-        "audio_text_status": "UNVERIFIED: the persisted complete Opus audio could be decoded, but this session cannot audition it independently; draft ASR is not certified as audible speech.",
-        "visual_text_status": "PARTIAL: the four persisted representative frames were inspected; this does not establish complete-video OCR accuracy.",
+        "audio_text_status": "INDEPENDENT ASR CROSSCHECK ONLY: complete source audio decoded, Whisper small and medium compared with draft; direct audition unavailable, so exact audible wording is not human-certified.",
+        "visual_text_status": "Full media decoded end-to-end and sampled at 1 fps with full-resolution targeted frame review; meaningful observed text logged. Sub-second transient or tiny/obscured text may remain unverified.",
         "verified_frame_text": [
           {
             "time_seconds": 0.31,
@@ -2041,11 +2746,61 @@
             "basis": "directly visible in persisted representative frame"
           }
         ],
-        "transcript_conflict": "At 6.83–9.79s visible subtitle reads 'We don't have this at home'; ASR at 4.00–6.00s instead gives 'See, you don't have this at all.' Timestamps and wording require audio review; preserve draft."
+        "transcript_conflict": "PARTIAL RESOLUTION: original 'See, you don't have this at all' conflicts with video; full source captions at 5–10s read 'We don't have this at home' and medium ASR agrees on 'don't have this at home' but hears 'you'. Pronoun remains uncertain; 3–4s 'Cause of this' is visible caption, not certified spoken wording."
+      },
+      "full_source_review": {
+        "source_access": "full video file re-retrieved from persisted source URL; video and audio decoded end-to-end",
+        "media_integrity": "fresh file SHA-256 and byte count match persisted media_sha256/media_size_bytes",
+        "video_visual_sampling": "one full-resolution decoded frame per second from 0s through final second, plus targeted inspection of full-resolution frames; automated OCR crosscheck; sub-second transient text cannot be excluded",
+        "audio_crosscheck": "complete saved Opus decoded; independent Whisper small and medium passes compared against prior draft; direct human/model audio audition unavailable in this interface",
+        "direct_audio_audition": false,
+        "verified_visible_text": [
+          {
+            "start_seconds": 0,
+            "end_seconds": 2,
+            "text": "Are you filming the road?",
+            "basis": "directly visible in re-retrieved full source frames; bounds approximate to sampled seconds"
+          },
+          {
+            "start_seconds": 2,
+            "end_seconds": 4,
+            "text": "Why? / Cause of this",
+            "basis": "directly visible in re-retrieved full source frames; bounds approximate to sampled seconds"
+          },
+          {
+            "start_seconds": 5,
+            "end_seconds": 10.2,
+            "text": "We don't have this at home",
+            "basis": "directly visible in re-retrieved full source frames; bounds approximate to sampled seconds"
+          }
+        ],
+        "independent_small_asr": [
+          {
+            "end": 1.84,
+            "start": 0,
+            "text": "Are you filming the road?"
+          },
+          {
+            "end": 2.34,
+            "start": 1.84,
+            "text": "Yeah."
+          },
+          {
+            "end": 3.84,
+            "start": 2.34,
+            "text": "Why?"
+          },
+          {
+            "end": 6.34,
+            "start": 3.84,
+            "text": "Because you don't have this at all."
+          }
+        ],
+        "uncertainty": "The 3–4s caption 'Cause of this' and pronoun at 5–10s were not reliably resolved by ASR and require direct listening."
       }
     }
   ],
-  "source_retrieval_vs_transcription": "2/2 means full source media was retrieved and decoded, not that automatic speech recognition or OCR was human-corrected. Verify drafts against embedded audio and source video before scoring.",
+  "source_retrieval_vs_transcription": "All twelve complete files were freshly re-retrieved and decoded in 2026-09-13 review. Visual text was inspected from complete timeline via 1fps frames and targeted full-resolution frames; 11 TikTok files match persisted hash/bytes and the Instagram remux aligns audio. Audio was decoded and independently transcribed with Whisper small and medium, but this interface cannot audition it directly. Retrieval 2/2 and machine ASR do not establish human-certified transcripts or exhaustive OCR.",
   "encoding_note": "Representative frames are reduced-resolution JPEGs; the embedded full-length audio is mono Ogg Opus at 12 kb/s. Full source URLs and media hashes permit exact-video verification.",
   "verification_scope_note": "2026-09-13 audit: all 12 persisted four-frame sets inspected; clip 09 persisted Opus decoded and checked for silence. Audio could not be auditioned and no full source video could be replayed in this session. The annotated frame text is directly observed; transcripts and all unsampled on-screen text remain drafts. Source retrieval 2/2 does not certify ASR/OCR."
 }
