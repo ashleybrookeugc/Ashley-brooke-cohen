@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "updated_at": "2026-09-12T20:08:35-04:00",
+  "updated_at": "2026-09-12T21:04:42-04:00",
   "events": [
     {
       "id": "ibm-us-open-madison-square-park-2026",
@@ -31,22 +31,22 @@
       "address": "188 Lafayette Street, New York, NY 10013",
       "subway": {"station": "Spring St", "lines": ["6"]},
       "categories": ["fashion", "beauty", "food/drink"],
-      "what_it_is": "A brownstone-inspired NYFW pop-up with a hair-and-makeup refresh station, an experiential photo booth, on-site legwear customization and complimentary coffee.",
+      "what_it_is": "A brownstone-inspired NYFW pop-up with hair and beauty refresh stations, an experiential photo booth, on-site legwear customization and complimentary coffee.",
       "admission_free": true,
-      "what_is_free": "Entry is open to the public. Complimentary coffee, branded stickers and hand-embroidered personalization on purchased knee highs are advertised; the knee-high products themselves are sold on site.",
+      "what_is_free": "Entry is open to the public. Current listings advertise complimentary coffee, branded stickers, hairstyle/beauty touch-ups and the photo booth. Hand embroidery is complimentary only with purchase of the 20 Denier Hosiery Knee Highs.",
       "purchase_required": false,
-      "classifications": ["FREE EXPERIENCE", "RETAIL POP-UP"],
+      "classifications": ["FREE EXPERIENCE", "FREE STUFF", "RETAIL POP-UP"],
       "main_source_url": "https://www.averagesocialite.com/nyc-events/2026/9/12/the-stoop-by-calzedonia-nyc",
       "official_source_url": null,
-      "additional_verification_source": null,
-      "last_verified": "2026-09-12T20:08:35-04:00",
-      "caveats": "The current event listing explicitly says the pop-up is open to the public. Merchandise from the tights vending machine is paid; customization is complimentary with the item. No approval or advance RSVP requirement is stated.",
-      "practical_notes": "Sunday, September 13 from 12–5 PM at 188 Lafayette Street. This record relies on a current secondary event listing because an official standalone event page was not located in this pass.",
+      "additional_verification_source": "https://www.nycforfree.co/events/the-stoop-by-calzedonia",
+      "last_verified": "2026-09-12T21:04:42-04:00",
+      "caveats": "The pop-up is described as open to the public by multiple current listings. The tights vending-machine products are paid, and embroidery is not a no-purchase freebie: it is complimentary with purchase of the eligible knee highs. Promotional inventory and partner sampling may be limited.",
+      "practical_notes": "Sunday, September 13 from 12–5 PM at 188 Lafayette Street. No advance RSVP or host approval requirement is stated in the current listings.",
       "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
     }
   ],
   "occurrences": [
     {"id":"ibm-us-open-madison-square-park-2026--2026-09-13","event_id":"ibm-us-open-madison-square-park-2026","date":"2026-09-13","hours":"11 AM–7 PM","availability":"open","details":"Free public fan experience; men's final coverage begins at 2 PM."},
-    {"id":"calzedonia-stoop-nyfw-2026--2026-09-13","event_id":"calzedonia-stoop-nyfw-2026","date":"2026-09-13","hours":"12–5 PM","availability":"open","details":"Open to the public; retail products are paid, with select complimentary experiences."}
+    {"id":"calzedonia-stoop-nyfw-2026--2026-09-13","event_id":"calzedonia-stoop-nyfw-2026","date":"2026-09-13","hours":"12–5 PM","availability":"open","details":"Open to the public; coffee, stickers, touch-ups and photo booth are free, while embroidery requires purchase of eligible knee highs."}
   ]
 }
