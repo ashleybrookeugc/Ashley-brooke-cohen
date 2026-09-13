@@ -1,0 +1,52 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-13T00:06:27-04:00",
+  "events": [
+    {
+      "id": "sunday-scoops-graza-mccarren-2026",
+      "event_name": "Sunday Scoops with Graza & Friends",
+      "brand": "Graza",
+      "neighborhood": "Williamsburg / Greenpoint",
+      "address": "McCarren Parkhouse, 855 Lorimer Street, Brooklyn, NY 11222",
+      "subway": {"station": "Nassau Av", "lines": ["G"]},
+      "categories": ["food/drink", "entertainment"],
+      "what_it_is": "The final Sunday in Graza's three-date summer scoop series at McCarren Parkhouse, featuring olive-oil ice cream created with a guest collaborator.",
+      "admission_free": true,
+      "what_is_free": "Free orange-and-pink-pepper olive oil ice cream scoops are advertised for September 13, while supplies last.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE STUFF"],
+      "main_source_url": "https://www.graza.mom/blogs/culture/sunday-scoops-with-graza-and-friends",
+      "official_source_url": "https://www.graza.mom/blogs/culture/sunday-scoops-with-graza-and-friends",
+      "additional_verification_source": "https://www.averagesocialite.com/nyc-events/2026/8/23/sunday-scoops-with-graza-and-friends-nyc",
+      "last_verified": "2026-09-13T00:06:27-04:00",
+      "caveats": "Graza's official page confirms the September 13 date, 1–3 PM window and that service can end early when supplies run out. No RSVP, ticket, purchase or approval requirement is stated.",
+      "practical_notes": "Sunday, September 13 from 1–3 PM or until supplies run out at McCarren Parkhouse, 855 Lorimer Street. This is the final date in the series, so arriving near the start is the safest bet for a free scoop.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    },
+    {
+      "id": "carolina-herrera-good-girl-lab-verified-2026",
+      "event_name": "The Good Girl Lab",
+      "brand": "Carolina Herrera",
+      "neighborhood": "SoHo",
+      "address": "489 Broome Street, New York, NY 10013",
+      "subway": {"station": "Spring St", "lines": ["C", "E"]},
+      "categories": ["beauty", "fashion", "food/drink"],
+      "what_it_is": "An immersive Good Girl fragrance anniversary pop-up with interactive challenges, fragrance and beauty discovery, and the Good Girl Café.",
+      "admission_free": true,
+      "what_is_free": "The organizer's current Eventbrite listing says the first 200 guests can receive Carolina Herrera × Myka fro-yo; interactive challenges offer chances to win minis, makeup services and other prizes. These benefits are limited and not guaranteed to every visitor.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE SAMPLE"],
+      "main_source_url": "https://www.eventbrite.com/e/carolina-herrera-good-girl-lab-tickets-1997612868865",
+      "official_source_url": "https://www.eventbrite.com/e/carolina-herrera-good-girl-lab-tickets-1997612868865",
+      "additional_verification_source": "https://nycplugged.com/calendar/carolina-herrera-good-girl-lab/",
+      "last_verified": "2026-09-13T00:06:27-04:00",
+      "caveats": "Sunday hours are 11 AM–3 PM. A current NYC Plugged listing says walk-ins are allowed based on capacity, so advance booking is helpful but not the only published admission path. The organizer Eventbrite listing says fro-yo is free for the first 200 guests; older secondary listings that said 100 are superseded by this newer organizer-published quantity.",
+      "practical_notes": "Sunday, September 13 from 11 AM–3 PM at 489 Broome Street. Treat this as first-come/capacity-limited with RSVP optional rather than as guaranteed reserved entry; arrive early for the limited fro-yo and prize opportunities.",
+      "rsvp": {"requirement": "optional", "actionability": "direct_link_available", "availability": "open", "direct_url": "https://www.eventbrite.com/e/carolina-herrera-good-girl-lab-tickets-1997612868865"}
+    }
+  ],
+  "occurrences": [
+    {"id":"sunday-scoops-graza-mccarren-2026--2026-09-13","event_id":"sunday-scoops-graza-mccarren-2026","date":"2026-09-13","hours":"1–3 PM or until supplies run out","availability":"open","details":"Free olive-oil ice cream scoops; no RSVP required; while supplies last."},
+    {"id":"carolina-herrera-good-girl-lab-verified-2026--2026-09-13","event_id":"carolina-herrera-good-girl-lab-verified-2026","date":"2026-09-13","hours":"11 AM–3 PM","availability":"open","details":"Walk-ins allowed based on capacity; RSVP optional; limited fro-yo and challenge prizes are not guaranteed."}
+  ]
+}
