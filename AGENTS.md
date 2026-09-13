@@ -2,6 +2,14 @@
 
 These instructions apply to all work in this repository, including portfolio, NYC Pop-Up Radar, Cloudflare Worker, deployment, admin/moderation, and supporting pages.
 
+## Ashley AI second brain — mandatory cross-project read
+
+`ashleybrookeugc/research-vault` is Ashley's canonical durable knowledge layer across projects. Before work that depends on prior research, creator preferences/rules, video analysis, portfolio evaluation methods, UX/filmmaking/UGC research, reusable systems, founder decisions, or cross-project history, consult the vault's `AGENTS.md`, `PROJECT_INDEX.md`, and relevant canonical topic artifact.
+
+This repository remains canonical for **website implementation state**: code, deployment, Worker behavior, tests, portfolio/event UI, and product-specific architecture.
+
+When website/portfolio work produces durable research, evidence, a reusable method, or a decision useful beyond this codebase, update the research vault in the same task. Then ripple the website-specific implementation consequence back here. Prefer pointers to the vault over maintaining divergent research copies. Follow the vault's `SYNC_PROTOCOL.md`.
+
 ## Mandatory first read for website work
 
 Before changing deployment, Cloudflare configuration, Worker routing, build/export behavior, authentication, event-site architecture, portfolio architecture, or asset handling, read:
@@ -28,7 +36,11 @@ Production stills, headshots, film/TV/commercial screenshots, and other evidenti
 
 ## Source-of-truth rule
 
-For portfolio work, consult the project website research/preferences source before reopening settled architecture, hero, voice, or visual decisions. Do not replace previously agreed direction with generic portfolio conventions unless Ashley explicitly asks to revisit it.
+For durable research, creator preferences/rules, shared analysis methods, reusable evidence standards, and cross-project decisions, the canonical source is `ashleybrookeugc/research-vault`.
+
+For current website implementation and deployment state, this repository is canonical.
+
+For portfolio work, consult the relevant vault research/preferences source before reopening settled architecture, hero, voice, visual, or video-evaluation decisions. Do not replace previously agreed direction with generic portfolio conventions unless Ashley explicitly asks to revisit it.
 
 ## Update the log
 
