@@ -1,0 +1,51 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-13T19:09:39-04:00",
+  "events": [
+    {
+      "id": "nest-cardamom-latte-chelsea-triangle-2026",
+      "event_name": "NEST New York Cardamom Latte Café",
+      "brand": "NEST New York × Sephora",
+      "neighborhood": "Meatpacking District",
+      "address": "Chelsea Triangle, W 14th St & 9th Ave, New York, NY 10011",
+      "subway": {"station": "14 St–8 Av", "lines": ["A", "C", "E", "L"]},
+      "categories": ["beauty", "food/drink", "fashion"],
+      "what_it_is": "A one-day NYFW fragrance café for NEST New York's Cardamom Latte Eau de Parfum, pairing fragrance discovery with complimentary Cardamom Lattes.",
+      "admission_free": true,
+      "what_is_free": "Public admission and a complimentary Cardamom Latte are advertised, with lattes and sampling available while supplies last.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE SAMPLE", "FREE STUFF"],
+      "main_source_url": "https://fashionista.com/2026/09/new-york-fashion-week-free-events-september-2026",
+      "additional_verification_source": "https://www.nycforfree.co/events/nests-nyfw-cardamom-launch",
+      "last_verified": "2026-09-13T19:09:39-04:00",
+      "caveats": "Fashionista and NYC for FREE both list September 14 from 10 AM–9 PM, with complimentary lattes while supplies last. Average Socialite lists a 5 PM end time, so the stronger two-source agreement is used but visitors should expect the activation to end early if supplies run out.",
+      "practical_notes": "Walk-in public activation at Chelsea Triangle. No RSVP or organizer-approval requirement is published in the verified sources.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    },
+    {
+      "id": "hearst-sephora-hair-haven-2026",
+      "event_name": "Hearst × Sephora Hair Haven",
+      "brand": "Hearst × Sephora",
+      "neighborhood": "East Village",
+      "address": "The Bowery Hotel, 335 Bowery, New York, NY 10003",
+      "subway": {"station": "Bleecker St / Broadway–Lafayette St", "lines": ["6", "B", "D", "F", "M"]},
+      "categories": ["beauty", "fashion", "food/drink"],
+      "what_it_is": "A one-day NYFW beauty pop-up at The Bowery Hotel with personalized hair touch-ups, custom cocktails and photo moments.",
+      "admission_free": true,
+      "what_is_free": "Public access is offered by RSVP; Fashionista describes the event as open to the public and links directly to the live RSVPify registration page.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE"],
+      "main_source_url": "https://fashionista.com/2026/09/new-york-fashion-week-free-events-september-2026",
+      "official_source_url": "https://hairhaven.rsvpify.com/",
+      "additional_verification_source": "https://theboweryhotel.com/contact/",
+      "last_verified": "2026-09-13T19:09:39-04:00",
+      "caveats": "A working RSVPify registration page is live. No host-approval language was found in the verified public sources, so this is classified as Free RSVP rather than Approval Required. Event capacity may still apply.",
+      "practical_notes": "Monday, September 14 from 5–8 PM at The Bowery Hotel. Use the direct RSVPify page to register before traveling.",
+      "rsvp": {"requirement": "required", "actionability": "direct_link_available", "availability": "open", "direct_url": "https://hairhaven.rsvpify.com/"}
+    }
+  ],
+  "occurrences": [
+    {"id":"nest-cardamom-latte-chelsea-triangle-2026--2026-09-14","event_id":"nest-cardamom-latte-chelsea-triangle-2026","date":"2026-09-14","hours":"10 AM–9 PM","availability":"open","details":"Complimentary lattes and fragrance sampling while supplies last."},
+    {"id":"hearst-sephora-hair-haven-2026--2026-09-14","event_id":"hearst-sephora-hair-haven-2026","date":"2026-09-14","hours":"5–8 PM","availability":"open","details":"Free RSVP required; no organizer-approval requirement found in verified public sources."}
+  ]
+}
