@@ -1,0 +1,52 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-13T02:09:03-04:00",
+  "events": [
+    {
+      "id": "remembrance-ruck-nyc-2026",
+      "event_name": "Remembrance Ruck",
+      "brand": "NYC Department of Veterans’ Services × New York Road Runners",
+      "neighborhood": "Brooklyn Heights → Lower Manhattan",
+      "address": "Cadman Plaza East, Brooklyn, NY 11201",
+      "subway": {"station": "High St", "lines": ["A", "C"]},
+      "categories": ["wellness", "community"],
+      "what_it_is": "NYC's first city-sponsored Remembrance Ruck, beginning at Cadman Plaza, crossing the Brooklyn Bridge, and ending near Foley Square with a veteran and military community resource fair.",
+      "admission_free": true,
+      "what_is_free": "Participation in the ruck and the post-event resource fair are free and open to the public.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE"],
+      "main_source_url": "https://www.nyc.gov/site/veterans/community/remembrance-ruck.page",
+      "official_source_url": "https://www.nyc.gov/site/veterans/community/remembrance-ruck.page",
+      "additional_verification_source": "https://www.nyc.gov/mayors-office/news/2026/08/mayor-mamdani--department-of-veterans-services-and-new-york-road",
+      "last_verified": "2026-09-13T02:09:03-04:00",
+      "caveats": "Registration is open and encouraged through the City's official page. The event itself is open to everyone, including civilians. Participants choosing to carry weight do so at their own risk.",
+      "practical_notes": "Opening ceremony is at 9 AM on Sunday, September 13 at Cadman Plaza. The route crosses the Brooklyn Bridge and concludes at Foley Square, followed by a resource fair at Surrogate's Court.",
+      "rsvp": {"requirement": "optional", "actionability": "direct_link_available", "availability": "open", "direct_url": "https://www.nyc.gov/site/veterans/community/remembrance-ruck.page"}
+    },
+    {
+      "id": "ready-set-serve-skyview-2026",
+      "event_name": "Ready, Set, Serve: A Tennis Fan Experience",
+      "brand": "The Shops at Skyview",
+      "neighborhood": "Flushing",
+      "address": "40-24 College Point Boulevard, Flushing, NY 11354",
+      "subway": {"station": "Flushing–Main St", "lines": ["7"]},
+      "categories": ["entertainment", "food/drink"],
+      "what_it_is": "A free US Open finals fan experience with a men's singles final livestream, DJ, drinks, giveaways and an immersive tennis photo booth.",
+      "admission_free": true,
+      "what_is_free": "The venue advertises free tickets plus the public fan experience, including the livestream, photo booth, DJ, drinks and giveaways.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE STUFF"],
+      "main_source_url": "https://www.theshopsatskyviewny.com/events/tennis/",
+      "official_source_url": "https://www.theshopsatskyviewny.com/events/tennis/",
+      "additional_verification_source": "https://www.nycforfree.co/events/ready-set-serve-a-us-open-fan-experience",
+      "last_verified": "2026-09-13T02:09:03-04:00",
+      "caveats": "The venue's page advertises free tickets. The men's singles final livestream begins at 2 PM; promotional giveaways and drinks are subject to availability.",
+      "practical_notes": "Sunday, September 13 at The Shops at Skyview. The men's singles final viewing begins at 2 PM; use the venue's official event page for the current free-ticket path.",
+      "rsvp": {"requirement": "optional", "actionability": "direct_link_available", "availability": "open", "direct_url": "https://www.theshopsatskyviewny.com/events/tennis/"}
+    }
+  ],
+  "occurrences": [
+    {"id":"remembrance-ruck-nyc-2026--2026-09-13","event_id":"remembrance-ruck-nyc-2026","date":"2026-09-13","hours":"9–11 AM + resource fair after","availability":"open","details":"City-sponsored public ruck from Cadman Plaza to Foley Square; registration open."},
+    {"id":"ready-set-serve-skyview-2026--2026-09-13","event_id":"ready-set-serve-skyview-2026","date":"2026-09-13","hours":"2–4 PM featured final watch party","availability":"open","details":"Free-ticket fan experience with DJ, drinks, giveaways and tennis photo booth."}
+  ]
+}
