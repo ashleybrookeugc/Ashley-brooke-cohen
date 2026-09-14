@@ -1,0 +1,30 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-14T13:08:47-04:00",
+  "events": [
+    {
+      "id": "bobbi-brown-prime-times-chelsea-triangle-2026",
+      "event_name": "Bobbi Brown The Prime Times Newsstand",
+      "brand": "Bobbi Brown Cosmetics",
+      "neighborhood": "Meatpacking District",
+      "address": "Chelsea Triangle / Meatpacking Plaza, 9th Ave between W 14th and W 15th St, New York, NY 10011",
+      "subway": {"station": "14 St–8 Av", "lines": ["A", "C", "E", "L"]},
+      "categories": ["beauty", "food/drink", "fashion"],
+      "what_it_is": "A one-day Bobbi Brown newsstand-style launch activation for the new Vitamin Enriched Face Base+, with product sampling, refreshments, scratch-off prizes and photo moments.",
+      "admission_free": true,
+      "what_is_free": "Complimentary Vitamin Enriched Face Base+ samples, refreshments and croissants are advertised while supplies last, with scratch-off prizes and additional giveaways. The first 100 guests in line are advertised to receive a deluxe-size sample.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE SAMPLE", "FREE FOOD", "FREE STUFF"],
+      "main_source_url": "https://www.eventbrite.com/e/bobbi-brown-new-vitamin-enriched-face-base-newsstand-sampling-event-nyc-tickets-1999534977945",
+      "official_source_url": "https://www.eventbrite.com/e/bobbi-brown-new-vitamin-enriched-face-base-newsstand-sampling-event-nyc-tickets-1999534977945",
+      "additional_verification_source": "https://www.averagesocialite.com/nyc-events/2026/9/17/bobbi-brown-the-prime-times-newsstand-nyc",
+      "last_verified": "2026-09-14T13:08:47-04:00",
+      "caveats": "Bobbi Brown's organizer Eventbrite confirms Thursday, September 17 from 12–6 PM at Chelsea Triangle / Meatpacking Plaza. Samples, refreshments and scratch-off prizes are while supplies last; only the first 100 guests are specifically promised the deluxe-size sample. Photo/video content will be captured during the event. Current public listings describe the activation as open to the public; the Eventbrite page provides an RSVP/ticket path but does not establish host approval or a paid admission requirement.",
+      "practical_notes": "Thursday, September 17 from 12–6 PM at Chelsea Triangle, Ninth Avenue between West 14th and West 15th Streets. Use the Bobbi Brown organizer Eventbrite page if you want to register in advance; arrive early if the first-100 deluxe sample is the priority.",
+      "rsvp": {"requirement": "optional", "actionability": "direct_link_available", "availability": "open", "direct_url": "https://www.eventbrite.com/e/bobbi-brown-new-vitamin-enriched-face-base-newsstand-sampling-event-nyc-tickets-1999534977945"}
+    }
+  ],
+  "occurrences": [
+    {"id":"bobbi-brown-prime-times-chelsea-triangle-2026--2026-09-17","event_id":"bobbi-brown-prime-times-chelsea-triangle-2026","date":"2026-09-17","hours":"12–6 PM","availability":"open","details":"Free public sampling activation; Eventbrite registration available; samples and giveaways while supplies last."}
+  ]
+}
