@@ -1,0 +1,36 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-14T07:08:57-04:00",
+  "events": [
+    {
+      "id": "aesop-nomad-fragrant-fables-2026",
+      "event_name": "Aesop NoMad Perfumery — Fragrant Fables",
+      "brand": "Aesop",
+      "neighborhood": "NoMad",
+      "address": "Aesop NoMad, 1165 Broadway, New York, NY 10001",
+      "subway": {"station": "28 St", "lines": ["R", "W"]},
+      "categories": ["beauty", "fashion", "retail"],
+      "what_it_is": "A limited-time transformation of Aesop NoMad into a dedicated Fragrant Fables perfumery, with an immersive literary-and-scent installation, fragrance discovery and personalized consultations.",
+      "admission_free": true,
+      "what_is_free": "Entry, fragrance exploration and personalized fragrance consultation are open to the public. Live Fable Readings are scheduled September 18–20. Complimentary bottle engraving is tied to a fragrance purchase during the weekend rather than being a no-purchase giveaway.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "RETAIL POP-UP"],
+      "main_source_url": "https://www.averagesocialite.com/nyc-events/2026/9/10/aesop-nomad-perfumery-fragrant-fables-nyc",
+      "official_source_url": "https://www.aesop.com/stores/us/ny/new-york/06117.html",
+      "additional_verification_source": null,
+      "last_verified": "2026-09-14T07:08:57-04:00",
+      "caveats": "The current public-event listing establishes the Fragrant Fables takeover through September 20 and says it is open to the public. Aesop's official NoMad store page independently confirms the exact address and daily 11 AM–7 PM store hours. Complimentary engraving on September 18–20 requires a fragrance purchase; it is not a free no-purchase item.",
+      "practical_notes": "Open daily through Sunday, September 20, 11 AM–7 PM at Aesop NoMad. The special live Fable Readings are advertised for September 18–20; the broader perfumery installation is available throughout the takeover.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    }
+  ],
+  "occurrences": [
+    {"id":"aesop-nomad-fragrant-fables-2026--2026-09-14","event_id":"aesop-nomad-fragrant-fables-2026","date":"2026-09-14","hours":"11 AM–7 PM","availability":"open","details":"Walk-in public perfumery installation and fragrance discovery."},
+    {"id":"aesop-nomad-fragrant-fables-2026--2026-09-15","event_id":"aesop-nomad-fragrant-fables-2026","date":"2026-09-15","hours":"11 AM–7 PM","availability":"open","details":"Walk-in public perfumery installation and fragrance discovery."},
+    {"id":"aesop-nomad-fragrant-fables-2026--2026-09-16","event_id":"aesop-nomad-fragrant-fables-2026","date":"2026-09-16","hours":"11 AM–7 PM","availability":"open","details":"Walk-in public perfumery installation and fragrance discovery."},
+    {"id":"aesop-nomad-fragrant-fables-2026--2026-09-17","event_id":"aesop-nomad-fragrant-fables-2026","date":"2026-09-17","hours":"11 AM–7 PM","availability":"open","details":"Walk-in public perfumery installation and fragrance discovery."},
+    {"id":"aesop-nomad-fragrant-fables-2026--2026-09-18","event_id":"aesop-nomad-fragrant-fables-2026","date":"2026-09-18","hours":"11 AM–7 PM","availability":"open","details":"Walk-in public perfumery installation; live Fable Readings advertised. Complimentary engraving requires a fragrance purchase."},
+    {"id":"aesop-nomad-fragrant-fables-2026--2026-09-19","event_id":"aesop-nomad-fragrant-fables-2026","date":"2026-09-19","hours":"11 AM–7 PM","availability":"open","details":"Walk-in public perfumery installation; live Fable Readings advertised. Complimentary engraving requires a fragrance purchase."},
+    {"id":"aesop-nomad-fragrant-fables-2026--2026-09-20","event_id":"aesop-nomad-fragrant-fables-2026","date":"2026-09-20","hours":"11 AM–7 PM","availability":"open","details":"Final day; walk-in public perfumery installation and live Fable Readings. Complimentary engraving requires a fragrance purchase."}
+  ]
+}
