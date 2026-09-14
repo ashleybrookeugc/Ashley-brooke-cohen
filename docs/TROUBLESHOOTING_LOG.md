@@ -76,6 +76,42 @@ Before giving any manual deployment instructions:
 
 ---
 
+## 2026-09-10 — Search committed to `main` but not visible on refreshed production site
+
+### Symptom
+A new event keyword-search field and its script were committed to `main`. Repository inspection confirmed that `public/nyfw-pop-ups/index.html` contained the search input and `event-search.js` reference, but Ashley refreshed the production website and still could not see the search UI.
+
+### Failed / misleading approach
+The implementation was initially described as effectively done because the GitHub commit existed. A later response also characterized the problem as a cache/deployment-freshness issue before the actual Cloudflare build/deployment state had been inspected.
+
+### Confirmed cause
+**Unknown from the preserved session evidence.** The conversation proved a mismatch between GitHub `main` and what Ashley saw in production, but it did not independently establish whether the cause was a queued/missed Cloudflare build, deployment lag, stale edge/browser content, Git integration state, or another production-layer issue.
+
+### Verified fix / proof boundary
+The repository source was verified on `main`, and an additional commit changed the search asset version to create a fresh production-build signal. The session did **not** preserve a final production screenshot or fetched live page proving that the search field appeared afterward.
+
+Therefore the durable verified state is:
+- source implementation existed on `main`;
+- Ashley's live refresh did not initially reflect it;
+- a new `main` commit was made to retrigger/freshen the deployment path;
+- final live success was not proven in this session.
+
+### Prevention rule
+Do not use `commit exists on main` as the completion receipt for production UI work.
+
+For a user-visible website change, verify these layers separately:
+1. source exists in the intended repository file;
+2. intended commit exists on `main`;
+3. Cloudflare created/ran the corresponding production build/deployment;
+4. production serves the expected HTML/asset version;
+5. the changed UI/behavior is actually visible/usable in production.
+
+If step 2 passes and step 5 fails, stop calling the feature live. Inspect the deployment/build layer before asserting a cache cause or repeatedly bumping asset versions.
+
+Smallest regression: after any production-facing UI commit, verify one distinctive changed DOM string or asset version from the live production URL before declaring success.
+
+---
+
 ## 2026-09-11 — Cloudflare failed-build cascade / export error
 
 ### Symptom
