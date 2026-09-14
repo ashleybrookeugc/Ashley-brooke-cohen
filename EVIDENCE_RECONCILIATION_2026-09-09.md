@@ -3,6 +3,9 @@
 ## Scope
 This pass reconciles the screenshot-derived event datasets already committed to the repository with the current public Events/Castings architecture. It does not claim access to the original screenshot image files when those images are unavailable in the current session.
 
+Canonical durable decision context now lives in:
+- `ashleybrookeugc/research-vault/research/ashley-website/2026-09-13-popup-radar-evidence-reconciliation-decisions.md`
+
 Evidence datasets reviewed:
 - `public/data/events.json`
 - `public/data/events-supplement.json`
@@ -51,8 +54,23 @@ Existing evidence correctly records several source conflicts. The reconciliation
 - Global Fashion Collective: screenshot promoted a Crescala showroom, but official evidence verifies the runway program; public showroom access is not inferred.
 - Carolina Herrera Good Girl Lab: current Eventbrite page reports reserved tickets sold out but explicitly says walk-ins are welcome. This remains a special case requiring RSVP availability to be distinguished from event/walk-in availability.
 
+## Durable screenshot-batch workflow
+
+Ashley clarified that future screenshot uploads should not be treated only as an import. The batch should also audit current records:
+- compare each screenshot against existing Events/Castings data;
+- avoid duplicate public listings;
+- use duplicate screenshots/sources as supporting evidence for the same canonical record;
+- preserve conflicts explicitly;
+- route casting notices into Castings;
+- create one dated occurrence/card per event day with that day's correct hours/status;
+- distinguish screenshot-derived facts from separately web-verified facts and unresolved facts.
+
+When another session already has this repository and its existing batch files, do not burden the handoff with a giant field-by-field schema prompt. Tell it to follow the existing screenshot-batch schema and reconciliation rules. Expand the prompt only if the receiving session actually omits required evidence.
+
 ## Remaining evidence limitations
 The original screenshot image files from prior project-chat sessions were not exposed to the current file search. This pass therefore uses the screenshot-derived structured JSON already committed by earlier review as the evidence proxy. Any future reconciliation with the raw screenshots should compare them against these records, not start from scratch.
+
+The earlier complete specification for the expected `Plan My Day` form was also not recovered in this session. A later repository check found no Plan My Day implementation on `main` at that point. Do not reconstruct its fields or itinerary logic from assistant guesses; recover the original requirement before implementing.
 
 ## Data policy reinforced
 - Do not infer missing casting demographics, pay, union status, dates, or requirements.
