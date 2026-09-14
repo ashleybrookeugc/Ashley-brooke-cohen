@@ -7,7 +7,7 @@ export const MUTABLE_FIELDS = ['Current stage','Current objective','Next bounded
 
 export function parseActiveWork(markdown) {
   const section = String(markdown).split('## Current active workstreams')[1]?.split('## Session handoff rule')[0] || '';
-  return [...section.matchAll(/^### (.+)\n([\s\S]*?)(?=^### |\z)/gm)].map(match => {
+  return [...section.matchAll(/^### (.+)\n([\s\S]*?)(?=^### |^## |(?![\s\S]))/gm)].map(match => {
     const fields = {};
     for (const field of match[2].matchAll(/^\*\*(.+?):\*\*\s*(.+?)(?:  )?$/gm)) fields[field[1]] = field[2].trim();
     return { id: match[1].toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,''), name: match[1], ...fields };
