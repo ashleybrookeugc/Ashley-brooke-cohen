@@ -1,0 +1,54 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-14T09:09:47-04:00",
+  "events": [
+    {
+      "id": "hearst-sephora-hair-haven-bowery-2026",
+      "event_name": "Hearst × Sephora Hair Haven",
+      "brand": "Hearst × Sephora",
+      "neighborhood": "East Village / Bowery",
+      "address": "The Bowery Hotel, 335 Bowery, New York, NY 10003",
+      "subway": {"station": "Bleecker St / Broadway–Lafayette St", "lines": ["6", "B", "D", "F", "M"]},
+      "categories": ["beauty", "fashion", "food/drink"],
+      "what_it_is": "A one-night NYFW beauty pop-up at The Bowery Hotel with personalized hair touch-ups, custom cocktails and photo moments, hosted by Hearst and Sephora.",
+      "admission_free": true,
+      "what_is_free": "Public admission is offered through RSVP; hair touch-ups, event experiences and custom cocktails are advertised for attendees. No paid ticket price is published in the verified event sources.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE"],
+      "main_source_url": "https://fashionista.com/2026/09/new-york-fashion-week-free-events-september-2026",
+      "official_source_url": null,
+      "additional_verification_source": "https://hairhaven.rsvpify.com/",
+      "last_verified": "2026-09-14T09:09:47-04:00",
+      "caveats": "Fashionista lists Hair Haven as open to the public and links directly to a live RSVPify registration page. The verified public sources do not publish a paid ticket price or organizer-approval requirement. RSVP is therefore treated as the advertised access path rather than walk-in entry.",
+      "practical_notes": "Monday, September 14 from 5–8 PM at The Bowery Hotel, 335 Bowery. Register through the live Hair Haven RSVPify page before traveling.",
+      "rsvp": {"requirement": "required", "actionability": "direct_link_available", "availability": "open", "direct_url": "https://hairhaven.rsvpify.com/"}
+    },
+    {
+      "id": "temptations-cat-bodega-bowery-2026",
+      "event_name": "TEMPTATIONS Cat Bodega",
+      "brand": "TEMPTATIONS × Mars",
+      "neighborhood": "Lower East Side / Bowery",
+      "address": "213 Bowery, New York, NY 10002",
+      "subway": {"station": "Bowery", "lines": ["J", "Z"]},
+      "categories": ["food/drink", "entertainment", "pets"],
+      "what_it_is": "A free immersive bodega-themed pop-up celebrating NYC shop cats, with TEMPTATIONS treat sampling, games, prizes and photo moments.",
+      "admission_free": true,
+      "what_is_free": "Free TEMPTATIONS cat treats are available to sample and take home. Guests can also play claw-machine and scratch-off games for chances to win Cat Bodega merchandise.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE SAMPLE", "FREE STUFF"],
+      "main_source_url": "https://www.prnewswire.com/news-releases/the-temptations-brand-debuts-first-of-its-kind-cat-bodega-to-celebrate-shop-cats-everywhere-302873788.html",
+      "official_source_url": "https://www.prnewswire.com/news-releases/the-temptations-brand-debuts-first-of-its-kind-cat-bodega-to-celebrate-shop-cats-everywhere-302873788.html",
+      "additional_verification_source": "https://patch.com/new-york/east-village/cat-treat-brand-will-host-cat-bodega-themed-pop-nyc",
+      "last_verified": "2026-09-14T09:09:47-04:00",
+      "caveats": "Mars/TEMPTATIONS describes the physical pop-up as free and publishes no RSVP requirement. Treats and merchandise prizes are promotional inventory; game prizes are not guaranteed to every visitor.",
+      "practical_notes": "Thursday–Saturday, September 17–19, from 12–6 PM daily at 213 Bowery. Walk-in public activation; no purchase necessary.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    }
+  ],
+  "occurrences": [
+    {"id":"hearst-sephora-hair-haven-bowery-2026--2026-09-14","event_id":"hearst-sephora-hair-haven-bowery-2026","date":"2026-09-14","hours":"5–8 PM","availability":"open","details":"Free public RSVP through the live Hair Haven RSVPify page; no organizer-approval language published."},
+    {"id":"temptations-cat-bodega-bowery-2026--2026-09-17","event_id":"temptations-cat-bodega-bowery-2026","date":"2026-09-17","hours":"12–6 PM","availability":"open","details":"Walk-in public pop-up; free treats and prize opportunities, no purchase necessary."},
+    {"id":"temptations-cat-bodega-bowery-2026--2026-09-18","event_id":"temptations-cat-bodega-bowery-2026","date":"2026-09-18","hours":"12–6 PM","availability":"open","details":"Walk-in public pop-up; free treats and prize opportunities, no purchase necessary."},
+    {"id":"temptations-cat-bodega-bowery-2026--2026-09-19","event_id":"temptations-cat-bodega-bowery-2026","date":"2026-09-19","hours":"12–6 PM","availability":"open","details":"Walk-in public pop-up; free treats and prize opportunities, no purchase necessary."}
+  ]
+}
