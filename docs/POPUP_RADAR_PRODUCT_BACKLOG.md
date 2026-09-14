@@ -221,3 +221,28 @@ A bounded Light cleanup pass was defined around:
 Dedicated event pages/routing were treated as a later Medium-level task. Calendar/map/date-model work and submission/ingestion/scraping/casting infrastructure should remain separate passes unless Ashley explicitly changes scope.
 
 Before starting any pass, inspect current implementation because some backlog items may already have been implemented since this decision was recorded.
+
+## Founder decision — screenshot evidence reconciliation
+
+Uploaded screenshot batches should do double duty: seed/verify listings **and** audit the existing tracker. For each batch:
+- extract only source-supported facts;
+- compare against current Events/Castings records before adding anything;
+- use duplicate evidence to strengthen/reconcile an existing record instead of creating another public card;
+- preserve source conflicts explicitly;
+- keep screenshot-derived, independently verified and unresolved facts distinguishable;
+- route casting notices into Castings;
+- never infer unstated casting demographics, measurements, pay, union status or requirements.
+
+Multi-day requirement: one underlying Event may have multiple dated Occurrences, but the public browse experience must show **one card per calendar day/occurrence with that day's correct date and corresponding time**. Duplicate evidence must not create duplicate daily cards.
+
+Use the existing screenshot-batch schema/pattern rather than sending a giant field-by-field handoff every time unless a receiving session actually fails to preserve required fields.
+
+Canonical durable context: `ashleybrookeugc/research-vault/research/ashley-website/2026-09-13-popup-radar-evidence-reconciliation-decisions.md`.
+
+## Unresolved expected capability — Plan My Day
+
+Ashley expects a **Plan My Day** form/capability in the Pop-Up Radar experience.
+
+Repository search during the preserved session found no Plan My Day implementation on `main` at that point. Treat that as an implementation gap, not a proven display/CSS bug.
+
+The complete earlier Plan My Day specification was not recovered in that session. Do not invent the form fields, ranking rules or itinerary behavior from assistant assumptions. Recover the original requirement/source first, then implement it as a bounded pass.
