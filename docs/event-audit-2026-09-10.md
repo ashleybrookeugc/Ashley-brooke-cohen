@@ -47,3 +47,9 @@ Bowery Showroom blurred schedule entries; Habit of Concern; NYFW Roll Call; Nucl
 
 ## Publication integrity note
 As of this audit, `public/assets/tracker.js` still lists data URLs only through `events-screenshot-batch-4.json`. Batch 5, batch 6 and hourly data files exist in the repository but are not guaranteed to appear in the main tracker until that loader is safely updated. Do not claim those records are live merely because their JSON files exist.
+
+### Superseded implementation-state note — 2026-09-13
+
+The publication-integrity warning above is historically accurate for the audit date but is **no longer current implementation state**. Current `public/assets/hourly-feed.js` loads `events-screenshot-batch-5.json`, `events-screenshot-batch-6.json`, and a growing set of hourly event feeds, then reconciles/deduplicates them into the tracker state. Future sessions must inspect the current loader rather than treating the Sept. 10 limitation as still active.
+
+This supersession does not retroactively change the audit's event-verification judgments; it only replaces the stale loader-state pointer.
