@@ -32,7 +32,23 @@ Goal: reduce dependence on Ashley manually finding/entering listings.
 - A scraper finding a listing does not itself make the listing verified.
 - Do not silently overwrite conflicting evidence.
 
-## RSVP semantics
+### Founder decision — hourly website-updating discovery pass
+
+Ashley explicitly chose an hourly discovery loop whose output is the website itself, not merely an alert stream.
+
+Required behavior:
+- every hour, search relevant NYC event sources for newly posted or newly verified events;
+- verify actionable public access, date, time, location, and the real RSVP/ticket/application path before publication;
+- distinguish approval-required, guest-list, first-come, paid, waitlist, sold-out, closed, and unclear access states rather than flattening them into generic RSVP language;
+- compare candidates against current site data and suppress duplicates;
+- preserve one dated occurrence per event date, with that date's corresponding hours/status;
+- correct stale or bad existing information when stronger current evidence is available;
+- write verified changes into the GitHub data/source that powers the site and commit them to `main`;
+- do not publish unsupported or unresolved claims as verified facts.
+
+Observed implementation state as of 2026-09-13: `public/assets/hourly-feed.js` loads screenshot batches 5–6 plus a growing sequence of hourly JSON feeds, reconciles by ID, performs a semantic duplicate suppression pass across date/brand/address/name/source signals, and keeps the newer verification when duplicate candidates conflict. This is an implementation-state pointer, not a requirement to preserve the current file-count strategy forever.
+
+## RSVP / admission semantics
 
 Ashley explicitly does **not** want RSVP-required events hidden merely because a direct RSVP link could not be found.
 
@@ -48,6 +64,45 @@ Required fallback semantics:
 - `Check main source for registration`
 
 A main-source link must not masquerade as a direct RSVP link. Keep RSVP requirement, direct-link actionability, and availability/sold-out/waitlist/closed state distinct.
+
+### Founder decision — consumer-facing admission taxonomy
+
+Do not treat every registration mechanism as equivalent. The public UI should express the practical access state a visitor needs to understand.
+
+Current required taxonomy:
+- `WALK-IN` / open public access;
+- `FREE RSVP` when registration is free and no organizer-selection step is established;
+- `PAID TICKET`;
+- `APPROVAL REQUIRED` when the visitor applies/requests access and the host decides;
+- `WAITLIST`;
+- `INVITE ONLY` when source evidence establishes restricted invitation-only access;
+- `FREE GUEST LIST` where sign-up is available but timing, door discretion, priority-entry rules, or explicit non-guarantee language materially affects admission;
+- `FIRST-COME · RSVP OPTIONAL` where RSVP exists but does not guarantee or control public access;
+- `SOLD OUT` / `CLOSED` when the relevant occurrence is no longer actionable;
+- `ACCESS UNCLEAR` when the source does not positively establish the admission path.
+
+Evidence discipline:
+- missing RSVP language is **not** proof that an event is walk-in/open;
+- organizer approval is materially different from an ordinary free RSVP and must not be hidden under a generic `RSVP REQUIRED` badge;
+- ordinary RSVP confirmation should not be described as "guaranteed access" because normal capacity/venue conditions may still apply;
+- when public-event evidence and reservation/ticket availability conflict, preserve the conflict rather than collapsing the whole event into one unsupported status.
+
+## Event search / rediscovery
+
+Ashley identified a concrete browse failure: a user may remember only the thing they want (for example "the free ice cream pop-up") or a brand, not the event's exact title. Category filters such as Food/Drink are not sufficient for rediscovery.
+
+Founder requirement: provide real keyword search across the reconciled event set, including scheduler-added events.
+
+Search should match at minimum:
+- event name;
+- brand;
+- neighborhood / venue / address;
+- what the event is;
+- freebies, samples, food/drink or other benefits;
+- practical notes / caveats where those words help rediscovery;
+- categories/classifications.
+
+Observed implementation state as of 2026-09-13: `public/assets/event-search.js` wraps the shared event matching function and searches the reconciled event object, so hourly-discovered records become searchable automatically rather than requiring a separate search index.
 
 ## Event cards and dedicated pages
 
