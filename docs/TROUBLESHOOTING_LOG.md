@@ -87,6 +87,40 @@ For admin/auth problems, verify in this order:
 
 ---
 
+## 2026-09 — Cloudflare build-time secrets mistaken for Worker runtime secrets
+
+### Symptom
+The moderation login still rejected the configured admin password even though Cloudflare's **Settings → Builds → Variables and secrets** screen visibly contained `ADMIN_PASSWORD` and `ADMIN_SESSION_SECRET`.
+
+### Failed / looping approaches
+- Repeatedly treating the presence of those names in the Builds UI as proof that the Worker could read them at runtime.
+- Continuing to debug password/auth behavior before distinguishing build environment variables from runtime Worker bindings.
+- Earlier in the same loop, treating repository/local implementation and successful build/upload as equivalent to verified production behavior.
+
+### Confirmed cause
+The secrets shown under **Builds → Variables and secrets** are build-time values. The Worker login code reads `env.ADMIN_PASSWORD` and `env.ADMIN_SESSION_SECRET` at request runtime, so those secrets must exist as Worker runtime secrets/bindings and be deployed with the Worker configuration. Build-time secret presence is not runtime-secret presence.
+
+### Verified fix / proof boundary
+The correct remediation is to create `ADMIN_PASSWORD` and `ADMIN_SESSION_SECRET` as runtime Worker secrets, deploy that binding change, then test the real `/admin/login` route. The session verified the code contract in `src/worker.js`: the login compares against `env.ADMIN_PASSWORD`, signs the session with `env.ADMIN_SESSION_SECRET`, sets an `HttpOnly; Secure; SameSite=Strict` cookie, and redirects to `/moderation/` after successful authentication.
+
+This session did not preserve a final screenshot proving the post-fix login succeeded, so the **configuration cause is confirmed but the final production-login success is not claimed here**.
+
+### Prevention rule
+For Cloudflare Worker auth/configuration debugging, keep these layers separate:
+
+1. **Repository state** — code/config exists.
+2. **GitHub main state** — intended commit is on the production branch.
+3. **Build state** — Cloudflare successfully built/uploaded it.
+4. **Production traffic state** — the expected Worker version is actually serving production traffic.
+5. **Runtime binding state** — Worker runtime secrets/bindings exist in the deployed environment.
+6. **Application behavior** — the live route/login/API behaves correctly.
+
+Never use a green check at one layer as proof of the next layer. In particular, **build-time variables are not Worker runtime bindings**.
+
+Smallest regression: before changing auth code, request `/admin/login` in production and separately verify the two runtime secret names exist in the Worker runtime settings. If either primitive is missing, stop there rather than rewriting authentication.
+
+---
+
 ## 2026-09 — Event-site work and portfolio work becoming visually/technically conflated
 
 ### Symptom
