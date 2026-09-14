@@ -46,30 +46,30 @@
     },
     {
       "id": "goodnotes-columbia-cafe-takeover-2026",
-      "event_name": "Goodnotes Café Takeover — Columbia",
+      "event_name": "Goodnotes Café Takeover — Columbia Stop",
       "brand": "Goodnotes",
-      "neighborhood": "Morningside Heights",
-      "address": "Columbia University campus, Broadway & W 116th St, New York, NY 10027",
-      "subway": {"station": "116 St–Columbia University", "lines": ["1"]},
+      "neighborhood": "Greenwich Village",
+      "address": "Whistle & Fizz, 254 Greene St, New York, NY 10003",
+      "subway": {"station": "W 4 St–Washington Sq", "lines": ["A", "B", "C", "D", "E", "F", "M"]},
       "categories": ["food/drink", "entertainment"],
-      "what_it_is": "The Columbia stop of Goodnotes' East Coast campus café tour, with free coffee, a live DJ, photo booth and merch giveaways.",
+      "what_it_is": "The September 15 Columbia-targeted stop of Goodnotes' NYC café takeover, hosted at Whistle & Fizz with free coffee, a student DJ, photo booth and merch giveaways.",
       "admission_free": true,
-      "what_is_free": "Goodnotes advertises free specialty coffee, a photo booth, live DJ and free merch; secondary event listings specify free coffee for the first 100 guests and an additional limited-edition gift while supplies last.",
+      "what_is_free": "Goodnotes advertises free specialty coffee, a photo booth, live DJ and free merch. The event page says early arrivals can receive a limited-edition free gift while supplies last.",
       "purchase_required": false,
       "classifications": ["FREE EXPERIENCE", "FREE FOOD", "FREE STUFF"],
       "main_source_url": "https://www.goodnotes.com/us-cafe-takeover",
       "official_source_url": "https://www.goodnotes.com/us-cafe-takeover",
-      "additional_verification_source": "https://pulsd.com/new-york/events/columbia-university-campus/goodnotes-cafe-takeover--3",
+      "additional_verification_source": "https://luma.com/x2h44jv0",
       "last_verified": "2026-09-14T15:04:56-04:00",
-      "caveats": "Goodnotes' official tour page confirms the Columbia stop on September 15 and directs visitors to RSVP. The 1–4 PM window and Broadway/W 116th Street campus location are corroborated by the current secondary event listing. Free items are while supplies last.",
-      "practical_notes": "Tuesday, September 15 from 1–4 PM at Columbia University around Broadway and West 116th Street. RSVP in advance through Goodnotes' tour page if available; arrive early for limited merchandise and free coffee.",
-      "rsvp": {"requirement": "optional", "actionability": "direct_link_available", "availability": "open", "direct_url": "https://www.goodnotes.com/us-cafe-takeover"}
+      "caveats": "Goodnotes' official tour page labels September 15 as its Columbia stop and links directly to this Goodnotes-hosted Luma registration. The Luma page places the event at Whistle & Fizz, 254 Greene Street, and says registration is required to join. Free items are while supplies last.",
+      "practical_notes": "Tuesday, September 15 from 1–4 PM at Whistle & Fizz, 254 Greene Street. Register through the direct Goodnotes-hosted Luma page; arrive early for limited merchandise and free coffee.",
+      "rsvp": {"requirement": "required", "actionability": "direct_link_available", "availability": "open", "direct_url": "https://luma.com/x2h44jv0"}
     }
   ],
   "occurrences": [
     {"id":"hearst-sephora-hair-haven-bowery-2026--2026-09-14","event_id":"hearst-sephora-hair-haven-bowery-2026","date":"2026-09-14","hours":"5–8 PM","availability":"open","details":"Free public beauty pop-up with direct RSVP; verify current capacity on RSVPify before traveling."},
     {"id":"reeses-nitro-bar-pb-whip-latte-astor-2026--2026-09-14","event_id":"reeses-nitro-bar-pb-whip-latte-astor-2026","date":"2026-09-14","hours":"11 AM–5 PM","availability":"open","details":"Walk-in; promotional latte/candy inventory while supplies last."},
     {"id":"reeses-nitro-bar-pb-whip-latte-astor-2026--2026-09-15","event_id":"reeses-nitro-bar-pb-whip-latte-astor-2026","date":"2026-09-15","hours":"11 AM–5 PM","availability":"open","details":"Walk-in; promotional latte/candy inventory while supplies last."},
-    {"id":"goodnotes-columbia-cafe-takeover-2026--2026-09-15","event_id":"goodnotes-columbia-cafe-takeover-2026","date":"2026-09-15","hours":"1–4 PM","availability":"open","details":"Goodnotes campus-tour stop; RSVP available; free coffee and merchandise while supplies last."}
+    {"id":"goodnotes-columbia-cafe-takeover-2026--2026-09-15","event_id":"goodnotes-columbia-cafe-takeover-2026","date":"2026-09-15","hours":"1–4 PM","availability":"open","details":"Free RSVP required through the Goodnotes-hosted Luma page; free coffee and merchandise while supplies last."}
   ]
 }
