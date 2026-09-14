@@ -17,6 +17,17 @@ This file tracks the current portfolio implementation state separately from the 
 - Creator positioning should prefer one coherent audience/value relationship over a comma-separated inventory of niches when the page/form asks what Ashley makes and who it is for.
 - Preserve Ashley's existing differentiators — acting, stand-up comedy, NYC life, genuine first impressions/discovery — while allowing the creator story to show an adjacent growth direction into fashion, wellness, lifestyle, and body-specific clothing-fit discovery.
 - When explaining why Ashley wants a specific management/representation partner, use real fit she noticed in that organization's representation/content direction when verified; avoid generic "help me grow/get brand deals" reasoning.
+- **Shortest route wins:** route brands/agencies, casting/reps/production, comedy bookers/fans and general followers to the relevant work without forcing everyone through a long biography.
+- Creator process direction must preserve the real sequence: try the product first, identify what is genuinely interesting about the experience, then develop the premise/story and make the piece. Do not imply permanent life integration before Ashley has actually tried something.
+- Do not design the portfolio around an intro video; Ashley does not want one now.
+
+## Canonical portfolio / website direction
+
+The durable non-NYFW website research and founder preferences now live in the second brain:
+
+- `ashleybrookeugc/research-vault/research/ashley-website/2026-09-13-portfolio-website-direction.md`
+
+Use that file before reopening settled hero, routing, creator-positioning, proof/metrics, reference-site or information-hierarchy decisions. This file remains implementation-oriented and should not duplicate the full research narrative.
 
 ## Canonical positioning evidence
 
