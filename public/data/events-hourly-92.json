@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "updated_at": "2026-09-14T04:07:58-04:00",
+  "updated_at": "2026-09-14T11:08:10-04:00",
   "events": [
     {
       "id": "bobbi-brown-prime-times-newsstand-2026",
@@ -10,17 +10,18 @@
       "address": "Chelsea Triangle, 9th Ave between W 14th St and W 15th St, New York, NY 10011",
       "subway": {"station": "14 St–8 Av", "lines": ["A", "C", "E", "L"]},
       "categories": ["beauty", "food/drink", "fashion"],
-      "what_it_is": "A one-day Bobbi Brown newsstand activation for Vitamin Enriched Face Base+ with product sampling, a mirrored photo moment, morning treats and scratch-off giveaways.",
+      "what_it_is": "A one-day Bobbi Brown newsstand activation for Vitamin Enriched Face Base+ with product sampling, a mirrored photo moment, refreshments and scratch-off giveaways.",
       "admission_free": true,
-      "what_is_free": "Visitors can receive a Vitamin Enriched Face Base+ sample, a grapefruit-infused Spindrift and mini croissant while supplies last. Scratch-off cards unlock additional giveaways, with select winners receiving a full-size product.",
+      "what_is_free": "Visitors can receive a Vitamin Enriched Face Base+ sample, complimentary refreshments and croissants while supplies last. Scratch-off cards unlock additional giveaways, and the organizer page advertises a deluxe-size sample for the first 100 guests in line.",
       "purchase_required": false,
       "classifications": ["FREE EXPERIENCE", "FREE SAMPLE", "FREE STUFF"],
-      "main_source_url": "https://www.nycforfree.co/events/bobbi-brown-the-prime-times-newsstand",
-      "additional_verification_source": "https://www.averagesocialite.com/nyc-events/2026/9/17/bobbi-brown-the-prime-times-newsstand-nyc",
-      "last_verified": "2026-09-14T04:07:58-04:00",
-      "caveats": "Two current event listings agree on the date, time, location and open-public format. No advance RSVP requirement is stated. Samples, food/drink and prizes are promotional inventory and may run out; scratch-off prizes are not guaranteed to every visitor.",
-      "practical_notes": "Thursday, September 17 from 12–6 PM at Chelsea Triangle on 9th Avenue between 14th and 15th Streets. Walk-in public activation; arrive earlier if samples or giveaways are the priority.",
-      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+      "main_source_url": "https://www.eventbrite.com/e/bobbi-brown-new-vitamin-enriched-face-base-newsstand-sampling-event-nyc-tickets-1999534977945",
+      "official_source_url": "https://www.eventbrite.com/e/bobbi-brown-new-vitamin-enriched-face-base-newsstand-sampling-event-nyc-tickets-1999534977945",
+      "additional_verification_source": "https://www.nycforfree.co/events/bobbi-brown-the-prime-times-newsstand",
+      "last_verified": "2026-09-14T11:08:10-04:00",
+      "caveats": "A live Eventbrite listing organized by BOBBI BROWN Cosmetics now confirms September 17, 12–6 PM at Chelsea Triangle and advertises the free sampling experience. Current NYC event listings also describe the activation as open to the public. A registration/ticket page exists, but the verified evidence reviewed here does not establish advance registration as mandatory for public access, so RSVP is treated as optional rather than required. Samples, refreshments and prizes are while supplies last. Photo/video content will be captured for Bobbi Brown digital channels.",
+      "practical_notes": "Thursday, September 17 from 12–6 PM at Chelsea Triangle on 9th Avenue between 14th and 15th Streets. The organizer's Eventbrite page is the current registration/source link; arrive early for limited samples and giveaways.",
+      "rsvp": {"requirement": "optional", "actionability": "direct_link_available", "availability": "open", "direct_url": "https://www.eventbrite.com/e/bobbi-brown-new-vitamin-enriched-face-base-newsstand-sampling-event-nyc-tickets-1999534977945"}
     },
     {
       "id": "cafe-dedcool-mocha-magic-2026",
@@ -65,7 +66,7 @@
     }
   ],
   "occurrences": [
-    {"id":"bobbi-brown-prime-times-newsstand-2026--2026-09-17","event_id":"bobbi-brown-prime-times-newsstand-2026","date":"2026-09-17","hours":"12–6 PM","availability":"open","details":"Walk-in public activation; promotional samples and giveaways are while supplies last."},
+    {"id":"bobbi-brown-prime-times-newsstand-2026--2026-09-17","event_id":"bobbi-brown-prime-times-newsstand-2026","date":"2026-09-17","hours":"12–6 PM","availability":"open","details":"Open-public activation with organizer Eventbrite registration available; samples and giveaways are while supplies last."},
     {"id":"cafe-dedcool-mocha-magic-2026--2026-09-18","event_id":"cafe-dedcool-mocha-magic-2026","date":"2026-09-18","hours":"9 AM–6 PM","availability":"open","details":"Public access; free RSVP available. First 50 in line receive the advertised special gift."},
     {"id":"cafe-dedcool-mocha-magic-2026--2026-09-19","event_id":"cafe-dedcool-mocha-magic-2026","date":"2026-09-19","hours":"9 AM–6 PM","availability":"open","details":"Public access; free RSVP available. First 50 in line receive the advertised special gift."},
     {"id":"cafe-dedcool-mocha-magic-2026--2026-09-20","event_id":"cafe-dedcool-mocha-magic-2026","date":"2026-09-20","hours":"9 AM–6 PM","availability":"open","details":"Public access; free RSVP available. First 50 in line receive the advertised special gift."},
