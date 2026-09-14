@@ -15,6 +15,44 @@ Before repeating deployment, Cloudflare, Worker, build, routing, or asset troubl
 
 ---
 
+## 2026-09-13 — Plan My Day quiz declared complete without visible itinerary proof
+
+### Symptom
+Ashley completed the conversational Build My Day quiz with a packed-day preference. Production showed only a “YOUR PLAN BRIEF” summary followed by the old saved-event instruction (“Tap Save on any event card to add it here”), with no personalized itinerary/results visible. Earlier testing had also produced only one suggested event when a multi-stop plan was expected.
+
+### Observed failure
+The implementation was described as fixed after code changes intended to make the quiz build a multi-stop itinerary, but the user-facing production screenshot still showed the old brief-only completion state. Therefore the claimed product outcome was not proven.
+
+The screenshot also displayed a time window as `10:35–01:35`, which is ambiguous to a user and may represent a same-day AM/PM interpretation problem. The intended interpretation was not recovered from source evidence, so the time-parsing root cause remains unconfirmed.
+
+### Confirmed cause / unknowns
+The earlier quiz implementation definitely generated a preference brief and dispatched preferences; the existing saved-event planner remained a separate suggestion surface. That architectural mismatch explains why the first quiz version did not itself satisfy “Build My Day.”
+
+For the later attempted repair, the exact reason production still rendered the old state is **unknown** in this session. Possible causes such as deployment lag, cached asset, JavaScript failure, or an incomplete renderer hookup were not independently verified and must not be recorded as fact.
+
+### Failed approaches / traps
+- Treating a preference-summary screen as completion of an itinerary-building feature.
+- Treating a GitHub code change/cache-bust as proof that the browser-visible product behavior was fixed.
+- Reusing the old saved-event suggestion model for a quiz whose user promise is a complete personalized day.
+- Saying the planner now builds a multi-stop itinerary before verifying that a real quiz completion visibly renders those results on production.
+
+### Verified fix
+**Not yet verified.** This incident remains open. Do not mark it repaired until production evidence shows the actual itinerary directly after quiz completion.
+
+### Smallest regression / proof required
+On the live production page:
+1. Open Plan My Day / Build My Day.
+2. Choose a day with multiple eligible events, a broad time window, `Pack my day`, and permissive travel/budget constraints.
+3. Complete the quiz.
+4. Verify that the completion state visibly contains an itinerary/results section—not only the plan brief and not only the old “Tap Save” instruction.
+5. Verify more than one stop when at least two source-supported events genuinely fit the hard constraints; if only one fits, the UI must explain the limiting constraint rather than silently returning one.
+6. Verify displayed times are unambiguous to a normal user (AM/PM or an equally clear convention) and that end-before-start input is handled intentionally rather than guessed.
+
+### Prevention rule
+For user-facing feature work, **the acceptance criterion is the promised browser-visible outcome, not the presence of new code or an emitted event.** A feature that says “Build My Day” is not complete until a production run from inputs through visible itinerary output is proven. Keep preference collection, itinerary generation, and itinerary rendering as separately testable primitives.
+
+---
+
 ## 2026-09 — GitHub → Cloudflare deployment confusion
 
 ### Symptom
