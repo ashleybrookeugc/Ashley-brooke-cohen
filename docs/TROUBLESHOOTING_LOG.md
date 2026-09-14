@@ -195,6 +195,125 @@ Smallest regression: before changing auth code, request `/admin/login` in produc
 
 ---
 
+## 2026-09-13 — Admin auth wrapper changed a working password path
+
+### Symptom
+Ashley entered the same admin password that had worked the prior day, but the newly added wrapper displayed `Incorrect password`. She explicitly said the secret value had not been changed.
+
+### Failed / looping approach
+The wrapper introduced its own secret-resolution/password-comparison layer while the original Worker's authentication code had already been working. The first interpretation over-read the new error message as evidence about the stored secret rather than treating the newly introduced wrapper as the first suspect.
+
+### Confirmed cause / unknowns
+The regression was localized to the custom wrapper path: after the wrapper's secret normalization/custom authentication logic was removed and requests were delegated back to the original Worker's authentication code with the untouched Cloudflare `env`, Ashley successfully logged in and reported `Ok I’m in`.
+
+The exact low-level reason the wrapper's comparison differed is **not preserved/verified**, so do not claim a specific Cloudflare secret encoding/coercion bug.
+
+A separate routing defect also existed: `run_worker_first` included `/admin/*` but not the exact bare `/admin` path, so `/admin` could bypass the Worker and return a static 404. The configuration was updated to include both bare and wildcard admin/moderation routes.
+
+### Verified fix
+- Keep the auth wrapper thin: bare `/admin` routing only; delegate login/session authentication to the original Worker.
+- Pass Cloudflare runtime bindings through unchanged.
+- Include exact bare routes as well as wildcard routes in `assets.run_worker_first` where both forms must execute Worker code.
+- Production proof captured in-session: Ashley successfully entered the admin after the wrapper rollback.
+
+### Smallest regression / proof
+1. Request `/admin` and confirm it reaches the Worker/login flow rather than static 404.
+2. Submit the known-good password through `/admin/login`.
+3. Confirm redirect to `/moderation/` and a usable moderation page.
+4. Do not rewrite secret handling if those primitives already work.
+
+### Prevention rule
+When fixing routing around a previously working security primitive, **do not replace the primitive at the same time**. Intercept only the route that needs interception and delegate the rest unchanged. If behavior regresses immediately after a wrapper is introduced, compare against the previously working path before blaming user configuration.
+
+---
+
+## 2026-09-13 — Moderation actions appeared to do nothing
+
+### Symptom
+A moderation action button could be clicked but the card appeared unchanged. In the same UI, the global `Run discovery + reverification now` control was also mistaken for a pending-submission verifier because its scope was not clear.
+
+### Confirmed code defect
+The action handler set the requested status from the clicked button and then overwrote it with the current status dropdown value before issuing the PATCH. A click such as Approve/Reject/Mark under review could therefore send the existing `pending` state back to the server.
+
+### Repair committed
+The button-action logic was changed so the clicked action remains authoritative, with visible `Saving…` / saved / failure feedback. The moderation workflow was also split conceptually:
+- discovery + recheck published sources;
+- per-submission `Verify submitted source`;
+- queue-wide source checking.
+
+The per-submission and queue-wide source checks use the submitted source URL; they do not claim to verify every event fact automatically.
+
+### Proof boundary
+The code cause is confirmed from repository inspection. A separate live production click proving every moderation action after the fix was **not preserved in this session**, so do not overstate end-to-end verification.
+
+### Prevention rule
+For admin controls, the clicked action must be the source of truth for that request unless the UI explicitly requires a separate confirmation field. Every asynchronous admin action should expose progress and a terminal success/failure state; silent no-ops are not acceptable diagnostics.
+
+---
+
+## 2026-09-13 — Queue source checks mislabeled bot-blocked sources as failures
+
+### Symptom
+After Ashley requested a button to check submission-queue sources, the queue summary reported that all sources had failed.
+
+### Confirmed cause
+The verifier treated `response.ok === false` as equivalent to source failure. Server-side Cloudflare fetches to bot-protected platforms such as Instagram, TikTok, Facebook and Eventbrite can be blocked/challenged even when the link works normally for a user. Those transport outcomes were being collapsed into `failed`.
+
+### Repair committed
+The verifier/status model was changed to distinguish:
+- automatically verified/reachable;
+- manual verification required because automation was blocked/challenged;
+- unavailable/removed (for example 404/410);
+- temporarily unavailable/inconclusive network or 5xx failure;
+- content flags such as cancellation, sold out, waitlist or closed language.
+
+The queue summary was updated to report these categories separately.
+
+### Proof boundary
+The classification defect and code repair are confirmed. The session did not preserve a final screenshot of a post-deploy queue run, so live platform-by-platform behavior remains subject to verification.
+
+### Prevention rule
+**Automated retrieval failure is not source-invalid evidence.** Keep transport capability, source existence, content signals and human verification status separate. Never let a bot challenge become a false-negative content judgment.
+
+---
+
+## 2026-09-13 — Event detail route still returns generic `Temporarily unavailable`
+
+### Symptom
+Clicking `View details` on Pop-Up Radar events repeatedly produced the legacy Worker text response `Temporarily unavailable. Please try again.`
+
+### Failed approaches / attempted repairs
+Several bounded repairs were committed during the session:
+- refreshed `public/assets/event-detail.js` feed coverage and fixed an earlier malformed expression;
+- intercepted `/nyfw-pop-ups/event/<occurrence-id>/` in the auth/front wrapper;
+- after Ashley still reproduced the 503, added `src/router-worker.js` to recognize path-ID and query-ID event detail URL forms before delegating to the legacy Worker;
+- updated `wrangler.jsonc` so `main` is `src/router-worker.js` and `run_worker_first` includes bare `/nyfw-pop-ups/event`, `/nyfw-pop-ups/event/*`, and `/nyfw-pop-ups/event.html`.
+
+### Confirmed cause
+**Not yet confirmed.** The generic response definitely originates from the legacy Worker's top-level catch when a non-API request throws, but this session did not capture the actual production exception or prove which request shape/runtime path was still reaching that catch.
+
+Do not record `query-form mismatch`, cache, deployment lag, or a particular event feed as the confirmed root cause. Those were hypotheses/attempted repairs, not proven causes.
+
+### Current repository state
+As of the final preservation check on 2026-09-13:
+- `wrangler.jsonc` points `main` to `src/router-worker.js`;
+- the router supports `/nyfw-pop-ups/event/<id>`, `/nyfw-pop-ups/event?id=...`, `/nyfw-pop-ups/event/index.html?id=...`, and `/nyfw-pop-ups/event.html?id=...`-style query IDs;
+- the router serves an event-detail shell using `public/assets/event-detail.js` and delegates other requests to `src/auth-worker.js`;
+- **the final router change was not live-verified by Ashley in this session**.
+
+### Smallest next diagnostic / regression
+Before another architectural change:
+1. capture one exact failing production detail URL from a current tracker card;
+2. request that exact URL and record status/body plus a distinctive router-shell marker/asset version;
+3. verify whether production is serving `src/router-worker.js` for that request;
+4. if the router shell is served, inspect the first failing asset/feed request rather than changing Worker routing again;
+5. if the legacy generic 503 is still returned before the shell, inspect production deployment/build/runtime logs for the first exception and compare the live deployed Worker version with `main`.
+
+### Prevention rule
+After two failed routing fixes, stop broadening regexes/wrappers without production evidence. **A route that looks correct in repository code is not proof that production traffic reached it.** Verify the exact failing URL and the first failing layer before the next change.
+
+---
+
 ## 2026-09 — Event-site work and portfolio work becoming visually/technically conflated
 
 ### Symptom
