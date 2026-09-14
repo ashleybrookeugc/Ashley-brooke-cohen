@@ -1,0 +1,63 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-13T22:08:25-04:00",
+  "events": [
+    {
+      "id": "nest-cardamom-latte-chelsea-triangle-2026",
+      "event_name": "NEST Cardamom Latte Café",
+      "brand": "NEST New York",
+      "neighborhood": "Meatpacking District",
+      "address": "Chelsea Triangle, New York, NY 10011",
+      "subway": {"station": "14 St–8 Av", "lines": ["A", "C", "E", "L"]},
+      "categories": ["beauty", "food/drink", "fashion"],
+      "what_it_is": "A one-day NYFW café activation for NEST New York's Cardamom Latte Eau de Parfum, pairing fragrance discovery with complimentary Cardamom Lattes.",
+      "admission_free": true,
+      "what_is_free": "Complimentary Cardamom Lattes and fragrance sampling are advertised while supplies last.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE SAMPLE"],
+      "main_source_url": "https://www.nycforfree.co/events/nests-nyfw-cardamom-launch",
+      "official_source_url": null,
+      "additional_verification_source": "https://www.cityguideny.com/event/chelsea-triangle-2026-09-14-2026-09-14",
+      "last_verified": "2026-09-13T22:08:25-04:00",
+      "caveats": "Open to the public with no advance RSVP requirement published. Complimentary lattes and sampling are while supplies last. One roundup lists a 5 PM end time, but NYC for FREE, City Guide NY and WABC all publish 10 AM–9 PM; the 9 PM end is therefore used here.",
+      "practical_notes": "Monday, September 14 from 10 AM–9 PM at Chelsea Triangle in the Meatpacking District. Arrive earlier if the complimentary latte is the priority because supplies can run out before closing.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    },
+    {
+      "id": "kemo-sabe-refinery-hotel-2026",
+      "event_name": "Kemo Sabe at Refinery Hotel",
+      "brand": "Kemo Sabe × Refinery Hotel",
+      "neighborhood": "Midtown / Garment District",
+      "address": "Refinery Hotel, 63 W 38th St, New York, NY 10018",
+      "subway": {"station": "42 St–Bryant Park", "lines": ["B", "D", "F", "M"]},
+      "categories": ["fashion", "retail"],
+      "what_it_is": "A limited-time Kemo Sabe pop-up inside Refinery Hotel's Hatbox with handcrafted hats, boots, leather goods, belts, accessories and the brand's custom hat-fitting experience.",
+      "admission_free": true,
+      "what_is_free": "Browsing and entry are free; merchandise and custom hat services are retail purchases.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "RETAIL POP-UP"],
+      "main_source_url": "https://www.refineryhotelnewyork.com/upcoming-event/kemo-sabe/",
+      "official_source_url": "https://www.refineryhotelnewyork.com/upcoming-event/kemo-sabe/",
+      "additional_verification_source": "https://www.averagesocialite.com/nyc-events/2026/9/10/kemo-sabe-refinery-hotel-nyfw",
+      "last_verified": "2026-09-13T22:08:25-04:00",
+      "caveats": "Refinery Hotel's official page says the pop-up operates Tuesdays through Sundays from 11 AM–7 PM through September 27. Monday, September 14 is therefore not listed as an occurrence. No RSVP requirement is published.",
+      "practical_notes": "Use the official hotel schedule rather than the broader date range alone: the pop-up is closed Mondays and open Tuesday–Sunday, 11 AM–7 PM.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    }
+  ],
+  "occurrences": [
+    {"id":"nest-cardamom-latte-chelsea-triangle-2026--2026-09-14","event_id":"nest-cardamom-latte-chelsea-triangle-2026","date":"2026-09-14","hours":"10 AM–9 PM","availability":"open","details":"Walk-in public activation; complimentary lattes and fragrance sampling while supplies last."},
+    {"id":"kemo-sabe-refinery-hotel-2026--2026-09-15","event_id":"kemo-sabe-refinery-hotel-2026","date":"2026-09-15","hours":"11 AM–7 PM","availability":"open","details":"Official Refinery Hotel schedule."},
+    {"id":"kemo-sabe-refinery-hotel-2026--2026-09-16","event_id":"kemo-sabe-refinery-hotel-2026","date":"2026-09-16","hours":"11 AM–7 PM","availability":"open","details":"Official Refinery Hotel schedule."},
+    {"id":"kemo-sabe-refinery-hotel-2026--2026-09-17","event_id":"kemo-sabe-refinery-hotel-2026","date":"2026-09-17","hours":"11 AM–7 PM","availability":"open","details":"Official Refinery Hotel schedule."},
+    {"id":"kemo-sabe-refinery-hotel-2026--2026-09-18","event_id":"kemo-sabe-refinery-hotel-2026","date":"2026-09-18","hours":"11 AM–7 PM","availability":"open","details":"Official Refinery Hotel schedule."},
+    {"id":"kemo-sabe-refinery-hotel-2026--2026-09-19","event_id":"kemo-sabe-refinery-hotel-2026","date":"2026-09-19","hours":"11 AM–7 PM","availability":"open","details":"Official Refinery Hotel schedule."},
+    {"id":"kemo-sabe-refinery-hotel-2026--2026-09-20","event_id":"kemo-sabe-refinery-hotel-2026","date":"2026-09-20","hours":"11 AM–7 PM","availability":"open","details":"Official Refinery Hotel schedule."},
+    {"id":"kemo-sabe-refinery-hotel-2026--2026-09-22","event_id":"kemo-sabe-refinery-hotel-2026","date":"2026-09-22","hours":"11 AM–7 PM","availability":"open","details":"Official Refinery Hotel schedule."},
+    {"id":"kemo-sabe-refinery-hotel-2026--2026-09-23","event_id":"kemo-sabe-refinery-hotel-2026","date":"2026-09-23","hours":"11 AM–7 PM","availability":"open","details":"Official Refinery Hotel schedule."},
+    {"id":"kemo-sabe-refinery-hotel-2026--2026-09-24","event_id":"kemo-sabe-refinery-hotel-2026","date":"2026-09-24","hours":"11 AM–7 PM","availability":"open","details":"Official Refinery Hotel schedule."},
+    {"id":"kemo-sabe-refinery-hotel-2026--2026-09-25","event_id":"kemo-sabe-refinery-hotel-2026","date":"2026-09-25","hours":"11 AM–7 PM","availability":"open","details":"Official Refinery Hotel schedule."},
+    {"id":"kemo-sabe-refinery-hotel-2026--2026-09-26","event_id":"kemo-sabe-refinery-hotel-2026","date":"2026-09-26","hours":"11 AM–7 PM","availability":"open","details":"Official Refinery Hotel schedule."},
+    {"id":"kemo-sabe-refinery-hotel-2026--2026-09-27","event_id":"kemo-sabe-refinery-hotel-2026","date":"2026-09-27","hours":"11 AM–7 PM","availability":"open","details":"Official Refinery Hotel schedule."}
+  ]
+}
