@@ -8,9 +8,9 @@ Read `AGENTS.md` and `docs/TROUBLESHOOTING_LOG.md` first. The troubleshooting lo
 
 ## Update the tracker
 
-Edit `public/data/events.json`. Shared event facts live in `events`; each open date lives in `occurrences` with its own date, hours, availability, and optional date-specific details. Keep RSVP requirement separate from direct-link actionability and availability. Preserve sources, verification, classification, location, subway, caveats, and notes.
+Edit the applicable event feed under `public/data/`. Shared event facts live in `events`; each open date lives in `occurrences` with its own date, hours, availability, and optional date-specific details. Keep RSVP requirement separate from direct-link actionability and availability. Preserve sources, verification, classification, location, subway, caveats, and notes.
 
-Each occurrence has a matching stable static route at `public/nyfw-pop-ups/event/<occurrence-id>/index.html`. When adding or removing an occurrence, add or remove its matching route directory by copying any existing occurrence page template and changing only the `data-occurrence-id` value.
+Occurrence detail links use stable URLs under `/nyfw-pop-ups/event/<occurrence-id>/`. Production routing is currently handled by the Worker entrypoint declared in `wrangler.jsonc` (`src/router-worker.js` as of 2026-09-13), which intercepts supported event-detail URL forms and serves the detail shell before delegating all other requests. Do not assume a per-occurrence static route directory is required; inspect the current router, `wrangler.jsonc`, tracker link generation, and event-detail feed coverage before changing this subsystem.
 
 Commit changes to `main`; Cloudflare Workers Builds deploys automatically.
 
