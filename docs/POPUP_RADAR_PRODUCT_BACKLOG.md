@@ -32,6 +32,21 @@ Goal: reduce dependence on Ashley manually finding/entering listings.
 - A scraper finding a listing does not itself make the listing verified.
 - Do not silently overwrite conflicting evidence.
 
+### Founder decision — moderation source-check semantics
+
+The private moderation workflow should support both a per-submission source check and a queue-wide source check. An automated fetch result is **not** equivalent to a judgment that the listing is valid or invalid.
+
+Required result categories:
+- **automatically verified/reachable** — the verifier successfully retrieves the source;
+- **manual verification required** — the source may be valid but blocks/challenges automated access, especially Instagram, TikTok, Facebook, Eventbrite or similar bot-protected sources;
+- **unavailable/removed** — evidence such as HTTP 404/410 supports that the source is gone;
+- **temporarily unavailable** — timeout/5xx/network failure is inconclusive and must not be treated as proof that the listing disappeared;
+- **flagged** — the source loads but contains material signals such as cancellation, sold out, waitlist or closed-registration language.
+
+Queue summaries must keep these categories separate rather than collapsing bot-blocked/manual-review cases into `failed`.
+
+Observed implementation state as of 2026-09-13: the moderation page has per-card source verification plus a queue-wide check, and the Worker returns distinct verification-status fields. This is an implementation-state pointer, not proof that every external platform can be verified automatically; live behavior must still be checked.
+
 ### Founder decision — hourly website-updating discovery pass
 
 Ashley explicitly chose an hourly discovery loop whose output is the website itself, not merely an alert stream.
