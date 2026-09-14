@@ -14,6 +14,18 @@ This file tracks the current portfolio implementation state separately from the 
 - Creator work and commercial UGC are related but not identical; personal creator voice remains visible.
 - Theatre social/producing belongs in the overlap between performance, production, and creator work.
 - No generic 'storyteller / bring ideas to life / connect with audiences' filler language.
+- Creator positioning should prefer one coherent audience/value relationship over a comma-separated inventory of niches when the page/form asks what Ashley makes and who it is for.
+- Preserve Ashley's existing differentiators — acting, stand-up comedy, NYC life, genuine first impressions/discovery — while allowing the creator story to show an adjacent growth direction into fashion, wellness, lifestyle, and body-specific clothing-fit discovery.
+- When explaining why Ashley wants a specific management/representation partner, use real fit she noticed in that organization's representation/content direction when verified; avoid generic "help me grow/get brand deals" reasoning.
+
+## Canonical positioning evidence
+
+The durable evidence and caveats behind the creator-positioning bullets live in the second brain rather than being duplicated here:
+
+- `ashleybrookeugc/research-vault/evidence/creator-workflows/2026-09-13-creator-positioning-specificity-and-audience-fit.md`
+- `ashleybrookeugc/research-vault/evidence/creator-workflows/2026-09-13-management-application-and-content-direction.md`
+
+These are positioning/context inputs, not instructions to rewrite the live site before Ashley explicitly chooses the copy and proof to publish.
 
 ## Pages in the working portfolio branch
 
