@@ -1,0 +1,30 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-14T03:11:36-04:00",
+  "events": [
+    {
+      "id": "printemps-fall-winter-fashion-show-2026",
+      "event_name": "Printemps New York Fall/Winter 2026 Fashion Show",
+      "brand": "Printemps New York",
+      "neighborhood": "Financial District",
+      "address": "Printemps New York, 1 Wall St, New York, NY 10005",
+      "subway": {"station": "Wall St", "lines": ["4", "5"]},
+      "categories": ["fashion", "retail"],
+      "what_it_is": "A one-hour Fall/Winter 2026 runway presentation in Printemps New York's Red Room, followed by the opportunity to shop featured looks from the show.",
+      "admission_free": true,
+      "what_is_free": "The official Printemps booking page lists the event price as $0 for the one-hour fashion show.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FASHION SHOW", "RETAIL POP-UP"],
+      "main_source_url": "https://us.printemps.com/visit/events/printemps-new-york-fall-winter-2026-fashion-show",
+      "official_source_url": "https://us.printemps.com/visit/events/printemps-new-york-fall-winter-2026-fashion-show",
+      "additional_verification_source": "https://www.nycforfree.co/events/printemps-ny-fw-2026-fashion-show",
+      "last_verified": "2026-09-14T03:11:36-04:00",
+      "caveats": "Printemps' current first-party event page lists September 19, 5–6 PM in the Red Room, price $0, and a live booking flow. Advance booking is therefore treated as the advertised admission path. No organizer-approval language was found.",
+      "practical_notes": "Saturday, September 19 from 5–6 PM at Printemps New York, 1 Wall Street. Use the official Printemps event page to reserve the $0 one-hour event before traveling.",
+      "rsvp": {"requirement": "required", "actionability": "direct_link_available", "availability": "open", "direct_url": "https://us.printemps.com/visit/events/printemps-new-york-fall-winter-2026-fashion-show"}
+    }
+  ],
+  "occurrences": [
+    {"id":"printemps-fall-winter-fashion-show-2026--2026-09-19","event_id":"printemps-fall-winter-fashion-show-2026","date":"2026-09-19","hours":"5–6 PM","availability":"open","details":"Free advance booking through the official Printemps event page; no approval requirement established."}
+  ]
+}
