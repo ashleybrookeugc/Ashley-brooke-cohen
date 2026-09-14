@@ -92,6 +92,7 @@ export function createPolicyRoutingAdapter(env,{workers=createWorkersAiRoutingAd
 
 export function createHttpRoutingAdapter(env,{fetchImpl=fetch}={}) {
   return { async route(input,context) {
+    if (env.CONTROL_ALLOW_PAID_MODELS !== 'true' || !env.CONTROL_SPENDING_POLICY) throw new Error('Paid routing requires an explicit spending policy');
     if (!env.CONTROL_MODEL_API_KEY || !env.CONTROL_MODEL_ENDPOINT) throw new Error('Routing model is not configured');
     const response=await fetchImpl(env.CONTROL_MODEL_ENDPOINT,{method:'POST',headers:{authorization:'Bearer '+env.CONTROL_MODEL_API_KEY,'content-type':'application/json'},body:JSON.stringify({contract:'control-route.v1',model:env.CONTROL_MODEL_NAME||null,input,context})});
     if(!response.ok) throw new Error('Routing provider '+response.status);
