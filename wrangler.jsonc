@@ -6,6 +6,7 @@
   "rules": [
     { "type": "Text", "globs": ["**/*.html"], "fallthrough": true }
   ],
+  "ai": { "binding": "AI" },
   "d1_databases": [{
     "binding": "DB",
     "database_name": "events-production",
