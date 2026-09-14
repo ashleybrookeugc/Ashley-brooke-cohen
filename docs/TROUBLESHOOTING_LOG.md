@@ -190,6 +190,42 @@ For large generated artifacts, compare expected byte/character count or parse th
 
 ---
 
+## 2026-09-13 — Complete video retrieval was mistaken for comprehensive transcript/video understanding
+
+### Symptom
+The frozen 12-video calibration had complete source MP4s, full decoding, one-second full-resolution frame sampling, OCR, VAD, and multiple Whisper passes, yet the reconstructed transcript still dropped or altered small words and conversational structure. Ashley manually corrected examples including:
+
+- “I don’t think it’s fair that my boyfriend gets more compliments than me.”
+- “So something that I didn’t know about downtown Denver … a lot sketchy. You wouldn’t think that Denver has alleys.”
+- a dialogue turn where Ashley says “It doesn’t seem like a good color,” her boyfriend says “Why not?”, and Ashley says “You think this is attractive?”
+
+### Failed / insufficient approaches
+- treating one-second OCR fragments as if they were a complete transcript;
+- relying on multiple ASR passes as a substitute for exact source-grounded reconstruction;
+- using `2/2` retrieval confidence as if it implied transcript/OCR certification;
+- flattening visible caption fragments without preserving sentence continuity or speaker turns.
+
+### Confirmed cause
+The evidence representation was too shallow: OCR and ASR were treated as near-final evidence instead of raw modalities that must be synchronized and reconciled across time. The environment also could not directly audition the audio, so exact audible wording remained uncertified even when source files were fully decoded.
+
+### Verified fix / architecture decision
+`docs/PORTFOLIO_VIDEO_RESEARCH_SPEC.md` now requires a synchronized multimodal evidence timeline. Spoken transcript, burned-in captions, other on-screen text, speaker turns, visual actions/state changes, edits/inserts, and modality conflicts must remain separate but time-aligned. Exact connector words, negation, pronouns, qualifiers, and speaker attribution are material evidence when recoverable.
+
+The shared canonical standard lives at:
+`ashleybrookeugc/research-vault/shared-capabilities/video-understanding/EVIDENCE_STANDARD.md`.
+
+### Prevention rule
+Before later rubric scoring or analyzer claims:
+
+1. verify complete source access separately from transcript/text fidelity;
+2. record the verification modality explicitly (ASR, OCR, direct audition, subtitle-backed, etc.);
+3. reconstruct adjacent captions into the actual sentence/turn instead of scoring isolated fragments;
+4. preserve speech/caption disagreement rather than silently selecting one;
+5. do not call a transcript “verified” when no direct audio audition occurred;
+6. do not proceed from a one-line summary/evidence package as though it were comprehensive video understanding.
+
+---
+
 ## Stop-loss protocol for future loops
 
 If the same failure is encountered **twice after applying the same class of fix**, stop repeating the attempt.
