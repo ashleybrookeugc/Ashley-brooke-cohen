@@ -1,6 +1,6 @@
 import app,{isAdmin} from './auth-worker.js';
 import controlPage from '../public/control/index.html';
-import {createGitHubAdapter,createGitHubAppTokenProvider,createHttpRoutingAdapter} from './control/adapters.js';
+import {createGitHubAdapter,createGitHubAppTokenProvider,createPolicyRoutingAdapter} from './control/adapters.js';
 import {createControlService,createD1Store} from './control/service.js';
 
 let schemaReady;
@@ -8,7 +8,7 @@ function ensureSchema(env){return schemaReady ||= env.DB.exec("CREATE TABLE IF N
 const json=(body,status=200)=>new Response(JSON.stringify(body),{status,headers:{'content-type':'application/json','cache-control':'no-store'}});
 function service(env) {
   const tokens=createGitHubAppTokenProvider(env);
-  return createControlService({github:createGitHubAdapter({tokenProvider:tokens}),router:createHttpRoutingAdapter(env),store:createD1Store(env.DB)});
+  return createControlService({github:createGitHubAdapter({tokenProvider:tokens}),router:createPolicyRoutingAdapter(env),store:createD1Store(env.DB)});
 }
 async function body(request){try{return await request.json()}catch{throw new Error('Valid JSON body required')}}
 async function control(request,env) {
