@@ -26,7 +26,7 @@ function unb(value) {
   );
 }
 
-async function isAdmin(request, env) {
+export async function isAdmin(request, env) {
   const cookie = request.headers.get('Cookie')?.match(/(?:^|; )abc_admin=([^;]+)/)?.[1];
   if (!cookie || !env.ADMIN_SESSION_SECRET) return false;
   const [payload, signature] = cookie.split('.');

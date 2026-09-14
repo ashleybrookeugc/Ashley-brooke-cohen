@@ -1,4 +1,4 @@
-import app from './auth-worker.js';
+import app from './control-worker.js';
 
 function eventDetailPage(occurrenceId) {
   const id = String(occurrenceId || '').replace(/[^a-zA-Z0-9_-]/g, '');
