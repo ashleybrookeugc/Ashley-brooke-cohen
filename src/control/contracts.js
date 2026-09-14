@@ -33,7 +33,7 @@ export function validateRoute(candidate) {
 function escaped(value) { return value.replace(/[.*+?^$()|[\]\\{}]/g,'\\$&'); }
 export function applyProposal(markdown, proposal) {
   if (proposal.target_path === 'ACTIVE_WORK.md') {
-    const block = new RegExp('(^### '+escaped(proposal.section)+'\\n)([\\s\\S]*?)(?=^### |^## |\\z)','m');
+    const block = new RegExp('(^### '+escaped(proposal.section)+'\\n)([\\s\\S]*?)(?=^### |^## |(?![\\s\\S]))','m');
     const match = markdown.match(block);
     if (!match) throw new Error('Workstream section not found');
     const line = new RegExp('^\\*\\*'+escaped(proposal.field)+':\\*\\*.*$','m');
