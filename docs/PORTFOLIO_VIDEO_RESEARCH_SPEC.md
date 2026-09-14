@@ -50,6 +50,44 @@ Use:
 
 There is no useful low-confidence portfolio judgment. Retrieval confidence must be **2/2**. Anything below 2/2 is a bug to diagnose, not an analysis result.
 
+### Retrieval is not transcript/OCR certification
+
+`2/2` proves complete-source access with sufficient temporal coverage for the task. It does **not** prove that every spoken word, caption token, speaker turn, or transient visual has been interpreted correctly.
+
+A file can be fully retrieved while transcript or on-screen-text evidence remains uncertain. Verification status must therefore be modality-specific.
+
+## Synchronized multimodal evidence requirement
+
+The analyzer must not treat ASR output and sampled-frame OCR as the finished evidence model.
+
+Before portfolio judgment, reconstruct a time-aligned evidence timeline that preserves, when present:
+
+- exact spoken wording, including connector words, negation, qualifiers, pronouns, and sentence boundaries;
+- speaker attribution / conversational turns when recoverable;
+- burned-in captions separately from spoken transcript;
+- other on-screen text, graphics, screenshots, labels, and UI separately from captions;
+- subjects, objects, visible actions, locations/settings, and notable visual state changes;
+- cuts, b-roll, inserts, reaction shots, screenshots, graphics, or other editing/shot changes;
+- relationships among speech, captions, and what is being shown;
+- disagreement among ASR, captions, OCR, and direct source inspection;
+- span-level uncertainty rather than a single blanket confidence score.
+
+Do not reconstruct a clip from isolated one-second caption fragments. Adjacent captions must be joined into their actual sentence/turn when the source supports it. Small connector words matter: dropping words such as `not`, `didn't`, `that`, pronouns, or speaker transitions can materially change premise, tone, joke structure, or meaning.
+
+For dialogue, preserve who says what. Example:
+
+`Ashley: “It doesn’t seem like a good color.”`
+
+`Second speaker: “Why not?”`
+
+`Ashley: “You think this is attractive?”`
+
+Do not flatten that exchange into one transcript or infer speaker identity when the source does not support it.
+
+Caption text can corroborate speech but is not automatically identical to the audio. Multiple ASR passes can corroborate each other but are not direct audition. Preserve conflicts instead of silently choosing the most convenient output.
+
+The canonical cross-project standard is `ashleybrookeugc/research-vault/shared-capabilities/video-understanding/EVIDENCE_STANDARD.md`.
+
 ## No invented titles or copy
 
 Do not generate portfolio titles, hooks, captions, slogans, or rewritten post names unless Ashley explicitly asks for copy ideation.
@@ -147,6 +185,10 @@ For each eligible video, retain at minimum:
 - date when available;
 - duration;
 - actual spoken/on-screen hook;
+- synchronized timestamped evidence timeline;
+- transcript with speaker turns when recoverable;
+- burned-in captions kept distinct from spoken transcript;
+- important other on-screen text/graphics;
 - factual summary of what happens;
 - format/style;
 - inferred subjects/themes;
@@ -156,7 +198,8 @@ For each eligible video, retain at minimum:
 - final reconciled dimension scores;
 - portfolio usefulness assessment;
 - corpus redundancy/contribution notes;
-- analyzer/rubric version.
+- analyzer/rubric version;
+- modality-specific verification state and unresolved evidence conflicts.
 
 For ineligible videos, retain the URL and retrieval failure details only. Do not manufacture judgment from incomplete evidence.
 
