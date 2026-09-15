@@ -1,0 +1,32 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-15T19:07:54-04:00",
+  "events": [
+    {
+      "id": "works-process-gather-round-manhattan-west-2026",
+      "event_name": "Gather Round: Let’s Dance! at Manhattan West",
+      "brand": "Works & Process × Manhattan West",
+      "neighborhood": "Midtown West",
+      "address": "Manhattan West Plaza, 385 9th Ave, New York, NY 10001",
+      "subway": {"station": "34 St–Penn Station", "lines": ["A", "C", "E", "1", "2", "3"]},
+      "categories": ["dance", "music", "community", "free"],
+      "what_it_is": "A free Wednesday outdoor dance-and-live-music series at Manhattan West Plaza with performances, dance lessons and participatory social dancing. Each date has a different program.",
+      "admission_free": true,
+      "what_is_free": "Admission, live music, performances and participatory dance lessons/social dancing are free and open to the public.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "LIVE MUSIC", "DANCE"],
+      "main_source_url": "https://manhattanwestnyc.com/event/gather-round-lets-dance-2/",
+      "official_source_url": "https://www.worksandprocess.org/calendar/works-and-process-at-manhattan-west-sekou-mcmiller-mambo-dance-party",
+      "additional_verification_source": "https://patch.com/new-york/chelsea-ny/work-process-pop-dance-music-series-returns-manhattan-west-plaza",
+      "last_verified": "2026-09-15T19:07:54-04:00",
+      "caveats": "Official Works & Process and Manhattan West sources describe the performances as free to attend/open to the public; no RSVP or ticket requirement is stated. The series is outdoors, so conditions may affect programming. The organizer page describes the performance window as 5 PM to sunset, while Manhattan West and current coverage specify 5–6:15 PM; the occurrence cards use the more specific venue schedule.",
+      "practical_notes": "Wednesday September 16: Sekou McMiller & Friends Mambo Dance Party. September 23: A Barn Dance with Brooklyn Contra. September 30: New York Swings with Josh Lee and the Family. All are scheduled 5–6:15 PM at Manhattan West Plaza.",
+      "rsvp": {"requirement": "none", "actionability": "direct", "availability": "open", "direct_url": null}
+    }
+  ],
+  "occurrences": [
+    {"id":"works-process-gather-round-manhattan-west-2026--2026-09-16","event_id":"works-process-gather-round-manhattan-west-2026","date":"2026-09-16","hours":"5–6:15 PM","availability":"open","details":"WALK-IN. Sekou McMiller & Friends: Mambo Dance Party with live Palladium Mambo Band, lesson and social dancing."},
+    {"id":"works-process-gather-round-manhattan-west-2026--2026-09-23","event_id":"works-process-gather-round-manhattan-west-2026","date":"2026-09-23","hours":"5–6:15 PM","availability":"open","details":"WALK-IN. A Barn Dance with Brooklyn Contra; live Appalachian/Irish music, taught dances and no partner required."},
+    {"id":"works-process-gather-round-manhattan-west-2026--2026-09-30","event_id":"works-process-gather-round-manhattan-west-2026","date":"2026-09-30","hours":"5–6:15 PM","availability":"open","details":"WALK-IN. New York Swings with Josh Lee and the Family; Lindy Hop/authentic jazz dance and live music."}
+  ]
+}
