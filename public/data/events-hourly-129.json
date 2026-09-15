@@ -1,0 +1,54 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-15T18:08:43-04:00",
+  "events": [
+    {
+      "id": "bobbi-brown-prime-times-newsstand-2026",
+      "event_name": "Bobbi Brown The Prime Times Newsstand",
+      "brand": "Bobbi Brown Cosmetics",
+      "neighborhood": "Meatpacking District",
+      "address": "Chelsea Triangle, 9th Ave between 14th and 15th St, New York, NY 10011",
+      "subway": {"station": "14 St / 8 Av", "lines": ["A", "C", "E", "L"]},
+      "categories": ["beauty", "food/drink", "freebies"],
+      "what_it_is": "A one-day Bobbi Brown newsstand activation for the launch of Vitamin Enriched Face Base+, with product discovery, refreshments, samples, giveaways and a mirrored photo moment.",
+      "admission_free": true,
+      "what_is_free": "Complimentary Vitamin Enriched Face Base+ sample, refreshments and croissants while supplies last; scratch-off prizes are available, and the first 100 guests in line receive a deluxe-size sample.",
+      "purchase_required": false,
+      "classifications": ["FREE SAMPLE", "FREE FOOD", "FREE STUFF", "FREE EXPERIENCE"],
+      "main_source_url": "https://www.eventbrite.com/e/bobbi-brown-new-vitamin-enriched-face-base-newsstand-sampling-event-nyc-tickets-1999534977945",
+      "official_source_url": "https://www.eventbrite.com/e/bobbi-brown-new-vitamin-enriched-face-base-newsstand-sampling-event-nyc-tickets-1999534977945",
+      "additional_verification_source": "https://www.cityguideny.com/event/Chelsea-Triangle-2026-09-17-2026-09-17",
+      "last_verified": "2026-09-15T18:08:43-04:00",
+      "caveats": "The Eventbrite listing is organized by BOBBI BROWN Cosmetics and provides the actionable registration page. Samples, refreshments and prizes are while supplies last. Photo/video content will be captured at the activation for Bobbi Brown social/digital use.",
+      "practical_notes": "Thursday, September 17 from 12–6 PM at Chelsea Triangle in the Meatpacking District. The first 100 guests in line receive a deluxe-size sample.",
+      "rsvp": {"requirement": "required", "actionability": "direct", "availability": "open", "direct_url": "https://www.eventbrite.com/e/bobbi-brown-new-vitamin-enriched-face-base-newsstand-sampling-event-nyc-tickets-1999534977945"}
+    },
+    {
+      "id": "apothekary-sukoshi-drop-of-japan-2026",
+      "event_name": "A Drop of Japan: Apothékary x SUKOSHI Pop-Up",
+      "brand": "Apothékary x SUKOSHI",
+      "neighborhood": "Upper East Side",
+      "address": "1542 3rd Ave, New York, NY 10028",
+      "subway": {"station": "86 St", "lines": ["4", "5", "6", "Q"]},
+      "categories": ["wellness", "beauty", "food/drink", "freebies"],
+      "what_it_is": "A three-day Japanese-wellness-themed Apothékary takeover of SUKOSHI with tongue readings, tincture sampling, ingredient education and kakigori shaved ice.",
+      "admission_free": true,
+      "what_is_free": "The first 50 guests in line each day receive a complimentary mini Apothékary tincture. Tincture samples and kakigori are offered, with kakigori subject to availability. Purchases receive 20% off and a gift with purchase while supplies last.",
+      "purchase_required": false,
+      "classifications": ["FREE SAMPLE", "FREE FOOD", "FREE EXPERIENCE", "FREE STUFF"],
+      "main_source_url": "https://www.eventbrite.com/e/a-drop-of-japan-apothekary-x-sukoshi-pop-up-tickets-1999504772600",
+      "official_source_url": "https://www.eventbrite.com/e/a-drop-of-japan-apothekary-x-sukoshi-pop-up-tickets-1999504772600",
+      "additional_verification_source": "https://www.nycforfree.co/events/a-drop-of-japan-apothekary-x-sukoshi-pop-up",
+      "last_verified": "2026-09-15T18:08:43-04:00",
+      "caveats": "The Eventbrite page is organized by Apothékary and lists multiple dates. The first-50 mini tincture is quantity-limited each day; kakigori and gifts are while supplies last. The 20% discount and gift-with-purchase are purchase-dependent, but general admission and sampling are not described as requiring a purchase.",
+      "practical_notes": "Friday September 18 runs 1–9 PM; Saturday September 19 and Sunday September 20 run 9 AM–9 PM. Use the Eventbrite page to select the applicable date.",
+      "rsvp": {"requirement": "required", "actionability": "direct", "availability": "open", "direct_url": "https://www.eventbrite.com/e/a-drop-of-japan-apothekary-x-sukoshi-pop-up-tickets-1999504772600"}
+    }
+  ],
+  "occurrences": [
+    {"id":"bobbi-brown-prime-times-newsstand-2026--2026-09-17","event_id":"bobbi-brown-prime-times-newsstand-2026","date":"2026-09-17","hours":"12–6 PM","availability":"open","details":"Free RSVP via the Bobbi Brown-organized Eventbrite page. Samples, refreshments and prizes while supplies last."},
+    {"id":"apothekary-sukoshi-drop-of-japan-2026--2026-09-18","event_id":"apothekary-sukoshi-drop-of-japan-2026","date":"2026-09-18","hours":"1–9 PM","availability":"open","details":"Free RSVP via the Apothékary-organized Eventbrite page. First 50 guests receive a mini tincture; kakigori while supplies last."},
+    {"id":"apothekary-sukoshi-drop-of-japan-2026--2026-09-19","event_id":"apothekary-sukoshi-drop-of-japan-2026","date":"2026-09-19","hours":"9 AM–9 PM","availability":"open","details":"Free RSVP via the Apothékary-organized Eventbrite page. First 50 guests receive a mini tincture; kakigori while supplies last."},
+    {"id":"apothekary-sukoshi-drop-of-japan-2026--2026-09-20","event_id":"apothekary-sukoshi-drop-of-japan-2026","date":"2026-09-20","hours":"9 AM–9 PM","availability":"open","details":"Free RSVP via the Apothékary-organized Eventbrite page. First 50 guests receive a mini tincture; kakigori while supplies last."}
+  ]
+}
