@@ -1,4 +1,12 @@
 import {applyProposal,parseActiveWork,validateRoute,WRITE_REPO} from './contracts.js';
+export function createControlTaskPacket(snapshot) {
+  return {
+    version:'control-task-packet.v1',
+    purpose:'control_route',
+    active_work:{projects:snapshot.projects,source:snapshot.source},
+    freshness:snapshot.context
+  };
+}
 export function createControlService({github,router,store,now=()=>Date.now(),packetTtlMs=300000}) {
   const state = async ({refresh=false}={}) => {
     const key='active-work.v1';
@@ -13,7 +21,7 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
     async capture(text) {
       if(typeof text!=='string'||!text.trim()||text.length>4000) throw new Error('Message must be 1–4000 characters');
       const snapshot=await state();
-      const route=validateRoute(await router.route(text.trim(),{projects:snapshot.projects}));
+      const route=validateRoute(await router.route(text.trim(),createControlTaskPacket(snapshot)));
       const interaction=await store.addInteraction({raw_text:text.trim(),route});
       let item=null;
       if(route.proposal) item=await store.addQueueItem({interaction_id:interaction.id,...route});
