@@ -1,0 +1,73 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-15T11:06:36-04:00",
+  "events": [
+    {
+      "id": "century-21-walk-the-runway-2026",
+      "event_name": "Century 21 NYC — Walk the Runway",
+      "brand": "Century 21 NYC",
+      "neighborhood": "Financial District",
+      "address": "Century 21 NYC, 22 Cortlandt St, New York, NY 10007",
+      "subway": {"station": "Cortlandt St / Fulton St", "lines": ["R","W","A","C","J","Z","2","3","4","5","1"]},
+      "categories": ["fashion", "freebies", "interactive"],
+      "what_it_is": "A two-day public Fashion Week activation on Century 21's main floor where anyone can walk a runway and be filmed for the store's social stories.",
+      "admission_free": true,
+      "what_is_free": "Runway participation plus one Century 21 tote, up to five iron-on patches and a $21-off-$100 in-store card per walker, while supplies last.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE STUFF", "FASHION"],
+      "main_source_url": "https://c21stores.com/blogs/century-21-nyc-flash-events/walk-the-runway-fashion-week-nyc",
+      "official_source_url": "https://c21stores.com/blogs/century-21-nyc-flash-events/walk-the-runway-fashion-week-nyc",
+      "additional_verification_source": "https://www.averagesocialite.com/nyc-events/2026/9/15/walk-the-century-21-runway-nyc",
+      "last_verified": "2026-09-15T11:06:36-04:00",
+      "caveats": "Official Century 21 source says no ticket, invitation or online sign-up is required. Totes and patches are while supplies last. Walking the runway includes being filmed for Century 21 social stories.",
+      "practical_notes": "Enter on the Dey Street side and get in line at the main-floor runway station. Official source says the line and giveaway supply are best around noon.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    },
+    {
+      "id": "eos-nylon-dewy-lip-shine-popup-2026",
+      "event_name": "eos × NYLON Dewy Lip Shine Pop-Up Truck",
+      "brand": "eos × NYLON",
+      "neighborhood": "SoHo",
+      "address": "575 Broadway, New York, NY 10012",
+      "subway": {"station": "Prince St", "lines": ["R","W"]},
+      "categories": ["beauty", "freebies", "food/drink"],
+      "what_it_is": "A branded SoHo truck celebrating eos Dewy Lip Shine with product sampling, sweet treats and photo moments on the final day of NYFW.",
+      "admission_free": true,
+      "what_is_free": "Dewy Lip Shine product sampling, sweet treats and photo moments while supplies last.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE STUFF", "BEAUTY"],
+      "main_source_url": "https://www.nycforfree.co/events/eos-x-nylon-dewy-lip-shine-pop-up-truck",
+      "additional_verification_source": "https://www.averagesocialite.com/nyc-events/2026/9/15/eos-x-nylon-dewy-lip-shine-pop-up-truck-nyc",
+      "last_verified": "2026-09-15T11:06:36-04:00",
+      "caveats": "Current NYC event sources agree the activation is open to the public from noon to 5 PM. Product/sweet-treat availability is while supplies last. No RSVP requirement is published in the corroborating listings.",
+      "practical_notes": "Branded truck at 575 Broadway in SoHo. Arriving earlier is prudent for samples because the listing specifies while-supplies-last availability.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    },
+    {
+      "id": "mary-kay-beauty-shared-popup-2026",
+      "event_name": "Mary Kay — Beauty Is More Beautiful Shared Experience",
+      "brand": "Mary Kay",
+      "neighborhood": "Meatpacking District",
+      "address": "Gansevoort Plaza, 38 Gansevoort St, New York, NY 10014",
+      "subway": {"station": "14 St / 8 Av", "lines": ["A","C","E","L"]},
+      "categories": ["beauty", "freebies", "interactive"],
+      "what_it_is": "An oversized public beauty experience at Gansevoort Plaza tied to Mary Kay's Beauty Is More Beautiful Shared campaign, with touch-ups and interactive/photo moments.",
+      "admission_free": true,
+      "what_is_free": "Full-size Mary Kay products, beauty touch-ups and interactive/photo moments are advertised as free.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE STUFF", "BEAUTY"],
+      "main_source_url": "https://www.nycforfree.co/events/mary-kay-beauty-is-more-beautiful-shared-experience",
+      "additional_verification_source": "https://nycplugged.com/calendar/mary-kay-beauty-is-more-beautiful-shared-pop-up/",
+      "last_verified": "2026-09-15T11:06:36-04:00",
+      "caveats": "Multiple current listings describe the activation as open to the public and free. A separate aggregator offers a free RSVP, but open-public language is explicit; RSVP is therefore treated as optional rather than approval-controlled admission.",
+      "practical_notes": "Gansevoort Plaza in the Meatpacking District, noon–7 PM. Free product quantities are not guaranteed, so earlier arrival is safer.",
+      "rsvp": {"requirement": "optional", "actionability": "source_available", "availability": "open", "direct_url": null}
+    }
+  ],
+  "occurrences": [
+    {"id":"century-21-walk-the-runway-2026--2026-09-15","event_id":"century-21-walk-the-runway-2026","date":"2026-09-15","hours":"12:00 PM–6:00 PM","availability":"open","details":"Free walk-in runway experience; no ticket, invitation or RSVP. Giveaways while supplies last."},
+    {"id":"century-21-walk-the-runway-2026--2026-09-16","event_id":"century-21-walk-the-runway-2026","date":"2026-09-16","hours":"12:00 PM–6:00 PM","availability":"open","details":"Free walk-in runway experience; no ticket, invitation or RSVP. Giveaways while supplies last."},
+    {"id":"eos-nylon-dewy-lip-shine-popup-2026--2026-09-15","event_id":"eos-nylon-dewy-lip-shine-popup-2026","date":"2026-09-15","hours":"12:00 PM–5:00 PM","availability":"open","details":"Open to the public; product samples and sweet treats while supplies last."},
+    {"id":"mary-kay-beauty-shared-popup-2026--2026-09-15","event_id":"mary-kay-beauty-shared-popup-2026","date":"2026-09-15","hours":"12:00 PM–7:00 PM","availability":"open","details":"Free/open public activation. RSVP appears optional; free products subject to availability."}
+  ]
+}
