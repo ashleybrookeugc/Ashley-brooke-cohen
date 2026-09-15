@@ -1,0 +1,53 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-14T21:08:12-04:00",
+  "events": [
+    {
+      "id": "reeses-nitro-bar-astor-place-2026",
+      "event_name": "Reese's × The Nitro Bar Pop-Up",
+      "brand": "Reese's × The Nitro Bar",
+      "neighborhood": "East Village / Astor Place",
+      "address": "Astor Place Plaza, 26 Astor Place, New York, NY 10003",
+      "subway": {"station": "Astor Pl", "lines": ["6"]},
+      "categories": ["food/drink", "brand activation"],
+      "what_it_is": "A two-day Reese's and The Nitro Bar coffee-truck pop-up debuting the Reese's Pumpkins PB Whip Latte at Astor Place Plaza.",
+      "admission_free": true,
+      "what_is_free": "Current listings advertise up to 1,000 complimentary Reese's Pumpkins PB Whip Lattes per day, with Reese's Pumpkins; the first 100 guests in line each day are advertised to receive a limited-edition Reese's × The Nitro Bar koozie.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE FOOD", "FREE STUFF"],
+      "main_source_url": "https://patch.com/new-york/east-village/reeses-nitro-bar-hosts-2-day-pop-east-village",
+      "official_source_url": null,
+      "additional_verification_source": "https://www.averagesocialite.com/nyc-events/2026/9/8/the-nitro-bar-x-reeses-pop-up-nyc",
+      "last_verified": "2026-09-14T21:08:12-04:00",
+      "caveats": "Open to the public with no advance RSVP requirement published. Multiple current sources agree on September 14–15 and an 11 AM start. Availability is explicitly while supplies last; some secondary listings show a nominal 5 PM end, so the tracker does not promise that giveaways will remain available until 5 PM.",
+      "practical_notes": "Monday and Tuesday, September 14–15 at Astor Place Plaza. Public access begins at 11 AM each day; arrive early because the latte, candy and first-100 koozie are supply-limited.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    },
+    {
+      "id": "step-up-for-fashion-madison-avenue-2026",
+      "event_name": "Step Up for Fashion on Madison Avenue",
+      "brand": "Madison Avenue BID × CFDA",
+      "neighborhood": "Upper East Side",
+      "address": "Madison Avenue, E 57th St to E 86th St, New York, NY",
+      "subway": {"station": "Multiple Upper East Side stations", "lines": ["4", "5", "6", "N", "R", "W", "Q"]},
+      "categories": ["fashion", "shopping", "food/drink"],
+      "what_it_is": "A public Madison Avenue fashion and philanthropy day with more than 50 participating retailers, in-store and sidewalk activations, fall-fashion presentations, hospitality, student-designer displays and shopping that benefits the CFDA Scholarship Fund.",
+      "admission_free": true,
+      "what_is_free": "The official Madison Avenue BID program advertises public sidewalk and in-store experiences including flowers, beverages, treats, surprises, refreshments and selected retailer-specific hospitality; individual merchandise and some perks remain purchase-based.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FASHION", "RETAIL EVENT"],
+      "main_source_url": "https://madisonavenuebid.org/event/step-up-for-fashion-on-madison-avenue/",
+      "official_source_url": "https://madisonavenuebid.org/event/step-up-for-fashion-on-madison-avenue/",
+      "additional_verification_source": "https://cfda.com/news/cfda-madison-avenue-b-i-d-host-3rd-step-up-for-fashion/",
+      "last_verified": "2026-09-14T21:08:12-04:00",
+      "caveats": "The official Madison Avenue BID page confirms the public program from 10 AM–6 PM on September 19. Retailer-specific offers vary: some are complimentary, some are while supplies last, and some gifts or benefits require a purchase. A separate Ivar Fine Jewelry activity lists an RSVP email, but that does not make the avenue-wide event RSVP-required.",
+      "practical_notes": "Saturday, September 19 from 10 AM–6 PM along Madison Avenue and adjacent side streets between East 57th and East 86th Streets. Check the official BID page for the retailer-by-retailer activation list before choosing stops.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    }
+  ],
+  "occurrences": [
+    {"id":"reeses-nitro-bar-astor-place-2026--2026-09-14","event_id":"reeses-nitro-bar-astor-place-2026","date":"2026-09-14","hours":"11 AM–while supplies last","availability":"open","details":"Walk-in public activation; complimentary latte and other giveaways are supply-limited."},
+    {"id":"reeses-nitro-bar-astor-place-2026--2026-09-15","event_id":"reeses-nitro-bar-astor-place-2026","date":"2026-09-15","hours":"11 AM–while supplies last","availability":"open","details":"Walk-in public activation; complimentary latte and other giveaways are supply-limited."},
+    {"id":"step-up-for-fashion-madison-avenue-2026--2026-09-19","event_id":"step-up-for-fashion-madison-avenue-2026","date":"2026-09-19","hours":"10 AM–6 PM","availability":"open","details":"Walk-in avenue-wide public program; individual retailer activations and perks vary."}
+  ]
+}
