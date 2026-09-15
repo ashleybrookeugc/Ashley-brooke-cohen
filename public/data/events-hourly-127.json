@@ -1,0 +1,59 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-15T16:08:48-04:00",
+  "events": [
+    {
+      "id": "chanel-coco-mademoiselle-crush-absolu-2026",
+      "event_name": "CHANEL COCO MADEMOISELLE CRUSH ABSOLU Event",
+      "brand": "CHANEL",
+      "neighborhood": "Meatpacking District",
+      "address": "873 Washington Street, New York, NY 10014",
+      "subway": {"station": "14 St / 8 Av", "lines": ["A", "C", "E", "L"]},
+      "categories": ["beauty", "fragrance", "freebies", "interactive", "pop-up"],
+      "what_it_is": "A free café-inspired CHANEL fragrance experience for COCO MADEMOISELLE CRUSH ABSOLU with personalized fragrance discovery, the wider COCO MADEMOISELLE line, makeup and photo moments.",
+      "admission_free": true,
+      "what_is_free": "Free public admission and fragrance/beauty discovery; CHANEL says complementary hair and body products are part of the experience. Promotional products are subject to availability.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE STUFF", "BEAUTY"],
+      "main_source_url": "https://www.chanel.com/us/fragrance/coco-mademoiselle-event/",
+      "official_source_url": "https://www.chanel.com/us/fragrance/coco-mademoiselle-event/",
+      "additional_verification_source": "https://www.averagesocialite.com/nyc-events/2026/9/11/coco-mademoiselle-crush-absolu-event-nyc",
+      "last_verified": "2026-09-15T16:08:48-04:00",
+      "caveats": "CHANEL's live event page says appointments are limited but walk-ins are encouraged during event hours. An appointment is therefore optional rather than a condition of public admission; capacity can still affect walk-in entry.",
+      "practical_notes": "Second weekend remains upcoming: Friday September 18, noon–7 PM; Saturday September 19 and Sunday September 20, 10 AM–7 PM. Free and open to the public; appointments recommended, walk-ins welcome.",
+      "rsvp": {"requirement": "optional", "actionability": "direct_link_available", "availability": "open", "direct_url": "https://www.chanel.com/us/fragrance/coco-mademoiselle-event/"}
+    },
+    {
+      "id": "bvlgari-serpenti-infinito-auruboros-2026",
+      "event_name": "Bvlgari Serpenti Infinito: auruBOROS",
+      "brand": "Bvlgari",
+      "neighborhood": "Meatpacking District / High Line",
+      "address": "The High Line above Little West 12th Street, New York, NY 10014",
+      "subway": {"station": "14 St / 8 Av", "lines": ["A", "C", "E", "L"]},
+      "categories": ["fashion", "art", "installation", "free", "NYFW"],
+      "what_it_is": "Bvlgari's first public art installation in the United States: a monumental golden pneumatic sculpture by Plastique Fantastique created for the New York chapter of Serpenti Infinito.",
+      "admission_free": true,
+      "what_is_free": "Free public access to the outdoor auruBOROS installation on the High Line.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "ART", "FASHION"],
+      "main_source_url": "https://www.youtube.com/watch?v=8riSduKOsrU",
+      "official_source_url": "https://www.youtube.com/watch?v=8riSduKOsrU",
+      "additional_verification_source": "https://www.timeout.com/newyork/news/a-giant-golden-snake-installation-is-now-slithering-through-the-high-line-thanks-to-this-major-fashion-house-091126",
+      "last_verified": "2026-09-15T16:08:48-04:00",
+      "caveats": "Bvlgari's official video identifies the High Line and September 10–20 run. Current coverage confirms the installation itself is free and open to everyone. It is an outdoor public-art installation rather than the private launch reception that preceded it.",
+      "practical_notes": "On view through Sunday September 20 on the High Line above Little West 12th Street. No RSVP or ticket is required. Visit during High Line public park hours; September seasonal park hours are 7 AM–11 PM.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    }
+  ],
+  "occurrences": [
+    {"id":"chanel-coco-mademoiselle-crush-absolu-2026--2026-09-18","event_id":"chanel-coco-mademoiselle-crush-absolu-2026","date":"2026-09-18","hours":"12:00 PM–7:00 PM","availability":"open","details":"Free public fragrance experience. Appointments recommended but optional; walk-ins encouraged."},
+    {"id":"chanel-coco-mademoiselle-crush-absolu-2026--2026-09-19","event_id":"chanel-coco-mademoiselle-crush-absolu-2026","date":"2026-09-19","hours":"10:00 AM–7:00 PM","availability":"open","details":"Free public fragrance experience. Appointments recommended but optional; walk-ins encouraged."},
+    {"id":"chanel-coco-mademoiselle-crush-absolu-2026--2026-09-20","event_id":"chanel-coco-mademoiselle-crush-absolu-2026","date":"2026-09-20","hours":"10:00 AM–7:00 PM","availability":"open","details":"Free public fragrance experience. Appointments recommended but optional; walk-ins encouraged."},
+    {"id":"bvlgari-serpenti-infinito-auruboros-2026--2026-09-15","event_id":"bvlgari-serpenti-infinito-auruboros-2026","date":"2026-09-15","hours":"7:00 AM–11:00 PM","availability":"open","details":"Free walk-in public art installation on the High Line; no RSVP or ticket."},
+    {"id":"bvlgari-serpenti-infinito-auruboros-2026--2026-09-16","event_id":"bvlgari-serpenti-infinito-auruboros-2026","date":"2026-09-16","hours":"7:00 AM–11:00 PM","availability":"open","details":"Free walk-in public art installation on the High Line; no RSVP or ticket."},
+    {"id":"bvlgari-serpenti-infinito-auruboros-2026--2026-09-17","event_id":"bvlgari-serpenti-infinito-auruboros-2026","date":"2026-09-17","hours":"7:00 AM–11:00 PM","availability":"open","details":"Free walk-in public art installation on the High Line; no RSVP or ticket."},
+    {"id":"bvlgari-serpenti-infinito-auruboros-2026--2026-09-18","event_id":"bvlgari-serpenti-infinito-auruboros-2026","date":"2026-09-18","hours":"7:00 AM–11:00 PM","availability":"open","details":"Free walk-in public art installation on the High Line; no RSVP or ticket."},
+    {"id":"bvlgari-serpenti-infinito-auruboros-2026--2026-09-19","event_id":"bvlgari-serpenti-infinito-auruboros-2026","date":"2026-09-19","hours":"7:00 AM–11:00 PM","availability":"open","details":"Free walk-in public art installation on the High Line; no RSVP or ticket."},
+    {"id":"bvlgari-serpenti-infinito-auruboros-2026--2026-09-20","event_id":"bvlgari-serpenti-infinito-auruboros-2026","date":"2026-09-20","hours":"7:00 AM–11:00 PM","availability":"open","details":"Free walk-in public art installation on the High Line; no RSVP or ticket."}
+  ]
+}
