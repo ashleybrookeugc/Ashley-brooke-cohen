@@ -1,0 +1,30 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-15T13:09:32-04:00",
+  "events": [
+    {
+      "id": "cult-gaia-sephora-soho-fragrance-launch-2026",
+      "event_name": "Cult Gaia Eau de Parfum Launch at Sephora SoHo",
+      "brand": "Cult Gaia × Sephora × Go Greek Yogurt",
+      "neighborhood": "SoHo",
+      "address": "Sephora SoHo, 557 Broadway, New York, NY 10012",
+      "subway": {"station": "Prince St", "lines": ["N", "R", "W"]},
+      "categories": ["beauty", "food/drink", "freebies", "launch"],
+      "what_it_is": "An open-house Sephora SoHo launch event for Cult Gaia Eau de Parfum, paired with complimentary Go Greek frozen yogurt inspired by the MAST, ZAN and NOOR fragrances.",
+      "admission_free": true,
+      "what_is_free": "Complimentary Go Greek frozen yogurt is advertised as part of the fragrance launch experience.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE FOOD/DRINK", "BEAUTY"],
+      "main_source_url": "https://www.sephora.com/ca/en/happening/stores/new-york-soho",
+      "official_source_url": "https://www.sephora.com/ca/en/happening/stores/new-york-soho",
+      "additional_verification_source": "https://www.nycforfree.co/events/cult-gaia-eau-de-parfum-launch-party",
+      "last_verified": "2026-09-15T13:09:32-04:00",
+      "caveats": "Sephora's current SoHo store-events page lists the Cult Gaia Soho Pop-up Launch Event as an exclusive open-house event beginning at 11 AM on September 15. NYC for FREE independently lists the activation from 11 AM–5 PM and the complimentary frozen-yogurt offer. No ticket, RSVP or purchase requirement is published for the open-house event.",
+      "practical_notes": "Tuesday, September 15 from 11 AM–5 PM at Sephora SoHo, 557 Broadway. Walk-in/open-house access; complimentary food is promotional inventory and may run out before closing.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    }
+  ],
+  "occurrences": [
+    {"id":"cult-gaia-sephora-soho-fragrance-launch-2026--2026-09-15","event_id":"cult-gaia-sephora-soho-fragrance-launch-2026","date":"2026-09-15","hours":"11:00 AM–5:00 PM","availability":"open","details":"Walk-in Sephora open-house launch; complimentary Go Greek frozen yogurt is advertised."}
+  ]
+}
