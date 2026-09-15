@@ -1,0 +1,35 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-15T02:08:00-04:00",
+  "events": [
+    {
+      "id": "waldorf-astoria-fit-nyfw-exhibition-2026",
+      "event_name": "FIT × Waldorf Astoria New York: Celebration of NYFW",
+      "brand": "Waldorf Astoria New York × Fashion Institute of Technology",
+      "neighborhood": "Midtown East",
+      "address": "Waldorf Astoria New York, 301 Park Ave, New York, NY 10022",
+      "subway": {"station": "51 St / Lexington Av–53 St", "lines": ["4", "6", "E", "M"]},
+      "categories": ["fashion", "exhibition", "NYFW", "free"],
+      "what_it_is": "A public fashion exhibition in the Waldorf Astoria New York's Peacock Alley and Lexington Avenue corridor vitrines spotlighting evening gowns by emerging FIT designers, with Art Deco, craftsmanship and hoop-dress construction themes.",
+      "admission_free": true,
+      "what_is_free": "Viewing the fashion exhibition is free and open to the public.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FASHION", "EXHIBITION", "NYFW"],
+      "main_source_url": "https://www.waldorfastorianewyork.com/experiences/",
+      "official_source_url": "https://www.waldorfastorianewyork.com/experiences/",
+      "additional_verification_source": "https://fashionista.com/2026/09/new-york-fashion-week-free-events-september-2026",
+      "last_verified": "2026-09-15T02:08:00-04:00",
+      "caveats": "Waldorf Astoria New York's current official experiences page explicitly lists FIT × Waldorf Astoria New York: Celebration of NYFW as open to the public September 1–20. Fashionista independently describes the vitrines exhibition as free. The official listing does not publish dedicated daily exhibition hours, so no hours are invented here.",
+      "practical_notes": "Open to the public through Sunday, September 20 at the Waldorf Astoria New York. Dedicated exhibition hours are not stated on the official listing; verify hotel access before making a special trip.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    }
+  ],
+  "occurrences": [
+    {"id":"waldorf-astoria-fit-nyfw-exhibition-2026--2026-09-15","event_id":"waldorf-astoria-fit-nyfw-exhibition-2026","date":"2026-09-15","hours":"Hours not stated","availability":"open","details":"Free public fashion exhibition; official listing confirms public access through September 20 but does not state dedicated daily hours."},
+    {"id":"waldorf-astoria-fit-nyfw-exhibition-2026--2026-09-16","event_id":"waldorf-astoria-fit-nyfw-exhibition-2026","date":"2026-09-16","hours":"Hours not stated","availability":"open","details":"Free public fashion exhibition; official listing confirms public access through September 20 but does not state dedicated daily hours."},
+    {"id":"waldorf-astoria-fit-nyfw-exhibition-2026--2026-09-17","event_id":"waldorf-astoria-fit-nyfw-exhibition-2026","date":"2026-09-17","hours":"Hours not stated","availability":"open","details":"Free public fashion exhibition; official listing confirms public access through September 20 but does not state dedicated daily hours."},
+    {"id":"waldorf-astoria-fit-nyfw-exhibition-2026--2026-09-18","event_id":"waldorf-astoria-fit-nyfw-exhibition-2026","date":"2026-09-18","hours":"Hours not stated","availability":"open","details":"Free public fashion exhibition; official listing confirms public access through September 20 but does not state dedicated daily hours."},
+    {"id":"waldorf-astoria-fit-nyfw-exhibition-2026--2026-09-19","event_id":"waldorf-astoria-fit-nyfw-exhibition-2026","date":"2026-09-19","hours":"Hours not stated","availability":"open","details":"Free public fashion exhibition; official listing confirms public access through September 20 but does not state dedicated daily hours."},
+    {"id":"waldorf-astoria-fit-nyfw-exhibition-2026--2026-09-20","event_id":"waldorf-astoria-fit-nyfw-exhibition-2026","date":"2026-09-20","hours":"Hours not stated","availability":"open","details":"Free public fashion exhibition; official listing confirms public access through September 20 but does not state dedicated daily hours."}
+  ]
+}
