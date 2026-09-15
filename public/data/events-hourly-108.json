@@ -1,0 +1,53 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-14T20:06:57-04:00",
+  "events": [
+    {
+      "id": "bobbi-brown-prime-times-newsstand-2026",
+      "event_name": "Bobbi Brown The Prime Times Newsstand",
+      "brand": "Bobbi Brown Cosmetics",
+      "neighborhood": "Meatpacking District",
+      "address": "Chelsea Triangle, 9th Ave between W 14th and W 15th St, New York, NY 10011",
+      "subway": {"station": "14 St–8 Av", "lines": ["A", "C", "E", "L"]},
+      "categories": ["beauty", "food/drink"],
+      "what_it_is": "A one-day Bobbi Brown newsstand activation for the new Vitamin Enriched Face Base+, with product discovery, samples, refreshments, scratch-off giveaways and a mirrored photo moment.",
+      "admission_free": true,
+      "what_is_free": "Bobbi Brown's organizer listing advertises a complimentary VEFB+ sample, refreshments and croissants, scratch-off prizes and giveaways while supplies last; the first 100 guests in line are advertised to receive a deluxe-size sample.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE SAMPLE", "FREE FOOD", "FREE STUFF"],
+      "main_source_url": "https://www.eventbrite.com/e/bobbi-brown-new-vitamin-enriched-face-base-newsstand-sampling-event-nyc-tickets-1999534977945",
+      "official_source_url": "https://www.eventbrite.com/e/bobbi-brown-new-vitamin-enriched-face-base-newsstand-sampling-event-nyc-tickets-1999534977945",
+      "additional_verification_source": "https://www.nycforfree.co/events/bobbi-brown-the-prime-times-newsstand",
+      "last_verified": "2026-09-14T20:06:57-04:00",
+      "caveats": "The Eventbrite listing is organized by Bobbi Brown Cosmetics and presents the event as a free invitation/registration. Promotional samples, food and prizes are while supplies last. Photo and video content will be captured during the event for Bobbi Brown social/digital channels.",
+      "practical_notes": "Thursday, September 17 from 12–6 PM at Chelsea Triangle in the Meatpacking District. Use the Bobbi Brown organizer Eventbrite listing to register; arrive early if the deluxe sample is the priority because only the first 100 guests in line are advertised to receive it.",
+      "rsvp": {"requirement": "required", "actionability": "direct", "availability": "open", "direct_url": "https://www.eventbrite.com/e/bobbi-brown-new-vitamin-enriched-face-base-newsstand-sampling-event-nyc-tickets-1999534977945"}
+    },
+    {
+      "id": "medik8-sephora-soho-2026",
+      "event_name": "Medik8 × Sephora SoHo Pop-Up",
+      "brand": "Medik8 × Sephora",
+      "neighborhood": "SoHo",
+      "address": "Sephora SoHo, 557 Broadway, New York, NY 10012",
+      "subway": {"station": "Prince St", "lines": ["N", "R", "W"]},
+      "categories": ["beauty", "retail"],
+      "what_it_is": "A two-day Medik8 skincare pop-up at Sephora SoHo with free samples and personalized skincare consultations. A separate Ariana Madix meet-and-greet takes place September 16 for qualifying purchasers.",
+      "admission_free": true,
+      "what_is_free": "Current event listings advertise free skincare samples and personalized consultations. The Ariana Madix meet-and-greet is not a general freebie: the first 150 eligible customers who buy two or more full-size Medik8 products on September 16 receive a wristband for the 6–8 PM meet-and-greet.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE SAMPLE", "RETAIL POP-UP"],
+      "main_source_url": "https://www.averagesocialite.com/nyc-events/2026/9/16/medik8-x-sephora-pop-up-nyc",
+      "official_source_url": null,
+      "additional_verification_source": "https://www.eventbrite.com/e/medik8-x-sephora-is-bringing-age-defying-skincare-directly-to-you-tickets-1999587177074",
+      "last_verified": "2026-09-14T20:06:57-04:00",
+      "caveats": "Free RSVP links are published separately for September 16 and September 17. September 16 public pop-up hours are 12–5:30 PM; the 6–8 PM Ariana Madix meet-and-greet requires a qualifying purchase of two or more full-size Medik8 products and is limited to the first 150 eligible customers. September 17 public pop-up hours are 11 AM–7 PM.",
+      "practical_notes": "Wednesday, September 16: 12–5:30 PM public pop-up; RSVP at the September 16 Eventbrite link. Thursday, September 17: 11 AM–7 PM; use the date-specific September 17 Eventbrite link. Do not treat the purchase-gated Ariana meet-and-greet as part of the ordinary free admission.",
+      "rsvp": {"requirement": "required", "actionability": "direct", "availability": "open", "direct_url": "https://www.eventbrite.com/e/medik8-x-sephora-is-bringing-age-defying-skincare-directly-to-you-tickets-1999587177074"}
+    }
+  ],
+  "occurrences": [
+    {"id":"bobbi-brown-prime-times-newsstand-2026--2026-09-17","event_id":"bobbi-brown-prime-times-newsstand-2026","date":"2026-09-17","hours":"12–6 PM","availability":"open","details":"Free RSVP via Bobbi Brown organizer Eventbrite; samples, refreshments and giveaways while supplies last."},
+    {"id":"medik8-sephora-soho-2026--2026-09-16","event_id":"medik8-sephora-soho-2026","date":"2026-09-16","hours":"12–5:30 PM","availability":"open","details":"Free RSVP: https://www.eventbrite.com/e/medik8-x-sephora-is-bringing-age-defying-skincare-directly-to-you-tickets-1999587177074 . Separate 6–8 PM Ariana Madix meet-and-greet requires qualifying purchase and is limited to first 150 eligible customers."},
+    {"id":"medik8-sephora-soho-2026--2026-09-17","event_id":"medik8-sephora-soho-2026","date":"2026-09-17","hours":"11 AM–7 PM","availability":"open","details":"Free RSVP: https://www.eventbrite.com/e/medik8-x-sephora-is-bringing-age-defying-skincare-directly-to-you-tickets-2000287404473 ."}
+  ]
+}
