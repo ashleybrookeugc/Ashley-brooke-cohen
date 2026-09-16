@@ -1,4 +1,5 @@
 import {WRITE_REPO, validateRoute} from './contracts.js';
+import {githubPrivateKeyPkcs8Bytes} from './github-key.js';
 
 const READ_REPOS = new Set(['ashleybrookeugc/research-vault','ashleybrookeugc/ugc-creator-app','ashleybrookeugc/B-Paid','ashleybrookeugc/Ashley-brooke-cohen']);
 const api = 'https://api.github.com';
@@ -25,10 +26,6 @@ export function createGitHubAdapter({fetchImpl=fetch, tokenProvider}) {
   };
 }
 
-function pemBytes(pem) {
-  const body = pem.replace(/-----[^-]+-----/g,'').replace(/\s/g,'');
-  return Uint8Array.from(atob(body),c=>c.charCodeAt(0));
-}
 function url64(input) {
   const bytes = typeof input === 'string' ? new TextEncoder().encode(input) : input;
   let raw=''; for (const byte of bytes) raw+=String.fromCharCode(byte);
@@ -39,7 +36,7 @@ export function createGitHubAppTokenProvider(env,{fetchImpl=fetch,now=()=>Date.n
   const cache = {};
   return async scope => {
     if (cache[scope]?.expires > now()+60000) return cache[scope].token;
-    const key = await crypto.subtle.importKey('pkcs8',pemBytes(env.CONTROL_GITHUB_APP_PRIVATE_KEY),{name:'RSASSA-PKCS1-v1_5',hash:'SHA-256'},false,['sign']);
+    const key = await crypto.subtle.importKey('pkcs8',githubPrivateKeyPkcs8Bytes(env.CONTROL_GITHUB_APP_PRIVATE_KEY),{name:'RSASSA-PKCS1-v1_5',hash:'SHA-256'},false,['sign']);
     const issued=Math.floor(now()/1000)-30;
     const unsigned=url64(JSON.stringify({alg:'RS256',typ:'JWT'}))+'.'+url64(JSON.stringify({iat:issued,exp:issued+540,iss:env.CONTROL_GITHUB_APP_ID}));
     const signature=await crypto.subtle.sign('RSASSA-PKCS1-v1_5',key,new TextEncoder().encode(unsigned));
