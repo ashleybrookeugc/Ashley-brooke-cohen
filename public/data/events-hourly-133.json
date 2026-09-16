@@ -1,0 +1,56 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-15T22:04:34-04:00",
+  "events": [
+    {
+      "id": "chanel-coco-mademoiselle-crush-absolu-2026",
+      "event_name": "CHANEL COCO MADEMOISELLE CRUSH ABSOLU Event",
+      "brand": "CHANEL",
+      "neighborhood": "Meatpacking District",
+      "address": "873 Washington Street, New York, NY 10014",
+      "subway": {"station": "14 St–8 Av", "lines": ["A", "C", "E", "L"]},
+      "categories": ["beauty", "fragrance", "brand activation"],
+      "what_it_is": "A public CHANEL fragrance experience for COCO MADEMOISELLE CRUSH ABSOLU, with personalized fragrance discovery and the wider COCO MADEMOISELLE beauty collection onsite.",
+      "admission_free": true,
+      "what_is_free": "Free public entry and fragrance discovery experience; products are available to purchase onsite.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "BEAUTY POP-UP"],
+      "main_source_url": "https://www.chanel.com/us/fragrance/coco-mademoiselle-event/",
+      "official_source_url": "https://www.chanel.com/us/fragrance/coco-mademoiselle-event/",
+      "additional_verification_source": "https://nycforfree.squarespace.com/events/chanel-coco-mademoiselle-a-special-event",
+      "last_verified": "2026-09-15T22:04:34-04:00",
+      "caveats": "CHANEL states appointments are limited but walk-ins are encouraged during event hours. An appointment is therefore optional rather than required for public access. Capacity may still affect immediate entry.",
+      "practical_notes": "The second public run is September 18–20 at 873 Washington Street: Friday noon–7 PM; Saturday and Sunday 10 AM–7 PM. Walk-ins are encouraged; appointments are optional and limited.",
+      "rsvp": {"requirement": "optional", "actionability": "direct", "availability": "open", "direct_url": "https://www.chanel.com/us/fragrance/coco-mademoiselle-event/"}
+    },
+    {
+      "id": "cj-hendry-sulwhasoo-secret-garden-2026",
+      "event_name": "Cj Hendry × Sulwhasoo Secret Garden",
+      "brand": "Cj Hendry × Sulwhasoo",
+      "neighborhood": "East Village",
+      "address": "The Brant Foundation, 421 East 6th Street, New York, NY 10009",
+      "subway": {"station": "2 Av", "lines": ["F"]},
+      "categories": ["art", "beauty", "brand activation"],
+      "what_it_is": "An immersive Cj Hendry and Sulwhasoo installation inspired by the hidden garden at Sulwhasoo's Seoul flagship, built as an all-white participatory environment visitors can draw and write on.",
+      "admission_free": true,
+      "what_is_free": "Open public admission to the interactive Secret Garden installation.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "ART INSTALLATION"],
+      "main_source_url": "https://us.sulwhasoo.com/pages/cj-hendry-x-sulwhasoo",
+      "official_source_url": "https://us.sulwhasoo.com/pages/cj-hendry-x-sulwhasoo",
+      "additional_verification_source": "https://cjhendrystudio.com/pages/coming-soon",
+      "last_verified": "2026-09-15T22:04:34-04:00",
+      "caveats": "Sulwhasoo and Cj Hendry's official pages corroborate the collaboration and September 18–20 New York run; current public event listings specify 10 AM–6 PM and open-to-public access. No required ticket or RSVP was found in the verified sources.",
+      "practical_notes": "September 18–20, 10 AM–6 PM daily at The Brant Foundation, 421 E 6th St. Current evidence supports walk-in public access. Cj Hendry installations can draw lines, so capacity/queueing may affect immediate entry.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    }
+  ],
+  "occurrences": [
+    {"id":"chanel-coco-mademoiselle-crush-absolu-2026--2026-09-18","event_id":"chanel-coco-mademoiselle-crush-absolu-2026","date":"2026-09-18","hours":"12–7 PM","availability":"open","details":"First-come / RSVP optional: CHANEL says appointments are limited but walk-ins are encouraged."},
+    {"id":"chanel-coco-mademoiselle-crush-absolu-2026--2026-09-19","event_id":"chanel-coco-mademoiselle-crush-absolu-2026","date":"2026-09-19","hours":"10 AM–7 PM","availability":"open","details":"First-come / RSVP optional: CHANEL says appointments are limited but walk-ins are encouraged."},
+    {"id":"chanel-coco-mademoiselle-crush-absolu-2026--2026-09-20","event_id":"chanel-coco-mademoiselle-crush-absolu-2026","date":"2026-09-20","hours":"10 AM–7 PM","availability":"open","details":"First-come / RSVP optional: CHANEL says appointments are limited but walk-ins are encouraged."},
+    {"id":"cj-hendry-sulwhasoo-secret-garden-2026--2026-09-18","event_id":"cj-hendry-sulwhasoo-secret-garden-2026","date":"2026-09-18","hours":"10 AM–6 PM","availability":"open","details":"Walk-in public installation; no required ticket or RSVP found in current verified sources."},
+    {"id":"cj-hendry-sulwhasoo-secret-garden-2026--2026-09-19","event_id":"cj-hendry-sulwhasoo-secret-garden-2026","date":"2026-09-19","hours":"10 AM–6 PM","availability":"open","details":"Walk-in public installation; no required ticket or RSVP found in current verified sources."},
+    {"id":"cj-hendry-sulwhasoo-secret-garden-2026--2026-09-20","event_id":"cj-hendry-sulwhasoo-secret-garden-2026","date":"2026-09-20","hours":"10 AM–6 PM","availability":"open","details":"Walk-in public installation; no required ticket or RSVP found in current verified sources."}
+  ]
+}
