@@ -1,0 +1,31 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-16T03:08:34-04:00",
+  "events": [
+    {
+      "id": "motors-coffee-sey-bushwick-2026",
+      "event_name": "Motors Coffee × SEY Bar Takeover",
+      "brand": "Motors Coffee × SEY Coffee",
+      "neighborhood": "Bushwick",
+      "address": "SEY Coffee, 18 Grattan St, Brooklyn, NY 11206",
+      "subway": {"station": "Morgan Av", "lines": ["L"]},
+      "categories": ["food/drink", "retail"],
+      "what_it_is": "Paris specialty coffee shop Motors Coffee is making its first U.S. appearance with a two-day bar takeover at SEY Coffee, including Motors brewing, freeze-distilled-milk drinks and a limited Motors × SEY coffee/merchandise release.",
+      "admission_free": true,
+      "what_is_free": "No complimentary item is advertised. Public entry to the cafe/bar takeover does not have a published ticket or RSVP requirement; coffee, limited collaboration boxes, ceramics and merchandise are offered as products.",
+      "purchase_required": false,
+      "classifications": ["FREE ENTRY", "FOOD & DRINK", "RETAIL POP-UP"],
+      "main_source_url": "https://patch.com/new-york/bushwick/paris-based-motors-coffee-make-u-s-debut-nyc-weekend",
+      "official_source_url": "https://www.instagram.com/motorscoffee/",
+      "additional_verification_source": "https://patch.com/new-york/bushwick/paris-based-motors-coffee-make-u-s-debut-nyc-weekend",
+      "last_verified": "2026-09-16T03:08:34-04:00",
+      "caveats": "The Sept. 19–20 bar takeover is separate from SEY's Sept. 18 Lost Origin cuppings, which require advance tickets. No RSVP or ticket requirement is published for the weekend bar takeover itself. Limited-edition coffee and merchandise are available in limited quantities and may sell out.",
+      "practical_notes": "Saturday, September 19 and Sunday, September 20, 8 AM–5 PM at SEY Coffee, 18 Grattan St in Bushwick. Walk in during the published takeover hours. The separately ticketed Sept. 18 cuppings are not included in this listing.",
+      "rsvp": {"requirement": "none", "actionability": "not_needed", "availability": "open", "direct_url": null}
+    }
+  ],
+  "occurrences": [
+    {"id":"motors-coffee-sey-bushwick-2026--2026-09-19","event_id":"motors-coffee-sey-bushwick-2026","date":"2026-09-19","hours":"8 AM–5 PM","availability":"open","details":"Public walk-in bar takeover; no RSVP/ticket requirement published. Coffee and limited collaboration products are for purchase."},
+    {"id":"motors-coffee-sey-bushwick-2026--2026-09-20","event_id":"motors-coffee-sey-bushwick-2026","date":"2026-09-20","hours":"8 AM–5 PM","availability":"open","details":"Public walk-in bar takeover; no RSVP/ticket requirement published. Coffee and limited collaboration products are for purchase."}
+  ]
+}
