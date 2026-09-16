@@ -1,0 +1,30 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-16T13:16:00-04:00",
+  "events": [
+    {
+      "id": "cookunity-most-legendary-lunch-break-2026",
+      "event_name": "CookUnity — The Most Legendary Lunch Break",
+      "brand": "CookUnity",
+      "neighborhood": "Multiple Manhattan neighborhoods",
+      "address": "Five locations: 873 Broadway; 266 W 23rd St; 369 Madison Ave; 275 W 4th St; 451 3rd Ave, New York, NY",
+      "subway": {"station": "Multiple locations", "lines": []},
+      "categories": ["food/drink", "pop-up", "freebies"],
+      "what_it_is": "A one-day CookUnity takeover of five Manhattan bodegas and delis where eight chefs serve complimentary chef-made lunches.",
+      "admission_free": true,
+      "what_is_free": "Complimentary chef-made meals and hot bites while supplies last, plus bodega-style scratch-off tickets with chances to win additional CookUnity meals and restaurant experiences.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE FOOD", "LIMITED FREEBIE"],
+      "main_source_url": "https://www.nycforfree.co/events/cookunity-the-most-legendary-lunch-break",
+      "official_source_url": null,
+      "additional_verification_source": "https://cititour.com/NYC_News/Eight-Top-Chefs-Take-Over-Five-NYC-Bodegas/10981",
+      "last_verified": "2026-09-16T13:16:00-04:00",
+      "caveats": "NYC for FREE, Cititour, Time Out and same-day New York Post coverage agree on Thursday, September 17, 11:30 AM–2:30 PM and five Manhattan locations. Meals are while supplies last and lines are expected. No RSVP requirement is published. No CookUnity-owned event page was located in this pass, so the listing does not claim an official first-party event URL.",
+      "practical_notes": "Walk-in at any of the five participating bodegas. Arrive early because complimentary meals are explicitly while supplies last.",
+      "rsvp": {"requirement": "none", "actionability": "not_needed", "availability": "open", "direct_url": null}
+    }
+  ],
+  "occurrences": [
+    {"id":"cookunity-most-legendary-lunch-break-2026--2026-09-17","event_id":"cookunity-most-legendary-lunch-break-2026","date":"2026-09-17","hours":"11:30 AM–2:30 PM","availability":"open","details":"Walk-in at five Manhattan bodegas; complimentary meals while supplies last."}
+  ]
+}
