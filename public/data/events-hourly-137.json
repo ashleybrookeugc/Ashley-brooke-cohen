@@ -1,0 +1,30 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-16T02:09:21-04:00",
+  "events": [
+    {
+      "id": "seoul-now-the-edited-opening-reception-2026",
+      "event_name": "SEOUL NOW: THE EDITED — Opening Reception",
+      "brand": "Global Link Ventures",
+      "neighborhood": "Nolita",
+      "address": "262 Mott St, New York, NY 10012",
+      "subway": {"station": "Spring St", "lines": ["6"]},
+      "categories": ["fashion", "beauty", "retail", "experience"],
+      "what_it_is": "Opening night for Global Link Ventures' SEOUL NOW: THE EDITED pop-up, featuring seven Korean fashion, K-beauty and jewelry brands, plus a DJ set, drinks, light bites and a Polaroid photo experience.",
+      "admission_free": true,
+      "what_is_free": "The public Eventbrite listing advertises RSVP admission with drinks, light bites and a Polaroid photo experience; no ticket price or purchase requirement is published.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FASHION", "BEAUTY"],
+      "main_source_url": "https://www.eventbrite.com/e/seoul-now-pop-up-the-edited-opening-reception-tickets-1999078912842",
+      "official_source_url": "https://www.eventbrite.com/e/seoul-now-pop-up-the-edited-opening-reception-tickets-1999078912842",
+      "additional_verification_source": "https://www.einpresswire.com/article/939305654/global-link-ventures-announces-third-new-york-pop-up-seoul-now-the-edited",
+      "last_verified": "2026-09-16T02:09:21-04:00",
+      "caveats": "RSVP is required and space is limited; the Eventbrite listing says entry is subject to venue capacity. A GLV press release describes the reception as bringing together invited creators and industry guests, but the current public Eventbrite registration page is actionable and does not state an organizer-approval step. Do not describe RSVP as guaranteed entry.",
+      "practical_notes": "Thursday, Sept. 24, 6–9 PM at 262 Mott St; Eventbrite lists doors at 5:30 PM. The broader retail pop-up runs Sept. 22–Oct. 5, but verified daily public shopping hours were not published in the sources checked, so this feed adds only the independently timed opening reception rather than inventing daily occurrences.",
+      "rsvp": {"requirement": "required", "actionability": "direct_link_available", "availability": "open", "direct_url": "https://www.eventbrite.com/e/seoul-now-pop-up-the-edited-opening-reception-tickets-1999078912842"}
+    }
+  ],
+  "occurrences": [
+    {"id":"seoul-now-the-edited-opening-reception-2026--2026-09-24","event_id":"seoul-now-the-edited-opening-reception-2026","date":"2026-09-24","hours":"6–9 PM","availability":"open","details":"Free RSVP required; space limited and entry subject to venue capacity. Doors 5:30 PM."}
+  ]
+}
