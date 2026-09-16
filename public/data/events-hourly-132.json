@@ -1,0 +1,54 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-15T21:07:58-04:00",
+  "events": [
+    {
+      "id": "temptations-cat-bodega-2026",
+      "event_name": "TEMPTATIONS Cat Bodega",
+      "brand": "TEMPTATIONS",
+      "neighborhood": "Bowery",
+      "address": "213 Bowery, New York, NY 10002",
+      "subway": {"station": "Bowery", "lines": ["J", "Z"]},
+      "categories": ["pets", "brand activation", "freebies"],
+      "what_it_is": "A free three-day immersive TEMPTATIONS pop-up celebrating NYC shop cats, with interactive/photo moments, free cat treats and chances to win exclusive merchandise.",
+      "admission_free": true,
+      "what_is_free": "Free admission, TEMPTATIONS cat treats to take home, and chances to win exclusive merchandise.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE STUFF"],
+      "main_source_url": "https://www.temptationstreats.com/news-articles/temptations-cat-bodega-nyc-pop-celebrating-shop-cats",
+      "official_source_url": "https://www.temptationstreats.com/news-articles/temptations-cat-bodega-nyc-pop-celebrating-shop-cats",
+      "additional_verification_source": "https://www.mars.com/news-and-stories/press-releases-statements/temptations-brand-debuts-nyc-cat-bodega",
+      "last_verified": "2026-09-15T21:07:58-04:00",
+      "caveats": "Official TEMPTATIONS and Mars sources describe the physical NYC pop-up as free and do not state that an RSVP or ticket is required. Treats and merchandise/prizes may be limited by availability.",
+      "practical_notes": "Open September 17–19, noon–6 PM each day at 213 Bowery. Current official source language supports walk-in public access; no registration requirement is published.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    },
+    {
+      "id": "cookunity-most-legendary-lunch-break-2026",
+      "event_name": "CookUnity: The Most Legendary Lunch Break",
+      "brand": "CookUnity",
+      "neighborhood": "Manhattan — five locations",
+      "address": "Bari Bodega, 873 Broadway; Madison Square Deli & Convenience, 266 W 23rd St; New York Pizza and Cafe, 369 Madison Ave; Sam's Deli, 275 W 4th St; Slice N' Spice Deli & Grill, 451 3rd Ave, New York, NY",
+      "subway": {"station": "Multiple Manhattan locations", "lines": []},
+      "categories": ["food/drink", "brand activation", "freebies"],
+      "what_it_is": "A one-day CookUnity takeover of five Manhattan bodegas where eight chefs serve complimentary CookUnity dishes from neighborhood counters.",
+      "admission_free": true,
+      "what_is_free": "Complimentary chef-made CookUnity meals and hot bites while supplies last, plus a bodega-style scratch-off with chances to win additional CookUnity meals and dining experiences.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE FOOD", "FREE STUFF"],
+      "main_source_url": "https://www.nycforfree.co/events/cookunity-the-most-legendary-lunch-break",
+      "official_source_url": null,
+      "additional_verification_source": "https://cititour.com/NYC_News/Eight-Top-Chefs-Take-Over-Five-NYC-Bodegas/10981",
+      "last_verified": "2026-09-15T21:07:58-04:00",
+      "caveats": "Multiple current sources agree the event is open to the public with no advance RSVP stated. Food is explicitly while supplies last, so availability can end before the advertised 2:30 PM finish.",
+      "practical_notes": "Thursday, September 17, 11:30 AM–2:30 PM at five Manhattan bodegas: Chelsea, Flatiron, Midtown, Murray Hill and West Village. Walk-in; arrive early because complimentary meals are supply-limited.",
+      "rsvp": {"requirement": "none", "actionability": "not_applicable", "availability": "open", "direct_url": null}
+    }
+  ],
+  "occurrences": [
+    {"id":"temptations-cat-bodega-2026--2026-09-17","event_id":"temptations-cat-bodega-2026","date":"2026-09-17","hours":"12–6 PM","availability":"open","details":"Walk-in; official TEMPTATIONS source describes the pop-up as free. Treats and prizes subject to availability."},
+    {"id":"temptations-cat-bodega-2026--2026-09-18","event_id":"temptations-cat-bodega-2026","date":"2026-09-18","hours":"12–6 PM","availability":"open","details":"Walk-in; official TEMPTATIONS source describes the pop-up as free. Treats and prizes subject to availability."},
+    {"id":"temptations-cat-bodega-2026--2026-09-19","event_id":"temptations-cat-bodega-2026","date":"2026-09-19","hours":"12–6 PM","availability":"open","details":"Walk-in; official TEMPTATIONS source describes the pop-up as free. Treats and prizes subject to availability."},
+    {"id":"cookunity-most-legendary-lunch-break-2026--2026-09-17","event_id":"cookunity-most-legendary-lunch-break-2026","date":"2026-09-17","hours":"11:30 AM–2:30 PM","availability":"open","details":"Walk-in at five participating Manhattan bodegas; complimentary meals while supplies last."}
+  ]
+}
