@@ -1,0 +1,37 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-17T09:08:23-04:00",
+  "events": [
+    {
+      "id": "daniels-day-community-wellness-2026",
+      "event_name": "Daniel’s Day Community Wellness Event",
+      "brand": "NYS Daniel’s Law Coalition × community partners",
+      "neighborhood": "Corona, Queens",
+      "address": "PS 16Q, 41-15 104th Street, Corona, NY 11368",
+      "subway": {"station": "103 St–Corona Plaza", "lines": ["7"]},
+      "categories": ["wellness", "community", "family", "free experience"],
+      "what_it_is": "A free community wellness day connecting New Yorkers with healthcare and mental-health resources, housing and food assistance, employment and education opportunities, legal services, holistic wellness resources, and family activities.",
+      "admission_free": true,
+      "what_is_free": "Admission and the community wellness programming are free and open to the public.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE RSVP"],
+      "main_source_url": "https://namiqn.org/daniels-day-september-19th/",
+      "official_source_url": "https://namiqn.org/daniels-day-september-19th/",
+      "additional_verification_source": "https://www.cidny.org/calendar/",
+      "last_verified": "2026-09-17T09:08:23-04:00",
+      "caveats": "NAMI Queens/Nassau provides a registration action, while current event descriptions also state the event is free and open to the public. No organizer-approval or guest-list selection language was found. Classify the advertised registration path as Free RSVP rather than Approval Required.",
+      "practical_notes": "Saturday Sept. 19, 10 AM–2 PM. PS 16Q playground entrance is at 42nd Ave. & 104th St. in Corona, Queens.",
+      "rsvp": {"requirement": "required", "actionability": "source_link", "availability": "open", "direct_url": "https://namiqn.org/daniels-day-september-19th/"}
+    }
+  ],
+  "occurrences": [
+    {
+      "id": "daniels-day-community-wellness-2026--2026-09-19",
+      "event_id": "daniels-day-community-wellness-2026",
+      "date": "2026-09-19",
+      "hours": "10 AM–2 PM",
+      "availability": "open",
+      "details": "Free community wellness event. Registration is available through the NAMI Queens/Nassau event page; current descriptions also state it is free and open to the public."
+    }
+  ]
+}
