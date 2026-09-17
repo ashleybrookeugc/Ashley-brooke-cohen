@@ -1,0 +1,37 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-17T16:08:15-04:00",
+  "events": [
+    {
+      "id": "max-mara-le-parfum-herald-square-2026",
+      "event_name": "Max Mara Le Parfum: The NYC Pop-Up at Herald Square",
+      "brand": "Max Mara × Macy's",
+      "neighborhood": "Herald Square",
+      "address": "151 West 34th Street, New York, NY 10001",
+      "subway": {"station": "34 St–Herald Sq", "lines": ["B", "D", "F", "M", "N", "Q", "R", "W"]},
+      "categories": ["beauty", "fragrance", "free samples", "food/drink", "free experience"],
+      "what_it_is": "An open-air Max Mara Le Parfum launch pop-up outside Macy's Herald Square with an interactive scent experience, photo moments, games and giveaways.",
+      "admission_free": true,
+      "what_is_free": "Complimentary fragrance samples and gelato are advertised, plus giveaways and chances to win prizes, while supplies last.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE RSVP"],
+      "main_source_url": "https://www.eventbrite.com/e/max-mara-le-parfum-the-nyc-pop-up-at-herald-square-tickets-1997921463881",
+      "official_source_url": "https://www.eventbrite.com/e/max-mara-le-parfum-the-nyc-pop-up-at-herald-square-tickets-1997921463881",
+      "additional_verification_source": "https://www.cityguideny.com/event/macy-s-herald-square-plaza-2026-09-19-2026-09-19",
+      "last_verified": "2026-09-17T16:08:15-04:00",
+      "caveats": "The Max Mara organizer's Eventbrite listing advertises free tickets but says the ticket does not provide special access. Treat the RSVP as the advertised free registration path, not as priority or guaranteed admission. Samples, gelato and giveaways are while supplies last.",
+      "practical_notes": "Saturday Sept. 19, 10 AM–6 PM, outside Macy's at Herald Square Plaza. All ages. The event is open-air.",
+      "rsvp": {"requirement": "required", "actionability": "direct_link", "availability": "open", "direct_url": "https://www.eventbrite.com/e/max-mara-le-parfum-the-nyc-pop-up-at-herald-square-tickets-1997921463881"}
+    }
+  ],
+  "occurrences": [
+    {
+      "id": "max-mara-le-parfum-herald-square-2026--2026-09-19",
+      "event_id": "max-mara-le-parfum-herald-square-2026",
+      "date": "2026-09-19",
+      "hours": "10 AM–6 PM",
+      "availability": "open",
+      "details": "Free RSVP/ticket is the advertised registration path. The organizer says the ticket does not provide special access. Complimentary gelato, fragrance samples and giveaways are while supplies last."
+    }
+  ]
+}
