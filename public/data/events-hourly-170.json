@@ -1,0 +1,36 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-17T12:08:36-04:00",
+  "events": [
+    {
+      "id": "cookunity-most-legendary-lunch-break-2026",
+      "event_name": "CookUnity — The Most Legendary Lunch Break",
+      "brand": "CookUnity",
+      "neighborhood": "Manhattan — five locations",
+      "address": "Bari Bodega, 873 Broadway; Madison Square Deli & Convenience, 266 W 23rd St; New York Pizza and Cafe, 369 Madison Ave; Sam's Deli, 275 W 4th St; Slice N' Spice Deli & Grill, 451 3rd Ave, New York, NY",
+      "subway": {"station": "Multiple Manhattan locations", "lines": []},
+      "categories": ["food/drink", "free food", "brand activation", "free experience"],
+      "what_it_is": "One-day CookUnity takeover of five Manhattan bodegas and delis with eight chefs serving CookUnity dishes.",
+      "admission_free": true,
+      "what_is_free": "Complimentary chef-made meals and hot bites while supplies last; guests also receive a bodega-style scratch-off ticket for prize chances.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "WALK-IN"],
+      "main_source_url": "https://www.timeout.com/newyork/news/eight-world-famous-chefs-are-taking-over-bodega-counters-across-manhattan-this-month-and-the-meals-are-entirely-free-090326",
+      "additional_verification_source": "https://www.nycforfree.co/events/cookunity-the-most-legendary-lunch-break",
+      "last_verified": "2026-09-17T12:08:36-04:00",
+      "caveats": "Walk-in public giveaway with no advance RSVP requirement found. Food is explicitly while supplies last; arriving does not guarantee a meal after inventory is exhausted.",
+      "practical_notes": "Thursday Sept. 17 only, 11:30 AM–2:30 PM. Five participating locations: Flatiron, Chelsea, Midtown, West Village and Murray Hill.",
+      "rsvp": {"requirement": "none", "actionability": "walk_in", "availability": "open", "direct_url": null}
+    }
+  ],
+  "occurrences": [
+    {
+      "id": "cookunity-most-legendary-lunch-break-2026--2026-09-17",
+      "event_id": "cookunity-most-legendary-lunch-break-2026",
+      "date": "2026-09-17",
+      "hours": "11:30 AM–2:30 PM",
+      "availability": "open",
+      "details": "Walk-in at any of five participating Manhattan locations. Complimentary meals/hot bites are available while supplies last."
+    }
+  ]
+}
