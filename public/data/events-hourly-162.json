@@ -1,0 +1,55 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-17T04:07:23-04:00",
+  "events": [
+    {
+      "id": "conair-lil-sweet-treat-nyc-2026",
+      "event_name": "Conair × Lil Sweet Treat Takeover",
+      "brand": "Conair × Lil Sweet Treat",
+      "neighborhood": "West Village",
+      "address": "184 7th Ave S, New York, NY 10014",
+      "subway": {"station": "14 St", "lines": ["1", "2", "3"]},
+      "categories": ["beauty", "food/drink", "pop-up", "giveaway", "shopping"],
+      "what_it_is": "A three-day Conair and Lil Sweet Treat pop-up celebrating new Cake Pop Hair Dryer colorways with sweets, photo moments and giveaways.",
+      "admission_free": true,
+      "what_is_free": "Sweet treats, special giveaways and hair accessories are advertised while supplies last. Cake Pop Hair Dryer giveaways are tied to purchase for the first 100 qualifying visitors each day.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "ACTUALLY FREE STUFF", "WALK-IN"],
+      "main_source_url": "https://www.nycforfree.co/events",
+      "official_source_url": null,
+      "additional_verification_source": "https://www.averagesocialite.com/mo-newsletter-blog/2026/20/4",
+      "last_verified": "2026-09-17T04:07:23-04:00",
+      "caveats": "Open public pop-up. Hair accessories and other giveaways are while supplies last. The Cake Pop Hair Dryer offer requires purchase and must not be represented as an unconditional freebie.",
+      "practical_notes": "Sept. 18–20 at 184 7th Ave S. Current NYC listing gives 11 AM–11 PM on Sept. 18; later-day closing times were not independently established strongly enough in this pass, so only the verified opening time is preserved for Sept. 19–20.",
+      "rsvp": {"requirement": "none", "actionability": "walk_in", "availability": "open", "direct_url": null}
+    },
+    {
+      "id": "pura-vida-brown-bee-nolita-2026",
+      "event_name": "Pura Vida × Brown Bee Pop-Up",
+      "brand": "Pura Vida × Brown Bee",
+      "neighborhood": "Nolita",
+      "address": "98 Kenmare St, New York, NY 10012",
+      "subway": {"station": "Bowery", "lines": ["J", "Z"]},
+      "categories": ["food/drink", "beauty", "pop-up", "giveaway"],
+      "what_it_is": "A two-day Brown Bee collaboration at Pura Vida's Nolita location pairing smoothies with beauty-product giveaways.",
+      "admission_free": true,
+      "what_is_free": "The first 100 qualifying visitors are advertised to receive a PB Smoothie, a full-size product and an exclusive Brown Bee gift.",
+      "purchase_required": false,
+      "classifications": ["FREEBIE", "WALK-IN"],
+      "main_source_url": "https://www.nycforfree.co/events",
+      "official_source_url": null,
+      "additional_verification_source": null,
+      "last_verified": "2026-09-17T04:07:23-04:00",
+      "caveats": "The giveaway is explicitly limited to the first 100 visitors and should not be presented as guaranteed for later arrivals. No advance RSVP requirement is published in the current listing.",
+      "practical_notes": "Sept. 18–19 at Pura Vida Nolita, 98 Kenmare St. Current listing gives 10 AM–6 PM for Sept. 18; Sept. 19 hours were not independently established strongly enough in this pass, so the second occurrence is retained without an invented closing time.",
+      "rsvp": {"requirement": "none", "actionability": "walk_in", "availability": "open", "direct_url": null}
+    }
+  ],
+  "occurrences": [
+    {"id":"conair-lil-sweet-treat-nyc-2026--2026-09-18","event_id":"conair-lil-sweet-treat-nyc-2026","date":"2026-09-18","hours":"11 AM–11 PM","availability":"open","details":"Walk-in public pop-up; free accessories/giveaways while supplies last. Hair-dryer offer requires purchase."},
+    {"id":"conair-lil-sweet-treat-nyc-2026--2026-09-19","event_id":"conair-lil-sweet-treat-nyc-2026","date":"2026-09-19","hours":"Opens 11 AM; closing time not independently verified","availability":"open","details":"Do not infer the closing time from another city edition."},
+    {"id":"conair-lil-sweet-treat-nyc-2026--2026-09-20","event_id":"conair-lil-sweet-treat-nyc-2026","date":"2026-09-20","hours":"Opens 11 AM; closing time not independently verified","availability":"open","details":"Do not infer the closing time from another city edition."},
+    {"id":"pura-vida-brown-bee-nolita-2026--2026-09-18","event_id":"pura-vida-brown-bee-nolita-2026","date":"2026-09-18","hours":"10 AM–6 PM","availability":"open","details":"First-100 giveaway; walk-in access."},
+    {"id":"pura-vida-brown-bee-nolita-2026--2026-09-19","event_id":"pura-vida-brown-bee-nolita-2026","date":"2026-09-19","hours":"Hours not independently verified","availability":"open","details":"Two-day run is verified; do not copy Sept. 18 hours onto Sept. 19 without stronger evidence."}
+  ]
+}
