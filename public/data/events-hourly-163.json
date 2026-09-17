@@ -1,0 +1,52 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-17T05:09:24-04:00",
+  "events": [
+    {
+      "id": "cookunity-legendary-lunch-break-2026",
+      "event_name": "CookUnity — The Most Legendary Lunch Break",
+      "brand": "CookUnity",
+      "neighborhood": "Manhattan — five locations",
+      "address": "Bari Bodega, 873 Broadway; Madison Square Deli, 266 W 23rd St; New York Pizza and Cafe, 369 Madison Ave; Sam's Deli, 275 W 4th St; Slice N' Spice, 451 Third Ave",
+      "subway": {"station": "Multiple Manhattan locations", "lines": []},
+      "categories": ["food/drink", "pop-up", "freebies", "brand activation"],
+      "what_it_is": "A one-day CookUnity takeover of five Manhattan bodegas with eight celebrity and internet-famous chefs serving complimentary chef-made meals and hot samples.",
+      "admission_free": true,
+      "what_is_free": "Complimentary CookUnity meals or hot bites while supplies last, plus a bodega-style scratch-off ticket with prize opportunities.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "ACTUALLY FREE STUFF", "WALK-IN"],
+      "main_source_url": "https://www.timeout.com/newyork/news/eight-world-famous-chefs-are-taking-over-bodega-counters-across-manhattan-this-month-and-the-meals-are-entirely-free-090326",
+      "official_source_url": null,
+      "additional_verification_source": "https://secretnyc.co/cookunity-the-most-legendary-lunch-break-nyc-pop-up-free-meals-september-2026/",
+      "last_verified": "2026-09-17T05:09:24-04:00",
+      "caveats": "Meals and hot samples are while supplies last; current coverage expects substantial lines. No advance RSVP requirement is published.",
+      "practical_notes": "Thursday Sept. 17 only, 11:30 AM–2:30 PM. Five locations: Flatiron, Chelsea, Midtown, West Village and Murray Hill.",
+      "rsvp": {"requirement": "none", "actionability": "walk_in", "availability": "open", "direct_url": null}
+    },
+    {
+      "id": "bobbi-brown-prime-times-newsstand-2026",
+      "event_name": "Bobbi Brown — The Prime Times Newsstand",
+      "brand": "Bobbi Brown Cosmetics",
+      "neighborhood": "Meatpacking District / Chelsea",
+      "address": "Chelsea Triangle, 9th Avenue between 14th and 15th Streets, New York, NY 10011",
+      "subway": {"station": "14 St / 8 Av", "lines": ["A", "C", "E", "L"]},
+      "categories": ["beauty", "pop-up", "freebies", "food/drink"],
+      "what_it_is": "A one-day Bobbi Brown newsstand activation for Vitamin Enriched Face Base+ with sampling, refreshments, scratch-off giveaways and a mirrored photo moment.",
+      "admission_free": true,
+      "what_is_free": "VEFB+ sample, grapefruit Spindrift, mini croissant and scratch-off giveaway while supplies last; the first 100 guests are advertised to receive a deluxe-size sample.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "ACTUALLY FREE STUFF", "WALK-IN"],
+      "main_source_url": "https://www.nycforfree.co/events/bobbi-brown-the-prime-times-newsstand",
+      "official_source_url": null,
+      "additional_verification_source": "https://nycplugged.com/calendar/bobbi-brown-the-prime-times-newsstand/",
+      "last_verified": "2026-09-17T05:09:24-04:00",
+      "caveats": "Samples, refreshments and prizes are while supplies last. Multiple current listings describe the activation as open to the public; no advance RSVP is established as required.",
+      "practical_notes": "Thursday Sept. 17, noon–6 PM at Chelsea Triangle, 9th Avenue between 14th and 15th Streets.",
+      "rsvp": {"requirement": "none", "actionability": "walk_in", "availability": "open", "direct_url": null}
+    }
+  ],
+  "occurrences": [
+    {"id":"cookunity-legendary-lunch-break-2026--2026-09-17","event_id":"cookunity-legendary-lunch-break-2026","date":"2026-09-17","hours":"11:30 AM–2:30 PM","availability":"open","details":"Walk-in at any of five Manhattan bodegas; complimentary food while supplies last."},
+    {"id":"bobbi-brown-prime-times-newsstand-2026--2026-09-17","event_id":"bobbi-brown-prime-times-newsstand-2026","date":"2026-09-17","hours":"12 PM–6 PM","availability":"open","details":"Free public beauty newsstand activation; samples, refreshments and giveaways while supplies last."}
+  ]
+}
