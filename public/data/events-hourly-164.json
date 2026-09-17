@@ -1,0 +1,12 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-17T06:09:00-04:00",
+  "events": [{
+    "id":"cj-hendry-sulwhasoo-secret-garden-2026","event_name":"Cj Hendry × Sulwhasoo Secret Garden","brand":"Cj Hendry × Sulwhasoo","neighborhood":"East Village","address":"The Brant Foundation, 421 East 6th Street, New York, NY 10009","subway":{"station":"Astor Pl","lines":["6"]},"categories":["arts/culture","beauty","interactive","free experience"],"what_it_is":"Immersive Secret Garden installation by Cj Hendry and Sulwhasoo, inspired by the hidden garden at Sulwhasoo's Seoul flagship.","admission_free":true,"what_is_free":"Public admission to the installation.","purchase_required":false,"classifications":["FREE EXPERIENCE","WALK-IN"],"main_source_url":"https://www.nycforfree.co/events/cj-hendry-x-sulwhasoo-secret-garden","additional_verification_source":"https://www.rockefellercenter.com/magazine/events/who-is-cj-hendry-inside-her-flower-market-installation-at-rockefeller-center","last_verified":"2026-09-17T06:09:00-04:00","caveats":"Current event listing explicitly says open to the public. No advance RSVP requirement was established in the verified sources.","practical_notes":"Sept. 18–20, 10 AM–6 PM daily at The Brant Foundation, 421 E 6th St.","rsvp":{"requirement":"none","actionability":"walk_in","availability":"open","direct_url":null}
+  }],
+  "occurrences": [
+    {"id":"cj-hendry-sulwhasoo-secret-garden-2026--2026-09-18","event_id":"cj-hendry-sulwhasoo-secret-garden-2026","date":"2026-09-18","hours":"10 AM–6 PM","availability":"open"},
+    {"id":"cj-hendry-sulwhasoo-secret-garden-2026--2026-09-19","event_id":"cj-hendry-sulwhasoo-secret-garden-2026","date":"2026-09-19","hours":"10 AM–6 PM","availability":"open"},
+    {"id":"cj-hendry-sulwhasoo-secret-garden-2026--2026-09-20","event_id":"cj-hendry-sulwhasoo-secret-garden-2026","date":"2026-09-20","hours":"10 AM–6 PM","availability":"open"}
+  ]
+}
