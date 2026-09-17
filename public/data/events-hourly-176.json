@@ -1,0 +1,52 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-17T18:04:31-04:00",
+  "events": [
+    {
+      "id": "chanel-coco-mademoiselle-crush-absolu-event-2026",
+      "event_name": "CHANEL COCO MADEMOISELLE CRUSH ABSOLU Event",
+      "brand": "CHANEL",
+      "neighborhood": "Meatpacking District",
+      "address": "873 Washington Street, New York, NY 10014",
+      "subway": {"station": "14 St / 8 Av", "lines": ["A","C","E","L"]},
+      "categories": ["beauty", "fragrance", "free experience", "pop-up"],
+      "what_it_is": "A COCO MADEMOISELLE CRUSH ABSOLU fragrance experience with personalized fragrance discovery and access to the broader COCO MADEMOISELLE line and CHANEL makeup.",
+      "admission_free": true,
+      "what_is_free": "Free public fragrance experience; appointments are limited and walk-ins are encouraged during event hours.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "WALK-IN"],
+      "main_source_url": "https://www.chanel.com/us/fragrance/coco-mademoiselle-event/",
+      "official_source_url": "https://www.chanel.com/us/fragrance/coco-mademoiselle-event/",
+      "additional_verification_source": "https://www.nycforfree.co/events/chanel-coco-mademoiselle-a-special-event",
+      "last_verified": "2026-09-17T18:04:31-04:00",
+      "caveats": "CHANEL says appointments are limited but walk-ins are encouraged. Walk-in admission remains subject to normal event capacity; do not describe an appointment as required.",
+      "practical_notes": "Second weekend runs Sept. 18 noon–7 PM and Sept. 19–20 10 AM–7 PM at 873 Washington Street.",
+      "rsvp": {"requirement": "optional", "actionability": "official_source", "availability": "open", "direct_url": "https://www.chanel.com/us/fragrance/coco-mademoiselle-event/"}
+    },
+    {
+      "id": "max-mara-le-parfum-macys-sampling-2026",
+      "event_name": "Max Mara Le Parfum × Macy’s Sampling",
+      "brand": "Max Mara × Macy’s",
+      "neighborhood": "Herald Square",
+      "address": "151 West 34th Street, New York, NY 10001",
+      "subway": {"station": "34 St–Herald Sq", "lines": ["B","D","F","M","N","Q","R","W"]},
+      "categories": ["beauty", "fragrance", "free samples", "food/drink", "pop-up"],
+      "what_it_is": "A one-day Herald Square Plaza activation celebrating Max Mara Le Parfum with fragrance sampling, complimentary gelato and giveaways.",
+      "admission_free": true,
+      "what_is_free": "Complimentary gelato, fragrance samples and a chance at giveaways while supplies last.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "WALK-IN"],
+      "main_source_url": "https://patch.com/new-york/new-york-city/calendar/event/20260919/2e26f7bd-eb96-4c85-bf3b-843b1352e394/max-mara-le-parfum-x-macy-s-sampling-in-nyc",
+      "last_verified": "2026-09-17T18:04:31-04:00",
+      "caveats": "The current event listing does not state an RSVP requirement. Samples, gelato and giveaways are while supplies last. Patch is a contributed event listing rather than a first-party host page, so admission is based on the published listing and should be rechecked if stronger host evidence appears.",
+      "practical_notes": "Saturday Sept. 19, 10 AM–6 PM at Macy’s Herald Square Plaza, 151 W 34th St.",
+      "rsvp": {"requirement": "none", "actionability": "source_link", "availability": "open", "direct_url": null}
+    }
+  ],
+  "occurrences": [
+    {"id":"chanel-coco-mademoiselle-crush-absolu-event-2026--2026-09-18","event_id":"chanel-coco-mademoiselle-crush-absolu-event-2026","date":"2026-09-18","hours":"12 PM–7 PM","availability":"open","details":"Appointments are limited; walk-ins are encouraged during event hours."},
+    {"id":"chanel-coco-mademoiselle-crush-absolu-event-2026--2026-09-19","event_id":"chanel-coco-mademoiselle-crush-absolu-event-2026","date":"2026-09-19","hours":"10 AM–7 PM","availability":"open","details":"Appointments are limited; walk-ins are encouraged during event hours."},
+    {"id":"chanel-coco-mademoiselle-crush-absolu-event-2026--2026-09-20","event_id":"chanel-coco-mademoiselle-crush-absolu-event-2026","date":"2026-09-20","hours":"10 AM–7 PM","availability":"open","details":"Appointments are limited; walk-ins are encouraged during event hours."},
+    {"id":"max-mara-le-parfum-macys-sampling-2026--2026-09-19","event_id":"max-mara-le-parfum-macys-sampling-2026","date":"2026-09-19","hours":"10 AM–6 PM","availability":"open","details":"Complimentary gelato, samples and giveaways while supplies last."}
+  ]
+}
