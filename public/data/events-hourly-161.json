@@ -1,0 +1,32 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-17T03:09:28-04:00",
+  "events": [
+    {
+      "id": "acdc-pwr-up-pop-up-new-york-2026",
+      "event_name": "AC/DC PWR/UP Pop Up — New York",
+      "brand": "AC/DC PWR/UP Pop Up",
+      "neighborhood": "Times Square",
+      "address": "Hard Rock Cafe Times Square, 1501 Broadway, New York, NY 10036",
+      "subway": {"station": "Times Sq–42 St", "lines": ["1", "2", "3", "7", "N", "Q", "R", "W"]},
+      "categories": ["music", "merchandise", "giveaway", "photo opportunity", "pop-up", "free experience"],
+      "what_it_is": "The official AC/DC PWR/UP Tour fan pop-up with exclusive merchandise, tour props and displays, photo opportunities, themed elements and on-site giveaways at Hard Rock Cafe Times Square.",
+      "admission_free": true,
+      "what_is_free": "Entry, fan displays/photo opportunities and eligibility for advertised on-site giveaways; merchandise, food and drinks may cost extra.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "WALK-IN", "MUSIC POP-UP"],
+      "main_source_url": "https://pwruptour.acdc.com/",
+      "official_source_url": "https://pwruptour.acdc.com/",
+      "additional_verification_source": "https://www.cityguideny.com/event/hard-rock-cafe-times-square-nyc-2026-09-23-2026-09-25",
+      "last_verified": "2026-09-17T03:09:28-04:00",
+      "caveats": "The official tour pop-up program confirms New York at Hard Rock Cafe on Sept. 24–25. A current NYC venue listing additionally advertises an open-to-all Fan Preview Night Sept. 23, 7–9 PM. No concert ticket is required. Merchandise and food/drink are not represented as free.",
+      "practical_notes": "Fan Preview Night: Wed Sept. 23, 7–9 PM. Public event: Thu Sept. 24, 11 AM–9 PM; Fri Sept. 25, 11 AM–6 PM. Hard Rock Cafe Times Square, 1501 Broadway.",
+      "rsvp": {"requirement": "none", "actionability": "walk_in", "availability": "open", "direct_url": null}
+    }
+  ],
+  "occurrences": [
+    {"id":"acdc-pwr-up-pop-up-new-york-2026--2026-09-23","event_id":"acdc-pwr-up-pop-up-new-york-2026","date":"2026-09-23","hours":"7 PM–9 PM","availability":"open","details":"Fan Preview Night; current venue listing says open to all and no concert ticket is required."},
+    {"id":"acdc-pwr-up-pop-up-new-york-2026--2026-09-24","event_id":"acdc-pwr-up-pop-up-new-york-2026","date":"2026-09-24","hours":"11 AM–9 PM","availability":"open","details":"Free public pop-up day at Hard Rock Cafe Times Square."},
+    {"id":"acdc-pwr-up-pop-up-new-york-2026--2026-09-25","event_id":"acdc-pwr-up-pop-up-new-york-2026","date":"2026-09-25","hours":"11 AM–6 PM","availability":"open","details":"Free public pop-up day; no concert ticket is required."}
+  ]
+}
