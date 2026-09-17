@@ -1,0 +1,32 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-17T13:08:24-04:00",
+  "events": [
+    {
+      "id": "temptations-cat-bodega-2026",
+      "event_name": "TEMPTATIONS Cat Bodega",
+      "brand": "TEMPTATIONS",
+      "neighborhood": "Bowery",
+      "address": "213 Bowery, New York, NY 10002",
+      "subway": {"station": "Bowery", "lines": ["J", "Z"]},
+      "categories": ["pop-up", "pets", "free experience", "giveaway"],
+      "what_it_is": "A free immersive bodega-themed pop-up celebrating NYC shop cats, with interactive installations, games and cat-focused photo moments.",
+      "admission_free": true,
+      "what_is_free": "Free TEMPTATIONS cat-treat samples; games offer chances to win exclusive Cat Bodega merchandise.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "WALK-IN"],
+      "main_source_url": "https://www.temptationstreats.com/news-articles/temptations-cat-bodega-nyc-pop-celebrating-shop-cats",
+      "official_source_url": "https://www.mars.com/news-and-stories/press-releases-statements/temptations-brand-debuts-nyc-cat-bodega",
+      "additional_verification_source": "https://nycplugged.com/calendar/temptations-cat-bodega/",
+      "last_verified": "2026-09-17T13:08:24-04:00",
+      "caveats": "Free treats and merchandise/prizes are while supplies last. Official sources advertise visitors can stop by and do not publish an advance RSVP requirement; normal capacity rules can still apply.",
+      "practical_notes": "Open Sept. 17–19 from 12–6 PM daily at 213 Bowery. Physical pop-up is separate from the nationwide virtual Cat Bodega running through Sept. 26.",
+      "rsvp": {"requirement": "none", "actionability": "source_link", "availability": "open", "direct_url": null}
+    }
+  ],
+  "occurrences": [
+    {"id":"temptations-cat-bodega-2026--2026-09-17","event_id":"temptations-cat-bodega-2026","date":"2026-09-17","hours":"12 PM–6 PM","availability":"open","details":"Walk-in public pop-up; free treats and prizes while supplies last."},
+    {"id":"temptations-cat-bodega-2026--2026-09-18","event_id":"temptations-cat-bodega-2026","date":"2026-09-18","hours":"12 PM–6 PM","availability":"open","details":"Walk-in public pop-up; free treats and prizes while supplies last."},
+    {"id":"temptations-cat-bodega-2026--2026-09-19","event_id":"temptations-cat-bodega-2026","date":"2026-09-19","hours":"12 PM–6 PM","availability":"open","details":"Walk-in public pop-up; free treats and prizes while supplies last."}
+  ]
+}
