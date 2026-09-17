@@ -1,0 +1,55 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-17T14:07:29-04:00",
+  "events": [
+    {
+      "id": "temptations-cat-bodega-2026",
+      "event_name": "TEMPTATIONS Cat Bodega",
+      "brand": "TEMPTATIONS",
+      "neighborhood": "Bowery / Lower East Side",
+      "address": "213 Bowery, New York, NY 10002",
+      "subway": {"station": "Bowery", "lines": ["J", "Z"]},
+      "categories": ["pop-up", "pets", "free experience", "giveaway"],
+      "what_it_is": "A free interactive bodega-themed pop-up celebrating NYC shop cats, with photo moments, games, a claw machine and scratch-off prizes.",
+      "admission_free": true,
+      "what_is_free": "Free TEMPTATIONS cat treats; games offer chances to win exclusive Cat Bodega merchandise while supplies last.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "WALK-IN"],
+      "main_source_url": "https://www.temptationstreats.com/news-articles/temptations-cat-bodega-nyc-pop-celebrating-shop-cats",
+      "official_source_url": "https://www.temptationstreats.com/news-articles/temptations-cat-bodega-nyc-pop-celebrating-shop-cats",
+      "last_verified": "2026-09-17T14:07:29-04:00",
+      "caveats": "Official rules state no purchase necessary. Treats, game pieces and prizes are subject to availability; on-site game pieces are available through Sept. 19 at 6 PM or while supplies last.",
+      "practical_notes": "Open Sept. 17, 18 and 19 from noon–6 PM daily at 213 Bowery. The official brand announcement describes the physical pop-up as free and does not publish an advance RSVP requirement.",
+      "rsvp": {"requirement": "none", "actionability": "walk_in", "availability": "open", "direct_url": null}
+    },
+    {
+      "id": "illumination-nyc-light-art-festival-2026",
+      "event_name": "Illumination NYC Light Art Festival 2026",
+      "brand": "Illumination NYC",
+      "neighborhood": "Battery Park City",
+      "address": "Robert F. Wagner Jr. Park, 20 Battery Place, New York, NY 10280",
+      "subway": {"station": "Bowling Green / South Ferry", "lines": ["1", "4", "5", "R", "W"]},
+      "categories": ["arts/culture", "festival", "music", "free experience"],
+      "what_it_is": "Three-night waterfront light-art festival with large-scale installations, projection mapping, DJs and performances at Wagner Park.",
+      "admission_free": true,
+      "what_is_free": "Festival admission and access to the light-art installations and programmed entertainment are free; food, beverages and merchandise are sold separately.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE RSVP"],
+      "main_source_url": "https://www.illumination.nyc/",
+      "official_source_url": "https://www.illumination.nyc/",
+      "additional_verification_source": "https://www.eventbrite.com/e/illumination-nyc-new-yorks-premier-light-art-festival-2026-tickets-1998650830436",
+      "last_verified": "2026-09-17T14:07:29-04:00",
+      "caveats": "Admission is free. The organizer directs visitors to register for free tickets; normal outdoor-event capacity and operating conditions still apply. Food and beverages are not included.",
+      "practical_notes": "Sept. 17–19, 7–11 PM nightly at Wagner Park. All ages. Saturday's closing night includes a silent disco according to current event materials.",
+      "rsvp": {"requirement": "required", "actionability": "direct_link", "availability": "open", "direct_url": "https://www.eventbrite.com/e/illumination-nyc-new-yorks-premier-light-art-festival-2026-tickets-1998650830436"}
+    }
+  ],
+  "occurrences": [
+    {"id":"temptations-cat-bodega-2026--2026-09-17","event_id":"temptations-cat-bodega-2026","date":"2026-09-17","hours":"12 PM–6 PM","availability":"open","details":"Free walk-in pop-up; treats and prizes while supplies last."},
+    {"id":"temptations-cat-bodega-2026--2026-09-18","event_id":"temptations-cat-bodega-2026","date":"2026-09-18","hours":"12 PM–6 PM","availability":"open","details":"Free walk-in pop-up; treats and prizes while supplies last."},
+    {"id":"temptations-cat-bodega-2026--2026-09-19","event_id":"temptations-cat-bodega-2026","date":"2026-09-19","hours":"12 PM–6 PM","availability":"open","details":"Final physical pop-up day; treats, game pieces and prizes while supplies last."},
+    {"id":"illumination-nyc-light-art-festival-2026--2026-09-17","event_id":"illumination-nyc-light-art-festival-2026","date":"2026-09-17","hours":"7 PM–11 PM","availability":"open","details":"Free admission; organizer provides free ticket registration."},
+    {"id":"illumination-nyc-light-art-festival-2026--2026-09-18","event_id":"illumination-nyc-light-art-festival-2026","date":"2026-09-18","hours":"7 PM–11 PM","availability":"open","details":"Free admission; organizer provides free ticket registration."},
+    {"id":"illumination-nyc-light-art-festival-2026--2026-09-19","event_id":"illumination-nyc-light-art-festival-2026","date":"2026-09-19","hours":"7 PM–11 PM","availability":"open","details":"Closing night; free admission with free ticket registration. Current event materials advertise a Saturday silent disco."}
+  ]
+}
