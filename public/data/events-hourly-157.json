@@ -1,0 +1,32 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-16T22:09:49-04:00",
+  "events": [
+    {
+      "id": "cj-hendry-sulwhasoo-secret-garden-2026",
+      "event_name": "Cj Hendry × Sulwhasoo — Secret Garden",
+      "brand": "Cj Hendry × Sulwhasoo",
+      "neighborhood": "East Village",
+      "address": "The Brant Foundation Gallery, 421 East 6th Street, New York, NY 10009",
+      "subway": {"station": "2 Av / 1 Av", "lines": ["F", "L"]},
+      "categories": ["art", "beauty", "installation", "free experience", "pop-up"],
+      "what_it_is": "A three-day immersive all-white sculptural garden by Cj Hendry and Sulwhasoo, inspired by the hidden garden at Sulwhasoo's Bukchon flagship. Visitors are invited to use Sulwhasoo crayons to draw on the installation and leave messages.",
+      "admission_free": true,
+      "what_is_free": "Public admission to the interactive Secret Garden installation is free according to current NYC event listings; drawing participation is part of the experience.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "WALK-IN", "ART INSTALLATION"],
+      "main_source_url": "https://us.sulwhasoo.com/pages/cj-hendry-x-sulwhasoo",
+      "official_source_url": "https://cjhendrystudio.com/pages/coming-soon",
+      "additional_verification_source": "https://www.nycforfree.co/events/cj-hendry-x-sulwhasoo-secret-garden",
+      "last_verified": "2026-09-16T22:09:49-04:00",
+      "caveats": "The official Cj Hendry calendar confirms Sept. 18–20 at The Brant Foundation, and Sulwhasoo confirms the NYC Secret Garden collaboration. Current public-event listings provide the daily 10 AM–6 PM hours and describe it as open to the public. No advance RSVP requirement is published in the verified sources. Expect possible lines/capacity limits for the temporary installation.",
+      "practical_notes": "Sept. 18–20, 10 AM–6 PM daily at The Brant Foundation Gallery, 421 E 6th St. This is separate from Cj Hendry's Flower Market at Rockefeller Center Sept. 24–27.",
+      "rsvp": {"requirement": "none", "actionability": "walk_in", "availability": "open", "direct_url": null}
+    }
+  ],
+  "occurrences": [
+    {"id":"cj-hendry-sulwhasoo-secret-garden-2026--2026-09-18","event_id":"cj-hendry-sulwhasoo-secret-garden-2026","date":"2026-09-18","hours":"10 AM–6 PM","availability":"open","details":"Opening day of the free public interactive installation at The Brant Foundation."},
+    {"id":"cj-hendry-sulwhasoo-secret-garden-2026--2026-09-19","event_id":"cj-hendry-sulwhasoo-secret-garden-2026","date":"2026-09-19","hours":"10 AM–6 PM","availability":"open","details":"Free public walk-in day of the interactive installation; normal capacity limits may apply."},
+    {"id":"cj-hendry-sulwhasoo-secret-garden-2026--2026-09-20","event_id":"cj-hendry-sulwhasoo-secret-garden-2026","date":"2026-09-20","hours":"10 AM–6 PM","availability":"open","details":"Final day of the free public interactive installation at The Brant Foundation."}
+  ]
+}
