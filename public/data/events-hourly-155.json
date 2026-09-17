@@ -1,0 +1,37 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-16T20:06:58-04:00",
+  "events": [
+    {
+      "id": "peoples-theatre-community-open-house-jazz-power-jam-2026",
+      "event_name": "The People's Theatre Community Open House & Intergenerational Jazz Power Jam",
+      "brand": "The People's Theatre × Jazz Power Initiative",
+      "neighborhood": "Inwood",
+      "address": "419 West 206th Street, New York, NY 10034",
+      "subway": {"station": "Inwood–207 St", "lines": ["A"]},
+      "categories": ["arts/culture", "music", "community", "free experience"],
+      "what_it_is": "Opening-day celebration for The People's Theatre: Centro Cultural Inmigrante, with performances, workshops, open classes, interactive theatre, backstage tours, family activities and a Jazz Power concert.",
+      "admission_free": true,
+      "what_is_free": "The open house programming and Jazz Power celebration are free; food and drinks are available for purchase.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "WAITLIST"],
+      "main_source_url": "https://thepeoplestheatre.org/events/community-open-house-intergenerational-jazz-power-jam/",
+      "official_source_url": "https://thepeoplestheatre.org/events/community-open-house-intergenerational-jazz-power-jam/",
+      "additional_verification_source": "https://www.timeout.com/newyork/news/nycs-first-immigrant-cultural-center-opens-in-inwood-this-week-091626",
+      "last_verified": "2026-09-16T20:06:58-04:00",
+      "caveats": "The official event page currently says advanced reservations are full. Visitors can join the waiting list and may also come during the open house, but waiting-list guests are admitted only as space becomes available and entry is explicitly not guaranteed. Do not present this as an open Free RSVP.",
+      "practical_notes": "Saturday Sept. 19. Open House 2–5 PM; Jazz Power concert follows at 5 PM. Official address: 419 West 206th Street. Advanced reservations are full; join the waitlist. Same-day admission is capacity-dependent and not guaranteed.",
+      "rsvp": {"requirement": "required", "actionability": "source_link", "availability": "waitlist", "direct_url": "https://thepeoplestheatre.org/events/community-open-house-intergenerational-jazz-power-jam/"}
+    }
+  ],
+  "occurrences": [
+    {
+      "id": "peoples-theatre-community-open-house-jazz-power-jam-2026--2026-09-19",
+      "event_id": "peoples-theatre-community-open-house-jazz-power-jam-2026",
+      "date": "2026-09-19",
+      "hours": "2 PM–5 PM open house; concert at 5 PM",
+      "availability": "waitlist",
+      "details": "Advanced reservations are full. Join the official waitlist; waiting-list/same-day guests may be admitted as space becomes available, but entry is not guaranteed."
+    }
+  ]
+}
