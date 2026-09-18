@@ -1,0 +1,82 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-18T05:10:00-04:00",
+  "events": [
+    {
+      "id": "return-of-the-buffalo-tatanka-owe-akupi-2026",
+      "event_name": "Return of the Buffalo: Tatanka Owe Akupi",
+      "brand": "St. Ann's Warehouse × The Walk Productions × KBH Arts × Theater of War Productions",
+      "neighborhood": "Lower Manhattan / Downtown Brooklyn",
+      "address": "Moving outdoor processions: Bowling Green Park to Foley Square; Abolitionist Place to Brooklyn Bridge Park",
+      "subway": {"station": "Route varies by occurrence", "lines": []},
+      "categories": ["arts/culture", "public art", "performance", "free experience"],
+      "what_it_is": "A large-scale participatory public-art procession featuring life-size buffalo puppets with Lenape and Lakota elders, music, poetry, ceremony, dance, choirs and marching bands.",
+      "admission_free": true,
+      "what_is_free": "The outdoor public processions and performances are free and non-ticketed.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "WALK-IN"],
+      "main_source_url": "https://stannswarehouse.org/show/return-of-the-buffalo-tatanka-owe-akupi/",
+      "official_source_url": "https://theaterofwar.com/schedule/return-of-the-buffalo-tatanka-owe-akupi-1",
+      "additional_verification_source": "https://dumbo.nyc/event/return-of-the-buffalo-tatanka-owe-akupi/",
+      "last_verified": "2026-09-18T05:10:00-04:00",
+      "caveats": "This is a moving outdoor procession, not a seated event at St. Ann's Warehouse. No ticket or RSVP is required. Route and timing differ by date.",
+      "practical_notes": "Sept. 18: Lower Manhattan, 5–7:30 PM, Bowling Green Park to Foley Square. Sept. 19: Downtown Brooklyn, 2–4:30 PM, Abolitionist Place to Brooklyn Bridge Park.",
+      "rsvp": {"requirement": "none", "actionability": "not_needed", "availability": "open", "direct_url": null}
+    },
+    {
+      "id": "art-is-alive-festival-asase-yaa-2026",
+      "event_name": "10th Annual Art Is Alive Festival",
+      "brand": "Asase Yaa Cultural Arts Foundation",
+      "neighborhood": "Bed-Stuy",
+      "address": "506 Macdonough Street, Brooklyn, NY 11233",
+      "subway": {"station": "Bedford-Stuyvesant", "lines": []},
+      "categories": ["arts/culture", "dance", "music", "wellness", "community", "free experience"],
+      "what_it_is": "Asase Yaa's free weeklong arts festival with African Diasporic dance, drum, music and wellness programming, culminating in a neighborhood block party and street marketplace.",
+      "admission_free": true,
+      "what_is_free": "Festival admission and programming are free; donations are appreciated but not required. Food, drink and marketplace purchases are separate.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "WALK-IN"],
+      "main_source_url": "https://www.asaseyaaent.org/",
+      "official_source_url": "https://www.asaseyaaent.org/events-press-media/",
+      "additional_verification_source": "https://www.timeout.com/newyork/news/a-free-weeklong-arts-festival-will-take-over-bed-stuy-this-month-with-a-big-finale-block-party-set-to-fill-the-streets-090326",
+      "last_verified": "2026-09-18T05:10:00-04:00",
+      "caveats": "The festival is free and open to the public. Some individual classes may offer registration, but the source does not establish registration as a condition for general festival or block-party admission.",
+      "practical_notes": "Friday Sept. 18 features Senegalese Sabar dance with Babacar M’baye at 7 PM. Saturday Sept. 19 is the finale block party from noon–7 PM at/around 506 Macdonough Street.",
+      "rsvp": {"requirement": "none", "actionability": "not_needed", "availability": "open", "direct_url": null}
+    }
+  ],
+  "occurrences": [
+    {
+      "id": "return-of-the-buffalo-tatanka-owe-akupi-2026--2026-09-18",
+      "event_id": "return-of-the-buffalo-tatanka-owe-akupi-2026",
+      "date": "2026-09-18",
+      "hours": "5 PM–7:30 PM",
+      "availability": "open",
+      "details": "Lower Manhattan procession from Bowling Green Park to Foley Square. Free and non-ticketed."
+    },
+    {
+      "id": "return-of-the-buffalo-tatanka-owe-akupi-2026--2026-09-19",
+      "event_id": "return-of-the-buffalo-tatanka-owe-akupi-2026",
+      "date": "2026-09-19",
+      "hours": "2 PM–4:30 PM",
+      "availability": "open",
+      "details": "Downtown Brooklyn procession from Abolitionist Place to Brooklyn Bridge Park. Free and non-ticketed."
+    },
+    {
+      "id": "art-is-alive-festival-asase-yaa-2026--2026-09-18",
+      "event_id": "art-is-alive-festival-asase-yaa-2026",
+      "date": "2026-09-18",
+      "hours": "7 PM",
+      "availability": "open",
+      "details": "Friday festival program: Babacar M’baye, Senegalese Sabar dance. Free event; donations appreciated but not required."
+    },
+    {
+      "id": "art-is-alive-festival-asase-yaa-2026--2026-09-19",
+      "event_id": "art-is-alive-festival-asase-yaa-2026",
+      "date": "2026-09-19",
+      "hours": "12 PM–7 PM",
+      "availability": "open",
+      "details": "2nd Annual Block Party finale with performances and a street marketplace. Free public festival admission."
+    }
+  ]
+}
