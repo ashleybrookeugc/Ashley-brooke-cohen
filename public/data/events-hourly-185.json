@@ -1,0 +1,71 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-18T03:09:41-04:00",
+  "events": [
+    {
+      "id": "sonata-mixed-ingredients-pop-up-2026",
+      "event_name": "SONATA x Mixed Ingredients Pop-Up",
+      "brand": "SONATA x Mixed Ingredients",
+      "neighborhood": "Lower East Side",
+      "address": "71 Orchard Street, New York, NY",
+      "subway": {"station": "Delancey St–Essex St", "lines": ["F","M","J","Z"]},
+      "categories": ["wellness", "food/drink", "pop-up", "free experience"],
+      "what_it_is": "A three-day preventive-health pop-up inside Mixed Ingredients with cafe drinks, grip-strength testing and information about SONATA's preventive healthcare membership.",
+      "admission_free": true,
+      "what_is_free": "Public entry and grip-strength testing; the source says visitors can stop by for cafe favorites but does not establish that drinks are complimentary, so they are not labeled free.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "WALK-IN"],
+      "main_source_url": "https://www.averagesocialite.com/nyc-events/2026/9/18/sonata-x-mixed-ingredients-nyc",
+      "last_verified": "2026-09-18T03:09:41-04:00",
+      "caveats": "Current public listing says open to the public. No advance RSVP requirement is published. Do not describe cafe drinks as free without stronger evidence.",
+      "practical_notes": "Friday Sept. 18 through Sunday Sept. 20, 9 AM–5 PM daily at Mixed Ingredients, 71 Orchard Street.",
+      "rsvp": {"requirement": "none", "actionability": "source_link", "availability": "open", "direct_url": null}
+    },
+    {
+      "id": "yepoda-dewy-day-tour-sephora-meatpacking-2026",
+      "event_name": "The Dewy Day Tour: YEPODA K-Beauty Pop-Up at Sephora Meatpacking",
+      "brand": "YEPODA x Sephora",
+      "neighborhood": "Meatpacking District",
+      "address": "13th Street in front of Sephora, 21-27 9th Avenue, New York, NY 10014",
+      "subway": {"station": "14 St–8 Av", "lines": ["A","C","E","L"]},
+      "categories": ["beauty", "freebies", "pop-up", "free experience"],
+      "what_it_is": "YEPODA's K-beauty pop-up celebrating its Sephora launch, with product try-ons, giveaways and prize opportunities.",
+      "admission_free": true,
+      "what_is_free": "Attendance and exclusive free gifts while supplies last; the listing explicitly says no purchase is necessary to attend and receive freebies. Gift-with-purchase offers require a qualifying Sephora purchase.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "WALK-IN", "FREEBIES"],
+      "main_source_url": "https://patch.com/new-york/new-york-city/calendar/event/20260919/da414e2f-efa2-4c0a-a61e-512c03d5cd8c/the-dewy-day-tour-yepoda-k-beauty-pop-up-sephora-meatpacking",
+      "last_verified": "2026-09-18T03:09:41-04:00",
+      "caveats": "Free gifts are while supplies last. Separate GWP offers require $40+ or $60+ Sephora purchases. The current event listing publishes no advance RSVP requirement.",
+      "practical_notes": "Saturday Sept. 19, 12–6 PM, on 13th Street in front of Sephora Meatpacking.",
+      "rsvp": {"requirement": "none", "actionability": "source_link", "availability": "open", "direct_url": null}
+    },
+    {
+      "id": "londontown-magnolia-bakery-sweetest-collab-2026",
+      "event_name": "LONDONTOWN x Magnolia Bakery: The Sweetest Collab",
+      "brand": "LONDONTOWN x Magnolia Bakery",
+      "neighborhood": "West Village",
+      "address": "401 Bleecker Street, New York, NY 10014",
+      "subway": {"station": "Christopher St–Sheridan Sq", "lines": ["1"]},
+      "categories": ["beauty", "food/drink", "freebies", "pop-up", "free experience"],
+      "what_it_is": "A one-day celebration of the Magnolia Bakery x LONDONTOWN dessert-inspired nail-color collaboration.",
+      "admission_free": true,
+      "what_is_free": "The first 100 guests receive a free Banana Pudding plus Banana Pudding lakur. After the first 100, a free Banana Pudding lakur requires a purchase and is while supplies last.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FIRST-COME", "FREEBIES"],
+      "main_source_url": "https://patch.com/new-york/new-york-city/calendar/event/20260919/6f3537fb-ae79-45e7-adb3-488743f2a82c/londontown-x-magnolia-bakery-the-sweetest-collab-hits-nyc-this-september-19th",
+      "official_source_url": "https://www.londontownusa.com/collections/magnolia-bakery-x-londontown/products/banana-pudding",
+      "last_verified": "2026-09-18T03:09:41-04:00",
+      "caveats": "The headline giveaway is limited to the first 100 guests, so arrival order matters. The event listing gives a start time but no published end time; do not invent one. After the first 100, the free polish offer is purchase-linked and while supplies last.",
+      "practical_notes": "Saturday Sept. 19 starting at 11 AM at Magnolia Bakery, 401 Bleecker Street. Arrive early for the first-100 giveaway.",
+      "rsvp": {"requirement": "optional", "actionability": "source_link", "availability": "open", "direct_url": null}
+    }
+  ],
+  "occurrences": [
+    {"id":"sonata-mixed-ingredients-pop-up-2026--2026-09-18","event_id":"sonata-mixed-ingredients-pop-up-2026","date":"2026-09-18","hours":"9 AM–5 PM","availability":"open","details":"Open to the public."},
+    {"id":"sonata-mixed-ingredients-pop-up-2026--2026-09-19","event_id":"sonata-mixed-ingredients-pop-up-2026","date":"2026-09-19","hours":"9 AM–5 PM","availability":"open","details":"Open to the public."},
+    {"id":"sonata-mixed-ingredients-pop-up-2026--2026-09-20","event_id":"sonata-mixed-ingredients-pop-up-2026","date":"2026-09-20","hours":"9 AM–5 PM","availability":"open","details":"Open to the public."},
+    {"id":"yepoda-dewy-day-tour-sephora-meatpacking-2026--2026-09-19","event_id":"yepoda-dewy-day-tour-sephora-meatpacking-2026","date":"2026-09-19","hours":"12 PM–6 PM","availability":"open","details":"No purchase necessary to attend and receive freebies; gifts are while supplies last."},
+    {"id":"londontown-magnolia-bakery-sweetest-collab-2026--2026-09-19","event_id":"londontown-magnolia-bakery-sweetest-collab-2026","date":"2026-09-19","hours":"Starts 11 AM; end time not published","availability":"open","details":"First 100 guests receive free Banana Pudding plus Banana Pudding lakur; first-come giveaway."}
+  ]
+}
