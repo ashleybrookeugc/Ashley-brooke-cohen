@@ -1,0 +1,64 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-18T09:05:24-04:00",
+  "events": [
+    {
+      "id": "yepoda-dewy-day-tour-sephora-meatpacking-2026",
+      "event_name": "The Dewy Day Tour: YEPODA K-Beauty Pop-Up at Sephora Meatpacking",
+      "brand": "YEPODA × Sephora",
+      "neighborhood": "Meatpacking District",
+      "address": "21-27 9th Ave, New York, NY 10014",
+      "subway": {"station": "14 St / 8 Av", "lines": ["A","C","E","L"]},
+      "categories": ["beauty", "freebies", "pop-up", "shopping"],
+      "what_it_is": "A YEPODA K-beauty pop-up outside Sephora Meatpacking with product try-ons, free gifts and prize opportunities.",
+      "admission_free": true,
+      "what_is_free": "Attendance is free with no purchase necessary. The listing advertises exclusive free gifts while supplies last and chances to win Sephora gift cards and full-size products.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE STUFF"],
+      "main_source_url": "https://patch.com/new-york/new-york-city/calendar/event/20260919/da414e2f-efa2-4c0a-a61e-512c03d5cd8c/the-dewy-day-tour-yepoda-k-beauty-pop-up-sephora-meatpacking",
+      "additional_verification_source": "https://yepoda.com/pages/store-locator",
+      "last_verified": "2026-09-18T09:05:24-04:00",
+      "caveats": "Free gifts are while supplies last. Gift-with-purchase offers at $40+ or $60+ are separate from the no-purchase-needed attendance/freebie offer.",
+      "practical_notes": "Saturday Sept. 19, 12 PM–6 PM, on 13th Street in front of Sephora Meatpacking. The event listing explicitly says no purchase is necessary to attend and receive freebies.",
+      "rsvp": {"requirement": "none", "actionability": "walk_in", "availability": "open"}
+    },
+    {
+      "id": "max-mara-le-parfum-macys-herald-square-sampling-2026",
+      "event_name": "Max Mara Le Parfum × Macy's Sampling Pop-Up",
+      "brand": "Max Mara × Macy's",
+      "neighborhood": "Herald Square",
+      "address": "151 W 34th St, New York, NY 10001",
+      "subway": {"station": "34 St–Herald Sq", "lines": ["B","D","F","M","N","Q","R","W"]},
+      "categories": ["beauty", "fragrance", "freebies", "pop-up"],
+      "what_it_is": "A one-day outdoor sampling activation at Macy's Herald Square Plaza celebrating the launch of Max Mara Le Parfum.",
+      "admission_free": true,
+      "what_is_free": "Complimentary gelato and fragrance samples are advertised, plus a chance to win special giveaways, while supplies last.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE STUFF"],
+      "main_source_url": "https://patch.com/new-york/new-york-city/calendar/event/20260919/2e26f7bd-eb96-4c85-bf3b-843b1352e394/max-mara-le-parfum-x-macy-s-sampling-in-nyc",
+      "additional_verification_source": "https://www.macys.com/shop/brands/max-mara?id=409986",
+      "last_verified": "2026-09-18T09:05:24-04:00",
+      "caveats": "Samples, gelato and giveaways are while supplies last. The source's calendar header shows 9 AM, but its detailed event copy explicitly gives the activation hours as 10 AM–6 PM; the tracker uses the detailed hours rather than the generic header time.",
+      "practical_notes": "Saturday Sept. 19, 10 AM–6 PM at Macy's Herald Square Plaza, 151 W 34th St.",
+      "rsvp": {"requirement": "none", "actionability": "walk_in", "availability": "open"}
+    }
+  ],
+  "occurrences": [
+    {
+      "id": "yepoda-dewy-day-tour-sephora-meatpacking-2026--2026-09-19",
+      "event_id": "yepoda-dewy-day-tour-sephora-meatpacking-2026",
+      "date": "2026-09-19",
+      "hours": "12 PM–6 PM",
+      "availability": "open",
+      "details": "Walk-in public pop-up; no purchase necessary to attend and receive advertised freebies while supplies last."
+    },
+    {
+      "id": "max-mara-le-parfum-macys-herald-square-sampling-2026--2026-09-19",
+      "event_id": "max-mara-le-parfum-macys-herald-square-sampling-2026",
+      "date": "2026-09-19",
+      "hours": "10 AM–6 PM",
+      "availability": "open",
+      "details": "Walk-in sampling activation with complimentary gelato, fragrance samples and giveaway opportunities while supplies last."
+    }
+  ]
+}
