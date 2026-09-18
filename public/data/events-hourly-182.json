@@ -1,0 +1,71 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-18T00:06:39-04:00",
+  "events": [
+    {
+      "id": "max-mara-le-parfum-macys-sampling-2026",
+      "event_name": "Max Mara Le Parfum × Macy’s Sampling Pop-Up",
+      "brand": "Max Mara × Macy’s",
+      "neighborhood": "Herald Square",
+      "address": "Macy’s Herald Square Plaza, 151 W 34th St, New York, NY 10001",
+      "subway": {"station": "34 St–Herald Sq", "lines": ["B","D","F","M","N","Q","R","W"]},
+      "categories": ["fashion/beauty", "free experience", "food/drink", "giveaway"],
+      "what_it_is": "A one-day public sampling pop-up celebrating Max Mara Le Parfum at Macy’s Herald Square Plaza.",
+      "admission_free": true,
+      "what_is_free": "Complimentary gelato, fragrance samples, and chances at giveaways while supplies last.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "WALK-IN"],
+      "main_source_url": "https://patch.com/new-york/new-york-city/calendar/event/20260919/2e26f7bd-eb96-4c85-bf3b-843b1352e394/max-mara-le-parfum-x-macy-s-sampling-in-nyc",
+      "official_source_url": "https://www.macys.com/shop/product/max-mara-le-parfum-eau-de-parfum-fragrance-collection?ID=22986474",
+      "last_verified": "2026-09-18T00:06:39-04:00",
+      "caveats": "Giveaways and complimentary items are while supplies last. The event listing says to stop by and does not publish an advance RSVP requirement.",
+      "practical_notes": "Saturday Sept. 19, 10 AM–6 PM at Macy’s Herald Square Plaza. Patch’s calendar header displays 9 AM, but the event body explicitly gives 10 AM–6 PM; the tracker uses the body’s stated event hours.",
+      "rsvp": {"requirement": "none", "actionability": "source_link", "availability": "open", "direct_url": null}
+    },
+    {
+      "id": "cafe-yaeji-oatly-gochujang-latte-2026",
+      "event_name": "Cafe Yaeji: Oatly × Yaeji Gochujang Latte Pop-Up",
+      "brand": "Oatly × Yaeji",
+      "neighborhood": "Lower East Side",
+      "address": "48 Ludlow Street, New York, NY 10002",
+      "subway": {"station": "Delancey St–Essex St", "lines": ["F","M","J","Z"]},
+      "categories": ["food/drink", "free experience", "music/culture", "pop-up"],
+      "what_it_is": "A two-day immersive café inspired by Korean dabangs, created by Oatly with artist and producer Yaeji.",
+      "admission_free": true,
+      "what_is_free": "Complimentary iced Gochujang Lattes made with espresso, Oatly Barista Edition, gochujang-vanilla base, salted vanilla cold foam and gochugaru.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "ACCESS UNCLEAR"],
+      "main_source_url": "https://www.offthemrkt.com/calendar/2026/9/19/cafe-yaeji-oatly-amp-yaeji-free-gochujang-latte-pop-up",
+      "last_verified": "2026-09-18T00:06:39-04:00",
+      "caveats": "The current event page confirms the free offering, dates and address but does not positively state an RSVP requirement or explicitly say walk-ins/open public access. Classified ACCESS UNCLEAR rather than assuming WALK-IN.",
+      "practical_notes": "Two-day Lower East Side activation at 48 Ludlow Street. The source presents a continuous calendar span from Saturday 9 AM through Sunday 3 PM but does not separately state Saturday closing/Sunday opening hours; date-specific unknown hours are not invented.",
+      "rsvp": {"requirement": "none", "actionability": "source_link", "availability": "open", "direct_url": null}
+    }
+  ],
+  "occurrences": [
+    {
+      "id": "max-mara-le-parfum-macys-sampling-2026--2026-09-19",
+      "event_id": "max-mara-le-parfum-macys-sampling-2026",
+      "date": "2026-09-19",
+      "hours": "10 AM–6 PM",
+      "availability": "open",
+      "details": "Complimentary gelato, fragrance samples and giveaways while supplies last."
+    },
+    {
+      "id": "cafe-yaeji-oatly-gochujang-latte-2026--2026-09-19",
+      "event_id": "cafe-yaeji-oatly-gochujang-latte-2026",
+      "date": "2026-09-19",
+      "hours": "Starts 9 AM; Saturday closing time not separately stated",
+      "availability": "open",
+      "details": "Source confirms the two-day activation begins Saturday at 9 AM; it does not provide a separate Saturday closing time."
+    },
+    {
+      "id": "cafe-yaeji-oatly-gochujang-latte-2026--2026-09-20",
+      "event_id": "cafe-yaeji-oatly-gochujang-latte-2026",
+      "date": "2026-09-20",
+      "hours": "Sunday opening time not separately stated; ends 3 PM",
+      "availability": "open",
+      "details": "Source confirms the two-day activation ends Sunday at 3 PM; it does not provide a separate Sunday opening time."
+    }
+  ]
+}
