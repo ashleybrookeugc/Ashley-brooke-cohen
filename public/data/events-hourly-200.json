@@ -1,0 +1,66 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-18T18:08:51-04:00",
+  "events": [
+    {
+      "id": "art-is-alive-block-party-2026",
+      "event_name": "10th Annual Art Is Alive — Block Party",
+      "brand": "Asase Yaa Cultural Arts Foundation",
+      "neighborhood": "Bed-Stuy",
+      "address": "506 Macdonough Street, Brooklyn, NY 11233",
+      "subway": {"station": "Utica Av", "lines": ["A", "C"]},
+      "categories": ["arts/culture", "music", "dance", "community", "free experience"],
+      "what_it_is": "The culminating neighborhood block party for Asase Yaa's weeklong 10th Annual Art Is Alive Festival, with African and Diaspora dance and music performances, an interactive salsa class, community awards, artisans, product vendors, and food/drink vendors.",
+      "admission_free": true,
+      "what_is_free": "Admission to the block party and performances is free. Donations are appreciated but not required; food, drinks and vendor merchandise may cost extra.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "WALK-IN"],
+      "main_source_url": "https://www.asaseyaaent.org/event/10th-annual-art-is-alive/",
+      "official_source_url": "https://www.asaseyaaent.org/event/10th-annual-art-is-alive/",
+      "additional_verification_source": "https://www.timeout.com/newyork/things-to-do/things-to-do-in-nyc-this-weekend",
+      "last_verified": "2026-09-18T18:08:51-04:00",
+      "caveats": "The official organizer lists the festival as a free event and does not publish an advance RSVP requirement for the Saturday block party. Food, drinks and vendor purchases are not represented as free.",
+      "practical_notes": "Saturday Sept. 19, noon–7 PM at 506 Macdonough Street in Bed-Stuy. The official source specifically identifies this time as the festival's Block Party.",
+      "rsvp": {"requirement": "none", "actionability": "source_link", "availability": "open", "direct_url": null}
+    },
+    {
+      "id": "ride-queens-bike-tour-2026",
+      "event_name": "Ride Queens Bike Tour",
+      "brand": "Queens Borough President × NYC Parks × Transportation Alternatives",
+      "neighborhood": "Flushing Meadows Corona Park",
+      "address": "Flushing Meadows Corona Park, Queens, NY",
+      "subway": {"station": "Mets–Willets Point", "lines": ["7"]},
+      "categories": ["sports/fitness", "outdoors", "community", "free experience"],
+      "what_it_is": "The inaugural free Ride Queens community cycling event, with a choice of 12-mile and 25-mile routes beginning and ending in Flushing Meadows Corona Park, followed by a festival with food vendors, performances, sponsor tables and giveaways.",
+      "admission_free": true,
+      "what_is_free": "Participation in the ride is free with required preregistration. The post-ride festival includes performances, sponsor activations and giveaways; food vendors may charge for food.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE RSVP"],
+      "main_source_url": "https://www.queensbp.nyc.gov/ridequeens/",
+      "official_source_url": "https://www.queensbp.nyc.gov/ridequeens/",
+      "additional_verification_source": "https://www.timeout.com/newyork/things-to-do/ride-queens-bike-tour",
+      "last_verified": "2026-09-18T18:08:51-04:00",
+      "caveats": "Preregistration is required and capped at 2,000 riders. The official page currently still displays an active registration link and says to register while spots are available; this pass did not establish organizer-selection or approval semantics.",
+      "practical_notes": "Sunday Sept. 20 at 10 AM, rain or shine. Both routes begin and end in Flushing Meadows Corona Park. Exact route maps are sent to registered riders before the event.",
+      "rsvp": {"requirement": "required", "actionability": "direct_link", "availability": "open", "direct_url": "https://docs.google.com/forms/d/e/1FAIpQLSfAFg69wNP2Izgm63oqD_0nq0IOvc4opkHDqMy24rPeTmMxWA/viewform"}
+    }
+  ],
+  "occurrences": [
+    {
+      "id": "art-is-alive-block-party-2026--2026-09-19",
+      "event_id": "art-is-alive-block-party-2026",
+      "date": "2026-09-19",
+      "hours": "12 PM–7 PM",
+      "availability": "open",
+      "details": "Free block party with live performances, interactive dance, artisans and vendors. No advance RSVP requirement is published by the organizer."
+    },
+    {
+      "id": "ride-queens-bike-tour-2026--2026-09-20",
+      "event_id": "ride-queens-bike-tour-2026",
+      "date": "2026-09-20",
+      "hours": "10 AM start",
+      "availability": "open",
+      "details": "Free preregistration is required and capped at 2,000 riders. A post-ride festival follows in Flushing Meadows Corona Park."
+    }
+  ]
+}
