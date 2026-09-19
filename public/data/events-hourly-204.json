@@ -1,0 +1,66 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-18T22:08:15-04:00",
+  "events": [
+    {
+      "id": "ny-transit-museum-bus-festival-2026",
+      "event_name": "New York Transit Museum Bus Festival",
+      "brand": "New York Transit Museum × MTA New York City Transit",
+      "neighborhood": "Brooklyn Bridge Park / DUMBO",
+      "address": "Emily Warren Roebling Plaza, Brooklyn Bridge Park, 1 Water Street, Brooklyn, NY 11201",
+      "subway": {"station": "York St / High St", "lines": ["F", "A", "C"]},
+      "categories": ["arts/culture", "family", "transportation", "free experience"],
+      "what_it_is": "The Transit Museum's annual outdoor festival of vintage and historic New York City buses, with boarding, hands-on activities, transit trivia and a scavenger hunt.",
+      "admission_free": true,
+      "what_is_free": "Festival admission, vintage-bus viewing/boarding and advertised festival activities are free.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FIRST-COME · RSVP OPTIONAL"],
+      "main_source_url": "https://www.nytransitmuseum.org/program/bus-fest-2026/",
+      "official_source_url": "https://www.nytransitmuseum.org/program/bus-fest-2026/",
+      "additional_verification_source": "https://brooklynbridgepark.org/summer/",
+      "last_verified": "2026-09-18T22:08:15-04:00",
+      "caveats": "Official source says advance registration is encouraged but not required. Registration enters visitors in a membership raffle; it is not established as a condition of admission. Event runs rain or shine; equipment is subject to change.",
+      "practical_notes": "Saturday Sept. 19, 10 AM–3:30 PM at Emily Warren Roebling Plaza. Children 15 and under must be accompanied by an adult. Vintage buses have stairs and may have boarding lines.",
+      "rsvp": {"requirement": "optional", "actionability": "direct_link", "availability": "open", "direct_url": "https://www.nytransitmuseum.org/program/bus-fest-2026/"}
+    },
+    {
+      "id": "slow-summer-reading-rhythms-brooklyn-bridge-park-2026",
+      "event_name": "Slow Summer Reading Party with Reading Rhythms",
+      "brand": "Brooklyn Bridge Park × Reading Rhythms",
+      "neighborhood": "Brooklyn Bridge Park / Cobble Hill",
+      "address": "Liberty Lawn, Pier 6, Brooklyn Bridge Park, Brooklyn, NY 11201",
+      "subway": {"station": "Borough Hall / Court St", "lines": ["2", "3", "4", "5", "N", "R", "W"]},
+      "categories": ["arts/culture", "books", "music", "community", "free experience"],
+      "what_it_is": "An outdoor social reading party on Liberty Lawn with live music, an hour of reading, one-on-one breakout conversations and group discussion.",
+      "admission_free": true,
+      "what_is_free": "The reading party and live-music programming are free and open to the public.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "RSVP OPTIONAL"],
+      "main_source_url": "https://brooklynbridgepark.org/event/slow-summer-reading-parties-september-20/",
+      "official_source_url": "https://brooklynbridgepark.org/event/slow-summer-reading-parties-september-20/",
+      "additional_verification_source": "https://brooklynbridgepark.org/summer/",
+      "last_verified": "2026-09-18T22:08:15-04:00",
+      "caveats": "Brooklyn Bridge Park explicitly says the event is free and open to the public and that RSVPs help with planning. Weather or other extenuating circumstances can change the event.",
+      "practical_notes": "Sunday Sept. 20, 1–3 PM on Pier 6 Liberty Lawn. Bring your own book and blanket/towel/yoga mat; chairs are not allowed on the lawn.",
+      "rsvp": {"requirement": "optional", "actionability": "source_link", "availability": "open", "direct_url": "https://brooklynbridgepark.org/event/slow-summer-reading-parties-september-20/"}
+    }
+  ],
+  "occurrences": [
+    {
+      "id": "ny-transit-museum-bus-festival-2026--2026-09-19",
+      "event_id": "ny-transit-museum-bus-festival-2026",
+      "date": "2026-09-19",
+      "hours": "10 AM–3:30 PM",
+      "availability": "open",
+      "details": "Free public festival; advance registration is encouraged but not required. Runs rain or shine."
+    },
+    {
+      "id": "slow-summer-reading-rhythms-brooklyn-bridge-park-2026--2026-09-20",
+      "event_id": "slow-summer-reading-rhythms-brooklyn-bridge-park-2026",
+      "date": "2026-09-20",
+      "hours": "1 PM–3 PM",
+      "availability": "open",
+      "details": "Free and open to the public; RSVP is optional and helps organizers plan."
+    }
+  ]
+}
