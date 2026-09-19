@@ -1,0 +1,111 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-19T05:08:28-04:00",
+  "events": [
+    {
+      "id": "jsm-beauty-van-leeuwen-mobile-pop-up-2026",
+      "event_name": "JSM Beauty × Van Leeuwen Mobile Pop-Up",
+      "brand": "Jung Saem Mool Beauty × Van Leeuwen",
+      "neighborhood": "Upper East Side / SoHo / Meatpacking",
+      "address": "Multiple Manhattan stops: Lexington Avenue; 557 Broadway; 21-27 9th Avenue",
+      "subway": {"station": "Multiple stops", "lines": []},
+      "categories": ["beauty", "food/drink", "free experience", "giveaway"],
+      "what_it_is": "A two-day mobile K-beauty and ice-cream activation celebrating Jung Saem Mool Beauty's U.S. Sephora launch, with three Manhattan stops each day.",
+      "admission_free": true,
+      "what_is_free": "A special JSM Beauty × Van Leeuwen ice cream is offered to guests who follow @jsmbeauty_global. Guests who tag the brand and share the activation to Instagram Stories with the stated hashtags can have a chance to receive a full-size Metal Lip Serum; the social giveaway is limited to 200 units per day.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE FOOD/DRINK", "GIVEAWAY"],
+      "main_source_url": "https://www.nycforfree.co/events/jsm-beauty-x-van-leeuwen",
+      "official_source_url": "",
+      "additional_verification_source": "https://clownfish-celery-hfzt.squarespace.com/nyc-events/2026/9/19/jung-saem-mool-x-van-leeuwen-mobile-pop-up-nyc",
+      "last_verified": "2026-09-19T05:08:28-04:00",
+      "caveats": "Open to the public. The free ice cream requires following @jsmbeauty_global. The full-size lip-serum promotion requires the stated social post/tag behavior and is limited to 200 units per day. Treat giveaways as while supplies last.",
+      "practical_notes": "The truck moves between three Manhattan locations each day; use the date-specific occurrence details for stop times.",
+      "rsvp": {"requirement": "none", "actionability": "walk_in", "availability": "open", "direct_url": ""}
+    },
+    {
+      "id": "heaven-mayhem-new-york-pop-up-2026",
+      "event_name": "Heaven Mayhem New York Pop-Up",
+      "brand": "Heaven Mayhem × Shopify NY",
+      "neighborhood": "SoHo",
+      "address": "131 Greene Street, New York, NY 10012",
+      "subway": {"station": "Prince St", "lines": ["N", "R", "W"]},
+      "categories": ["fashion", "shopping", "beauty", "free experience"],
+      "what_it_is": "Heaven Mayhem's first brick-and-mortar pop-up, featuring the brand's accessories and special opening-weekend activities at Shopify NY.",
+      "admission_free": true,
+      "what_is_free": "Entry is free. Gift-with-purchase items are advertised from Youth to the People, Summer Fridays and Heaven Mayhem. The first 100 guests on opening day were offered free matcha; that opening-day offer is not carried forward to Sept. 19-20.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "SHOPPING"],
+      "main_source_url": "https://www.palynx.com/event/127601",
+      "official_source_url": "",
+      "additional_verification_source": "",
+      "last_verified": "2026-09-19T05:08:28-04:00",
+      "caveats": "Free admission does not mean merchandise or gift-with-purchase offers are free without purchase. The free-matcha offer applied to opening day only.",
+      "practical_notes": "Sept. 19 and Sept. 20 hours are both 11 AM-6 PM at Shopify NY, 131 Greene Street.",
+      "rsvp": {"requirement": "none", "actionability": "walk_in", "availability": "open", "direct_url": ""}
+    },
+    {
+      "id": "temptations-cat-bodega-2026",
+      "event_name": "TEMPTATIONS Cat Bodega",
+      "brand": "TEMPTATIONS",
+      "neighborhood": "Lower East Side / Bowery",
+      "address": "213 Bowery, New York, NY",
+      "subway": {"station": "Bowery", "lines": ["J", "Z"]},
+      "categories": ["brand activation", "pets", "giveaway", "free experience"],
+      "what_it_is": "A free immersive bodega-themed activation from TEMPTATIONS centered on New York's bodega-cat culture.",
+      "admission_free": true,
+      "what_is_free": "Free product sampling, claw-machine games, scratch-off prize opportunities and branded merchandise are advertised as part of the activation.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "GIVEAWAY"],
+      "main_source_url": "https://fbdepartment.com/article/temptations-runs-immersive-nyc-pop-up-to-drive-brand-visibility",
+      "official_source_url": "",
+      "additional_verification_source": "",
+      "last_verified": "2026-09-19T05:08:28-04:00",
+      "caveats": "Sept. 19 is the final advertised day. Sampling, prizes and merchandise should be treated as subject to availability while supplies last.",
+      "practical_notes": "Open Sept. 17-19, noon-6 PM daily. This feed adds only the still-actionable Sept. 19 occurrence.",
+      "rsvp": {"requirement": "none", "actionability": "walk_in", "availability": "open", "direct_url": ""}
+    }
+  ],
+  "occurrences": [
+    {
+      "id": "jsm-beauty-van-leeuwen-mobile-pop-up-2026--2026-09-19",
+      "event_id": "jsm-beauty-van-leeuwen-mobile-pop-up-2026",
+      "date": "2026-09-19",
+      "hours": "11 AM-1 PM Lexington Ave; 1:30-3:30 PM 557 Broadway; 4-7 PM 21-27 9th Ave",
+      "availability": "open",
+      "details": "Three mobile stops: Lexington Avenue 11 AM-1 PM; SoHo at 557 Broadway 1:30-3:30 PM; Meatpacking at 21-27 9th Avenue 4-7 PM. Walk-in/open public activation."
+    },
+    {
+      "id": "jsm-beauty-van-leeuwen-mobile-pop-up-2026--2026-09-20",
+      "event_id": "jsm-beauty-van-leeuwen-mobile-pop-up-2026",
+      "date": "2026-09-20",
+      "hours": "11 AM-1 PM Lexington Ave; 1:30-3:30 PM 557 Broadway; 4-6 PM 21-27 9th Ave",
+      "availability": "open",
+      "details": "Three mobile stops: Lexington Avenue 11 AM-1 PM; SoHo at 557 Broadway 1:30-3:30 PM; Meatpacking at 21-27 9th Avenue 4-6 PM. Walk-in/open public activation."
+    },
+    {
+      "id": "heaven-mayhem-new-york-pop-up-2026--2026-09-19",
+      "event_id": "heaven-mayhem-new-york-pop-up-2026",
+      "date": "2026-09-19",
+      "hours": "11 AM-6 PM",
+      "availability": "open",
+      "details": "Free-entry shopping pop-up at Shopify NY. Gift-with-purchase promotions are separate from admission."
+    },
+    {
+      "id": "heaven-mayhem-new-york-pop-up-2026--2026-09-20",
+      "event_id": "heaven-mayhem-new-york-pop-up-2026",
+      "date": "2026-09-20",
+      "hours": "11 AM-6 PM",
+      "availability": "open",
+      "details": "Final advertised day of the free-entry shopping pop-up at Shopify NY."
+    },
+    {
+      "id": "temptations-cat-bodega-2026--2026-09-19",
+      "event_id": "temptations-cat-bodega-2026",
+      "date": "2026-09-19",
+      "hours": "12-6 PM",
+      "availability": "open",
+      "details": "Final advertised day; free immersive activation with samples, games and prize opportunities while supplies last."
+    }
+  ]
+}
