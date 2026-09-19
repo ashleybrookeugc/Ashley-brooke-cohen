@@ -1,0 +1,52 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-18T20:05:50-04:00",
+  "events": [
+    {
+      "id": "ny-transit-museum-bus-festival-2026",
+      "event_name": "New York Transit Museum Bus Festival",
+      "brand": "New York Transit Museum and MTA New York City Transit",
+      "neighborhood": "DUMBO / Brooklyn Bridge Park",
+      "address": "Emily Warren Roebling Plaza, 1 Water Street, Brooklyn, NY 11201",
+      "subway": {"station": "High St / York St", "lines": ["A", "C", "F"]},
+      "categories": ["arts/culture", "family", "outdoor", "free experience"],
+      "what_it_is": "Vintage buses at Brooklyn Bridge Park with boarding, activities, transit trivia and a scavenger hunt.",
+      "admission_free": true,
+      "what_is_free": "Festival admission, vintage-bus viewing and advertised activities are free.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FIRST-COME · RSVP OPTIONAL"],
+      "main_source_url": "https://www.nytransitmuseum.org/program/bus-fest-2026/",
+      "official_source_url": "https://www.nytransitmuseum.org/program/bus-fest-2026/",
+      "additional_verification_source": "https://brooklynbridgepark.org/event/bus-festival/",
+      "last_verified": "2026-09-18T20:05:50-04:00",
+      "caveats": "Advance registration is encouraged but explicitly not required. The event runs rain or shine; buses and equipment are subject to change.",
+      "practical_notes": "Saturday Sept. 19, 10 AM–3:30 PM at Emily Warren Roebling Plaza. Children 15 and under must be accompanied by an adult.",
+      "rsvp": {"requirement": "optional", "actionability": "source_link", "availability": "open", "direct_url": "https://www.nytransitmuseum.org/program/bus-fest-2026/"}
+    },
+    {
+      "id": "vinyl-nights-bella-abzug-park-sept-19-2026",
+      "event_name": "Vinyl Nights at Bella Abzug Park",
+      "brand": "Vinyl Nights and Hudson Yards Hell's Kitchen Alliance",
+      "neighborhood": "Hudson Yards",
+      "address": "Bella Abzug Park, Hudson Boulevard East between West 34th Street and West 35th Street, New York, NY",
+      "subway": {"station": "34 St–Hudson Yards", "lines": ["7"]},
+      "categories": ["music", "dance", "outdoor", "free experience"],
+      "what_it_is": "A free all-ages outdoor dance party with DJs playing vinyl across disco, funk, soul, house, boogie, Latin and hip-hop.",
+      "admission_free": true,
+      "what_is_free": "Admission to the outdoor dance event is free.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "RSVP OPTIONAL"],
+      "main_source_url": "https://www.hyhkalliance.org/hyhk-events-24",
+      "official_source_url": "https://www.hyhkalliance.org/hyhk-events-24",
+      "additional_verification_source": "https://parleny.com/event/dance-through-the-decades-at-vinyl-nights/",
+      "last_verified": "2026-09-18T20:05:50-04:00",
+      "caveats": "The district calendar confirms Sept. 19 from 6–9 PM. Current secondary listings describe advance RSVP as encouraged or available rather than required.",
+      "practical_notes": "Saturday Sept. 19, 6–9 PM in Bella Abzug Park between West 34th and West 35th Streets. All ages.",
+      "rsvp": {"requirement": "optional", "actionability": "source_link", "availability": "open", "direct_url": "https://www.hyhkalliance.org/hyhk-events-24"}
+    }
+  ],
+  "occurrences": [
+    {"id": "ny-transit-museum-bus-festival-2026--2026-09-19", "event_id": "ny-transit-museum-bus-festival-2026", "date": "2026-09-19", "hours": "10 AM–3:30 PM", "availability": "open", "details": "Free; advance registration encouraged but not required."},
+    {"id": "vinyl-nights-bella-abzug-park-sept-19-2026--2026-09-19", "event_id": "vinyl-nights-bella-abzug-park-sept-19-2026", "date": "2026-09-19", "hours": "6 PM–9 PM", "availability": "open", "details": "Free all-ages outdoor dance party; RSVP available or encouraged, not established as required."}
+  ]
+}
