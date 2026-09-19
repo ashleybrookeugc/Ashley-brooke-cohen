@@ -1,0 +1,37 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-19T01:08:51-04:00",
+  "events": [
+    {
+      "id": "daniels-day-community-wellness-event-2026",
+      "event_name": "Daniel’s Day Community Wellness Event",
+      "brand": "NYS Daniel’s Law Coalition × Assemblymember Catalina Cruz",
+      "neighborhood": "Corona, Queens",
+      "address": "PS 16Q, 41-15 104th Street, Corona, NY 11368",
+      "subway": {"station": "103 St–Corona Plaza", "lines": ["7"]},
+      "categories": ["community", "wellness", "family", "free experience"],
+      "what_it_is": "A free community wellness and resource day connecting New Yorkers with healthcare and mental-health resources, housing and food assistance, employment and education opportunities, legal services, holistic wellness resources, and family activities.",
+      "admission_free": true,
+      "what_is_free": "Admission and the community resource programming are free and open to the public.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE RSVP"],
+      "main_source_url": "https://patch.com/new-york/new-york-city/calendar/event/20260919/e654c0f0-68b7-4386-a3cf-3b7c416ca0f9/daniel-s-day-community-wellness-event",
+      "official_source_url": "https://namiqn.org/daniels-day-september-19th/",
+      "additional_verification_source": "https://patch.com/new-york/new-york-city/calendar/event/20260919/e654c0f0-68b7-4386-a3cf-3b7c416ca0f9/daniel-s-day-community-wellness-event",
+      "last_verified": "2026-09-19T01:08:51-04:00",
+      "caveats": "The event is explicitly described as free and open to the public. The host/partner page asks visitors to register, and the event listing publishes an RSVP link; no organizer-selection or approval step is established in the sources reviewed.",
+      "practical_notes": "Saturday Sept. 19, 10 AM–2 PM at PS 16Q. Use the playground entrance at 42nd Avenue and 104th Street. Open to residents from Queens and across all five boroughs.",
+      "rsvp": {"requirement": "required", "actionability": "direct_link", "availability": "open", "direct_url": "https://bit.ly/NYCDanielsDay"}
+    }
+  ],
+  "occurrences": [
+    {
+      "id": "daniels-day-community-wellness-event-2026--2026-09-19",
+      "event_id": "daniels-day-community-wellness-event-2026",
+      "date": "2026-09-19",
+      "hours": "10 AM–2 PM",
+      "availability": "open",
+      "details": "Free community wellness/resource event. RSVP/registration link is published; no approval step is established. Playground entrance at 42nd Avenue and 104th Street."
+    }
+  ]
+}
