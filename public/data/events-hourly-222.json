@@ -1,0 +1,53 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-19T16:07:27-04:00",
+  "events": [
+    {
+      "id": "visit-atlantic-city-monopoly-grand-central-2026",
+      "event_name": "Life-Sized Monopoly at Grand Central",
+      "brand": "Visit Atlantic City × Monopoly × Hasbro",
+      "neighborhood": "Midtown East",
+      "address": "Vanderbilt Hall, Grand Central Terminal, 89 East 42nd Street, New York, NY 10017",
+      "subway": {"station": "Grand Central–42 St", "lines": ["4", "5", "6", "7", "S"]},
+      "categories": ["brand activation", "games", "free experience", "freebies", "photo opportunity"],
+      "what_it_is": "A three-day life-sized Monopoly activation from Visit Atlantic City in Vanderbilt Hall, with a fully walkable game board, oversized dice, Atlantic City-themed spaces, interactive photo moments and a scheduled Mr. Monopoly appearance.",
+      "admission_free": true,
+      "what_is_free": "Admission and interactive play are free. Visitors can enter giveaways and compete for Atlantic City-themed prizes including merchandise and salt-water taffy; one golden-taffy find awards an Atlantic City getaway package.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "WALK-IN", "FREEBIES"],
+      "main_source_url": "https://www.visitatlanticcity.com/articles/post/visit-atlantic-city-invites-consumers-to-land-on-fun-with-a-life-sized-immersive-monopoly-experience/",
+      "official_source_url": "https://www.visitatlanticcity.com/articles/post/visit-atlantic-city-invites-consumers-to-land-on-fun-with-a-life-sized-immersive-monopoly-experience/",
+      "additional_verification_source": "https://www.timeout.com/newyork/news/you-can-play-on-a-giant-monopoly-gameboard-inside-grand-central-terminal-next-month-091626",
+      "last_verified": "2026-09-19T16:07:27-04:00",
+      "caveats": "Visit Atlantic City's official announcement explicitly says the activation is free and open to the public and does not publish an advance RSVP requirement. Prize/giveaway availability is not guaranteed, and the organizer says additional activation details may be shared closer to opening.",
+      "practical_notes": "Friday Oct. 2 through Sunday Oct. 4, 10 AM–7 PM daily in Vanderbilt Hall at Grand Central Terminal. Walk-in public access; no advance RSVP requirement is published.",
+      "rsvp": {"requirement": "none", "actionability": "walk_in", "availability": "open", "direct_url": null}
+    }
+  ],
+  "occurrences": [
+    {
+      "id": "visit-atlantic-city-monopoly-grand-central-2026--2026-10-02",
+      "event_id": "visit-atlantic-city-monopoly-grand-central-2026",
+      "date": "2026-10-02",
+      "hours": "10 AM–7 PM",
+      "availability": "open",
+      "details": "Free and open to the public in Vanderbilt Hall; no advance RSVP requirement is published."
+    },
+    {
+      "id": "visit-atlantic-city-monopoly-grand-central-2026--2026-10-03",
+      "event_id": "visit-atlantic-city-monopoly-grand-central-2026",
+      "date": "2026-10-03",
+      "hours": "10 AM–7 PM",
+      "availability": "open",
+      "details": "Free and open to the public in Vanderbilt Hall; no advance RSVP requirement is published."
+    },
+    {
+      "id": "visit-atlantic-city-monopoly-grand-central-2026--2026-10-04",
+      "event_id": "visit-atlantic-city-monopoly-grand-central-2026",
+      "date": "2026-10-04",
+      "hours": "10 AM–7 PM",
+      "availability": "open",
+      "details": "Free and open to the public in Vanderbilt Hall; no advance RSVP requirement is published."
+    }
+  ]
+}
