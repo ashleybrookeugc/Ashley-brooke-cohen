@@ -1,0 +1,37 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-18T21:07:33-04:00",
+  "events": [
+    {
+      "id": "temptations-cat-bodega-2026",
+      "event_name": "TEMPTATIONS Cat Bodega",
+      "brand": "TEMPTATIONS",
+      "neighborhood": "Bowery / Lower East Side",
+      "address": "213 Bowery, New York, NY 10002",
+      "subway": {"station": "Bowery", "lines": ["J", "Z"]},
+      "categories": ["brand pop-up", "pets", "freebies", "photo experience"],
+      "what_it_is": "TEMPTATIONS' first Cat Bodega, a free immersive NYC pop-up celebrating bodega and shop cats with interactive displays, games and photo moments.",
+      "admission_free": true,
+      "what_is_free": "Free admission, TEMPTATIONS cat-treat samples, and opportunities to win Cat Bodega merchandise through games including a claw machine and scratch-offs.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "WALK-IN"],
+      "main_source_url": "https://www.temptationstreats.com/CatBodega",
+      "official_source_url": "https://www.temptationstreats.com/news-articles/temptations-cat-bodega-nyc-pop-celebrating-shop-cats",
+      "additional_verification_source": "https://www.mars.com/news-and-stories/press-releases-statements/temptations-brand-debuts-nyc-cat-bodega",
+      "last_verified": "2026-09-18T21:07:33-04:00",
+      "caveats": "The physical NYC pop-up ends September 19; the separate virtual Cat Bodega continues through September 26. Free treats and prize merchandise are promotional and may be subject to availability.",
+      "practical_notes": "Official TEMPTATIONS and Mars sources both state the NYC pop-up runs September 17–19, 12–6 PM daily at 213 Bowery. No advance RSVP or purchase requirement is published for the physical pop-up.",
+      "rsvp": {"requirement": "none", "actionability": "walk_in", "availability": "open", "direct_url": null}
+    }
+  ],
+  "occurrences": [
+    {
+      "id": "temptations-cat-bodega-2026--2026-09-19",
+      "event_id": "temptations-cat-bodega-2026",
+      "date": "2026-09-19",
+      "hours": "12 PM–6 PM",
+      "availability": "open",
+      "details": "Final day of the physical NYC Cat Bodega. Walk in for the free interactive experience, cat-treat samples and promotional games/prizes while available."
+    }
+  ]
+}
