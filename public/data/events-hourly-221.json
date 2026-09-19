@@ -1,0 +1,37 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-19T15:04:22-04:00",
+  "events": [
+    {
+      "id": "thomas-friends-railway-stories-high-line-pop-up-2026",
+      "event_name": "Thomas & Friends: Railway Stories High Line Pop-Up",
+      "brand": "Mattel × Thomas & Friends",
+      "neighborhood": "The High Line",
+      "address": "The High Line, New York, NY",
+      "subway": {"station": "UNCLEAR", "lines": []},
+      "categories": ["brand activation", "family", "screening", "free experience", "freebies"],
+      "what_it_is": "Mattel's launch celebration for Thomas & Friends: Railway Stories, with a life-size Thomas character train, immersive branded displays, a special premiere screening, photo opportunities and children's activities.",
+      "admission_free": true,
+      "what_is_free": "Admission is free for all fans; the official announcement also promises complimentary refreshments and snacks.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "WALK-IN"],
+      "main_source_url": "https://www.businesswire.com/news/home/20260917986870/en/",
+      "official_source_url": "https://www.businesswire.com/news/home/20260917986870/en/",
+      "additional_verification_source": "https://www.parents.com/new-thomas-and-friends-special-and-series-12124601",
+      "last_verified": "2026-09-19T15:04:22-04:00",
+      "caveats": "Mattel's announcement says admission is free for all fans and does not publish an advance RSVP requirement. The announcement identifies the venue only as the High Line; a more specific entrance/location was not established in the sources reviewed, so it is not guessed here.",
+      "practical_notes": "Friday Oct. 2, 5–7 PM at the High Line. Free public launch experience with life-size Thomas, screening, snacks and photo opportunities.",
+      "rsvp": {"requirement": "none", "actionability": "walk_in", "availability": "open", "direct_url": null}
+    }
+  ],
+  "occurrences": [
+    {
+      "id": "thomas-friends-railway-stories-high-line-pop-up-2026--2026-10-02",
+      "event_id": "thomas-friends-railway-stories-high-line-pop-up-2026",
+      "date": "2026-10-02",
+      "hours": "5 PM–7 PM",
+      "availability": "open",
+      "details": "Free admission for all fans; no advance RSVP requirement is published in Mattel's launch announcement."
+    }
+  ]
+}
