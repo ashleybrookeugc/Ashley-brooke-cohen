@@ -1,0 +1,42 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-19T04:09:56-04:00",
+  "events": [
+    {
+      "id": "daniels-day-community-wellness-queens-2026",
+      "event_name": "Daniel's Day Community Wellness Event",
+      "brand": "NYC Daniel's Day × NAMI Queens/Nassau",
+      "neighborhood": "Corona, Queens",
+      "address": "PS 16Q, 41-15 104th Street, Corona, NY 11368",
+      "subway": {"station": "103 St–Corona Plaza", "lines": ["7"]},
+      "categories": ["community", "wellness", "free experience", "resources"],
+      "what_it_is": "A Queens community wellness day bringing together families, local organizations, small businesses and service providers for education, resources, wellness, entertainment and community engagement.",
+      "admission_free": true,
+      "what_is_free": "The published event listing describes the community wellness event as free; attendee registration is available through the organizer's active RSVP form.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE RSVP"],
+      "main_source_url": "https://namiqn.org/daniels-day-september-19th/",
+      "official_source_url": "https://linktr.ee/NYCDanielsDay",
+      "additional_verification_source": "https://patch.com/new-york/new-york-city/calendar/event/20260919/e654c0f0-68b7-4386-a3cf-3b7c416ca0f9/daniel-s-day-community-wellness-event",
+      "last_verified": "2026-09-19T04:09:56-04:00",
+      "caveats": "The organizer provides an attendee RSVP form, but the reviewed sources do not state an organizer-approval step, guest-list discretion, waitlist, sold-out status or paid admission. Classified as Free RSVP rather than Approval Required or Free Guest List. The organizer notes temporary subway construction affecting Queens-bound service at 103 St–Corona Plaza; check current MTA service before travel.",
+      "practical_notes": "Saturday Sept. 19, 10 AM–2 PM. Playground entrance is on 42nd Ave near 104th St. The event is wheelchair accessible and accessible bathrooms are available in PS 16. Closest subway is the 7 at 103 St–Corona Plaza; organizer also identifies Junction Blvd as the closest accessible station.",
+      "rsvp": {
+        "requirement": "required",
+        "actionability": "direct_link",
+        "availability": "open",
+        "direct_url": "https://docs.google.com/forms/d/e/1FAIpQLSemjvOnJAb6EuE7RALP95X0zmCd7KSgNVzBk2ISr7cK1V4x4g/viewform?usp=header"
+      }
+    }
+  ],
+  "occurrences": [
+    {
+      "id": "daniels-day-community-wellness-queens-2026--2026-09-19",
+      "event_id": "daniels-day-community-wellness-queens-2026",
+      "date": "2026-09-19",
+      "hours": "10 AM–2 PM",
+      "availability": "open",
+      "details": "Active attendee RSVP form verified. Event is at PS 16Q in Corona, with playground entrance on 42nd Ave near 104th St."
+    }
+  ]
+}
