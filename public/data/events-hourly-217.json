@@ -1,0 +1,37 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-19T11:06:56-04:00",
+  "events": [
+    {
+      "id": "batman-day-poe-park-2026",
+      "event_name": "Batman Day at Poe Park",
+      "brand": "The Bronx County Historical Society × We Are Detectives, Inc.",
+      "neighborhood": "Fordham, The Bronx",
+      "address": "Poe Park, 2640 Grand Concourse, The Bronx, NY 10458",
+      "subway": {"station": "Kingsbridge Rd", "lines": ["B", "D"]},
+      "categories": ["arts/culture", "family", "community", "free experience", "giveaways"],
+      "what_it_is": "A free family community celebration connecting Batman co-creator Bill Finger, Edgar Allan Poe and Bronx history through detective challenges, interactive stations, fitness, creative activities, music, community partners, contests and giveaways.",
+      "admission_free": true,
+      "what_is_free": "Admission and the advertised community activities are free; the official host page also advertises contests and giveaways.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE RSVP"],
+      "main_source_url": "https://bronxhistoricalsociety.org/",
+      "official_source_url": "https://bronxhistoricalsociety.org/",
+      "additional_verification_source": "https://go.citizenry.me/events/batman-day-at-poe-park",
+      "last_verified": "2026-09-19T11:06:56-04:00",
+      "caveats": "The official host page labels the registration as free. It does not state that registration is approval-based, a guest-list request, or that RSVP does not guarantee entry, so classify as FREE RSVP rather than Approval Required or Free Guest List.",
+      "practical_notes": "Saturday Sept. 19, 1–5 PM at Poe Park, 2640 Grand Concourse. The Bronx County Historical Society's current event page confirms the date, hours, address, free status and a live Free Registration action.",
+      "rsvp": {"requirement": "required", "actionability": "direct_link", "availability": "open", "direct_url": "https://www.zeffy.com/en-US/ticketing/batman-day-at-poe-park"}
+    }
+  ],
+  "occurrences": [
+    {
+      "id": "batman-day-poe-park-2026--2026-09-19",
+      "event_id": "batman-day-poe-park-2026",
+      "date": "2026-09-19",
+      "hours": "1 PM–5 PM",
+      "availability": "open",
+      "details": "Free family event with interactive detective/history stations, fitness and creative activities, music, contests and giveaways. Free registration is advertised by the official host."
+    }
+  ]
+}
