@@ -1,0 +1,73 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-20T07:06:00-04:00",
+  "events": [
+    {
+      "id": "yepoda-dewy-day-tour-sephora-union-square-2026",
+      "event_name": "The Dewy Day Tour: YEPODA K-Beauty Pop-Up at Sephora Union Square",
+      "brand": "Yepoda × Sephora",
+      "neighborhood": "Union Square",
+      "address": "40 E 14th St, New York, NY 10003",
+      "subway": {"station": "14 St–Union Sq", "lines": ["4","5","6","L","N","Q","R","W"]},
+      "categories": ["beauty", "pop-up", "freebies", "shopping"],
+      "what_it_is": "A Yepoda K-beauty pop-up at Sephora Union Square with product trials, giveaways and chances to win Sephora gift cards and full-size products.",
+      "admission_free": true,
+      "what_is_free": "Attendance and advertised freebies are free with no purchase necessary; gifts are while supplies last. Separate gifts-with-purchase are available at stated Sephora purchase thresholds.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "WALK-IN", "FREEBIES"],
+      "main_source_url": "https://patch.com/new-york/new-york-city/calendar/event/20260920/b9376c75-da47-4170-86b0-8397275cb903/the-dewy-day-tour-yepoda-k-beauty-pop-up-sephora-union-square",
+      "additional_verification_source": "https://happeningnext.com/event/the-dewy-day-tour-yepoda-k-beauty-pop-up-sephora-union-square-eid1ef0l67mm5ia",
+      "last_verified": "2026-09-20T07:06:00-04:00",
+      "caveats": "Free gifts are while supplies last. A separate gift-with-purchase offer requires a qualifying Sephora purchase, but purchase is explicitly not required to attend or receive the general freebies. No advance RSVP requirement was established by the current event listing.",
+      "practical_notes": "Sunday Sept. 20, 12–6 PM. The listing identifies Sephora Union Square at 40 E 14th St and also describes the activation on Broadway between E 13th and E 14th Streets.",
+      "rsvp": {"requirement": "none", "actionability": "source_link", "availability": "open", "direct_url": null}
+    },
+    {
+      "id": "planethaus-climate-week-2026",
+      "event_name": "PlanetHAUS NYC Climate Week Immersive Experience",
+      "brand": "PlanetHAUS",
+      "neighborhood": "Flatiron",
+      "address": "13 E 19th St, New York, NY 10003",
+      "subway": {"station": "14 St–Union Sq / 23 St", "lines": ["4","5","6","L","N","Q","R","W"]},
+      "categories": ["climate", "brands", "beauty", "food/drink", "freebies", "talks"],
+      "what_it_is": "A two-day Climate Week immersive sustainable-home experience at Chief Clubhouse with 70+ participating brands, room-by-room activations, product sampling, a Gifting Garden and stage programming.",
+      "admission_free": true,
+      "what_is_free": "Registration is free. The daytime experience advertises product sampling and PlanetHAUS' Gifting Garden alongside talks and brand activations.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "APPROVAL REQUIRED", "SAMPLES"],
+      "main_source_url": "https://www.climateweeknyc.org/event-search/planethaus",
+      "official_source_url": "https://www.climateweeknyc.org/event-search/planethaus",
+      "additional_verification_source": "https://ungaclimate26.fieldandformat.com/ungaclimate26/event/nyc26-cw-planethaus",
+      "last_verified": "2026-09-20T07:06:00-04:00",
+      "caveats": "Free registration is required and a current Climate/UNGA event-map listing explicitly classifies access as organizer approval required. Do not treat submission of the registration as confirmed admission. Separate after-hours PlanetHAUS programs may require separate registration and are not included in these daytime occurrences.",
+      "practical_notes": "Sept. 21 and Sept. 22 at Chief Clubhouse, 13 E 19th St. Current organizer/host listings describe daytime access as 8:30 AM–4 PM; the official Climate Week calendar lists the Sept. 21 program beginning at 9 AM, so arriving at/after 9 AM is the conservative public-facing interpretation unless the registration confirmation specifies otherwise.",
+      "rsvp": {"requirement": "required", "actionability": "direct_link", "availability": "open", "direct_url": "https://luma.com/x4z01l07"}
+    }
+  ],
+  "occurrences": [
+    {
+      "id": "yepoda-dewy-day-tour-sephora-union-square-2026--2026-09-20",
+      "event_id": "yepoda-dewy-day-tour-sephora-union-square-2026",
+      "date": "2026-09-20",
+      "hours": "12 PM–6 PM",
+      "availability": "open",
+      "details": "Walk-in public pop-up. No purchase necessary to attend or receive the advertised general freebies; gifts are while supplies last."
+    },
+    {
+      "id": "planethaus-climate-week-2026--2026-09-21",
+      "event_id": "planethaus-climate-week-2026",
+      "date": "2026-09-21",
+      "hours": "8:30 AM–4 PM (official Climate Week calendar lists 9 AM start)",
+      "availability": "open",
+      "details": "Free registration; organizer approval required. Registration covers the daytime PlanetHAUS program."
+    },
+    {
+      "id": "planethaus-climate-week-2026--2026-09-22",
+      "event_id": "planethaus-climate-week-2026",
+      "date": "2026-09-22",
+      "hours": "8:30 AM–4 PM",
+      "availability": "open",
+      "details": "Free registration; organizer approval required. Separate Sept. 22 after-hours programs are not included in this occurrence."
+    }
+  ]
+}
