@@ -1,0 +1,36 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-20T04:09:40-04:00",
+  "events": [
+    {
+      "id": "snoopy-in-style-nyc-2026",
+      "event_name": "Snoopy in Style NYC",
+      "brand": "Peanuts × Charles M. Schulz Museum and Research Center",
+      "neighborhood": "Meatpacking District",
+      "address": "25 Little West 12th Street, New York, NY 10014",
+      "subway": {"station": "14 St / 8 Av", "lines": ["A", "C", "E", "L"]},
+      "categories": ["fashion", "arts/culture", "exhibition", "free experience", "shopping"],
+      "what_it_is": "A 16,000-square-foot Peanuts cultural exhibition with ten immersive zones exploring Snoopy's influence on fashion, music, sports and pop culture, including one-of-a-kind Snoopy and Woodstock designer looks, archival material, Joe Cool's Listening Lounge and a curated gift shop.",
+      "admission_free": true,
+      "what_is_free": "General admission to the exhibition is complimentary. Merchandise in the curated gift shop is for purchase.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "WALK-IN", "FASHION"],
+      "main_source_url": "https://www.prnewswire.com/news-releases/peanuts-hosts-cultural-exhibition-snoopy-in-style-nyc-302862970.html",
+      "official_source_url": "https://www.prnewswire.com/news-releases/peanuts-hosts-cultural-exhibition-snoopy-in-style-nyc-302862970.html",
+      "additional_verification_source": "https://www.nycforfree.co/events/snoopy-in-style",
+      "last_verified": "2026-09-20T04:09:40-04:00",
+      "caveats": "Peanuts' official release says the exhibition is open to the public September 2–26 from 10 AM–6 PM. Secondary current listings explicitly confirm complimentary/free admission. Hours may vary for special events. No advance RSVP requirement is published in the verified sources.",
+      "practical_notes": "Open daily through Saturday Sept. 26, generally 10 AM–6 PM, at 25 Little West 12th Street. Free public walk-in exhibition; gift-shop purchases are optional.",
+      "rsvp": {"requirement": "none", "actionability": "walk_in", "availability": "open", "direct_url": null}
+    }
+  ],
+  "occurrences": [
+    {"id":"snoopy-in-style-nyc-2026--2026-09-20","event_id":"snoopy-in-style-nyc-2026","date":"2026-09-20","hours":"10 AM–6 PM","availability":"open","details":"Complimentary public admission; no advance RSVP requirement is published. Hours may vary for special events."},
+    {"id":"snoopy-in-style-nyc-2026--2026-09-21","event_id":"snoopy-in-style-nyc-2026","date":"2026-09-21","hours":"10 AM–6 PM","availability":"open","details":"Complimentary public admission; no advance RSVP requirement is published. Hours may vary for special events."},
+    {"id":"snoopy-in-style-nyc-2026--2026-09-22","event_id":"snoopy-in-style-nyc-2026","date":"2026-09-22","hours":"10 AM–6 PM","availability":"open","details":"Complimentary public admission; no advance RSVP requirement is published. Hours may vary for special events."},
+    {"id":"snoopy-in-style-nyc-2026--2026-09-23","event_id":"snoopy-in-style-nyc-2026","date":"2026-09-23","hours":"10 AM–6 PM","availability":"open","details":"Complimentary public admission; no advance RSVP requirement is published. Hours may vary for special events."},
+    {"id":"snoopy-in-style-nyc-2026--2026-09-24","event_id":"snoopy-in-style-nyc-2026","date":"2026-09-24","hours":"10 AM–6 PM","availability":"open","details":"Complimentary public admission; no advance RSVP requirement is published. Hours may vary for special events."},
+    {"id":"snoopy-in-style-nyc-2026--2026-09-25","event_id":"snoopy-in-style-nyc-2026","date":"2026-09-25","hours":"10 AM–6 PM","availability":"open","details":"Complimentary public admission; no advance RSVP requirement is published. Hours may vary for special events."},
+    {"id":"snoopy-in-style-nyc-2026--2026-09-26","event_id":"snoopy-in-style-nyc-2026","date":"2026-09-26","hours":"10 AM–6 PM","availability":"open","details":"Final scheduled day. Complimentary public admission; no advance RSVP requirement is published. Hours may vary for special events."}
+  ]
+}
