@@ -1,0 +1,37 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-20T03:08:26-04:00",
+  "events": [
+    {
+      "id": "yepoda-dewy-day-tour-sephora-union-square-2026",
+      "event_name": "The Dewy Day Tour: Yepoda K-Beauty Pop-Up at Sephora Union Square",
+      "brand": "Yepoda × Sephora",
+      "neighborhood": "Union Square",
+      "address": "40 East 14th Street, New York, NY 10003",
+      "subway": {"station": "14 St–Union Sq", "lines": ["4","5","6","L","N","Q","R","W"]},
+      "categories": ["beauty", "pop-up", "free experience", "giveaway"],
+      "what_it_is": "Yepoda's Dewy Day Tour stop at Sephora Union Square with K-beauty product trials, free gifts while supplies last, and chances to win Sephora gift cards and full-size products.",
+      "admission_free": true,
+      "what_is_free": "Attendance requires no purchase. Exclusive free gifts are offered while supplies last; a separate gift-with-purchase is tied to qualifying Sephora purchases.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE RSVP"],
+      "main_source_url": "https://www.eventbrite.com/e/the-dewy-day-tour-yepoda-k-beauty-pop-up-sephora-union-square-tickets-1999693864178",
+      "official_source_url": "https://www.eventbrite.com/e/the-dewy-day-tour-yepoda-k-beauty-pop-up-sephora-union-square-tickets-1999693864178",
+      "additional_verification_source": "https://patch.com/new-york/new-york-city/calendar/event/20260920/b9376c75-da47-4170-86b0-8397275cb903/the-dewy-day-tour-yepoda-k-beauty-pop-up-sephora-union-square",
+      "last_verified": "2026-09-20T03:08:26-04:00",
+      "caveats": "Free gifts are while supplies last. The Eventbrite listing is organizer-published by Yepoda and offers a free ticket/RSVP. No purchase is necessary to attend or receive the ordinary freebies; the separate GWP requires a qualifying purchase.",
+      "practical_notes": "Sunday Sept. 20, 12 PM–6 PM at Sephora Union Square, 40 E 14th St. The organizer also describes the activation as Broadway near E 13th/E 14th; use the Sephora street address for navigation.",
+      "rsvp": {"requirement": "required", "actionability": "direct_link", "availability": "open", "direct_url": "https://www.eventbrite.com/e/the-dewy-day-tour-yepoda-k-beauty-pop-up-sephora-union-square-tickets-1999693864178"}
+    }
+  ],
+  "occurrences": [
+    {
+      "id": "yepoda-dewy-day-tour-sephora-union-square-2026--2026-09-20",
+      "event_id": "yepoda-dewy-day-tour-sephora-union-square-2026",
+      "date": "2026-09-20",
+      "hours": "12 PM–6 PM",
+      "availability": "open",
+      "details": "Free organizer-issued RSVP/ticket is the advertised admission path. Product samples/free gifts are while supplies last; no purchase is necessary to attend."
+    }
+  ]
+}
