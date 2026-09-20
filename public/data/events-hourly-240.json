@@ -1,0 +1,40 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-20T13:09:07-04:00",
+  "events": [
+    {
+      "id": "feast-of-san-gennaro-centennial-2026",
+      "event_name": "100th Annual Feast of San Gennaro",
+      "brand": "Figli di San Gennaro",
+      "neighborhood": "Little Italy",
+      "address": "Mulberry Street between Canal Street and East Houston Street, New York, NY 10013",
+      "subway": {"station": "Canal St / Spring St", "lines": ["6", "J", "Z", "N", "Q", "R", "W"]},
+      "categories": ["food/drink", "festival", "music", "community", "free experience"],
+      "what_it_is": "The centennial edition of Little Italy's 11-day Feast of San Gennaro, with hundreds of food and merchandise vendors, carnival games, live entertainment, religious programming and processions across the Little Italy street-festival footprint.",
+      "admission_free": true,
+      "what_is_free": "Admission and walking the street festival are free. Food, drinks, carnival games and merchandise are sold separately.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "WALK-IN"],
+      "main_source_url": "https://sangennaronyc.org/",
+      "official_source_url": "https://sangennaronyc.org/",
+      "additional_verification_source": "https://www.cbsnews.com/newyork/news/feast-of-san-gennaro-2026-nyc-little-italy/",
+      "last_verified": "2026-09-20T13:09:07-04:00",
+      "caveats": "Free admission does not include food, drinks, games or merchandise. The festival spans multiple Little Italy streets rather than a single venue. Individual stage performances and procession times have their own schedules; check the official calendar for specific programming.",
+      "practical_notes": "The official organizer confirms Sept. 17–27, 2026. CBS New York reports public festival hours of 11:30 AM–11 PM, extended to midnight Fridays and Saturdays. The main footprint is Mulberry Street between Canal and East Houston, with additional festival areas on Hester and Grand streets.",
+      "rsvp": {"requirement": "none", "actionability": "walk_in", "availability": "open", "direct_url": null}
+    }
+  ],
+  "occurrences": [
+    {"id":"feast-of-san-gennaro-centennial-2026--2026-09-17","event_id":"feast-of-san-gennaro-centennial-2026","date":"2026-09-17","hours":"11:30 AM–11 PM","availability":"open","details":"Walk-in festival admission; purchases optional."},
+    {"id":"feast-of-san-gennaro-centennial-2026--2026-09-18","event_id":"feast-of-san-gennaro-centennial-2026","date":"2026-09-18","hours":"11:30 AM–12 AM","availability":"open","details":"Friday hours extend to midnight. Walk-in festival admission; purchases optional."},
+    {"id":"feast-of-san-gennaro-centennial-2026--2026-09-19","event_id":"feast-of-san-gennaro-centennial-2026","date":"2026-09-19","hours":"11:30 AM–12 AM","availability":"open","details":"Saturday hours extend to midnight. Walk-in festival admission; purchases optional."},
+    {"id":"feast-of-san-gennaro-centennial-2026--2026-09-20","event_id":"feast-of-san-gennaro-centennial-2026","date":"2026-09-20","hours":"11:30 AM–11 PM","availability":"open","details":"Walk-in festival admission; purchases optional."},
+    {"id":"feast-of-san-gennaro-centennial-2026--2026-09-21","event_id":"feast-of-san-gennaro-centennial-2026","date":"2026-09-21","hours":"11:30 AM–11 PM","availability":"open","details":"Walk-in festival admission; purchases optional."},
+    {"id":"feast-of-san-gennaro-centennial-2026--2026-09-22","event_id":"feast-of-san-gennaro-centennial-2026","date":"2026-09-22","hours":"11:30 AM–11 PM","availability":"open","details":"Walk-in festival admission; purchases optional."},
+    {"id":"feast-of-san-gennaro-centennial-2026--2026-09-23","event_id":"feast-of-san-gennaro-centennial-2026","date":"2026-09-23","hours":"11:30 AM–11 PM","availability":"open","details":"Walk-in festival admission; purchases optional."},
+    {"id":"feast-of-san-gennaro-centennial-2026--2026-09-24","event_id":"feast-of-san-gennaro-centennial-2026","date":"2026-09-24","hours":"11:30 AM–11 PM","availability":"open","details":"Walk-in festival admission; purchases optional."},
+    {"id":"feast-of-san-gennaro-centennial-2026--2026-09-25","event_id":"feast-of-san-gennaro-centennial-2026","date":"2026-09-25","hours":"11:30 AM–12 AM","availability":"open","details":"Friday hours extend to midnight. Walk-in festival admission; purchases optional."},
+    {"id":"feast-of-san-gennaro-centennial-2026--2026-09-26","event_id":"feast-of-san-gennaro-centennial-2026","date":"2026-09-26","hours":"11:30 AM–12 AM","availability":"open","details":"Saturday hours extend to midnight. The official calendar also lists the Grand Procession this day; check its event page for procession timing."},
+    {"id":"feast-of-san-gennaro-centennial-2026--2026-09-27","event_id":"feast-of-san-gennaro-centennial-2026","date":"2026-09-27","hours":"11:30 AM–11 PM","availability":"open","details":"Final festival day. Walk-in festival admission; purchases optional."}
+  ]
+}
