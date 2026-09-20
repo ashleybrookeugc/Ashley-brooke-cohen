@@ -1,0 +1,54 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-19T20:06:17-04:00",
+  "events": [
+    {
+      "id": "travelers-company-caravan-20th-anniversary-yoseka-2026",
+      "event_name": "TRAVELER’S COMPANY CARAVAN 20th Anniversary — NYC",
+      "brand": "TRAVELER’S COMPANY × Yoseka Stationery",
+      "neighborhood": "Greenpoint",
+      "address": "Yoseka Land, 58 West St, Brooklyn, NY 11222",
+      "subway": {"station": "Greenpoint Av", "lines": ["G"]},
+      "categories": ["shopping", "arts/culture", "free experience"],
+      "what_it_is": "TRAVELER’S COMPANY’s 20th-anniversary caravan at Yoseka Land, with the Stamp Caravan, a history gallery, community gathering, and limited-edition/event-exclusive stationery for sale.",
+      "admission_free": true,
+      "what_is_free": "Admission to the Sept. 18–20 public pop-up is free; visitors can browse the anniversary exhibition and Stamp Caravan. Merchandise is sold separately.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "WALK-IN"],
+      "main_source_url": "https://www.yosekaland.com/upcoming-events",
+      "official_source_url": "https://travelerscompanyusa.com/rolling-updates-about-trc-caravan-20th-anniversary-in-chicago-and-new-york/",
+      "additional_verification_source": "https://www.travelers-company.com/topicsinfo/topics-2026/caravan-20th-chicago-newyork",
+      "last_verified": "2026-09-19T20:06:17-04:00",
+      "caveats": "Do not confuse the free Sept. 18–20 public pop-up with the Sept. 11–12 ticketed workshop/GA sessions, which are sold out. Anniversary merchandise is limited and may sell out.",
+      "practical_notes": "Free public admission Sept. 18–20, 10 AM–7 PM daily at Yoseka Land. No ticket is required for these free-admission days.",
+      "rsvp": {"requirement": "none", "actionability": "not_needed", "availability": "open", "direct_url": null}
+    },
+    {
+      "id": "cafe-dedcool-mocha-magic-pop-up-2026",
+      "event_name": "Cafe DedCool — Mocha Magic Pop-Up",
+      "brand": "DedCool",
+      "neighborhood": "Nolita",
+      "address": "262 Mott Street, New York, NY 10012",
+      "subway": {"station": "Bleecker St / Broadway–Lafayette St", "lines": ["6", "B", "D", "F", "M"]},
+      "categories": ["beauty", "food/drink", "shopping", "free experience"],
+      "what_it_is": "DedCool’s first café-and-retail pop-up celebrating Mocha Magic, with café-style drinks, fragrance sampling, exclusive merchandise and gifts.",
+      "admission_free": true,
+      "what_is_free": "Fragrance sampling and a special gift for the first 50 guests in line each day; the host also advertises café drinks and gifts as part of the activation. Retail merchandise is available for purchase.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FIRST-COME", "RSVP OPTIONAL"],
+      "main_source_url": "https://partiful.com/e/pJYQ2V04WLEvlgAdXfdK",
+      "official_source_url": "https://partiful.com/e/pJYQ2V04WLEvlgAdXfdK",
+      "additional_verification_source": "https://www.averagesocialite.com/nyc-events/2026/9/18/cafe-dedpool-pop-up-nyc",
+      "last_verified": "2026-09-19T20:06:17-04:00",
+      "caveats": "The host Partiful provides an RSVP/guest-list action, but published event information describes the pop-up as open daily and the giveaway as first-50-in-line. Treat RSVP as optional rather than guaranteed admission. Gifts are while supplies last.",
+      "practical_notes": "Sept. 18–20, 9 AM–6 PM daily. If the first-50 gift matters, arrive early; line/capacity conditions may apply.",
+      "rsvp": {"requirement": "optional", "actionability": "direct_link", "availability": "open", "direct_url": "https://partiful.com/e/pJYQ2V04WLEvlgAdXfdK"}
+    }
+  ],
+  "occurrences": [
+    {"id":"travelers-company-caravan-20th-anniversary-yoseka-2026--2026-09-19","event_id":"travelers-company-caravan-20th-anniversary-yoseka-2026","date":"2026-09-19","hours":"10 AM–7 PM","availability":"open","details":"Free admission; no ticket required. Limited anniversary merchandise may sell out."},
+    {"id":"travelers-company-caravan-20th-anniversary-yoseka-2026--2026-09-20","event_id":"travelers-company-caravan-20th-anniversary-yoseka-2026","date":"2026-09-20","hours":"10 AM–7 PM","availability":"open","details":"Final free-admission day; no ticket required. Limited anniversary merchandise may sell out."},
+    {"id":"cafe-dedcool-mocha-magic-pop-up-2026--2026-09-19","event_id":"cafe-dedcool-mocha-magic-pop-up-2026","date":"2026-09-19","hours":"9 AM–6 PM","availability":"open","details":"Open pop-up with optional host RSVP. First 50 guests in line receive a special gift while supplies last."},
+    {"id":"cafe-dedcool-mocha-magic-pop-up-2026--2026-09-20","event_id":"cafe-dedcool-mocha-magic-pop-up-2026","date":"2026-09-20","hours":"9 AM–6 PM","availability":"open","details":"Final day. Open pop-up with optional host RSVP. First 50 guests in line receive a special gift while supplies last."}
+  ]
+}
