@@ -1,0 +1,57 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-20T00:05:25-04:00",
+  "events": [
+    {
+      "id": "light-hill-art-into-action-educational-gallery-2026",
+      "event_name": "Light Hill: Art into Action, Educational Gallery",
+      "brand": "Light Hill Collaborative",
+      "neighborhood": "Tribeca",
+      "address": "74 Franklin Street, New York, NY 10013",
+      "subway": {"station": "Canal St", "lines": ["N", "Q", "R", "W"]},
+      "categories": ["arts/culture", "climate", "gallery", "free experience"],
+      "what_it_is": "A Climate Week NYC educational gallery pop-up using original artwork, methane-emissions data and public tools to make methane pollution visible and actionable.",
+      "admission_free": true,
+      "what_is_free": "The official Climate Week listing says the week-long gallery is free and open to the public.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "PUBLIC EVENT"],
+      "main_source_url": "https://www.climateweeknyc.org/event-search/light-hill-art-into-action-educational-gallery",
+      "official_source_url": "https://www.climateweeknyc.org/event-search/light-hill-art-into-action-educational-gallery",
+      "last_verified": "2026-09-20T00:05:25-04:00",
+      "caveats": "Climate Week NYC labels this a public event and explicitly says the gallery is free and open to the public. Its listing also provides an Eventbrite registration link, but the source does not establish advance registration as mandatory; do not mislabel it as RSVP-required.",
+      "practical_notes": "Open daily Monday Sept. 21 through Sunday Sept. 27, 11 AM–6 PM, at 74 Franklin Street. Thirteen original works by twelve artists explore methane pollution through art and data.",
+      "rsvp": {"requirement": "optional", "actionability": "direct_link", "availability": "open", "direct_url": "https://www.eventbrite.com/e/light-hill-art-into-action-educational-gallery-tickets-2000209310893"}
+    },
+    {
+      "id": "rooted-in-joy-cultural-power-ride-2026",
+      "event_name": "Rooted in Joy: A Cultural Power Ride",
+      "brand": "The Center for Cultural Power",
+      "neighborhood": "Harlem",
+      "address": "St. Nicholas Avenue & West 126th Street, New York, NY 10027",
+      "subway": {"station": "125 St", "lines": ["A", "B", "C", "D"]},
+      "categories": ["arts/culture", "climate", "community", "outdoors", "free experience"],
+      "what_it_is": "A free guided approximately five-mile community bike ride through Harlem and El Barrio exploring climate justice through public art, storytelling, culture, neighborhood history and food/environmental-justice sites.",
+      "admission_free": true,
+      "what_is_free": "Participation is free. Registered riders receive access to the guided ride; the organizers also advertise free artwork, goodies and giveaways, and Citi Bike access for registered participants.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE RSVP"],
+      "main_source_url": "https://www.climateweeknyc.org/event-search/rooted-in-joy-a-cultural-power-ride",
+      "official_source_url": "https://www.climateweeknyc.org/event-search/rooted-in-joy-a-cultural-power-ride",
+      "additional_verification_source": "https://partiful.com/e/yt6kDvMG6aRhWPcF7fbO",
+      "last_verified": "2026-09-20T00:05:25-04:00",
+      "caveats": "Advance registration is required and space is limited. The live Partiful page showed 36 of 50 spots remaining when verified. Cultural-institution admission along the route is not included. This is a bike ride; riders may use provided Citi Bike access or bring their own bicycle.",
+      "practical_notes": "Thursday Sept. 24. Check-in 11–11:30 AM at the Citi Bike dock at St. Nicholas Ave & W 126th St; departure is 11:30 AM and the experience concludes by 2 PM. RSVP deadline shown by Partiful: Tuesday before the ride.",
+      "rsvp": {"requirement": "required", "actionability": "direct_link", "availability": "open", "direct_url": "https://partiful.com/e/yt6kDvMG6aRhWPcF7fbO"}
+    }
+  ],
+  "occurrences": [
+    {"id": "light-hill-art-into-action-educational-gallery-2026--2026-09-21", "event_id": "light-hill-art-into-action-educational-gallery-2026", "date": "2026-09-21", "hours": "11 AM–6 PM", "availability": "open", "details": "Free public gallery; advance Eventbrite registration is available but is not established as required by the official listing."},
+    {"id": "light-hill-art-into-action-educational-gallery-2026--2026-09-22", "event_id": "light-hill-art-into-action-educational-gallery-2026", "date": "2026-09-22", "hours": "11 AM–6 PM", "availability": "open", "details": "Free public gallery; advance Eventbrite registration is available but is not established as required by the official listing."},
+    {"id": "light-hill-art-into-action-educational-gallery-2026--2026-09-23", "event_id": "light-hill-art-into-action-educational-gallery-2026", "date": "2026-09-23", "hours": "11 AM–6 PM", "availability": "open", "details": "Free public gallery; advance Eventbrite registration is available but is not established as required by the official listing."},
+    {"id": "light-hill-art-into-action-educational-gallery-2026--2026-09-24", "event_id": "light-hill-art-into-action-educational-gallery-2026", "date": "2026-09-24", "hours": "11 AM–6 PM", "availability": "open", "details": "Free public gallery; advance Eventbrite registration is available but is not established as required by the official listing."},
+    {"id": "light-hill-art-into-action-educational-gallery-2026--2026-09-25", "event_id": "light-hill-art-into-action-educational-gallery-2026", "date": "2026-09-25", "hours": "11 AM–6 PM", "availability": "open", "details": "Free public gallery; advance Eventbrite registration is available but is not established as required by the official listing."},
+    {"id": "light-hill-art-into-action-educational-gallery-2026--2026-09-26", "event_id": "light-hill-art-into-action-educational-gallery-2026", "date": "2026-09-26", "hours": "11 AM–6 PM", "availability": "open", "details": "Free public gallery; advance Eventbrite registration is available but is not established as required by the official listing."},
+    {"id": "light-hill-art-into-action-educational-gallery-2026--2026-09-27", "event_id": "light-hill-art-into-action-educational-gallery-2026", "date": "2026-09-27", "hours": "11 AM–6 PM", "availability": "open", "details": "Final day of the free public gallery; advance Eventbrite registration is available but is not established as required by the official listing."},
+    {"id": "rooted-in-joy-cultural-power-ride-2026--2026-09-24", "event_id": "rooted-in-joy-cultural-power-ride-2026", "date": "2026-09-24", "hours": "11 AM–2 PM", "availability": "open", "details": "Free advance RSVP required. Check-in 11–11:30 AM; ride departs at 11:30 AM. Partiful showed 36/50 spots remaining at verification."}
+  ]
+}
