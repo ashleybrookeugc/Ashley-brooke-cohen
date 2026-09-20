@@ -1,0 +1,72 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-20T06:04:25-04:00",
+  "events": [
+    {
+      "id": "coffee-project-ues-grand-opening-2026",
+      "event_name": "Coffee Project New York UES Grand Opening",
+      "brand": "Coffee Project New York",
+      "neighborhood": "Upper East Side",
+      "address": "1219 1st Avenue, New York, NY 10065",
+      "subway": {"station": "68 St–Hunter College", "lines": ["6"]},
+      "categories": ["food/drink", "coffee", "grand opening", "free food/drink"],
+      "what_it_is": "Grand-opening celebration for Coffee Project New York's Upper East Side café with complimentary coffee for visitors during the morning launch window.",
+      "admission_free": true,
+      "what_is_free": "Free coffee for guests during the advertised grand-opening window, while available.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "WALK-IN", "FREE FOOD/DRINK"],
+      "main_source_url": "https://www.nycforfree.co/events",
+      "official_source_url": "https://coffeeprojectny.com/cafe-locations/",
+      "additional_verification_source": "https://www.averagesocialite.com/nyc-events/2026/9/20/coffee-project-new-york-grand-opening-nyc",
+      "last_verified": "2026-09-20T06:04:25-04:00",
+      "caveats": "Current NYC for FREE and Average Socialite listings both give an 8–11 AM free-coffee window. Another current coffee-industry article says free coffee until noon, so this tracker uses the narrower corroborated 8–11 AM window rather than extending the giveaway. Coffee Project's official location page independently confirms the UES address and Sunday opening hours.",
+      "practical_notes": "Sunday Sept. 20, 8–11 AM promotional window at 1219 1st Avenue. Walk-in; no advance RSVP requirement is published in the verified event listings.",
+      "rsvp": {"requirement": "none", "actionability": "walk_in", "availability": "open", "direct_url": null}
+    },
+    {
+      "id": "howdy-roku-times-square-coffee-truck-2026",
+      "event_name": "Howdy by Roku Times Square Coffee Truck",
+      "brand": "Howdy by Roku",
+      "neighborhood": "Times Square",
+      "address": "44th Street & 7th Avenue, New York, NY 10036",
+      "subway": {"station": "Times Sq–42 St", "lines": ["1","2","3","7","N","Q","R","W"]},
+      "categories": ["food/drink", "coffee", "brand activation", "games", "giveaway", "free experience"],
+      "what_it_is": "The New York stop of Howdy by Roku's touring coffee truck with complimentary coffee, games, photo moments and promotional prize opportunities.",
+      "admission_free": true,
+      "what_is_free": "Free coffee, games and photos; visitors can also participate for chances to win Roku/Howdy promotional prizes including a Roku Streaming Stick and trial subscription.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "WALK-IN", "FREE FOOD/DRINK"],
+      "main_source_url": "https://www.averagesocialite.com/nyc-events/2026/9/20/howdy-x-times-square-nyc",
+      "additional_verification_source": "https://inasianspaces.com/2026/09/18/free-coffee-truck-howdy-by-roku-times-square-nyc-september-20/",
+      "last_verified": "2026-09-20T06:04:25-04:00",
+      "caveats": "Current event coverage says the stop is free and open to students and locals. Coffee and promotional prizes are activation inventory and may be limited by supply. No advance RSVP requirement is published in the verified sources.",
+      "practical_notes": "Sunday Sept. 20, noon–5 PM at 44th St & 7th Ave in Times Square, described as in front of the former Good Morning America building.",
+      "rsvp": {"requirement": "none", "actionability": "walk_in", "availability": "open", "direct_url": null}
+    },
+    {
+      "id": "tatte-gramercy-grand-opening-2026",
+      "event_name": "Tatte Gramercy Grand Opening Weekend",
+      "brand": "Tatte Bakery & Café × Táche",
+      "neighborhood": "Gramercy / Flatiron",
+      "address": "315C Park Avenue South, New York, NY 10010",
+      "subway": {"station": "23 St", "lines": ["6"]},
+      "categories": ["food/drink", "coffee", "grand opening", "giveaway", "free experience"],
+      "what_it_is": "Grand-opening weekend celebration for Tatte's first New York City café with complimentary specialty drinks, live illustration, a build-your-own bouquet activation and special-edition merchandise while supplies last.",
+      "admission_free": true,
+      "what_is_free": "Promotional Matcha and Pistachio Rose Lattes with Táche, live illustration and build-your-own bouquets are advertised as part of the public celebration; promotional items are while supplies last.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "WALK-IN", "WHILE SUPPLIES LAST"],
+      "main_source_url": "https://www.averagesocialite.com/nyc-events/2026/9/19/tatte-gramercy-grand-opening-nyc",
+      "official_source_url": "https://tattebakery.com/locations/ny/new-york/315c-park-avenue-south/",
+      "last_verified": "2026-09-20T06:04:25-04:00",
+      "caveats": "The current event listing says the celebration is open to the public and runs from 8 AM until promotional supplies run out. Tatte's official location page independently confirms the café/address but does not itself publish the giveaway program. Do not imply the free items are guaranteed or available all day.",
+      "practical_notes": "Sunday Sept. 20 begins at 8 AM at 315C Park Avenue South; promotional programming runs until supplies run out. No advance RSVP requirement is published.",
+      "rsvp": {"requirement": "none", "actionability": "walk_in", "availability": "open", "direct_url": null}
+    }
+  ],
+  "occurrences": [
+    {"id":"coffee-project-ues-grand-opening-2026--2026-09-20","event_id":"coffee-project-ues-grand-opening-2026","date":"2026-09-20","hours":"8 AM–11 AM","availability":"open","details":"Walk-in grand-opening promotion with free coffee during the corroborated 8–11 AM window."},
+    {"id":"howdy-roku-times-square-coffee-truck-2026--2026-09-20","event_id":"howdy-roku-times-square-coffee-truck-2026","date":"2026-09-20","hours":"12 PM–5 PM","availability":"open","details":"Free public walk-up coffee-truck activation with games, photos and promotional prize opportunities."},
+    {"id":"tatte-gramercy-grand-opening-2026--2026-09-20","event_id":"tatte-gramercy-grand-opening-2026","date":"2026-09-20","hours":"From 8 AM until promotional supplies run out","availability":"open","details":"Walk-in public celebration; complimentary promotional items are while supplies last and are not guaranteed."}
+  ]
+}
