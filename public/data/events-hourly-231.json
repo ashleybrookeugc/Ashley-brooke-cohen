@@ -1,0 +1,72 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-20T02:06:41-04:00",
+  "events": [
+    {
+      "id": "yepoda-dewy-day-sephora-union-square-2026",
+      "event_name": "The Dewy Day Tour: Yepoda K-Beauty Pop-Up at Sephora Union Square",
+      "brand": "Yepoda × Sephora",
+      "neighborhood": "Union Square",
+      "address": "40 East 14th Street, New York, NY 10003",
+      "subway": {"station": "14 St–Union Sq", "lines": ["4","5","6","L","N","Q","R","W"]},
+      "categories": ["beauty", "pop-up", "free experience", "giveaway"],
+      "what_it_is": "Yepoda's K-beauty Sephora launch pop-up with product trials, giveaways and gift-card/full-size-product prize opportunities.",
+      "admission_free": true,
+      "what_is_free": "Attendance and advertised freebies are free with no purchase necessary; gifts are while supplies last. Separate gifts-with-purchase require qualifying Sephora purchases.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE RSVP"],
+      "main_source_url": "https://www.eventbrite.com/e/the-dewy-day-tour-yepoda-k-beauty-pop-up-sephora-union-square-tickets-1999693864178",
+      "official_source_url": "https://www.eventbrite.com/e/the-dewy-day-tour-yepoda-k-beauty-pop-up-sephora-union-square-tickets-1999693864178",
+      "additional_verification_source": "https://patch.com/new-york/new-york-city/calendar/event/20260920/b9376c75-da47-4170-86b0-8397275cb903/the-dewy-day-tour-yepoda-k-beauty-pop-up-sephora-union-square",
+      "last_verified": "2026-09-20T02:06:41-04:00",
+      "caveats": "Free gifts are while supplies last. Gift-with-purchase offers require the advertised $40+ or $60+ Sephora purchase. The organizer's Eventbrite listing is the actionable registration source.",
+      "practical_notes": "Sunday Sept. 20, 12–6 PM at Sephora Union Square. No purchase is necessary to attend or receive the general advertised freebies.",
+      "rsvp": {"requirement": "required", "actionability": "direct_link", "availability": "open", "direct_url": "https://www.eventbrite.com/e/the-dewy-day-tour-yepoda-k-beauty-pop-up-sephora-union-square-tickets-1999693864178"}
+    },
+    {
+      "id": "jsm-beauty-van-leeuwen-mobile-popup-2026",
+      "event_name": "Jung Saem Mool Beauty × Van Leeuwen Mobile Pop-Up",
+      "brand": "Jung Saem Mool Beauty × Van Leeuwen",
+      "neighborhood": "Upper East Side / SoHo / Meatpacking",
+      "address": "Multiple Manhattan stops; see date details",
+      "subway": {"station": "Multiple stops", "lines": []},
+      "categories": ["beauty", "food/drink", "pop-up", "free experience", "giveaway"],
+      "what_it_is": "A mobile K-beauty and ice-cream activation celebrating Jung Saem Mool Beauty's Sephora launch, stopping at three Manhattan locations each day.",
+      "admission_free": true,
+      "what_is_free": "A special JSM Beauty × Van Leeuwen ice cream is offered to guests who follow @jsmbeauty_global; an Instagram Story/tag promotion offers a chance at a full-size Metal Lip Serum, limited to 200 units per day.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "WALK-IN"],
+      "main_source_url": "https://www.nycforfree.co/events/jsm-beauty-x-van-leeuwen",
+      "additional_verification_source": "https://www.averagesocialite.com/nyc-events/2026/9/19/jung-saem-mool-x-van-leeuwen-mobile-pop-up-nyc",
+      "last_verified": "2026-09-20T02:06:41-04:00",
+      "caveats": "The ice-cream giveaway requires following @jsmbeauty_global. The lip-serum promotion requires the advertised Instagram tag/story action and is limited to 200 units per day. No advance RSVP requirement is published by the corroborating current sources.",
+      "practical_notes": "Sept. 20 route: 11 AM–1 PM Lexington Avenue; 1:30–3:30 PM at 557 Broadway; 4–6 PM at 21–27 9th Avenue.",
+      "rsvp": {"requirement": "none", "actionability": "source_link", "availability": "open", "direct_url": null}
+    },
+    {
+      "id": "cafe-dedcool-mocha-magic-popup-2026",
+      "event_name": "Cafe DedCool: Mocha Magic Pop-Up",
+      "brand": "DedCool",
+      "neighborhood": "Nolita",
+      "address": "262 Mott Street, New York, NY 10012",
+      "subway": {"station": "Broadway–Lafayette / Bleecker St", "lines": ["B","D","F","M","6"]},
+      "categories": ["beauty", "food/drink", "shopping", "pop-up", "giveaway"],
+      "what_it_is": "DedCool's first café-and-retail pop-up celebrating the Mocha Magic fragrance with café drinks, fragrance sampling, exclusive merchandise and gifts.",
+      "admission_free": true,
+      "what_is_free": "Fragrance sampling and a special gift for the first 50 guests in line each day; other merchandise and gifts-with-purchase are retail offers.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FIRST-COME · RSVP OPTIONAL"],
+      "main_source_url": "https://www.averagesocialite.com/nyc-events",
+      "additional_verification_source": "https://stumblday.com/events/cafe-dedcool-mocha-magic-pop-up-cafe-dedcool-2026-09-18",
+      "last_verified": "2026-09-20T02:06:41-04:00",
+      "caveats": "RSVP is explicitly not required and does not guarantee gift eligibility. The first-50 gift is first-come, first-served and while supplies last. Products and some gifts-with-purchase require purchase.",
+      "practical_notes": "Open Sept. 18–20, 9 AM–6 PM daily. For the limited free gift, arrive early; RSVP does not reserve one.",
+      "rsvp": {"requirement": "optional", "actionability": "source_link", "availability": "open", "direct_url": null}
+    }
+  ],
+  "occurrences": [
+    {"id":"yepoda-dewy-day-sephora-union-square-2026--2026-09-20","event_id":"yepoda-dewy-day-sephora-union-square-2026","date":"2026-09-20","hours":"12 PM–6 PM","availability":"open","details":"Free organizer registration is available. General advertised freebies do not require purchase and are while supplies last."},
+    {"id":"jsm-beauty-van-leeuwen-mobile-popup-2026--2026-09-20","event_id":"jsm-beauty-van-leeuwen-mobile-popup-2026","date":"2026-09-20","hours":"11 AM–1 PM Lexington Ave; 1:30–3:30 PM 557 Broadway; 4–6 PM 21–27 9th Ave","availability":"open","details":"Mobile route with three Manhattan stops. Walk-up public activation; giveaway actions/limits apply."},
+    {"id":"cafe-dedcool-mocha-magic-popup-2026--2026-09-20","event_id":"cafe-dedcool-mocha-magic-popup-2026","date":"2026-09-20","hours":"9 AM–6 PM","availability":"open","details":"Final day. RSVP optional; first-50 daily gift is first-come, first-served and not guaranteed by RSVP."}
+  ]
+}
