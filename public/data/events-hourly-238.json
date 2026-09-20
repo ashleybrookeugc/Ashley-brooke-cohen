@@ -1,0 +1,66 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-09-20T11:06:00-04:00",
+  "events": [
+    {
+      "id": "eco-arts-festival-governors-island-2026",
+      "event_name": "Eco Arts Festival 2026",
+      "brand": "Artichoke Dance Company × Climate Imaginarium",
+      "neighborhood": "Governors Island",
+      "address": "406A Comfort Road, New York, NY 10004",
+      "subway": {"station": "Governors Island ferry", "lines": []},
+      "categories": ["arts/culture", "climate", "workshops", "free experience"],
+      "what_it_is": "A Climate Week NYC festival of eco-inspired performances, installations, visual art and hands-on workshops at the Climate Imaginarium on Governors Island.",
+      "admission_free": true,
+      "what_is_free": "Festival admission, performances, visual-art exhibitions and interactive activities are free. The registration page suggests a $10 donation but says tickets are free and no one will be turned away for lack of funds.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "RSVP OPTIONAL"],
+      "main_source_url": "https://www.artichokedance.org/eco-arts-festival",
+      "official_source_url": "https://www.govisland.com/things-to-do/events/climate-week-2026",
+      "additional_verification_source": "https://luma.com/lyvbu9sf",
+      "last_verified": "2026-09-20T11:06:00-04:00",
+      "caveats": "Official and organizer sources describe the festival as free and open to the public. Reservations are recommended, not stated as required. The Luma page shows a suggested $10 pay-what-you-want donation, but explicitly says tickets are free. Governors Island ferry transportation may require a separate fare depending on route/time and rider eligibility.",
+      "practical_notes": "Interactive activities, workshops and visual art run 11 AM–4 PM; performances run 12:45–2:45 PM. Climate Imaginarium is Building 406A on Colonels Row. Ferry transportation is separate from event admission.",
+      "rsvp": {"requirement": "optional", "actionability": "direct_link", "availability": "open", "direct_url": "https://luma.com/lyvbu9sf"}
+    },
+    {
+      "id": "art-of-change-climate-week-governors-island-2026",
+      "event_name": "The Art of Change: Realigning our Relationship with Nature",
+      "brand": "Artivist Network × Climate Imaginarium",
+      "neighborhood": "Governors Island",
+      "address": "406A Comfort Road, New York, NY 10004",
+      "subway": {"station": "Governors Island ferry", "lines": []},
+      "categories": ["arts/culture", "climate", "performance", "community"],
+      "what_it_is": "A public participatory Climate Week NYC opening ceremony combining workshops, performance, sound installation, painting, poetry, a climate commemoration and community gathering.",
+      "admission_free": true,
+      "what_is_free": "The program is available on a pay-what-you-want ticket with a suggested $10 donation; the host says no one will be turned away due to lack of funds. Lunch is provided, with a study session available for attendees fasting for Yom Kippur.",
+      "purchase_required": false,
+      "classifications": ["FREE EXPERIENCE", "FREE RSVP"],
+      "main_source_url": "https://luma.com/9azmv1t3",
+      "official_source_url": "https://www.govisland.com/things-to-do/events/climate-week-2026",
+      "additional_verification_source": "https://luma.com/9azmv1t3",
+      "last_verified": "2026-09-20T11:06:00-04:00",
+      "caveats": "The ticket page instructs visitors to get a ticket to join. Admission is pay-what-you-want with a suggested $10 donation; the host states no one will be turned away due to lack of funds. Governors Island ferry transportation may require a separate fare depending on route/time and rider eligibility.",
+      "practical_notes": "11 AM–1 PM workshops and performances; 1–2 PM lunch/study session; 2–4 PM climate commemoration; 4–5 PM closing. Climate Imaginarium is Building 406A on Colonels Row.",
+      "rsvp": {"requirement": "required", "actionability": "direct_link", "availability": "open", "direct_url": "https://luma.com/9azmv1t3"}
+    }
+  ],
+  "occurrences": [
+    {
+      "id": "eco-arts-festival-governors-island-2026--2026-09-20",
+      "event_id": "eco-arts-festival-governors-island-2026",
+      "date": "2026-09-20",
+      "hours": "11 AM–4 PM",
+      "availability": "open",
+      "details": "Free and open to the public; reservations recommended. Performances run 12:45–2:45 PM within the 11 AM–4 PM festival window."
+    },
+    {
+      "id": "art-of-change-climate-week-governors-island-2026--2026-09-21",
+      "event_id": "art-of-change-climate-week-governors-island-2026",
+      "date": "2026-09-21",
+      "hours": "11 AM–5 PM",
+      "availability": "open",
+      "details": "Free/pay-what-you-want ticket registration is open; suggested donation is $10 and the host states no one will be turned away due to lack of funds."
+    }
+  ]
+}
