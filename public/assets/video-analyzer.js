@@ -3,7 +3,7 @@ const esc=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&
 const row=(label,value)=>`<dt>${esc(label)}</dt><dd>${esc(value||'—')}</dd>`;
 function render(item){
   if(item.status==='BLOCKED')return `<article class="result blocked"><h2><span class="badge">BLOCKED</span></h2><dl><dt>Original URL</dt><dd><a href="${esc(item.url)}" target="_blank" rel="noopener">${esc(item.url)}</a></dd>${row('Reason',item.reason)}</dl></article>`;
-  return `<article class="result"><h2>${esc(item.suggested_title)}</h2><dl><dt>Original URL</dt><dd><a href="${esc(item.url)}" target="_blank" rel="noopener">${esc(item.url)}</a></dd>${row('Description',item.description)}${row('Category',item.inferred_category)}${row('Format / style',item.format_style)}${row('Hook',item.hook)}${row('Strongest qualities',(item.strongest_qualities||[]).join(', '))}${row('Recommendation',item.portfolio_recommendation)}${row('Cache',item.cached?'Saved result':'New analysis')}</dl></article>`;
+  return `<article class="result"><h2>${esc(item.suggested_title)}</h2><p><span class="badge">${esc(item.status)}</span></p><dl><dt>Original URL</dt><dd><a href="${esc(item.url)}" target="_blank" rel="noopener">${esc(item.url)}</a></dd>${row('Evidence scope',item.evidence_scope)}${row('Description',item.description)}${row('Category',item.inferred_category)}${row('Format / style',item.format_style)}${row('Hook',item.hook)}${row('Strongest qualities',(item.strongest_qualities||[]).join(', '))}${row('Recommendation',item.portfolio_recommendation)}${row('Cache',item.cached?'Saved result':'New analysis')}</dl></article>`;
 }
 form.addEventListener('submit',async event=>{
   event.preventDefault();

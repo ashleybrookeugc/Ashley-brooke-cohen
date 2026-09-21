@@ -4,7 +4,9 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "npx wrangler dev",
-    "deploy": "npx wrangler deploy"
+    "deploy": "npx wrangler deploy",
+    "video:ingest": "node tools/video-analyzer/cli.mjs",
+    "test:video-analyzer": "node --test tests/video-analyzer.test.mjs"
   },
   "devDependencies": {
     "wrangler": "^4.0.0"

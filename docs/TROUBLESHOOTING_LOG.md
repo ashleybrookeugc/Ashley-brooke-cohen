@@ -226,6 +226,27 @@ Before later rubric scoring or analyzer claims:
 
 ---
 
+## 2026-09-21 — Metadata cache reported `COMPLETE` without decoding media
+
+### Symptom
+`/api/admin/video-analysis` returned `status: "COMPLETE"`, even though it had only fetched public oEmbed/page title and description metadata and then inferred creative fields from that text.
+
+### Failed / unsafe premise
+The route name and success state allowed an upstream metadata retrieval to be mistaken for complete-video analysis. The Cloudflare Worker has D1 and static assets but no raw-media binding or ffmpeg-capable execution path, so adding another Worker wrapper could not prove real-media decode.
+
+### Root cause
+One status field represented metadata retrieval, source-media coverage, evidence extraction, and analysis completion as if they were the same state.
+
+### Verified fix
+- Legacy URL results, including cached records, are now returned as `METADATA_ONLY` with an explicit evidence-scope warning.
+- A separate local real-media foundation accepts direct files and direct-video URLs, computes a content hash, probes and decodes the complete source with ffmpeg, writes separate evidence lanes, and verifies the persisted package by reading it back and checking its digest.
+- Tests prove direct-file and direct-media-URL intake plus negative cases for truncated input, read-back corruption, missing required evidence, bot/access blocking, removed sources, temporary failure, and retrievable non-video pages.
+
+### Prevention rule
+Do not use one generic `COMPLETE` state across retrieval layers. Record metadata retrieval, media decode coverage, each evidence lane, persistence/read-back, and safe-deletion eligibility independently. Do not claim a Cloudflare Worker can run a native-media primitive unless that exact runtime and binding path has been proven.
+
+---
+
 ## Stop-loss protocol for future loops
 
 If the same failure is encountered **twice after applying the same class of fix**, stop repeating the attempt.
