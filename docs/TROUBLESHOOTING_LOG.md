@@ -247,6 +247,25 @@ Do not use one generic `COMPLETE` state across retrieval layers. Record metadata
 
 ---
 
+## 2026-09-22 — Local read-back verification was mistaken for remote durability
+
+### Symptom
+An evidence package could report a verified persistence read-back even though `.video-analysis/` is gitignored and exists only in the machine/workspace that performed extraction. A later authorized session could not resolve the package after loss of that environment.
+
+### Root cause
+One persistence state represented two different properties: local write integrity and survival/access outside the temporary processing environment. A digest-valid local read proved neither remote retention nor future authorized retrieval.
+
+### Verified fix
+- The manifest now records `persistence.local` and `persistence.remote` independently.
+- Local packages explicitly report `scope: current_machine_or_workspace`.
+- The safe-deletion gate requires remote write, remote digest-verified read-back, and an authorized future-session access state in addition to complete evidence lanes and local verification.
+- A remote-store contract and negative corruption test exist, but no concrete provider is claimed until storage approval and real remote retrieval are completed.
+
+### Prevention rule
+Never translate `local.readback_state: verified` into “durable,” “canonical,” or “safe to delete.” Require a stable remote locator, read the package through the remote access path, reverify its integrity, and record that result separately. Do not promote an iCloud/Drive/R2 bridge or incur storage cost without the required owner approval.
+
+---
+
 ## Stop-loss protocol for future loops
 
 If the same failure is encountered **twice after applying the same class of fix**, stop repeating the attempt.

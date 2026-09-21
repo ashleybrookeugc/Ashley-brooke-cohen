@@ -22,7 +22,8 @@ try {
     content_sha256: result.manifest.content_sha256,
     duration_seconds: result.manifest.duration_seconds,
     decode_coverage: result.manifest.coverage.state,
-    persistence_readback: result.manifest.persistence.readback_state,
+    local_persistence_readback: result.manifest.persistence.local.readback_state,
+    remote_persistence_readback: result.manifest.persistence.remote.readback_state,
     safe_to_delete_original: result.manifest.safe_deletion_gate.safe_to_delete_original,
     safe_deletion_reason: result.manifest.safe_deletion_gate.reason
   }, null, 2));

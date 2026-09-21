@@ -2,11 +2,20 @@ import { createHash, randomUUID } from 'node:crypto';
 import { createReadStream } from 'node:fs';
 import { access, mkdir, mkdtemp, open, readFile, readdir, rename, rm, stat, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
-import { basename, extname, join, resolve } from 'node:path';
+import { basename, dirname, extname, join, resolve } from 'node:path';
 import { spawn } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
+import {
+  buildSemanticVisualObservations,
+  buildSpeakerTurns,
+  buildSynchronizedTimeline,
+  classifyOcr,
+  validateSynchronizedTimeline
+} from './understanding.mjs';
 
-export const ANALYZER_VERSION = 'media-foundation-1.0.0';
-export const PACKAGE_SCHEMA_VERSION = '1.0.0';
+export const ANALYZER_VERSION = 'synchronized-evidence-2.0.0';
+export const PACKAGE_SCHEMA_VERSION = '2.0.0';
+const moduleDirectory = dirname(fileURLToPath(import.meta.url));
 export const REQUIRED_LANES = [
   'spoken_audio',
   'speaker_turns',
@@ -66,6 +75,27 @@ export function runCommand(command, args, { allowFailure = false, maxOutputBytes
         resolvePromise(result);
       }
     });
+  });
+}
+
+function runCommandBuffer(command, args, { maxOutputBytes = 32_000_000 } = {}) {
+  return new Promise((resolvePromise, rejectPromise) => {
+    const child = spawn(command, args, { stdio: ['ignore', 'pipe', 'pipe'] });
+    const stdout = [];
+    const stderr = [];
+    let bytes = 0;
+    child.stdout.on('data', chunk => {
+      bytes += chunk.length;
+      if (bytes > maxOutputBytes) {
+        child.kill('SIGKILL');
+        rejectPromise(new IntakeError('PROCESS_OUTPUT_LIMIT', 'Binary process output exceeded the configured limit.', { command }));
+      } else stdout.push(chunk);
+    });
+    child.stderr.on('data', chunk => stderr.push(chunk));
+    child.on('error', error => rejectPromise(new IntakeError('PROCESS_START_FAILED', `${command} could not start.`, { cause: error.message })));
+    child.on('close', code => code === 0
+      ? resolvePromise({ stdout: Buffer.concat(stdout), stderr: Buffer.concat(stderr).toString('utf8') })
+      : rejectPromise(new IntakeError('PROCESS_FAILED', `${command} exited with code ${code}.`, { stderr: Buffer.concat(stderr).toString('utf8'), command, args })));
   });
 }
 
@@ -248,22 +278,115 @@ async function extractFrames(sourcePath, framesDirectory, durationSeconds, inter
   return frames;
 }
 
-async function runOcr(frames, packageDirectory) {
-  const observations = [];
-  for (const frame of frames) {
-    const result = await runCommand('tesseract', [join(packageDirectory, frame.relative_path), 'stdout', '--psm', '6'], { allowFailure: true });
-    const text = result.stdout.replace(/\s+/g, ' ').trim();
-    if (text) observations.push({
-      start_seconds: frame.timestamp_seconds,
-      end_seconds: frame.timestamp_seconds,
+function parseTsv(tsv, frame, width, height, firstObservationIndex, extractorVersion) {
+  const rows = tsv.trim().split(/\r?\n/);
+  if (rows.length < 2) return [];
+  const headers = rows[0].split('\t');
+  const groups = new Map();
+  for (const row of rows.slice(1)) {
+    const cells = row.split('\t');
+    const item = Object.fromEntries(headers.map((header, index) => [header, cells[index]]));
+    const text = String(item.text || '').trim();
+    const confidence = Number(item.conf);
+    if (!text || !Number.isFinite(confidence) || confidence < 0) continue;
+    const key = [item.page_num, item.block_num, item.par_num, item.line_num].join(':');
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push({
       text,
-      signal_type: 'raw_ocr',
-      source_frame_id: frame.frame_id,
-      confidence: null,
-      uncertainty: 'OCR text is an unclassified raw signal; it is not automatically spoken dialogue or a burned-in caption.'
+      confidence,
+      left: Number(item.left),
+      top: Number(item.top),
+      width: Number(item.width),
+      height: Number(item.height)
     });
   }
+  return [...groups.values()].map((items, index) => {
+    const left = Math.min(...items.map(item => item.left));
+    const top = Math.min(...items.map(item => item.top));
+    const right = Math.max(...items.map(item => item.left + item.width));
+    const bottom = Math.max(...items.map(item => item.top + item.height));
+    return {
+      observation_id: `ocr-${String(firstObservationIndex + index + 1).padStart(6, '0')}`,
+      start_seconds: frame.timestamp_seconds,
+      end_seconds: frame.timestamp_seconds,
+      text: items.map(item => item.text).join(' '),
+      signal_type: 'raw_ocr',
+      source_frame_id: frame.frame_id,
+      confidence: Number((items.reduce((sum, item) => sum + item.confidence, 0) / items.length / 100).toFixed(4)),
+      bounds: { x: left / width, y: top / height, width: (right - left) / width, height: (bottom - top) / height },
+      extractor: { name: 'Tesseract', version: extractorVersion, page_segmentation_mode: 11 },
+      uncertainty: 'OCR is a raw sampled-frame signal; it is not automatically speech or a burned-in caption.'
+    };
+  });
+}
+
+async function runOcr(frames, packageDirectory, width, height) {
+  const versionResult = await runCommand('tesseract', ['--version'], { allowFailure: true });
+  const extractorVersion = versionResult.code === 0
+    ? versionResult.stdout.split(/\r?\n/, 1)[0].trim()
+    : 'version_unavailable';
+  const observations = [];
+  for (const frame of frames) {
+    const result = await runCommand('tesseract', [join(packageDirectory, frame.relative_path), 'stdout', '--psm', '11', 'tsv'], { allowFailure: true });
+    if (result.code !== 0) continue;
+    observations.push(...parseTsv(result.stdout, frame, width, height, observations.length, extractorVersion));
+  }
   return observations;
+}
+
+async function extractPcmAudio(sourcePath, outputPath) {
+  await runCommand('ffmpeg', ['-v', 'error', '-y', '-i', sourcePath, '-vn', '-ar', '16000', '-ac', '1', '-c:a', 'pcm_s16le', outputPath]);
+}
+
+function speechIntervalsFromSilence(stderr, durationSeconds) {
+  const silences = [];
+  let open = null;
+  for (const line of stderr.split(/\r?\n/)) {
+    const start = line.match(/silence_start:\s*([0-9.]+)/);
+    if (start) open = Number(start[1]);
+    const end = line.match(/silence_end:\s*([0-9.]+)/);
+    if (end && open !== null) {
+      silences.push({ start_seconds: open, end_seconds: Number(end[1]) });
+      open = null;
+    }
+  }
+  if (open !== null) silences.push({ start_seconds: open, end_seconds: durationSeconds });
+  const intervals = [];
+  let cursor = 0;
+  for (const silence of silences) {
+    if (silence.start_seconds - cursor >= 0.12) intervals.push({ start_seconds: cursor, end_seconds: silence.start_seconds });
+    cursor = Math.max(cursor, silence.end_seconds);
+  }
+  if (durationSeconds - cursor >= 0.12) intervals.push({ start_seconds: cursor, end_seconds: durationSeconds });
+  return intervals.length ? intervals : [{ start_seconds: 0, end_seconds: durationSeconds }];
+}
+
+async function runAsr(sourcePath, stagingDirectory, durationSeconds, asrPython) {
+  const wavPath = join(stagingDirectory, 'audio-16khz-mono.wav');
+  await extractPcmAudio(sourcePath, wavPath);
+  const silence = await runCommand('ffmpeg', ['-hide_banner', '-i', wavPath, '-af', 'silencedetect=noise=-35dB:d=0.4', '-f', 'null', '-'], { allowFailure: true, maxOutputBytes: 8_000_000 });
+  const intervals = speechIntervalsFromSilence(silence.stderr, durationSeconds);
+  const result = await runCommand(asrPython, [resolve(moduleDirectory, 'asr-pocketsphinx.py'), wavPath, '--intervals-json', JSON.stringify(intervals)], { allowFailure: true, maxOutputBytes: 16_000_000 });
+  if (result.code !== 0) throw new IntakeError('ASR_FAILED', 'The configured ASR extractor failed.', { stderr: result.stderr.slice(-4000), extractor: 'PocketSphinx' });
+  let parsed;
+  try { parsed = JSON.parse(result.stdout); } catch { throw new IntakeError('ASR_INVALID_OUTPUT', 'The ASR extractor returned invalid JSON.'); }
+  return { ...parsed, speech_intervals: intervals, audio_derivative: { relative_path: 'audio-16khz-mono.wav', retained_in_local_package: true } };
+}
+
+async function extractMotionEvidence(sourcePath, intervalSeconds, expectedFrames) {
+  const result = await runCommandBuffer('ffmpeg', [
+    '-hide_banner', '-i', sourcePath, '-vf', `fps=1/${intervalSeconds},scale=64:64,format=gray,showinfo`, '-an', '-f', 'rawvideo', 'pipe:1'
+  ]);
+  const timestamps = [...result.stderr.matchAll(/pts_time:([0-9.]+)/g)].map(match => Number(match[1]));
+  const frameSize = 64 * 64;
+  const count = Math.floor(result.stdout.length / frameSize);
+  if (count !== timestamps.length || count !== expectedFrames.length) {
+    throw new IntakeError('VISUAL_EVIDENCE_INTEGRITY_FAILED', 'Motion frames, timestamps, and sampled evidence frames did not bind one-to-one.', {
+      motion_frames: count, timestamps: timestamps.length, evidence_frames: expectedFrames.length
+    });
+  }
+  const rawFrames = Array.from({ length: count }, (_, index) => result.stdout.subarray(index * frameSize, (index + 1) * frameSize));
+  return { rawFrames, timestamps };
 }
 
 async function detectVisualChanges(sourcePath) {
@@ -278,68 +401,63 @@ async function detectVisualChanges(sourcePath) {
   return { state: 'completed', observations };
 }
 
-function makeEvidence({ frames, ocr, changes, hasAudio }) {
-  return {
-    schema_version: PACKAGE_SCHEMA_VERSION,
-    lanes: {
-      spoken_audio: {
-        state: hasAudio ? 'extractor_unavailable' : 'not_present',
-        verification_modality: hasAudio ? null : 'ffprobe_no_audio_stream',
-        observations: [],
-        uncertainty: hasAudio ? 'No ASR extractor is bundled in this foundation; exact speech is not preserved yet.' : null
-      },
-      speaker_turns: {
-        state: hasAudio ? 'extractor_unavailable' : 'not_present',
-        verification_modality: null,
-        observations: [],
-        uncertainty: hasAudio ? 'Speaker/turn recovery requires a diarization-capable extractor.' : null
-      },
-      burned_in_captions: {
-        state: ocr.length ? 'unclassified_raw_signal' : 'none_observed_at_sampling_cadence',
-        verification_modality: 'tesseract_ocr_on_sampled_frames',
-        observations: [],
-        uncertainty: 'Raw OCR has not been classified as captions versus other on-screen text.'
-      },
-      other_on_screen_text: {
-        state: ocr.length ? 'unclassified_raw_signal' : 'none_observed_at_sampling_cadence',
-        verification_modality: 'tesseract_ocr_on_sampled_frames',
-        observations: ocr,
-        uncertainty: 'Sampling can miss transient text; OCR is not dialogue reconstruction.'
-      },
-      visible_actions_subjects_ui_state: {
-        state: 'raw_frames_only',
-        verification_modality: 'ffmpeg_fixed_cadence_frames',
-        observations: frames,
-        uncertainty: 'Frames are preserved, but semantic action/subject/UI-state extraction is not yet implemented.'
-      },
-      visual_shot_state_changes: {
-        state: changes.state,
-        verification_modality: 'ffmpeg_scene_score',
-        observations: changes.observations,
-        uncertainty: 'Scene-score candidates are not semantic descriptions of the change.'
-      }
+function makeEvidence({ frames, rawOcr, changes, visualObservations, hasAudio, asr, asrState }) {
+  const speechSpans = asr?.spans || [];
+  const classified = classifyOcr(rawOcr, speechSpans);
+  const speakerTurns = buildSpeakerTurns(speechSpans);
+  const lanes = {
+    spoken_audio: {
+      state: !hasAudio ? 'not_present' : asrState,
+      verification_modality: !hasAudio ? 'ffprobe_no_audio_stream' : 'automatic_speech_recognition',
+      extractor: asr?.extractor || null,
+      observations: speechSpans,
+      uncertainty: !hasAudio ? null : asrState === 'completed'
+        ? 'Automatic PocketSphinx output with word timestamps/confidence; not direct human/model audio audition.'
+        : 'Audio exists, but a transcript was not recovered.'
     },
-    modality_conflicts: [],
-    synchronized_timeline: [
-      ...ocr.map(item => ({
-        start_seconds: item.start_seconds,
-        end_seconds: item.end_seconds,
-        lane: 'other_on_screen_text',
-        evidence: item.text,
-        signal_type: item.signal_type,
-        source_frame_id: item.source_frame_id,
-        uncertainty: item.uncertainty
-      })),
-      ...changes.observations.map(item => ({
-        start_seconds: item.timestamp_seconds,
-        end_seconds: item.timestamp_seconds,
-        lane: 'visual_shot_state_changes',
-        evidence: 'Scene-change candidate',
-        signal_type: item.signal_type,
-        uncertainty: 'Automated visual-change signal only.'
-      }))
-    ].sort((a, b) => a.start_seconds - b.start_seconds)
+    speaker_turns: {
+      state: !hasAudio ? 'not_present' : speakerTurns.length ? 'turn_boundaries_only' : 'not_recovered',
+      verification_modality: speakerTurns.length ? 'silence_bounded_asr_utterances' : null,
+      observations: speakerTurns,
+      uncertainty: hasAudio ? 'Turn boundaries are bounded by silence; speaker clustering and identity are not implemented.' : null
+    },
+    burned_in_captions: {
+      state: classified.burnedInCaptions.length ? 'heuristically_classified' : 'none_observed_at_sampling_cadence',
+      verification_modality: 'tesseract_tsv_plus_layout_and_temporal_asr_overlap',
+      observations: classified.burnedInCaptions,
+      uncertainty: 'Caption classification is heuristic and sampling can miss transient text.'
+    },
+    other_on_screen_text: {
+      state: 'completed_at_sampling_cadence',
+      verification_modality: 'tesseract_tsv_on_sampled_frames',
+      observations: classified.otherText,
+      raw_observations: rawOcr,
+      uncertainty: 'OCR remains sampled evidence; it is not spoken dialogue reconstruction.'
+    },
+    visible_actions_subjects_ui_state: {
+      state: 'bounded_screen_state_classifier',
+      verification_modality: 'sampled_64x64_visual_change_plus_ocr_heuristic',
+      observations: visualObservations,
+      uncertainty: 'Screen-state/activity candidates are sampled and heuristic; subject/object recognition remains unrecovered.'
+    },
+    visual_shot_state_changes: {
+      state: changes.state,
+      verification_modality: 'ffmpeg_scene_score',
+      observations: changes.observations.map((observation, index) => ({ ...observation, observation_id: `scene-${String(index + 1).padStart(6, '0')}` })),
+      uncertainty: 'Scene-score candidates are not semantic descriptions of the change.'
+    }
   };
+  const synchronizedTimeline = buildSynchronizedTimeline(lanes, classified.conflicts);
+  const evidence = {
+    schema_version: PACKAGE_SCHEMA_VERSION,
+    representation: 'synchronized_multimodal_evidence',
+    sampling_disclosure: 'Visual and OCR evidence is sampled, not frame-exhaustive.',
+    lanes,
+    modality_conflicts: classified.conflicts,
+    synchronized_timeline: synchronizedTimeline
+  };
+  validateSynchronizedTimeline(evidence);
+  return evidence;
 }
 
 export function evaluateSafeDeletion({ manifest, evidence, readback }) {
@@ -348,15 +466,22 @@ export function evaluateSafeDeletion({ manifest, evidence, readback }) {
   const requiredEvidenceComplete = Object.values(laneStates).every(state => allowedCompleteStates.has(state));
   const checks = {
     required_evidence_extraction_completed: requiredEvidenceComplete,
-    durable_evidence_package_written: manifest?.persistence?.write_state === 'written',
-    evidence_package_read_back_verified: readback?.verified === true,
+    local_evidence_package_written: manifest?.persistence?.local?.write_state === 'written',
+    local_evidence_package_read_back_verified: readback?.verified === true && manifest?.persistence?.local?.readback_state === 'verified',
+    remote_durable_evidence_package_written: manifest?.persistence?.remote?.write_state === 'written',
+    remote_evidence_package_read_back_verified: manifest?.persistence?.remote?.readback_state === 'verified',
+    remote_package_resolvable_by_authorized_future_session: manifest?.persistence?.remote?.access_state === 'authorized_retrieval_verified',
     manifest_records_source_retention_state: Boolean(manifest?.raw_source?.retention_state)
   };
   return {
     safe_to_delete_original: Object.values(checks).every(Boolean),
     checks,
     lane_states: laneStates,
-    reason: requiredEvidenceComplete ? null : 'One or more required evidence lanes are incomplete, raw-only, unclassified, or missing.'
+    reason: !requiredEvidenceComplete
+      ? 'One or more required evidence lanes are incomplete, bounded-only, heuristic, or missing.'
+      : !checks.remote_evidence_package_read_back_verified || !checks.remote_package_resolvable_by_authorized_future_session
+        ? 'The package is locally verified but not remotely durable and re-readable by a future authorized session.'
+        : null
   };
 }
 
@@ -365,9 +490,26 @@ function validatePackageShape(manifest, evidence) {
   for (const field of ['package_id', 'source', 'content_sha256', 'duration_seconds', 'processing', 'coverage', 'persistence', 'raw_source']) {
     if (manifest?.[field] === undefined || manifest?.[field] === null) missing.push(`manifest.${field}`);
   }
+  for (const path of [
+    ['media_asset', 'media_asset_id'],
+    ['media_asset', 'content_version_sha256'],
+    ['evidence_package', 'identity'],
+    ['persistence', 'evidence_sha256'],
+    ['persistence', 'local'],
+    ['persistence', 'remote']
+  ]) {
+    let value = manifest;
+    for (const segment of path) value = value?.[segment];
+    if (value === undefined || value === null) missing.push(`manifest.${path.join('.')}`);
+  }
   for (const lane of REQUIRED_LANES) if (!evidence?.lanes?.[lane]) missing.push(`evidence.lanes.${lane}`);
   if (!Array.isArray(evidence?.synchronized_timeline)) missing.push('evidence.synchronized_timeline');
   if (missing.length) throw new IntakeError('EVIDENCE_PACKAGE_INCOMPLETE', 'The evidence package is missing required components.', { missing });
+  try {
+    validateSynchronizedTimeline(evidence);
+  } catch (error) {
+    throw new IntakeError('SYNCHRONIZED_TIMELINE_INVALID', 'The synchronized timeline failed structural/provenance validation.', { cause: error.message });
+  }
 }
 
 export async function verifyEvidencePackage(packageDirectory) {
@@ -391,11 +533,53 @@ export async function verifyEvidencePackage(packageDirectory) {
   return { verified: true, package_id: manifest.package_id, evidence_sha256: actualEvidenceSha256, verified_at: now(), manifest, evidence };
 }
 
+async function persistAndVerifyRemote(remoteStore, packageDirectory, packageId, expectedEvidenceSha256) {
+  if (!remoteStore) return {
+    provider: null,
+    write_state: 'not_configured',
+    readback_state: 'not_run',
+    access_state: 'local_only',
+    locator: null
+  };
+  if (typeof remoteStore.persistPackage !== 'function' || typeof remoteStore.readEvidence !== 'function') {
+    throw new IntakeError('REMOTE_PERSISTENCE_INVALID', 'Remote store must implement persistPackage() and readEvidence().');
+  }
+  const receipt = await remoteStore.persistPackage({ packageDirectory, packageId, expectedEvidenceSha256 });
+  if (!receipt?.locator) throw new IntakeError('REMOTE_PERSISTENCE_FAILED', 'Remote persistence returned no stable locator.');
+  let remoteEvidence;
+  try { remoteEvidence = await remoteStore.readEvidence(receipt); } catch (error) {
+    throw new IntakeError('REMOTE_PERSISTENCE_READBACK_FAILED', 'Remote evidence could not be read back.', { cause: error.message, locator: receipt.locator });
+  }
+  const text = typeof remoteEvidence === 'string' ? remoteEvidence : Buffer.from(remoteEvidence).toString('utf8');
+  let parsed;
+  try { parsed = JSON.parse(text); } catch (error) {
+    throw new IntakeError('REMOTE_PERSISTENCE_READBACK_FAILED', 'Remote evidence read-back was not valid JSON.', { cause: error.message, locator: receipt.locator });
+  }
+  const normalized = JSON.stringify(parsed, null, 2) + '\n';
+  const digest = await sha256Text(normalized);
+  if (digest !== expectedEvidenceSha256) {
+    throw new IntakeError('REMOTE_PERSISTENCE_READBACK_FAILED', 'Remote evidence digest did not match the locally verified package.', {
+      expected: expectedEvidenceSha256, actual: digest, locator: receipt.locator
+    });
+  }
+  return {
+    provider: remoteStore.provider || 'custom',
+    write_state: 'written',
+    readback_state: 'verified',
+    access_state: 'authorized_retrieval_verified',
+    locator: receipt.locator,
+    evidence_sha256: digest,
+    verified_at: now()
+  };
+}
+
 export async function processVideo(input, {
   outputRoot = '.video-analysis',
   frameIntervalSeconds = 5,
   fetchImpl = fetch,
-  beforeReadback = null
+  beforeReadback = null,
+  asrPython = resolve(moduleDirectory, '../../.video-analysis-runtime/venv/bin/python'),
+  remoteStore = null
 } = {}) {
   const startedAt = now();
   const resolved = await resolveInput(input, { fetchImpl });
@@ -410,19 +594,49 @@ export async function processVideo(input, {
     await mkdir(stagingDirectory, { recursive: true });
 
     const frames = await extractFrames(resolved.path, join(stagingDirectory, 'frames'), probe.duration_seconds, frameIntervalSeconds);
-    const ocr = await runOcr(frames, stagingDirectory);
+    const width = probe.video_streams[0].width;
+    const height = probe.video_streams[0].height;
+    const rawOcr = await runOcr(frames, stagingDirectory, width, height);
+    let asr = null;
+    let asrState = probe.audio_streams.length ? 'extractor_unavailable' : 'not_present';
+    let asrFailure = null;
+    if (probe.audio_streams.length && await exists(asrPython)) {
+      try {
+        asr = await runAsr(resolved.path, stagingDirectory, probe.duration_seconds, asrPython);
+        asrState = asr.spans.length ? 'completed' : 'no_speech_recovered';
+      } catch (error) {
+        asrState = 'extractor_failed';
+        asrFailure = { code: error.code || 'ASR_FAILED', message: error.message };
+      }
+    }
     const changes = await detectVisualChanges(resolved.path);
-    const evidence = makeEvidence({ frames, ocr, changes, hasAudio: probe.audio_streams.length > 0 });
+    const motion = await extractMotionEvidence(resolved.path, frameIntervalSeconds, frames);
+    const visualObservations = buildSemanticVisualObservations(motion.rawFrames, motion.timestamps, rawOcr);
+    const evidence = makeEvidence({
+      frames, rawOcr, changes, visualObservations, hasAudio: probe.audio_streams.length > 0, asr, asrState
+    });
+    if (asrFailure) evidence.lanes.spoken_audio.failure = asrFailure;
     const evidenceText = JSON.stringify(evidence, null, 2) + '\n';
     const manifest = {
       schema_version: PACKAGE_SCHEMA_VERSION,
       package_id: packageId,
       source: resolved.source,
       content_sha256: contentSha256,
+      media_asset: {
+        media_asset_id: `mediaasset-sha256-${contentSha256}`,
+        identity_method: 'content_addressed_source_bytes_v1',
+        content_version_sha256: contentSha256,
+        asset_locations: [{
+          location_type: resolved.source.type,
+          state: 'available_during_processing',
+          original_filename: resolved.source.original_filename,
+          source_url: resolved.source.source_url
+        }]
+      },
       duration_seconds: probe.duration_seconds,
       media_probe: probe,
       processing: {
-        state: 'evidence_foundation_extracted',
+        state: 'synchronized_evidence_foundation_extracted',
         analyzer_version: ANALYZER_VERSION,
         started_at: startedAt,
         completed_at: now()
@@ -435,8 +649,11 @@ export async function processVideo(input, {
           interval_seconds: frameIntervalSeconds,
           frame_count: frames.length
         },
-        transcript: probe.audio_streams.length ? 'not_extracted' : 'not_present',
-        semantic_visual_evidence: 'not_extracted'
+        transcript: evidence.lanes.spoken_audio.state,
+        speaker_turns: evidence.lanes.speaker_turns.state,
+        ocr_classification: evidence.lanes.burned_in_captions.state,
+        semantic_visual_evidence: evidence.lanes.visible_actions_subjects_ui_state.state,
+        synchronized_timeline: 'structurally_validated'
       },
       evidence_package: {
         identity: packageId,
@@ -444,9 +661,20 @@ export async function processVideo(input, {
         relative_evidence_path: 'evidence.json'
       },
       persistence: {
-        write_state: 'written',
-        readback_state: 'pending',
-        evidence_sha256: await sha256Text(evidenceText)
+        evidence_sha256: await sha256Text(evidenceText),
+        local: {
+          scope: 'current_machine_or_workspace',
+          write_state: 'written',
+          readback_state: 'pending',
+          package_location: finalDirectory
+        },
+        remote: {
+          provider: null,
+          write_state: 'not_configured',
+          readback_state: 'not_run',
+          access_state: 'local_only',
+          locator: null
+        }
       },
       raw_source: {
         retention_state: resolved.source.type === 'direct_file' ? 'original_preserved_not_managed' : 'temporary_download_pending_cleanup',
@@ -460,8 +688,11 @@ export async function processVideo(input, {
     await rename(stagingDirectory, finalDirectory);
     if (beforeReadback) await beforeReadback(finalDirectory);
     const readback = await verifyEvidencePackage(finalDirectory);
-    readback.manifest.persistence.readback_state = 'verified';
-    readback.manifest.persistence.readback_verified_at = readback.verified_at;
+    readback.manifest.persistence.local.readback_state = 'verified';
+    readback.manifest.persistence.local.readback_verified_at = readback.verified_at;
+    readback.manifest.persistence.remote = await persistAndVerifyRemote(
+      remoteStore, finalDirectory, packageId, readback.manifest.persistence.evidence_sha256
+    );
     readback.manifest.raw_source.retention_state = resolved.source.type === 'direct_file'
       ? 'original_preserved_not_managed'
       : 'temporary_download_deleted_after_verified_package';
