@@ -2,7 +2,7 @@
 
 - **Repo / branch:** `ashleybrookeugc/Ashley-brooke-cohen` / `portfolio-v2`. Do not touch or merge to `main`.
 - **Current basis:** audited implementation `e04e2fa901544bf6b02654cc282e165817836ded` plus `3bfd231c9e4554967a114d829509f0285da52d29`. The custom analyzer is now a **reference implementation and acceptance-test foundation**, not a settled extraction architecture.
-- **Phase 2 state:** Ashley actually ran the machine preflight on the specified M4 Pro MacBook: **PASS** (macOS 26.6.2, arm64, Apple M4 Pro, 24 GB, Node 26.3.1, ffmpeg/ffprobe 8.1.1, Python 3.14.7, uv 0.11.26; no prerequisites missing). This proves only machine readiness, not any component. The six-source registry URL syntax guard now passes; media retrieval and hash verification have not started.
+- **Phase 2 state:** Ashley actually ran the machine preflight on the specified M4 Pro MacBook: **PASS** (macOS 26.6.2, arm64, Apple M4 Pro, 24 GB, Node 26.3.1, ffmpeg/ffprobe 8.1.1, Python 3.14.7, uv 0.11.26; no prerequisites missing). This proves only machine readiness, not any component. A first URL guard falsely passed because its regexes were over-escaped; it is repaired with a known-bad Markdown-link negative test. All six stored URLs now independently validate as literal supported HTTPS URLs. Media retrieval and hash verification remain not started.
 
 ## Preserved acceptance contract
 
