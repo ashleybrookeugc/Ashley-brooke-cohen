@@ -15,6 +15,31 @@ Before repeating deployment, Cloudflare, Worker, build, routing, or asset troubl
 
 ---
 
+## 2026-09-22 — Control-page script contained a literal escaped newline
+
+### Symptom
+Safari loaded the authenticated `/control/` document but issued no `/api/control/state` request. Its console reported `SyntaxError: Invalid escape in identifier`.
+
+### Confirmed root cause
+The inline script in `public/control/index.html` contained the literal characters `\\n` between two JavaScript statements (`refreshContext.onclick = …;\\nsend.onclick = …`). That is not a newline outside a JavaScript string, so Safari rejected the entire script before any startup code or network request could run.
+
+### Relationship to the earlier blank-dashboard incident
+This is separate from the earlier undeclared DOM-global failure. That prior defect was a runtime error after parsing; this defect prevented parsing altogether, so the later explicit DOM bindings could not execute.
+
+### Verified fix
+Replace the literal escape with a real line break and parse the complete embedded script in the regression suite. The regression also contains a deliberately malformed literal-escape fixture that must throw `SyntaxError`.
+
+### Why existing checks missed it
+The existing UI test only matched source strings, and the service tests use doubles. Cloudflare's Text-module packaging serves the inline script without JavaScript parsing, so its successful build did not validate browser script syntax.
+
+### Proof boundary
+The source and regression suite prove parseability. A real authenticated production reload must still prove that the state request is issued and separately establish its response, Project Truth read, D1 state, routing, and approval/write behavior.
+
+### Prevention rule
+For HTML that embeds executable JavaScript, parse the extracted script in CI and include a negative syntax fixture for the failure class before treating string-based UI checks or Worker packaging as browser-execution proof.
+
+---
+
 ## 2026-09-22 — Private control-plane dashboard remained entirely blank
 
 ### Symptom
