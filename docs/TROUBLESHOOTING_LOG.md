@@ -305,6 +305,19 @@ Use `-version` and assert the returned version string in the harness regression.
 
 ---
 
+## 2026-09-22 — Markdown link serialization is not a usable media URL
+
+### Symptom
+A target-Mac corpus inspection reported source URL values rendered/stored as Markdown link syntax rather than plain source strings. A URL consumer must receive the literal `https://...` value, not `[label](url)`.
+
+### Root cause
+Human-readable link formatting can leak into structured JSON generation or local copies. JSON parsing alone does not guarantee that a string is a usable source URL.
+
+### Verified prevention rule
+The calibration-registry regression now parses all six entries, rejects Markdown-link syntax/brackets, parses each value with `URL`, and permits only literal HTTPS TikTok or Instagram hosts. Verify this guard before beginning media retrieval; URL syntax validity does not establish retrievability, source identity, or evidence quality.
+
+---
+
 ## Stop-loss protocol for future loops
 
 If the same failure is encountered **twice after applying the same class of fix**, stop repeating the attempt.
