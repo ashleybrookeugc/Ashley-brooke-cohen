@@ -266,6 +266,32 @@ Never translate `local.readback_state: verified` into “durable,” “canonica
 
 ---
 
+## 2026-09-22 — A passing suite did not prove asynchronous upstream work was clean
+
+### Symptom
+The StepThrough upstream suite reported `116 passed, 3 deselected`, yet its warning output included detached background detection-thread failures (`no such table: detection_runs` and a foreign-key failure).
+
+### Root cause
+The test process could finish successfully while asynchronous work outlived fixture/database setup or teardown. Exit status and green assertion counts did not establish that the worker path was reliable.
+
+### Verified fix / prevention rule
+For every candidate and future harness run, record warnings and worker logs, join or explicitly observe bounded background jobs, and treat an unexplained asynchronous exception as outcome evidence. Do not promote a component from a green test count alone; inspect produced artifacts and the complete process output.
+
+---
+
+## 2026-09-22 — Work-environment model setup failure is not model-quality evidence
+
+### Symptom
+Two isolated Work attempts to run faster-whisper failed before model execution because the temporary Python environment lacked required SOCKS-proxy support during model download.
+
+### Root cause
+The failure occurred in temporary environment/network setup, not in decoding, model inference, ASR wording, or Apple Silicon execution.
+
+### Decision / prevention rule
+Classify this result as **UNTESTED — WORK ENVIRONMENT LIMITATION**. The two-attempt stop-loss applies: do not repeat the same setup route in this session. Run a pinned, cached-model benchmark on Ashley's Apple Silicon harness and separately assess operational success and gold-evidence quality before selecting an ASR engine.
+
+---
+
 ## Stop-loss protocol for future loops
 
 If the same failure is encountered **twice after applying the same class of fix**, stop repeating the attempt.
