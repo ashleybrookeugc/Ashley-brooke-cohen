@@ -292,6 +292,19 @@ Classify this result as **UNTESTED — WORK ENVIRONMENT LIMITATION**. The two-at
 
 ---
 
+## 2026-09-22 — Prerequisite probe used the wrong version flag
+
+### Symptom
+The first benchmark-harness preflight incorrectly reported `ffmpeg` and `ffprobe` missing although the analyzer tests used both successfully.
+
+### Root cause
+The probe used `--version`; these binaries require `-version`.
+
+### Verified fix / prevention rule
+Use `-version` and assert the returned version string in the harness regression. A failed probe is not sufficient evidence of a missing dependency without cross-checking actual execution.
+
+---
+
 ## Stop-loss protocol for future loops
 
 If the same failure is encountered **twice after applying the same class of fix**, stop repeating the attempt.
