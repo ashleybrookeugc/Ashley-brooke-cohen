@@ -2,7 +2,7 @@
 
 - **Repo / branch:** `ashleybrookeugc/Ashley-brooke-cohen` / `portfolio-v2`. Do not touch or merge to `main`.
 - **Current basis:** audited implementation `e04e2fa901544bf6b02654cc282e165817836ded` plus `3bfd231c9e4554967a114d829509f0285da52d29`. The custom analyzer is now a **reference implementation and acceptance-test foundation**, not a settled extraction architecture.
-- **This session:** completed the mandatory reuse/prior-art gate before further feature work. The canonical audit records verified dispositions, the composed direction, real-media observations, and the next-phase local harness requirement. Do not resume broad implementation until that harness/corpus plan is prepared.
+- **Phase 2 state:** the reusable target-Mac harness and six-source SHA-256 registry are prepared. This Work runtime is Linux/x86_64, not Ashley's MacBook; no component has run on the target hardware and none is selected.
 
 ## Preserved acceptance contract
 
@@ -19,11 +19,13 @@
 - Compose mature primitives only after their Apple Silicon operational **and quality** benchmark: `faster-whisper`/WhisperX (ASR/alignment), pyannote or sherpa-onnx (unknown speaker turns), PaddleOCR, PySceneDetect, perceptual hashing, and selective MLX-VLM. Use Stepthrough-style screen-state work only as a conditional adapter; do not fork its UI/application. Klaket, watch-video, WebDevBar watch-video, vts, CoUX, and vindex are not foundations to adopt wholesale.
 - Do not create a second uploader/media system. Reconcile with `ashleybrookeugc/ugc-creator-app`'s MediaAsset/AssetLocation and existing iCloud/Share-bridge direction before a storage decision. No concrete remote provider is approved or verified.
 
-## Required next-phase local harness (not implemented this session)
+## Apple Silicon benchmark harness (prepared; target execution pending)
 
 - Initial verification target: Ashley's **14-inch MacBook Pro (November 2024), Apple M4 Pro, 24 GB unified memory, macOS Tahoe 26.6.2**. The always-on Mac Studio remains a possible production host and requires its own compatibility/performance verification; neither machine is hard-coded into the architecture.
 - The two `faster-whisper` attempts in temporary Work failed before model execution because the isolated Python environment lacked SOCKS-proxy support. Record this as **UNTESTED — WORK ENVIRONMENT LIMITATION**, not ASR-quality failure or Apple-Silicon incompatibility. The stop-loss was observed; do not retry that route here.
-- The harness must use pinned dependencies/model versions, bounded deterministic runs, locally cached model artifacts where practical, a SHA-256 frozen real-Ashley corpus, human-verified gold transcript/caption/UI/turn/scene evidence, and machine-readable receipts. It must report independent operational and quality outcomes with `PASS`, `FAIL`, `UNTESTED — ENVIRONMENT LIMITATION`, `BLOCKED`, or `NOT APPLICABLE`.
+- `tools/video-benchmark/` now has a bounded macOS bootstrap/preflight, SHA-256 corpus verifier, registry, README, and machine-readable receipts. It does not download models/media, grant remote Mac access, create cloud resources, or store raw video in Git. The preflight requires macOS/arm64, Apple M4 Pro, at least 24 GB memory, and macOS 26.6.2 before basic target readiness can pass.
+- The registry records six existing Ashley public-social source IDs (clips 01, 02, 04, 05, 08, 10). Their bytes are not present here, so corpus verification correctly reports `BLOCKED`; existing ASR/OCR drafts remain non-gold. Open corpus slots remain raw/B-roll, UGC, acting/performance, short workflow screen recording, and confirmed music/noise.
+- Before candidate evaluation: obtain byte-identical sources in `VIDEO_BENCHMARK_MEDIA_ROOT`, pass SHA verification, record a bounded human-gold subset, then resolve one pinned component/model at a time. Receipts must separate operational and quality outcomes, including `UNTESTED — TARGET HARDWARE EXECUTION REQUIRED`.
 - Benchmark each capability separately: intake/hash/inspection/EOF decode; ASR/timestamps/turns; OCR/caption-vs-UI; scene/keyframes/dedup/screen state; selective visual evidence; synchronized assembly/provenance/conflicts; persistence/read-back/authorized retrieval/deletion state. Conditional screen stages must not make a short Reel fail.
 - Preserve **one evidence engine, multiple analysis lenses** for finished social, UGC, acting, raw footage, screen workflows, and reference videos. Reuse source extraction across lenses; invoke screen-state/OCR-change/VLM work selectively for long workflows rather than blindly per frame.
 
