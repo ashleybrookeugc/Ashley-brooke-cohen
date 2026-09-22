@@ -318,6 +318,19 @@ The calibration-registry regression now parses all six entries, rejects Markdown
 
 ---
 
+## 2026-09-22 — URL regression guard falsely passed its known defect
+
+### Symptom
+The benchmark suite reported that six calibration URLs were literal URLs even though direct target-Mac inspection found a Markdown-formatted value such as `[https://www.tiktok.com/t/ZP83DVEWH/](https://www.tiktok.com/t/ZP83DVEWH/)`.
+
+### Root cause
+The JavaScript regular-expression literals were over-escaped. They searched for backslashes and escaped metacharacters rather than ordinary Markdown-link syntax, so the intended bad value did not match.
+
+### Verified fix / prevention rule
+Use direct regex literals for the actual syntax and prove the assertion adversarially: the suite now calls the guard with the exact known-bad Markdown string and requires it to throw. It separately parses all six real fields with `URL` and asserts every protected non-URL corpus field remains unchanged. A green guard is not evidence until its exact known-bad fixture fails.
+
+---
+
 ## Stop-loss protocol for future loops
 
 If the same failure is encountered **twice after applying the same class of fix**, stop repeating the attempt.
