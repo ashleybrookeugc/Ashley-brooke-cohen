@@ -7,6 +7,8 @@
     "deploy": "npx wrangler deploy",
     "video:ingest": "node tools/video-analyzer/cli.mjs",
     "video:setup-runtime": "node tools/video-analyzer/setup-runtime.mjs",
+    "video:benchmark:preflight": "node tools/video-benchmark/benchmark.mjs preflight",
+    "test:video-benchmark": "node --test tests/video-benchmark.test.mjs",
     "test:video-analyzer": "node tools/video-analyzer/setup-runtime.mjs && node --test tests/video-analyzer.test.mjs"
   },
   "devDependencies": {
