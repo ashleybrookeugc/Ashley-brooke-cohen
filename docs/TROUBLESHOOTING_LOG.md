@@ -15,6 +15,25 @@ Before repeating deployment, Cloudflare, Worker, build, routing, or asset troubl
 
 ---
 
+## 2026-09-22 — Private control-plane dashboard remained entirely blank
+
+### Symptom
+An authenticated visit to `/control/` rendered the private control-plane shell, but left the context line, Projects, Needs Ashley, AI can handle, and Recent outcomes blank.
+
+### Confirmed root cause
+`public/control/index.html` relied on browser-created globals for DOM elements. Two references did not match their element IDs: `refreshContext` was used for `id="refresh-context"`, and `contextStatus` was used for `id="context-status"`. The first `refreshContext.onclick = …` evaluation threw before `load()` executed. As a result, the browser did **not** call `/api/control/state`; the blank screen was not evidence of a D1, GitHub App, or Project Truth failure.
+
+### Verified fix
+Bind every control-plane DOM dependency explicitly with `document.getElementById(...)`, including the two hyphenated IDs, before registering handlers or calling `load()`.
+
+### Proof boundary
+This repair proves the frontend can now start its state request. It does not prove the authenticated production API response, GitHub App read, D1 state, model routing, or approval-write path. Those require the subsequent live smoke test.
+
+### Prevention rule
+Do not rely on legacy named-element globals in a private application UI. Bind each DOM element explicitly, and add a regression that locks IDs used by startup code before treating a blank screen as a backend failure.
+
+---
+
 ## 2026-09-13 — Plan My Day quiz declared complete without visible itinerary proof
 
 ### Symptom
