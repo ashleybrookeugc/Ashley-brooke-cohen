@@ -5,6 +5,26 @@ export const WRITE_REPO = 'ashleybrookeugc/research-vault';
 export const WRITE_PATHS = ['ACTIVE_WORK.md','SIDE_IDEAS.md'];
 export const MUTABLE_FIELDS = ['Current stage','Current objective','Next bounded action','Next decision','Current blocker','Why this is current now'];
 
+export function normalizeFactKey(value) {
+  return String(value || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+}
+
+export function parseCanonicalFacts(markdown) {
+  let section = 'document', occurrence = 0;
+  const facts = [];
+  for (const line of String(markdown || '').split(/\r?\n/)) {
+    const heading = line.match(/^#{1,6}\s+(.+?)\s*$/);
+    if (heading) { section = heading[1].trim(); continue; }
+    const field = line.match(/^\*\*(.+?):\*\*\s*(.+?)\s*$/);
+    if (!field) continue;
+    const key = normalizeFactKey(field[1]);
+    if (!key) continue;
+    occurrence += 1;
+    facts.push({id:normalizeFactKey(section)+'--'+key+'--'+occurrence,key,label:field[1].trim(),value:field[2].trim(),section});
+  }
+  return facts;
+}
+
 export function parseActiveWork(markdown) {
   const section = String(markdown).split('## Current active workstreams')[1]?.split('## Session handoff rule')[0] || '';
   return [...section.matchAll(/^### (.+)\n([\s\S]*?)(?=^### |^## |(?![\s\S]))/gm)].map(match => {

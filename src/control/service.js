@@ -1,27 +1,62 @@
-import {applyProposal,parseActiveWork,validateRoute,WRITE_REPO} from './contracts.js';
+import {applyProposal,normalizeFactKey,parseActiveWork,parseCanonicalFacts,validateRoute,WRITE_REPO} from './contracts.js';
+export class PriorStateGateError extends Error {
+  constructor(code, detail) { super(detail); this.code=code; this.status=code==='conflict'?409:422; }
+}
+const requestedFactKeys = (text, facts, explicit=[]) => {
+  if (!Array.isArray(explicit) || explicit.some(key => typeof key !== 'string')) throw new PriorStateGateError('invalid_request','required_fact_keys must be an array of strings');
+  const words=' '+String(text || '').toLowerCase().replace(/[^a-z0-9]+/g,' ')+' ';
+  const derived=facts.filter(f => words.includes(' '+f.key.replaceAll('-',' ')+' ')).map(f => f.key);
+  return [...new Set([...explicit.map(normalizeFactKey).filter(Boolean),...derived])];
+};
+export function createPriorStateReceipt(packet, requiredFactKeys=[]) {
+  const material=[packet.source];
+  const evidence=[], blockers=[];
+  for (const key of requiredFactKeys) {
+    const matches=packet.facts.filter(f => f.key===key);
+    const values=[...new Set(matches.map(f => f.value))];
+    if (!matches.length) blockers.push({key,reason:'missing'});
+    else if (values.length!==1) blockers.push({key,reason:'conflict',facts:matches.map(({id,value})=>({id,value}))});
+    else evidence.push({...matches[0],source:packet.source});
+  }
+  return {gate:'prior-state.context-retrieval',status:blockers.length?'blocked':requiredFactKeys.length?'passed':'not_required',required_fact_keys:requiredFactKeys,material,evidence,blockers};
+}
+function requirePriorState(receipt) {
+  if (receipt.status!=='blocked') return;
+  const conflict=receipt.blockers.find(x=>x.reason==='conflict');
+  if (conflict) throw new PriorStateGateError('conflict','Prior-state conflict for '+conflict.key+'; clarification is required');
+  throw new PriorStateGateError('missing','Prior-state fact missing; clarification is required');
+}
 export function createControlTaskPacket(snapshot) {
   return {
     version:'control-task-packet.v1',
     purpose:'control_route',
     active_work:{projects:snapshot.projects,source:snapshot.source},
-    freshness:snapshot.context
+    freshness:snapshot.context,
+    prior_state:snapshot.prior_state
   };
 }
 export function createControlService({github,router,store,now=()=>Date.now(),packetTtlMs=300000}) {
-  const state = async ({refresh=false}={}) => {
+  const state = async ({refresh=false,requiredFactKeys=[]}={}) => {
     const key='active-work.v1';
     if(refresh) await store.invalidateContextPacket(key);
     let packet=await store.getContextPacket(key);
     let reused=Boolean(packet);
-    if(!packet){const source=await github.readFile(WRITE_REPO,'ACTIVE_WORK.md');const created_at=new Date(now()).toISOString();packet={projects:parseActiveWork(source.content),source:{repo:WRITE_REPO,path:'ACTIVE_WORK.md',sha:source.sha},created_at,expires_at:new Date(now()+packetTtlMs).toISOString()};await store.putContextPacket(key,packet);}
-    return {projects:packet.projects,source:packet.source,context:{status:reused?'reused':'refreshed',created_at:packet.created_at,expires_at:packet.expires_at},queues:await store.listQueues(),history:await store.listHistory(20)};
+    if(packet&&!Array.isArray(packet.facts)){packet=null;reused=false;}
+    if(!packet){const source=await github.readFile(WRITE_REPO,'ACTIVE_WORK.md');const created_at=new Date(now()).toISOString();packet={projects:parseActiveWork(source.content),facts:parseCanonicalFacts(source.content),source:{repo:WRITE_REPO,path:'ACTIVE_WORK.md',sha:source.sha},created_at,expires_at:new Date(now()+packetTtlMs).toISOString()};await store.putContextPacket(key,packet);}
+    const prior_state=createPriorStateReceipt(packet,requiredFactKeys);
+    return {projects:packet.projects,source:packet.source,context:{status:reused?'reused':'refreshed',created_at:packet.created_at,expires_at:packet.expires_at},fact_keys:[...new Set(packet.facts.map(f=>f.key))],prior_state,queues:await store.listQueues(),history:await store.listHistory(20)};
   };
   return {
     state,
-    async capture(text) {
+    async capture(text,{requiredFactKeys=[]}={}) {
       if(typeof text!=='string'||!text.trim()||text.length>4000) throw new Error('Message must be 1–4000 characters');
-      const snapshot=await state();
-      const route=validateRoute(await router.route(text.trim(),createControlTaskPacket(snapshot)));
+      const initial=await state();
+      const keys=requestedFactKeys(text,initial.fact_keys.map(key=>({key})),requiredFactKeys);
+      const snapshot=keys.length?await state({requiredFactKeys:keys}):initial;
+      requirePriorState(snapshot.prior_state);
+      const candidate=validateRoute(await router.route(text.trim(),createControlTaskPacket(snapshot)));
+      if (Object.hasOwn(candidate,'prior_state')) throw new Error('Prior-state gate receipt is assigned by the control service');
+      const route={...candidate,prior_state:snapshot.prior_state};
       const interaction=await store.addInteraction({raw_text:text.trim(),route});
       let item=null;
       if(route.proposal) item=await store.addQueueItem({interaction_id:interaction.id,...route});

@@ -18,7 +18,7 @@ async function control(request,env) {
   const core=service(env);
   if(path==='/control') return new Response(controlPage,{headers:{'content-type':'text/html;charset=UTF-8','cache-control':'no-store'}});
   if(path==='/api/control/state'&&request.method==='GET') return json(await core.state({refresh:new URL(request.url).searchParams.get('refresh')==='1'}));
-  if(path==='/api/control/interactions'&&request.method==='POST') return json(await core.capture((await body(request)).text),201);
+  if(path==='/api/control/interactions'&&request.method==='POST'){try{const data=await body(request);return json(await core.capture(data.text,{requiredFactKeys:data.required_fact_keys||[]}),201)}catch(error){return json({error:error.message,code:error.code||'invalid_request'},error.status||400)}}
   const match=path.match(/^\/api\/control\/items\/([\w-]+)\/(approve|reject)$/);
   if(match&&request.method==='POST'){const data=await body(request);return json(match[2]==='approve'?await core.approve(match[1],data.note):await core.reject(match[1],data.note));}
   return json({error:'Not found'},404);
