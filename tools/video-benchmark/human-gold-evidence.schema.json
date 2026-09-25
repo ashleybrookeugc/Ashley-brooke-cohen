@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Ashley video benchmark human gold evidence",
+  "description": "Human-source evidence for component quality scoring. Automated output must never populate this record as gold.",
+  "type": "object",
+  "required": ["schema_version", "sources"],
+  "properties": {
+    "schema_version": { "const": "ashley-video-human-gold-1.0" },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["source_id", "source_sha256", "review", "gold_completion_state", "lanes"],
+        "properties": {
+          "source_id": { "type": "string" },
+          "source_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+          "review": {
+            "type": "object",
+            "required": ["coverage_state"],
+            "properties": {
+              "coverage_state": { "enum": ["complete_source_direct_human_review", "incomplete_or_not_started"] },
+              "reviewer": { "type": "string" },
+              "reviewed_at": { "type": "string", "format": "date-time" }
+            }
+          },
+          "gold_completion_state": { "enum": ["complete", "incomplete"] },
+          "lanes": {
+            "type": "object",
+            "required": ["spoken_text", "speaker_turns", "burned_in_caption", "other_on_screen_text", "scene_edit", "semantic_visual"]
+          }
+        }
+      }
+    }
+  }
+}

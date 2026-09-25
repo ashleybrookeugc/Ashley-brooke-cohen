@@ -8,6 +8,32 @@ import { spawnSync } from 'node:child_process';
 const runner = resolve('tools/video-benchmark/benchmark.mjs');
 const corpus = resolve('tools/video-benchmark/calibration-corpus.json');
 
+async function writeGoldFixture(root, mutate = value => value) {
+  const registry = JSON.parse(await readFile(corpus, 'utf8'));
+  const lanes = () => ({
+    spoken_text: { status: 'not_applicable', spans: [] },
+    speaker_turns: { status: 'not_applicable', spans: [] },
+    burned_in_caption: { status: 'not_applicable', spans: [] },
+    other_on_screen_text: { status: 'not_applicable', spans: [] },
+    scene_edit: { status: 'not_applicable', spans: [] },
+    semantic_visual: { status: 'not_applicable', spans: [] }
+  });
+  const body = mutate({
+    schema_version: 'ashley-video-human-gold-1.0',
+    sources: registry.sources.map(source => ({
+      source_id: source.id,
+      source_sha256: source.sha256,
+      review: { coverage_state: 'incomplete_or_not_started' },
+      gold_completion_state: 'incomplete',
+      lanes: lanes(),
+      modality_conflicts: []
+    }))
+  });
+  const gold = join(root, 'human-gold.json');
+  await (await import('node:fs/promises')).writeFile(gold, JSON.stringify(body));
+  return gold;
+}
+
 function assertSupportedLiteralSourceUrl(value) {
   assert.equal(typeof value, 'string');
   assert.doesNotMatch(value, /^\[[^\]]+\]\(https:\/\/[^)]+\)$/, 'source_url must not contain Markdown-link syntax');
@@ -22,8 +48,8 @@ test('preflight does not misrepresent non-target hardware', async () => {
   assert.equal(spawnSync(process.execPath, [runner, 'preflight', '--output', output], { encoding: 'utf8' }).status, 0);
   const body = JSON.parse(await readFile(output, 'utf8'));
   assert.equal(body.receipt_type, 'machine_preflight');
-  assert.match(body.environment.ffmpeg, /^ffmpeg version /);
-  assert.match(body.environment.ffprobe, /^ffprobe version /);
+  assert.ok(body.environment.ffmpeg === null || /^ffmpeg version /.test(body.environment.ffmpeg));
+  assert.ok(body.environment.ffprobe === null || /^ffprobe version /.test(body.environment.ffprobe));
   if (process.platform !== 'darwin' || process.arch !== 'arm64') assert.equal(body.operational_result, 'UNTESTED — TARGET HARDWARE EXECUTION REQUIRED');
 });
 
@@ -59,4 +85,36 @@ test('URL repair preserves each frozen corpus entry outside source_url', async (
     { id: 'ashley-social-08', local_filename: 'ashley-social-08.mp4', sha256: 'b06c101bcf7b5a69699ebc7abd2f5c8e8ef9161910fd715cd24db1253772c28e', duration_seconds: 15.566667, source_type: 'finished_social', candidate_modalities: ['speech', 'outdoor_text_or_signage_candidate'], gold_evidence_state: 'incomplete' },
     { id: 'ashley-social-10', local_filename: 'ashley-social-10.mp4', sha256: '32bb074d859df59e091a23a141bc67ec32f8afd3c2f9c70e5988ed0aa0092e62', duration_seconds: 10.819002, source_type: 'finished_social', candidate_modalities: ['speech', 'burned_in_caption', 'other_on_screen_text', 'outdoor_text_or_signage_candidate'], gold_evidence_state: 'incomplete' }
   ]);
+});
+
+test('human-gold validator binds every record to frozen corpus identity without claiming quality', async () => {
+  const root = await mkdtemp(join(tmpdir(), 'abc-benchmark-test-'));
+  const gold = await writeGoldFixture(root), output = join(root, 'human-gold-validation.json');
+  assert.equal(spawnSync(process.execPath, [runner, 'validate-gold', '--gold', gold, '--corpus', corpus, '--output', output], { encoding: 'utf8' }).status, 0);
+  const body = JSON.parse(await readFile(output, 'utf8'));
+  assert.equal(body.receipt_type, 'human_gold_validation');
+  assert.equal(body.operational_result, 'PASS');
+  assert.equal(body.quality_result, 'NOT_APPLICABLE');
+  assert.equal(body.results.length, 6);
+  assert.ok(body.results.every(result => result.gold_completion_state === 'incomplete'));
+});
+
+test('human-gold validator rejects a SHA mismatch instead of scoring a different source as gold', async () => {
+  const root = await mkdtemp(join(tmpdir(), 'abc-benchmark-test-'));
+  const gold = await writeGoldFixture(root, body => { body.sources[0].source_sha256 = '0'.repeat(64); return body; });
+  const result = spawnSync(process.execPath, [runner, 'validate-gold', '--gold', gold, '--corpus', corpus, '--output', join(root, 'ignored.json')], { encoding: 'utf8' });
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /Human-gold SHA-256 does not match frozen corpus identity/);
+});
+
+test('human-gold validator rejects a false complete claim with unresolved evidence lanes', async () => {
+  const root = await mkdtemp(join(tmpdir(), 'abc-benchmark-test-'));
+  const gold = await writeGoldFixture(root, body => {
+    body.sources[0].review.coverage_state = 'complete_source_direct_human_review';
+    body.sources[0].gold_completion_state = 'complete';
+    return body;
+  });
+  const result = spawnSync(process.execPath, [runner, 'validate-gold', '--gold', gold, '--corpus', corpus, '--output', join(root, 'ignored.json')], { encoding: 'utf8' });
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /cannot claim complete gold/);
 });

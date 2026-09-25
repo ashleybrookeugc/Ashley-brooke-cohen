@@ -1,0 +1,21 @@
+{
+  "schema_version": "ashley-video-human-gold-1.0",
+  "purpose": "Template only. Copy to approved local evidence storage after byte identity verification; do not commit source media or claim this template is human gold.",
+  "sources": [
+    {
+      "source_id": "REPLACE_WITH_FROZEN_CORPUS_ID",
+      "source_sha256": "REPLACE_WITH_MATCHING_FROZEN_SHA256",
+      "review": { "coverage_state": "incomplete_or_not_started" },
+      "gold_completion_state": "incomplete",
+      "lanes": {
+        "spoken_text": { "status": "incomplete", "spans": [] },
+        "speaker_turns": { "status": "incomplete", "spans": [] },
+        "burned_in_caption": { "status": "incomplete", "spans": [] },
+        "other_on_screen_text": { "status": "incomplete", "spans": [] },
+        "scene_edit": { "status": "incomplete", "spans": [] },
+        "semantic_visual": { "status": "incomplete", "spans": [] }
+      },
+      "modality_conflicts": []
+    }
+  ]
+}

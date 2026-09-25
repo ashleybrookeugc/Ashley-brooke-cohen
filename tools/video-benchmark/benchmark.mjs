@@ -10,6 +10,7 @@ import { join, resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
 
 const STATUS = { PASS: 'PASS', FAIL: 'FAIL', TARGET_REQUIRED: 'UNTESTED — TARGET HARDWARE EXECUTION REQUIRED', BLOCKED: 'BLOCKED' };
+const GOLD_STATUS = new Set(['complete', 'incomplete', 'not_applicable']);
 const args = () => ({ get(name) { const i = process.argv.slice(3).indexOf(name); return i < 0 ? null : process.argv.slice(3)[i + 1]; } });
 function commandVersion(command, flags = ['--version']) {
   const r = spawnSync(command, flags, { encoding: 'utf8' });
@@ -48,7 +49,44 @@ async function verifyCorpus(corpusPath, mediaRoot, output) {
   }
   await receipt(output, { schema_version: 'apple-silicon-video-benchmark-receipt-1.0', receipt_type: 'corpus_identity_verification', created_at: new Date().toISOString(), corpus: { path: corpusPath, registry_version: corpus.schema_version, source_count: results.length }, results });
 }
+function validateSpan(span, path) {
+  if (!Number.isFinite(span?.start_seconds) || !Number.isFinite(span?.end_seconds) || span.start_seconds < 0 || span.end_seconds < span.start_seconds) throw new Error(`${path} needs a non-negative [start_seconds, end_seconds] range.`);
+  if (span.state !== 'observable' && span.state !== 'inaudible_or_obscured' && span.state !== 'uncertain') throw new Error(`${path}.state must preserve observable, inaudible_or_obscured, or uncertain.`);
+}
+function validateGoldLane(lane, path) {
+  if (!lane || !GOLD_STATUS.has(lane.status)) throw new Error(`${path}.status must be complete, incomplete, or not_applicable.`);
+  if (lane.status === 'complete' && (!Array.isArray(lane.spans) || !lane.spans.length)) throw new Error(`${path} cannot be complete without human-verified spans.`);
+  for (const [index, span] of (lane.spans || []).entries()) validateSpan(span, `${path}.spans[${index}]`);
+}
+async function validateGold(goldPath, corpusPath, output) {
+  const [gold, corpus] = await Promise.all([readFile(goldPath, 'utf8').then(JSON.parse), readFile(corpusPath, 'utf8').then(JSON.parse)]);
+  if (gold.schema_version !== 'ashley-video-human-gold-1.0') throw new Error('Unsupported human-gold schema_version.');
+  const expected = new Map((corpus.sources || []).map(source => [source.id, source]));
+  if (!Array.isArray(gold.sources) || gold.sources.length !== expected.size) throw new Error('Human-gold file must contain exactly one entry for every frozen corpus source.');
+  const requiredLanes = ['spoken_text', 'speaker_turns', 'burned_in_caption', 'other_on_screen_text', 'scene_edit', 'semantic_visual'];
+  const results = [];
+  for (const source of gold.sources) {
+    const registered = expected.get(source.source_id);
+    if (!registered) throw new Error(`Unknown human-gold source_id: ${source.source_id}.`);
+    if (source.source_sha256 !== registered.sha256) throw new Error(`Human-gold SHA-256 does not match frozen corpus identity for ${source.source_id}.`);
+    if (!source.review || !['complete_source_direct_human_review', 'incomplete_or_not_started'].includes(source.review.coverage_state)) throw new Error(`${source.source_id}.review.coverage_state is invalid.`);
+    for (const lane of requiredLanes) validateGoldLane(source.lanes?.[lane], `${source.source_id}.lanes.${lane}`);
+    const laneStates = requiredLanes.map(lane => source.lanes[lane].status);
+    const allLanesResolved = laneStates.every(status => status === 'complete' || status === 'not_applicable');
+    if (source.gold_completion_state === 'complete' && (source.review.coverage_state !== 'complete_source_direct_human_review' || !allLanesResolved)) throw new Error(`${source.source_id} cannot claim complete gold without complete direct review and resolved lanes.`);
+    const candidateLaneRequirements = {
+      speech: ['spoken_text'], speaker_change_candidate: ['speaker_turns'], burned_in_caption: ['burned_in_caption'],
+      other_on_screen_text: ['other_on_screen_text'], outdoor_text_or_signage_candidate: ['other_on_screen_text'],
+      edited_shots: ['scene_edit', 'semantic_visual']
+    };
+    if (source.gold_completion_state === 'complete') for (const modality of registered.candidate_modalities || []) for (const lane of candidateLaneRequirements[modality] || []) if (source.lanes[lane].status !== 'complete') throw new Error(`${source.source_id} cannot claim complete gold while candidate modality ${modality} lacks complete ${lane} evidence.`);
+    if (!['complete', 'incomplete'].includes(source.gold_completion_state)) throw new Error(`${source.source_id}.gold_completion_state must be complete or incomplete.`);
+    results.push({ source_id: source.source_id, source_sha256: source.source_sha256, gold_completion_state: source.gold_completion_state, coverage_state: source.review.coverage_state, lane_statuses: Object.fromEntries(requiredLanes.map(lane => [lane, source.lanes[lane].status])) });
+  }
+  await receipt(output, { schema_version: 'apple-silicon-video-benchmark-receipt-1.0', receipt_type: 'human_gold_validation', created_at: new Date().toISOString(), applicability: 'calibration_evidence_schema_only', operational_result: STATUS.PASS, quality_result: 'NOT_APPLICABLE', gold_path: goldPath, corpus_path: corpusPath, results, notes: 'This validates evidence structure and frozen-source binding only. It does not establish that a human actually reviewed the source or that any component meets quality criteria.' });
+}
 const command = process.argv[2], { get } = args();
 if (command === 'preflight') await preflight(get('--output') || 'artifacts/video-benchmark/machine-preflight.json');
 else if (command === 'verify-corpus') { const corpus = get('--corpus'); if (!corpus) throw new Error('verify-corpus requires --corpus <registry.json>.'); await verifyCorpus(corpus, get('--media-root') || process.env.VIDEO_BENCHMARK_MEDIA_ROOT || '.', get('--output') || 'artifacts/video-benchmark/corpus-identity.json'); }
-else { console.error('Usage: benchmark.mjs preflight [--output receipt.json] | verify-corpus --corpus registry.json [--media-root directory] [--output receipt.json]'); process.exit(2); }
+else if (command === 'validate-gold') { const gold = get('--gold'), corpus = get('--corpus'); if (!gold || !corpus) throw new Error('validate-gold requires --gold <human-gold.json> --corpus <registry.json>.'); await validateGold(gold, corpus, get('--output') || 'artifacts/video-benchmark/human-gold-validation.json'); }
+else { console.error('Usage: benchmark.mjs preflight [--output receipt.json] | verify-corpus --corpus registry.json [--media-root directory] [--output receipt.json] | validate-gold --gold human-gold.json --corpus registry.json [--output receipt.json]'); process.exit(2); }
