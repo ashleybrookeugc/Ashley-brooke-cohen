@@ -11,6 +11,12 @@ import { spawnSync } from 'node:child_process';
 
 const STATUS = { PASS: 'PASS', FAIL: 'FAIL', TARGET_REQUIRED: 'UNTESTED — TARGET HARDWARE EXECUTION REQUIRED', BLOCKED: 'BLOCKED' };
 const GOLD_STATUS = new Set(['complete', 'incomplete', 'not_applicable']);
+const IDENTITY_OUTCOME = {
+  EXACT: 'EXACT_REPRESENTATION_MATCH',
+  DRIFT: 'LOGICAL_SOURCE_CONTINUITY_WITH_REPRESENTATION_DRIFT',
+  UNRESOLVED: 'SOURCE_IDENTITY_UNRESOLVED',
+  WRONG: 'WRONG_SOURCE'
+};
 const args = () => ({ get(name) { const i = process.argv.slice(3).indexOf(name); return i < 0 ? null : process.argv.slice(3)[i + 1]; } });
 function commandVersion(command, flags = ['--version']) {
   const r = spawnSync(command, flags, { encoding: 'utf8' });
@@ -40,14 +46,56 @@ async function preflight(output) {
   await receipt(output, { schema_version: 'apple-silicon-video-benchmark-receipt-1.0', receipt_type: 'machine_preflight', created_at: new Date().toISOString(), applicability: 'target_macbook_only', operational_result: !check.is_exact_target ? STATUS.TARGET_REQUIRED : missing.length ? STATUS.BLOCKED : STATUS.PASS, quality_result: 'NOT_APPLICABLE', environment: check.observed_environment, target: check.required_target, prerequisites_missing: missing, notes: !check.is_exact_target ? "This runner is not Ashley's specified M4 Pro / 24 GB / macOS 26.6.2 target. No target-hardware component result is implied." : missing.length ? 'Install listed prerequisites before resolving a component environment.' : 'Basic machine preflight only; this is not a component quality result.' });
 }
 async function sha256(path) { return createHash('sha256').update(await readFile(path)).digest('hex'); }
+function frozenRepresentation(source) {
+  const frozen = source.frozen_representation;
+  if (!frozen || frozen.sha256 !== source.sha256 || frozen.duration_seconds !== source.duration_seconds) throw new Error(`Frozen representation metadata must exactly preserve legacy SHA-256/duration for ${source.id}.`);
+  return frozen;
+}
+function continuityEvidenceIsSufficient(observation, source) {
+  const evidence = observation.logical_continuity?.evidence;
+  if (observation.observed_logical_source_id !== source.logical_source?.id || !Array.isArray(evidence)) return false;
+  const types = new Set(evidence.map(item => item?.type));
+  return types.has('platform_post_id_observed') && types.has('historical_representation_provenance') && !types.has('source_url_only');
+}
+function validateIdentityRegistry(corpus) {
+  for (const source of corpus.sources || []) {
+    if (!source.logical_source?.platform || !source.logical_source?.kind || !source.logical_source?.id) throw new Error(`Missing logical_source identity for ${source.id}.`);
+    const frozen = frozenRepresentation(source);
+    if (!/^[a-f0-9]{64}$/i.test(frozen.sha256 || '')) throw new Error(`Invalid frozen SHA-256 for ${source.id}.`);
+    for (const observation of source.observed_representations || []) {
+      if (!/^[a-f0-9]{64}$/i.test(observation.sha256 || '')) throw new Error(`Invalid observed SHA-256 for ${source.id}.`);
+      if (observation.identity_outcome === IDENTITY_OUTCOME.DRIFT) {
+        if (observation.sha256 === frozen.sha256) throw new Error(`${source.id} cannot call identical bytes representation drift.`);
+        if (!continuityEvidenceIsSufficient(observation, source)) throw new Error(`${source.id} representation drift lacks independent logical-continuity provenance.`);
+      }
+      if (observation.identity_outcome === IDENTITY_OUTCOME.WRONG && observation.observed_logical_source_id === source.logical_source.id) throw new Error(`${source.id} cannot classify the same logical source as WRONG_SOURCE.`);
+    }
+  }
+}
+function classifyRepresentation(source, actualSha256) {
+  const frozen = frozenRepresentation(source);
+  if (actualSha256 === frozen.sha256) return { identity_outcome: IDENTITY_OUTCOME.EXACT, exact_representation_match: true, logical_source_continuity: 'ESTABLISHED', evidence_scope: 'SHA-256 exact frozen representation match' };
+  const observation = (source.observed_representations || []).find(item => item.sha256 === actualSha256);
+  if (!observation) return { identity_outcome: IDENTITY_OUTCOME.UNRESOLVED, exact_representation_match: false, logical_source_continuity: 'UNRESOLVED', failure_reason: 'SHA-256 differs from frozen representation and no independently evidenced observed representation matches these bytes. URL, duration, platform, audio similarity, and yt-dlp success are insufficient.' };
+  if (observation.identity_outcome === IDENTITY_OUTCOME.DRIFT && continuityEvidenceIsSufficient(observation, source)) return { identity_outcome: IDENTITY_OUTCOME.DRIFT, exact_representation_match: false, logical_source_continuity: 'ESTABLISHED', observed_representation_id: observation.representation_id, evidence_scope: 'Recorded independent logical-source continuity evidence; exact representation remains different.' };
+  if (observation.identity_outcome === IDENTITY_OUTCOME.WRONG) return { identity_outcome: IDENTITY_OUTCOME.WRONG, exact_representation_match: false, logical_source_continuity: 'FAILED', observed_representation_id: observation.representation_id, failure_reason: 'Recorded provenance identifies these bytes as a different logical source.' };
+  return { identity_outcome: IDENTITY_OUTCOME.UNRESOLVED, exact_representation_match: false, logical_source_continuity: 'UNRESOLVED', failure_reason: 'Observed representation lacks sufficient independent continuity evidence.' };
+}
 async function verifyCorpus(corpusPath, mediaRoot, output) {
   const corpus = JSON.parse(await readFile(corpusPath, 'utf8')), results = [];
+  validateIdentityRegistry(corpus);
   for (const source of corpus.sources || []) {
-    if (!/^[a-f0-9]{64}$/i.test(source.sha256 || '')) throw new Error(`Invalid SHA-256 for ${source.id}.`);
-    try { const actual = await sha256(join(mediaRoot, source.local_filename)); results.push({ source_id: source.id, local_filename: source.local_filename, expected_sha256: source.sha256, actual_sha256: actual, operational_result: actual === source.sha256 ? STATUS.PASS : STATUS.FAIL, quality_result: 'NOT_APPLICABLE' }); }
-    catch { results.push({ source_id: source.id, local_filename: source.local_filename, expected_sha256: source.sha256, operational_result: STATUS.BLOCKED, quality_result: 'NOT_APPLICABLE', failure_reason: 'Source bytes are not present under VIDEO_BENCHMARK_MEDIA_ROOT. The registry is identity metadata, not Git video storage.' }); }
+    const frozen = frozenRepresentation(source);
+    try {
+      const actual = await sha256(join(mediaRoot, source.local_filename)), identity = classifyRepresentation(source, actual);
+      results.push({ source_id: source.id, logical_source: source.logical_source, local_filename: source.local_filename, frozen_representation_sha256: frozen.sha256, actual_sha256: actual, identity_verification_outcome: identity.identity_outcome, exact_representation_match: identity.exact_representation_match, logical_source_continuity: identity.logical_source_continuity, operational_result: identity.identity_outcome === IDENTITY_OUTCOME.UNRESOLVED || identity.identity_outcome === IDENTITY_OUTCOME.WRONG ? STATUS.FAIL : STATUS.PASS, quality_result: 'NOT_APPLICABLE', ...identity });
+    } catch (error) {
+      if (error.code !== 'ENOENT') throw error;
+      results.push({ source_id: source.id, logical_source: source.logical_source, local_filename: source.local_filename, frozen_representation_sha256: frozen.sha256, identity_verification_outcome: 'SOURCE_BYTES_NOT_PRESENT', operational_result: STATUS.BLOCKED, quality_result: 'NOT_APPLICABLE', failure_reason: 'Source bytes are not present under VIDEO_BENCHMARK_MEDIA_ROOT. The registry is identity metadata, not Git video storage.' });
+    }
   }
-  await receipt(output, { schema_version: 'apple-silicon-video-benchmark-receipt-1.0', receipt_type: 'corpus_identity_verification', created_at: new Date().toISOString(), corpus: { path: corpusPath, registry_version: corpus.schema_version, source_count: results.length }, results });
+  const allExact = results.length > 0 && results.every(result => result.identity_verification_outcome === IDENTITY_OUTCOME.EXACT);
+  await receipt(output, { schema_version: 'apple-silicon-video-benchmark-receipt-1.1', receipt_type: 'corpus_identity_verification', created_at: new Date().toISOString(), corpus: { path: corpusPath, registry_version: corpus.schema_version, source_count: results.length }, exact_representation_gate: allExact ? STATUS.PASS : 'NOT PASS — one or more source identities are blocked, unresolved, wrong, or documented representation drift', results });
 }
 function validateSpan(span, path) {
   if (!Number.isFinite(span?.start_seconds) || !Number.isFinite(span?.end_seconds) || span.start_seconds < 0 || span.end_seconds < span.start_seconds) throw new Error(`${path} needs a non-negative [start_seconds, end_seconds] range.`);

@@ -1,1 +1,67 @@
-{"schema_version":"ashley-video-calibration-corpus-1.0","purpose":"Target-Mac component benchmarks. Registry stores identities/source constraints, not raw video.","gold_evidence_policy":"Existing transcript/OCR drafts are not human gold; each gold field remains incomplete until direct human verification.","sources":[{"id":"ashley-social-01","local_filename":"ashley-social-01.mp4","source_url":"https://www.tiktok.com/t/ZP83DVEWH/","sha256":"d812ae5ab34b95063fdf8d56d9e05d24c3acac23c98ec0f4a83e150a80faab15","duration_seconds":27.466667,"source_type":"finished_social","candidate_modalities":["speech","burned_in_caption","edited_shots"],"gold_evidence_state":"incomplete"},{"id":"ashley-social-02","local_filename":"ashley-social-02.mp4","source_url":"https://www.tiktok.com/t/ZP83DnwFy/","sha256":"d8a3587aa2e32c0fd8d0b7a4271544b21768a42b3325d75fa67321255de27ab9","duration_seconds":32.166667,"source_type":"finished_social","candidate_modalities":["speech","burned_in_caption","other_on_screen_text","edited_shots"],"gold_evidence_state":"incomplete"},{"id":"ashley-social-04","local_filename":"ashley-social-04.mp4","source_url":"https://www.tiktok.com/t/ZP83DbJpX/","sha256":"7336ec9715c52021ff14fa40403a0f86291b60be2f2f1f44472e5c9ad163092f","duration_seconds":15.135593,"source_type":"finished_social","candidate_modalities":["speech","speaker_change_candidate","burned_in_caption"],"gold_evidence_state":"incomplete"},{"id":"ashley-social-05","local_filename":"ashley-social-05.mp4","source_url":"https://www.instagram.com/reel/Dcdz3BAOFwG/?stkn=MWF2YjRyNmx1Yzdmag==","sha256":"4549c6e9880e13d2a9f54d34092349cc5deb422755a2f4a8686e73c80b81dd9f","duration_seconds":94.363039,"source_type":"finished_social","candidate_modalities":["speech","burned_in_caption","other_on_screen_text","edited_shots"],"gold_evidence_state":"incomplete"},{"id":"ashley-social-08","local_filename":"ashley-social-08.mp4","source_url":"https://www.tiktok.com/t/ZP83DfPxA/","sha256":"b06c101bcf7b5a69699ebc7abd2f5c8e8ef9161910fd715cd24db1253772c28e","duration_seconds":15.566667,"source_type":"finished_social","candidate_modalities":["speech","outdoor_text_or_signage_candidate"],"gold_evidence_state":"incomplete"},{"id":"ashley-social-10","local_filename":"ashley-social-10.mp4","source_url":"https://www.tiktok.com/t/ZP83Dy2Uy/","sha256":"32bb074d859df59e091a23a141bc67ec32f8afd3c2f9c70e5988ed0aa0092e62","duration_seconds":10.819002,"source_type":"finished_social","candidate_modalities":["speech","burned_in_caption","other_on_screen_text","outdoor_text_or_signage_candidate"],"gold_evidence_state":"incomplete"}],"open_required_slots":["raw footage/B-roll","UGC/branded content","acting/performance","short workflow screen recording","speech with confirmed music/noise"],"retention_note":"Raw benchmark media belongs in an approved local/durable AssetLocation, never Git."}
+{
+  "schema_version": "ashley-video-calibration-corpus-1.1",
+  "purpose": "Target-Mac component benchmarks. Registry stores logical-source identities and exact retrieved representations, never raw video.",
+  "identity_policy": "sha256/duration_seconds remain immutable frozen representation fields. A differing SHA is unresolved unless it exactly matches a separately recorded observed representation with independent logical-source continuity evidence.",
+  "gold_evidence_policy": "Existing transcript/OCR drafts are not human gold; each gold field remains incomplete until direct human verification.",
+  "sources": [
+    {
+      "id": "ashley-social-01", "local_filename": "ashley-social-01.mp4", "source_url": "https://www.tiktok.com/t/ZP83DVEWH/",
+      "logical_source": { "platform": "tiktok", "kind": "short_link_routed_post", "id": "ZP83DVEWH", "identity_state": "provisional" },
+      "sha256": "d812ae5ab34b95063fdf8d56d9e05d24c3acac23c98ec0f4a83e150a80faab15", "duration_seconds": 27.466667,
+      "frozen_representation": { "representation_id": "mediaasset-sha256-d812ae5ab34b95063fdf8d56d9e05d24c3acac23c98ec0f4a83e150a80faab15", "sha256": "d812ae5ab34b95063fdf8d56d9e05d24c3acac23c98ec0f4a83e150a80faab15", "duration_seconds": 27.466667 },
+      "observed_representations": [], "source_type": "finished_social", "candidate_modalities": ["speech", "burned_in_caption", "edited_shots"], "gold_evidence_state": "incomplete"
+    },
+    {
+      "id": "ashley-social-02", "local_filename": "ashley-social-02.mp4", "source_url": "https://www.tiktok.com/t/ZP83DnwFy/",
+      "logical_source": { "platform": "tiktok", "kind": "short_link_routed_post", "id": "ZP83DnwFy", "identity_state": "provisional" },
+      "sha256": "d8a3587aa2e32c0fd8d0b7a4271544b21768a42b3325d75fa67321255de27ab9", "duration_seconds": 32.166667,
+      "frozen_representation": { "representation_id": "mediaasset-sha256-d8a3587aa2e32c0fd8d0b7a4271544b21768a42b3325d75fa67321255de27ab9", "sha256": "d8a3587aa2e32c0fd8d0b7a4271544b21768a42b3325d75fa67321255de27ab9", "duration_seconds": 32.166667 },
+      "observed_representations": [], "source_type": "finished_social", "candidate_modalities": ["speech", "burned_in_caption", "other_on_screen_text", "edited_shots"], "gold_evidence_state": "incomplete"
+    },
+    {
+      "id": "ashley-social-04", "local_filename": "ashley-social-04.mp4", "source_url": "https://www.tiktok.com/t/ZP83DbJpX/",
+      "logical_source": { "platform": "tiktok", "kind": "short_link_routed_post", "id": "ZP83DbJpX", "identity_state": "provisional" },
+      "sha256": "7336ec9715c52021ff14fa40403a0f86291b60be2f2f1f44472e5c9ad163092f", "duration_seconds": 15.135593,
+      "frozen_representation": { "representation_id": "mediaasset-sha256-7336ec9715c52021ff14fa40403a0f86291b60be2f2f1f44472e5c9ad163092f", "sha256": "7336ec9715c52021ff14fa40403a0f86291b60be2f2f1f44472e5c9ad163092f", "duration_seconds": 15.135593 },
+      "observed_representations": [], "source_type": "finished_social", "candidate_modalities": ["speech", "speaker_change_candidate", "burned_in_caption"], "gold_evidence_state": "incomplete"
+    },
+    {
+      "id": "ashley-social-05", "local_filename": "ashley-social-05.mp4", "source_url": "https://www.instagram.com/reel/Dcdz3BAOFwG/?stkn=MWF2YjRyNmx1Yzdmag==",
+      "logical_source": { "platform": "instagram", "kind": "reel_post", "id": "Dcdz3BAOFwG", "identity_state": "established_by_independent_post_id_evidence" },
+      "sha256": "4549c6e9880e13d2a9f54d34092349cc5deb422755a2f4a8686e73c80b81dd9f", "duration_seconds": 94.363039,
+      "frozen_representation": { "representation_id": "mediaasset-sha256-4549c6e9880e13d2a9f54d34092349cc5deb422755a2f4a8686e73c80b81dd9f", "sha256": "4549c6e9880e13d2a9f54d34092349cc5deb422755a2f4a8686e73c80b81dd9f", "file_size_bytes": 18316277, "duration_seconds": 94.363039, "provenance": "Frozen September calibration representation; original exact retrieval command/format selection is unavailable." },
+      "observed_representations": [
+        {
+          "representation_id": "mediaasset-sha256-66060820a5861f75673521855b51de362c17a02c1cb8111549ea1ceabf33f6a2", "sha256": "66060820a5861f75673521855b51de362c17a02c1cb8111549ea1ceabf33f6a2", "file_size_bytes": 17067983, "duration_seconds": 94.249002,
+          "container": "mp4", "video": "VP9 1440x2560 30fps", "audio": "AAC stereo 44.1kHz", "retrieval_method": "yt-dlp",
+          "identity_outcome": "LOGICAL_SOURCE_CONTINUITY_WITH_REPRESENTATION_DRIFT", "observed_logical_source_id": "Dcdz3BAOFwG",
+          "logical_continuity": {
+            "status": "established",
+            "evidence": [
+              { "type": "platform_post_id_observed", "detail": "Current target-Mac retrieval independently identified Instagram Reel post ID Dcdz3BAOFwG." },
+              { "type": "historical_representation_provenance", "detail": "September calibration records a fresh Instagram remux that was not byte-identical to the frozen MP4 while decoded audio aligned; its approximately 94.251 s duration closely matches this 94.249002 s representation." }
+            ],
+            "limitations": "Evidence cannot determine whether Instagram delivery changed or yt-dlp selected a different available representation. POST/MEDIA CHANGE and REGISTRY ERROR are not established."
+          }
+        }
+      ],
+      "source_type": "finished_social", "candidate_modalities": ["speech", "burned_in_caption", "other_on_screen_text", "edited_shots"], "gold_evidence_state": "incomplete"
+    },
+    {
+      "id": "ashley-social-08", "local_filename": "ashley-social-08.mp4", "source_url": "https://www.tiktok.com/t/ZP83DfPxA/",
+      "logical_source": { "platform": "tiktok", "kind": "short_link_routed_post", "id": "ZP83DfPxA", "identity_state": "provisional" },
+      "sha256": "b06c101bcf7b5a69699ebc7abd2f5c8e8ef9161910fd715cd24db1253772c28e", "duration_seconds": 15.566667,
+      "frozen_representation": { "representation_id": "mediaasset-sha256-b06c101bcf7b5a69699ebc7abd2f5c8e8ef9161910fd715cd24db1253772c28e", "sha256": "b06c101bcf7b5a69699ebc7abd2f5c8e8ef9161910fd715cd24db1253772c28e", "duration_seconds": 15.566667 },
+      "observed_representations": [], "source_type": "finished_social", "candidate_modalities": ["speech", "outdoor_text_or_signage_candidate"], "gold_evidence_state": "incomplete"
+    },
+    {
+      "id": "ashley-social-10", "local_filename": "ashley-social-10.mp4", "source_url": "https://www.tiktok.com/t/ZP83Dy2Uy/",
+      "logical_source": { "platform": "tiktok", "kind": "short_link_routed_post", "id": "ZP83Dy2Uy", "identity_state": "provisional" },
+      "sha256": "32bb074d859df59e091a23a141bc67ec32f8afd3c2f9c70e5988ed0aa0092e62", "duration_seconds": 10.819002,
+      "frozen_representation": { "representation_id": "mediaasset-sha256-32bb074d859df59e091a23a141bc67ec32f8afd3c2f9c70e5988ed0aa0092e62", "sha256": "32bb074d859df59e091a23a141bc67ec32f8afd3c2f9c70e5988ed0aa0092e62", "duration_seconds": 10.819002 },
+      "observed_representations": [], "source_type": "finished_social", "candidate_modalities": ["speech", "burned_in_caption", "other_on_screen_text", "outdoor_text_or_signage_candidate"], "gold_evidence_state": "incomplete"
+    }
+  ],
+  "open_required_slots": ["raw footage/B-roll", "UGC/branded content", "acting/performance", "short workflow screen recording", "speech with confirmed music/noise"],
+  "retention_note": "Raw benchmark media belongs in an approved local/durable AssetLocation, never Git."
+}

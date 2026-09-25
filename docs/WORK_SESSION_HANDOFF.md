@@ -2,7 +2,7 @@
 
 - **Repo / branch:** `ashleybrookeugc/Ashley-brooke-cohen` / `portfolio-v2`. Do not touch or merge to `main`.
 - **Current basis:** audited implementation `e04e2fa901544bf6b02654cc282e165817836ded` plus `3bfd231c9e4554967a114d829509f0285da52d29`. The custom analyzer is now a **reference implementation and acceptance-test foundation**, not a settled extraction architecture.
-- **Phase 2 state:** Ashley actually ran the machine preflight on the specified M4 Pro MacBook: **PASS** (macOS 26.6.2, arm64, Apple M4 Pro, 24 GB, Node 26.3.1, ffmpeg/ffprobe 8.1.1, Python 3.14.7, uv 0.11.26; no prerequisites missing). This proves only machine readiness, not any component. `ashley-social-01` retrieval/identity is separately **PASS** with the frozen SHA-256; a separate target-Mac session is verifying the other five. A first URL guard falsely passed because its regexes were over-escaped; it is repaired with a known-bad Markdown-link negative test. All six stored URLs independently validate as literal supported HTTPS URLs. Component quality and human gold remain unestablished.
+- **Phase 2 state:** Ashley actually ran the machine preflight on the specified M4 Pro MacBook: **PASS** (macOS 26.6.2, arm64, Apple M4 Pro, 24 GB, Node 26.3.1, ffmpeg/ffprobe 8.1.1, Python 3.14.7, uv 0.11.26; no prerequisites missing). This proves only machine readiness, not any component. Target-Mac retrieval established exact frozen-representation matches for `ashley-social-01`, `-02`, and `-04`. `ashley-social-05` is **LOGICAL_SOURCE_CONTINUITY_WITH_REPRESENTATION_DRIFT**, not an exact match: frozen SHA `4549c6…dd9f` is preserved; observed SHA `660608…f6a2` is a separately recorded representation of Instagram Reel `Dcdz3BAOFwG`, with explicit continuity provenance and unresolved delivery-versus-selection cause. `-08` and `-10` were not downloaded after the stop rule. The six-source exact-representation gate is **NOT PASS**. Component quality and human gold remain unestablished.
 
 ## Preserved acceptance contract
 
@@ -27,6 +27,7 @@
 - The registry records six existing Ashley public-social source IDs (clips 01, 02, 04, 05, 08, 10). Their bytes are not present here, so corpus verification correctly reports `BLOCKED`; existing ASR/OCR drafts remain non-gold. Open corpus slots remain raw/B-roll, UGC, acting/performance, short workflow screen recording, and confirmed music/noise.
 - Before candidate evaluation: obtain byte-identical sources in `VIDEO_BENCHMARK_MEDIA_ROOT`, pass SHA verification, record a bounded human-gold subset, then resolve one pinned component/model at a time. Receipts must separate operational and quality outcomes, including `UNTESTED — TARGET HARDWARE EXECUTION REQUIRED`.
 - `tools/video-benchmark/HUMAN_GOLD_AND_QUALITY.md` now defines the human-review lanes, timestamp/uncertainty rules, scoring units, and narrow quality gates. `benchmark.mjs validate-gold` binds a local human-gold record to all six frozen SHA-256 values and refuses a false `complete` claim with unresolved lanes. A structurally valid record is **not** evidence that human review occurred and is always `quality_result: NOT_APPLICABLE`.
+- `tools/video-benchmark/IDENTITY_POLICY.md` now separates logical sources from exact media representations. `verify-corpus` reports exact match, documented representation drift, unresolved identity, or wrong source. It cannot infer continuity from a matching URL, similar duration/audio, platform, or yt-dlp success; drift requires recorded independent provenance. Do not replace a frozen SHA to hide drift.
 - Benchmark each capability separately: intake/hash/inspection/EOF decode; ASR/timestamps/turns; OCR/caption-vs-UI; scene/keyframes/dedup/screen state; selective visual evidence; synchronized assembly/provenance/conflicts; persistence/read-back/authorized retrieval/deletion state. Conditional screen stages must not make a short Reel fail.
 - Preserve **one evidence engine, multiple analysis lenses** for finished social, UGC, acting, raw footage, screen workflows, and reference videos. Reuse source extraction across lenses; invoke screen-state/OCR-change/VLM work selectively for long workflows rather than blindly per frame.
 
@@ -37,7 +38,7 @@
 
 ## Next actions
 
-1. Finish target-Mac retrieval/SHA verification for the remaining five frozen sources; stop on any mismatch.
+1. Resolve the source-05 representation decision only if new evidence can distinguish platform delivery change from yt-dlp representation selection; do not mutate its frozen SHA. Separately decide whether to resume bounded retrieval for `-08` and `-10` after the stop-rule checkpoint.
 2. On the target Mac, make and validate a complete-source human-gold record using `tools/video-benchmark/HUMAN_GOLD_AND_QUALITY.md` before candidate execution.
 3. Benchmark selected composable components against real media and quality criteria; retain negative fixtures and inspect artifacts/receipts, not only exit codes.
 4. Choose/promote an approved durable media path consistent with `ugc-creator-app`, then prove remote write, read-back, and later authorized retrieval.

@@ -1,12 +1,33 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtemp, readFile } from 'node:fs/promises';
+import { mkdtemp, readFile, writeFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
 
 const runner = resolve('tools/video-benchmark/benchmark.mjs');
 const corpus = resolve('tools/video-benchmark/calibration-corpus.json');
+
+const hash = value => createHash('sha256').update(value).digest('hex');
+function identitySource({ frozenBytes = 'frozen', observed = [], logicalId = 'post-a' } = {}) {
+  const frozenHash = hash(frozenBytes);
+  return {
+    id: 'source-a', local_filename: 'source-a.mp4', source_url: 'https://www.instagram.com/reel/post-a/',
+    logical_source: { platform: 'instagram', kind: 'reel_post', id: logicalId },
+    sha256: frozenHash, duration_seconds: 10,
+    frozen_representation: { representation_id: `mediaasset-sha256-${frozenHash}`, sha256: frozenHash, duration_seconds: 10 },
+    observed_representations: observed, source_type: 'finished_social', candidate_modalities: [], gold_evidence_state: 'incomplete'
+  };
+}
+async function runIdentityFixture(root, source, bytes) {
+  const registry = join(root, 'registry.json'), media = join(root, 'media'), output = join(root, 'identity.json');
+  await (await import('node:fs/promises')).mkdir(media);
+  await writeFile(registry, JSON.stringify({ schema_version: 'test', sources: [source] }));
+  await writeFile(join(media, source.local_filename), bytes);
+  const processResult = spawnSync(process.execPath, [runner, 'verify-corpus', '--corpus', registry, '--media-root', media, '--output', output], { encoding: 'utf8' });
+  return { processResult, body: processResult.status === 0 ? JSON.parse(await readFile(output, 'utf8')) : null };
+}
 
 async function writeGoldFixture(root, mutate = value => value) {
   const registry = JSON.parse(await readFile(corpus, 'utf8'));
@@ -59,6 +80,7 @@ test('corpus verifier blocks absent bytes', async () => {
   const body = JSON.parse(await readFile(output, 'utf8'));
   assert.equal(body.results.length, 6);
   assert.ok(body.results.every(item => item.operational_result === 'BLOCKED'));
+  assert.match(body.exact_representation_gate, /^NOT PASS/);
 });
 
 test('calibration registry contains six supported literal source URLs, never Markdown links', async () => {
@@ -76,7 +98,7 @@ test('literal URL guard rejects the known-bad Markdown-link serialization', () =
 
 test('URL repair preserves each frozen corpus entry outside source_url', async () => {
   const body = JSON.parse(await readFile(corpus, 'utf8'));
-  const protectedFields = body.sources.map(({ source_url, ...rest }) => rest);
+  const protectedFields = body.sources.map(({ id, local_filename, sha256, duration_seconds, source_type, candidate_modalities, gold_evidence_state }) => ({ id, local_filename, sha256, duration_seconds, source_type, candidate_modalities, gold_evidence_state }));
   assert.deepEqual(protectedFields, [
     { id: 'ashley-social-01', local_filename: 'ashley-social-01.mp4', sha256: 'd812ae5ab34b95063fdf8d56d9e05d24c3acac23c98ec0f4a83e150a80faab15', duration_seconds: 27.466667, source_type: 'finished_social', candidate_modalities: ['speech', 'burned_in_caption', 'edited_shots'], gold_evidence_state: 'incomplete' },
     { id: 'ashley-social-02', local_filename: 'ashley-social-02.mp4', sha256: 'd8a3587aa2e32c0fd8d0b7a4271544b21768a42b3325d75fa67321255de27ab9', duration_seconds: 32.166667, source_type: 'finished_social', candidate_modalities: ['speech', 'burned_in_caption', 'other_on_screen_text', 'edited_shots'], gold_evidence_state: 'incomplete' },
@@ -85,6 +107,67 @@ test('URL repair preserves each frozen corpus entry outside source_url', async (
     { id: 'ashley-social-08', local_filename: 'ashley-social-08.mp4', sha256: 'b06c101bcf7b5a69699ebc7abd2f5c8e8ef9161910fd715cd24db1253772c28e', duration_seconds: 15.566667, source_type: 'finished_social', candidate_modalities: ['speech', 'outdoor_text_or_signage_candidate'], gold_evidence_state: 'incomplete' },
     { id: 'ashley-social-10', local_filename: 'ashley-social-10.mp4', sha256: '32bb074d859df59e091a23a141bc67ec32f8afd3c2f9c70e5988ed0aa0092e62', duration_seconds: 10.819002, source_type: 'finished_social', candidate_modalities: ['speech', 'burned_in_caption', 'other_on_screen_text', 'outdoor_text_or_signage_candidate'], gold_evidence_state: 'incomplete' }
   ]);
+});
+
+test('social-05 preserves frozen bytes and separately records its observed drift representation', async () => {
+  const body = JSON.parse(await readFile(corpus, 'utf8'));
+  const source = body.sources.find(item => item.id === 'ashley-social-05');
+  assert.equal(source.sha256, '4549c6e9880e13d2a9f54d34092349cc5deb422755a2f4a8686e73c80b81dd9f');
+  assert.equal(source.frozen_representation.sha256, source.sha256);
+  assert.equal(source.observed_representations[0].sha256, '66060820a5861f75673521855b51de362c17a02c1cb8111549ea1ceabf33f6a2');
+  assert.equal(source.observed_representations[0].identity_outcome, 'LOGICAL_SOURCE_CONTINUITY_WITH_REPRESENTATION_DRIFT');
+  assert.equal(source.logical_source.id, 'Dcdz3BAOFwG');
+});
+
+test('exact SHA match remains distinguishable from representation drift', async () => {
+  const root = await mkdtemp(join(tmpdir(), 'abc-benchmark-test-'));
+  const { processResult, body } = await runIdentityFixture(root, identitySource(), 'frozen');
+  assert.equal(processResult.status, 0);
+  assert.equal(body.exact_representation_gate, 'PASS');
+  assert.equal(body.results[0].identity_verification_outcome, 'EXACT_REPRESENTATION_MATCH');
+  assert.equal(body.results[0].exact_representation_match, true);
+});
+
+test('same URL plus different SHA alone is source identity unresolved', async () => {
+  const root = await mkdtemp(join(tmpdir(), 'abc-benchmark-test-'));
+  const { processResult, body } = await runIdentityFixture(root, identitySource(), 'different bytes');
+  assert.equal(processResult.status, 0);
+  assert.equal(body.exact_representation_gate.startsWith('NOT PASS'), true);
+  assert.equal(body.results[0].identity_verification_outcome, 'SOURCE_IDENTITY_UNRESOLVED');
+});
+
+test('similar declared duration plus different SHA cannot promote logical continuity', async () => {
+  const root = await mkdtemp(join(tmpdir(), 'abc-benchmark-test-'));
+  const source = identitySource();
+  source.duration_seconds = 94.249002;
+  source.frozen_representation.duration_seconds = 94.249002;
+  const { body } = await runIdentityFixture(root, source, 'different bytes');
+  assert.equal(body.results[0].identity_verification_outcome, 'SOURCE_IDENTITY_UNRESOLVED');
+});
+
+test('documented independent provenance permits drift but never an exact match', async () => {
+  const root = await mkdtemp(join(tmpdir(), 'abc-benchmark-test-')), driftBytes = 'drift representation', driftHash = hash(driftBytes);
+  const source = identitySource({ observed: [{ representation_id: `mediaasset-sha256-${driftHash}`, sha256: driftHash, identity_outcome: 'LOGICAL_SOURCE_CONTINUITY_WITH_REPRESENTATION_DRIFT', observed_logical_source_id: 'post-a', logical_continuity: { evidence: [{ type: 'platform_post_id_observed' }, { type: 'historical_representation_provenance' }] } }] });
+  const { body } = await runIdentityFixture(root, source, driftBytes);
+  assert.equal(body.results[0].identity_verification_outcome, 'LOGICAL_SOURCE_CONTINUITY_WITH_REPRESENTATION_DRIFT');
+  assert.equal(body.results[0].exact_representation_match, false);
+  assert.equal(body.exact_representation_gate.startsWith('NOT PASS'), true);
+});
+
+test('different logical post is WRONG_SOURCE, never continuity', async () => {
+  const root = await mkdtemp(join(tmpdir(), 'abc-benchmark-test-')), wrongBytes = 'wrong post bytes', wrongHash = hash(wrongBytes);
+  const source = identitySource({ observed: [{ representation_id: `mediaasset-sha256-${wrongHash}`, sha256: wrongHash, identity_outcome: 'WRONG_SOURCE', observed_logical_source_id: 'post-b' }] });
+  const { body } = await runIdentityFixture(root, source, wrongBytes);
+  assert.equal(body.results[0].identity_verification_outcome, 'WRONG_SOURCE');
+  assert.equal(body.results[0].logical_source_continuity, 'FAILED');
+});
+
+test('missing continuity provenance cannot be promoted to representation drift', async () => {
+  const root = await mkdtemp(join(tmpdir(), 'abc-benchmark-test-')), driftBytes = 'unproven drift', driftHash = hash(driftBytes);
+  const source = identitySource({ observed: [{ representation_id: `mediaasset-sha256-${driftHash}`, sha256: driftHash, identity_outcome: 'LOGICAL_SOURCE_CONTINUITY_WITH_REPRESENTATION_DRIFT', observed_logical_source_id: 'post-a', logical_continuity: { evidence: [{ type: 'source_url_only' }] } }] });
+  const { processResult } = await runIdentityFixture(root, source, driftBytes);
+  assert.notEqual(processResult.status, 0);
+  assert.match(processResult.stderr, /lacks independent logical-continuity provenance/);
 });
 
 test('human-gold validator binds every record to frozen corpus identity without claiming quality', async () => {
