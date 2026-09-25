@@ -2,9 +2,9 @@ name: Control plane regressions
 on:
   push:
     branches: [main]
-    paths: ['src/control/**','src/control-worker.js','src/auth-worker.js','src/router-worker.js','public/control/**','migrations/0004_control_plane.sql','tests/**','package.json','wrangler.jsonc','.github/workflows/control-plane-tests.yml']
+    paths: ['src/control/**','src/control-worker.js','src/auth-worker.js','src/router-worker.js','src/worker.js','public/control/**','migrations/0004_control_plane.sql','test/**','tests/**','package.json','wrangler.jsonc','.github/workflows/control-plane-tests.yml']
   pull_request:
-    paths: ['src/control/**','src/control-worker.js','src/auth-worker.js','src/router-worker.js','public/control/**','migrations/0004_control_plane.sql','tests/**','package.json','wrangler.jsonc']
+    paths: ['src/control/**','src/control-worker.js','src/auth-worker.js','src/router-worker.js','src/worker.js','public/control/**','migrations/0004_control_plane.sql','test/**','tests/**','package.json','wrangler.jsonc']
 jobs:
   test:
     runs-on: ubuntu-latest
