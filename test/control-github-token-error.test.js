@@ -38,7 +38,7 @@ test('read-token request uses the expected JWT claims, installation, repositorie
     repositories:['research-vault','ugc-creator-app','B-Paid','Ashley-brooke-cohen'],
     permissions:{contents:'read'},
   });
-  assert.equal(error.message,'GitHub App token 403: Resource not accessible by integration');
+  assert.match(error.message,/^GitHub App token 403: Resource not accessible by integration; response=json\/json;/);
   assert.ok(!error.message.includes(jwt));
 });
 
@@ -53,7 +53,7 @@ test('unknown GitHub response cannot echo private key, JWT, token or Authorizati
   console.error=(...args)=>logged.push(args.join(' '));
   try { console.error('Control request failed',error.message); } finally { console.error=original; }
   const output=JSON.stringify({error:error.message,logs:logged});
-  assert.match(error.message,/^GitHub App token 403: (?:\[redacted\]|jwt|token|authorization|header|[a-z ]+)+$/);
+  assert.match(error.message,/^GitHub App token 403: (?:\[redacted\]|jwt|token|authorization|header|[a-z ]+)+; response=json\/json;/);
   for(const secret of [pem,jwt,request.options.headers.authorization,'ghs_mockInstallationToken','untrusted body']) {
     assert.ok(!output.includes(secret));
   }
@@ -61,11 +61,11 @@ test('unknown GitHub response cannot echo private key, JWT, token or Authorizati
 
 test('non-JSON GitHub response also stays opaque',async()=>{
   const {error}=await failedRequest(()=>`<html>${pem}</html>`);
-  assert.equal(error.message,'GitHub App token 403: Unrecognized GitHub error response');
+  assert.match(error.message,/^GitHub App token 403: No JSON message; response=html\/json; body-length=\d+; marker=none; github-request-id=absent$/);
 });
 
 test('unknown GitHub wording reveals only fixed safe vocabulary',async()=>{
   const {error}=await failedRequest(()=>JSON.stringify({message:'JWT signature verification failed for ghs_secretMaterial'}));
-  assert.equal(error.message,'GitHub App token 403: jwt signature [redacted] failed for [redacted]');
+  assert.match(error.message,/^GitHub App token 403: jwt signature \[redacted\] failed for \[redacted\]; response=json\/json; body-length=\d+; marker=jwt-signature; github-request-id=absent$/);
   assert.ok(!error.message.includes('ghs_secretMaterial'));
 });

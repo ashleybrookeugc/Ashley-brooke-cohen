@@ -56,10 +56,14 @@ function safeTokenMessage(message) {
   return masked.filter((word,index)=>word!=='[redacted]'||masked[index-1]!==word).join(' ');
 }
 
-export function safeGitHubTokenError(status, body) {
-  let message;
-  try { message = JSON.parse(body)?.message; } catch { /* Non-JSON errors stay opaque. */ }
-  return new Error(`GitHub App token ${status}: ${safeTokenMessage(message)}`);
+export function safeGitHubTokenError(status, body, contentType='',hasGitHubRequestId=false) {
+  let parsed;
+  try { parsed=JSON.parse(body); } catch { /* Do not echo non-JSON response text. */ }
+  const kind=parsed ? 'json' : !body.trim() ? 'empty' : /<html|<!doctype html/i.test(body) ? 'html' : 'text';
+  const declaredType=/json/i.test(contentType)?'json':/html/i.test(contentType)?'html':/text/i.test(contentType)?'text':'other';
+  const marker=/user.agent/i.test(body)?'user-agent':/rate.limit/i.test(body)?'rate-limit':/cloudflare/i.test(body)?'cloudflare':/jwt|signature/i.test(body)?'jwt-signature':/permission/i.test(body)?'permission':/forbidden/i.test(body)?'forbidden':'none';
+  const summary=kind==='json'?safeTokenMessage(parsed?.message):'No JSON message';
+  return new Error(`GitHub App token ${status}: ${summary}; response=${kind}/${declaredType}; body-length=${body.length}; marker=${marker}; github-request-id=${hasGitHubRequestId?'present':'absent'}`);
 }
 
 export function createGitHubAppTokenProvider(env,{fetchImpl=fetch,now=()=>Date.now()}={}) {
@@ -73,7 +77,7 @@ export function createGitHubAppTokenProvider(env,{fetchImpl=fetch,now=()=>Date.n
     const repos = scope === 'write' ? ['research-vault'] : ['research-vault','ugc-creator-app','B-Paid','Ashley-brooke-cohen'];
     const permissions = {contents:scope === 'write'?'write':'read'};
     const response=await fetchImpl(api+'/app/installations/'+env.CONTROL_GITHUB_INSTALLATION_ID+'/access_tokens',{method:'POST',headers:{authorization:'Bearer '+unsigned+'.'+url64(new Uint8Array(signature)),accept:'application/vnd.github+json','content-type':'application/json','x-github-api-version':'2022-11-28'},body:JSON.stringify({repositories:repos,permissions})});
-    if(!response.ok) throw safeGitHubTokenError(response.status,await response.text());
+    if(!response.ok) throw safeGitHubTokenError(response.status,await response.text(),response.headers.get('content-type')||'',Boolean(response.headers.get('x-github-request-id')));
     const data=await response.json(); cache[scope]={token:data.token,expires:Date.parse(data.expires_at)}; return data.token;
   };
 }
