@@ -43,12 +43,23 @@ const SAFE_TOKEN_ERRORS = new Set([
   'You must specify only permissions granted to your app',
   'Request forbidden by administrative rules',
 ]);
+const SAFE_ERROR_WORDS = new Set(('a about access accessible account admin administrative after all allow allowed already an and app are as at authentication authorization bad be because before blocked by can cannot check code credentials denied does error exceed exceeded expired failed for forbidden from github has have header in installation integration invalid is issued it jwt limit may more must no not of only or permission permissions please rate repository repositories request required resource response seconds server signature specify suspended than that the this time to token too try unable user using was with you your').split(' '));
+
+function safeTokenMessage(message) {
+  if(typeof message !== 'string') return 'Unrecognized GitHub error response';
+  if(SAFE_TOKEN_ERRORS.has(message)) return message;
+  // Reconstruct from a fixed vocabulary, not from arbitrary response spans.
+  // Unknown words (including credential fragments and repository names) never cross the boundary.
+  const words=(message.match(/[A-Za-z]+/g)||[]).slice(0,50);
+  if(!words.length) return 'Unrecognized GitHub error response';
+  const masked=words.map(word=>SAFE_ERROR_WORDS.has(word.toLowerCase())?word.toLowerCase():'[redacted]');
+  return masked.filter((word,index)=>word!=='[redacted]'||masked[index-1]!==word).join(' ');
+}
 
 export function safeGitHubTokenError(status, body) {
   let message;
   try { message = JSON.parse(body)?.message; } catch { /* Non-JSON errors stay opaque. */ }
-  const safeMessage = typeof message === 'string' && SAFE_TOKEN_ERRORS.has(message) ? message : 'Unrecognized GitHub error response';
-  return new Error(`GitHub App token ${status}: ${safeMessage}`);
+  return new Error(`GitHub App token ${status}: ${safeTokenMessage(message)}`);
 }
 
 export function createGitHubAppTokenProvider(env,{fetchImpl=fetch,now=()=>Date.now()}={}) {

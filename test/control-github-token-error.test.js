@@ -53,7 +53,7 @@ test('unknown GitHub response cannot echo private key, JWT, token or Authorizati
   console.error=(...args)=>logged.push(args.join(' '));
   try { console.error('Control request failed',error.message); } finally { console.error=original; }
   const output=JSON.stringify({error:error.message,logs:logged});
-  assert.equal(error.message,'GitHub App token 403: Unrecognized GitHub error response');
+  assert.match(error.message,/^GitHub App token 403: (?:\[redacted\]|jwt|token|authorization|header|[a-z ]+)+$/);
   for(const secret of [pem,jwt,request.options.headers.authorization,'ghs_mockInstallationToken','untrusted body']) {
     assert.ok(!output.includes(secret));
   }
@@ -62,4 +62,10 @@ test('unknown GitHub response cannot echo private key, JWT, token or Authorizati
 test('non-JSON GitHub response also stays opaque',async()=>{
   const {error}=await failedRequest(()=>`<html>${pem}</html>`);
   assert.equal(error.message,'GitHub App token 403: Unrecognized GitHub error response');
+});
+
+test('unknown GitHub wording reveals only fixed safe vocabulary',async()=>{
+  const {error}=await failedRequest(()=>JSON.stringify({message:'JWT signature verification failed for ghs_secretMaterial'}));
+  assert.equal(error.message,'GitHub App token 403: jwt signature [redacted] failed for [redacted]');
+  assert.ok(!error.message.includes('ghs_secretMaterial'));
 });
