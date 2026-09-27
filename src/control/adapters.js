@@ -76,7 +76,7 @@ export function createGitHubAppTokenProvider(env,{fetchImpl=fetch,now=()=>Date.n
     const signature=await crypto.subtle.sign('RSASSA-PKCS1-v1_5',key,new TextEncoder().encode(unsigned));
     const repos = scope === 'write' ? ['research-vault'] : ['research-vault','ugc-creator-app','B-Paid','Ashley-brooke-cohen'];
     const permissions = {contents:scope === 'write'?'write':'read'};
-    const response=await fetchImpl(api+'/app/installations/'+env.CONTROL_GITHUB_INSTALLATION_ID+'/access_tokens',{method:'POST',headers:{authorization:'Bearer '+unsigned+'.'+url64(new Uint8Array(signature)),accept:'application/vnd.github+json','content-type':'application/json','x-github-api-version':'2022-11-28'},body:JSON.stringify({repositories:repos,permissions})});
+    const response=await fetchImpl(api+'/app/installations/'+env.CONTROL_GITHUB_INSTALLATION_ID+'/access_tokens',{method:'POST',headers:{authorization:'Bearer '+unsigned+'.'+url64(new Uint8Array(signature)),accept:'application/vnd.github+json','content-type':'application/json','x-github-api-version':'2022-11-28','user-agent':'AshleyControlPlane/1.0'},body:JSON.stringify({repositories:repos,permissions})});
     if(!response.ok) throw safeGitHubTokenError(response.status,await response.text(),response.headers.get('content-type')||'',Boolean(response.headers.get('x-github-request-id')));
     const data=await response.json(); cache[scope]={token:data.token,expires:Date.parse(data.expires_at)}; return data.token;
   };

@@ -34,6 +34,7 @@ test('read-token request uses the expected JWT claims, installation, repositorie
   assert.equal(request.options.headers.accept,'application/vnd.github+json');
   assert.equal(request.options.headers['x-github-api-version'],'2022-11-28');
   assert.equal(request.options.headers['content-type'],'application/json');
+  assert.equal(request.options.headers['user-agent'],'AshleyControlPlane/1.0');
   assert.deepEqual(JSON.parse(request.options.body),{
     repositories:['research-vault','ugc-creator-app','B-Paid','Ashley-brooke-cohen'],
     permissions:{contents:'read'},
