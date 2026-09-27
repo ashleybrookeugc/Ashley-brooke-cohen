@@ -15,6 +15,22 @@ Before repeating deployment, Cloudflare, Worker, build, routing, or asset troubl
 
 ---
 
+## 2026-09-27 — Wrangler deployment replaced dashboard-only GitHub ID variables
+
+### Symptom
+The authenticated production state request still failed at GitHub installation-token creation after a new code deployment. The Cloudflare dashboard had previously shown the correct non-secret App and installation IDs.
+
+### Confirmed root cause of the configuration drift
+The GitHub-triggered build runs `npx wrangler deploy`. Its build log warned that the local Wrangler configuration differed from the dashboard configuration and that upload would override remote configuration. After the diagnostic deployment, Production settings no longer contained `CONTROL_GITHUB_APP_ID` or `CONTROL_GITHUB_INSTALLATION_ID`; the encrypted private-key secret remained present. This is a deployment-configuration failure, distinct from the still-unresolved GitHub token 403.
+
+### Verified fix and boundary
+The next deployment declared the same existing non-secret IDs in `wrangler.jsonc`. Its build log showed both bindings, and Production settings again showed App ID `4962733` and installation ID `165552010`. The active Worker still returned `GitHub App token 403`, so restoring the IDs did not establish the cause of that response. The production public key derived from the secret matched the independently verified local key; do not retry key replacement on this evidence.
+
+### Prevention rule
+Before a Wrangler deployment, compare locally declared runtime variables with the intended Production bindings. Do not rely on dashboard-only non-secret variables surviving a code deployment. Verify the active deployment and bindings after upload, and never infer secret contents from their encrypted dashboard presence.
+
+---
+
 ## 2026-09-22 — Control-page script contained a literal escaped newline
 
 ### Symptom

@@ -32,6 +32,25 @@ function url64(input) {
   return btoa(raw).replaceAll('+','-').replaceAll('/','_').replaceAll('=','');
 }
 
+// GitHub's response body is untrusted. Only these fixed, credential-free messages
+// may cross into the admin response or Worker error log; never echo raw body text.
+const SAFE_TOKEN_ERRORS = new Set([
+  'Bad credentials',
+  'Resource not accessible by integration',
+  'Not Found',
+  'Forbidden',
+  'Integration has been suspended',
+  'You must specify only permissions granted to your app',
+  'Request forbidden by administrative rules',
+]);
+
+export function safeGitHubTokenError(status, body) {
+  let message;
+  try { message = JSON.parse(body)?.message; } catch { /* Non-JSON errors stay opaque. */ }
+  const safeMessage = typeof message === 'string' && SAFE_TOKEN_ERRORS.has(message) ? message : 'Unrecognized GitHub error response';
+  return new Error(`GitHub App token ${status}: ${safeMessage}`);
+}
+
 export function createGitHubAppTokenProvider(env,{fetchImpl=fetch,now=()=>Date.now()}={}) {
   const cache = {};
   return async scope => {
@@ -43,7 +62,7 @@ export function createGitHubAppTokenProvider(env,{fetchImpl=fetch,now=()=>Date.n
     const repos = scope === 'write' ? ['research-vault'] : ['research-vault','ugc-creator-app','B-Paid','Ashley-brooke-cohen'];
     const permissions = {contents:scope === 'write'?'write':'read'};
     const response=await fetchImpl(api+'/app/installations/'+env.CONTROL_GITHUB_INSTALLATION_ID+'/access_tokens',{method:'POST',headers:{authorization:'Bearer '+unsigned+'.'+url64(new Uint8Array(signature)),accept:'application/vnd.github+json','content-type':'application/json','x-github-api-version':'2022-11-28'},body:JSON.stringify({repositories:repos,permissions})});
-    if(!response.ok) throw new Error('GitHub App token '+response.status);
+    if(!response.ok) throw safeGitHubTokenError(response.status,await response.text());
     const data=await response.json(); cache[scope]={token:data.token,expires:Date.parse(data.expires_at)}; return data.token;
   };
 }
