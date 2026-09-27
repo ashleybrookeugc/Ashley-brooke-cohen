@@ -3,6 +3,10 @@
   "name": "ashley-brooke-cohen",
   "compatibility_date": "2026-09-09",
   "main": "src/router-worker.js",
+  "vars": {
+    "CONTROL_GITHUB_APP_ID": "4962733",
+    "CONTROL_GITHUB_INSTALLATION_ID": "165552010"
+  },
   "rules": [
     { "type": "Text", "globs": ["**/*.html"], "fallthrough": true }
   ],
