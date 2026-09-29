@@ -65,11 +65,26 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
     async approve(id,note='') {
       const item=await store.getQueueItem(id);
       if(!item||item.status!=='pending'||!item.proposal) throw new Error('Pending item not found');
-      const current=await github.readFile(item.proposal.target_repo,item.proposal.target_path);
+      const target={repo:item.proposal.target_repo,path:item.proposal.target_path};
+      const current=await github.readFile(target.repo,target.path);
       const updated=applyProposal(current.content,item.proposal);
-      const receipt=await github.writeFile(item.proposal.target_repo,item.proposal.target_path,updated,current.sha,'Control plane: '+item.plain_summary);
+      const write=await github.writeFile(target.repo,target.path,updated,current.sha,'Control plane: '+item.plain_summary);
+      let readback;
+      try { readback=await github.readFile(target.repo,target.path); } catch {
+        const receipt={version:'control-write-receipt.v1',status:'failed',target,source_before_sha:current.sha,commit_sha:write.commit_sha||null,github_content_sha:write.content_sha||null,verification:{status:'unavailable',verified_at:new Date(now()).toISOString()}};
+        await store.resolveQueueItem(id,'failed','Write completed but canonical read-back was unavailable',receipt);
+        if(target.path==='ACTIVE_WORK.md') await store.invalidateContextPacket('active-work.v1');
+        throw new Error('GitHub write did not pass canonical read-back verification');
+      }
+      const verified=readback.content===updated;
+      const receipt={version:'control-write-receipt.v1',status:verified?'verified':'failed',target,source_before_sha:current.sha,commit_sha:write.commit_sha||null,github_content_sha:write.content_sha||null,verification:{status:verified?'verified':'mismatch',verified_at:new Date(now()).toISOString(),readback_sha:readback.sha||null}};
+      if(!verified) {
+        await store.resolveQueueItem(id,'failed','Canonical read-back did not match the approved proposal',receipt);
+        if(target.path==='ACTIVE_WORK.md') await store.invalidateContextPacket('active-work.v1');
+        throw new Error('GitHub write did not pass canonical read-back verification');
+      }
       await store.resolveQueueItem(id,'approved',note,receipt);
-      if(item.proposal.target_path==='ACTIVE_WORK.md') await store.invalidateContextPacket('active-work.v1');
+      if(target.path==='ACTIVE_WORK.md') await store.invalidateContextPacket('active-work.v1');
       return {status:'approved',plain_summary:item.plain_summary,receipt};
     },
     async reject(id,note='') {
@@ -91,7 +106,7 @@ export function createD1Store(db,{id=()=>crypto.randomUUID(),now=()=>new Date().
     async getQueueItem(key){return parse(await db.prepare('SELECT * FROM control_queue_items WHERE id=?').bind(key).first());},
     async resolveQueueItem(key,status,note,receipt){await db.prepare('UPDATE control_queue_items SET status=?,resolution_note=?,technical_receipt_json=?,resolved_at=? WHERE id=?').bind(status,note||null,receipt?JSON.stringify(receipt):null,now(),key).run();},
     async listQueues(){const rows=(await db.prepare("SELECT * FROM control_queue_items WHERE status='pending' ORDER BY created_at DESC").all()).results||[];return{needs_ashley:rows.filter(x=>x.responsibility==='needs_ashley').map(parse),ai_can_handle:rows.filter(x=>x.responsibility==='ai_can_handle').map(parse)};},
-    async listHistory(limit){return (await db.prepare('SELECT id,plain_summary,route_kind,responsibility,created_at FROM control_interactions ORDER BY created_at DESC LIMIT ?').bind(limit).all()).results||[];}
+    async listHistory(limit){const rows=(await db.prepare('SELECT i.id,i.plain_summary,i.route_kind,i.responsibility,i.created_at,q.status AS outcome_status,q.resolved_at,q.technical_receipt_json FROM control_interactions i LEFT JOIN control_queue_items q ON q.interaction_id=i.id ORDER BY i.created_at DESC LIMIT ?').bind(limit).all()).results||[];return rows.map(row=>({...row,outcome_status:row.outcome_status||'captured',receipt:row.technical_receipt_json?JSON.parse(row.technical_receipt_json):null}));}
   };
 }
 export function createMemoryStore({now=()=>new Date().toISOString()}={}) {
@@ -103,8 +118,8 @@ export function createMemoryStore({now=()=>new Date().toISOString()}={}) {
     async addInteraction(x){const row={id:'i'+(interactions.length+1),created_at:new Date().toISOString(),...x};interactions.push(row);return row;},
     async addQueueItem(x){const row={id:'q'+(items.length+1),status:'pending',...x};items.push(row);return row;},
     async getQueueItem(id){return items.find(x=>x.id===id)||null;},
-    async resolveQueueItem(id,status,note,receipt){Object.assign(items.find(x=>x.id===id),{status,resolution_note:note,receipt});},
+    async resolveQueueItem(id,status,note,receipt){Object.assign(items.find(x=>x.id===id),{status,resolution_note:note,receipt,resolved_at:now()});},
     async listQueues(){return{needs_ashley:items.filter(x=>x.status==='pending'&&x.responsibility==='needs_ashley'),ai_can_handle:items.filter(x=>x.status==='pending'&&x.responsibility==='ai_can_handle')};},
-    async listHistory(limit){return interactions.slice(-limit).reverse();}
+    async listHistory(limit){return interactions.slice(-limit).reverse().map(row=>{const item=items.find(x=>x.interaction_id===row.id);return {...row,outcome_status:item?.status||'captured',resolved_at:item?.resolved_at||null,receipt:item?.receipt||null};});}
   };
 }
