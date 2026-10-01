@@ -20,6 +20,14 @@ test('embedded control-page JavaScript parses before the Worker serves it', () =
   assert.doesNotThrow(() => new Script(embeddedControlScript(page), {filename:'public/control/index.html'}));
 });
 
+test('routing status names truthful work stages and keeps technical detail separate', () => {
+  assert.match(page,/reading current Project Truth and checking its policy/);
+  assert.match(page,/No change is written unless it creates an approval item/);
+  assert.match(page,/Technical detail/);
+  assert.match(page,/Routing did not produce an approved structured result\. No change was saved/);
+  assert.doesNotMatch(page,/Routing…/);
+});
+
 test('embedded-script syntax guard rejects a literal escaped newline between statements', () => {
   const malformed = "const loaded = true;\\nload();";
   assert.throws(() => new Script(malformed), SyntaxError);
