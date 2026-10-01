@@ -11,6 +11,10 @@
     { "type": "Text", "globs": ["**/*.html"], "fallthrough": true }
   ],
   "ai": { "binding": "AI" },
+  "observability": {
+    "enabled": true,
+    "logs": { "invocation_logs": true }
+  },
   "d1_databases": [{
     "binding": "DB",
     "database_name": "events-production",
