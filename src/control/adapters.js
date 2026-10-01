@@ -95,7 +95,7 @@ function modelPrompt(input,context) { return [{role:'system',content:'Return onl
 export function createWorkersAiRoutingAdapter(env) {
   return { async route(input,context) {
     if(!env.AI) throw new Error('Workers AI is unavailable');
-    const data=await env.AI.run(env.CONTROL_WORKERS_AI_MODEL||'@cf/meta/llama-3.1-8b-instruct',{messages:modelPrompt(input,context),max_tokens:700,temperature:0});
+    const data=await env.AI.run(env.CONTROL_WORKERS_AI_MODEL||'@cf/meta/llama-3.1-8b-instruct-fp8',{messages:modelPrompt(input,context),max_tokens:700,temperature:0});
     return modelResult(data);
   }};
 }
