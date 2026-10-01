@@ -89,14 +89,59 @@ export function createDeterministicRoutingAdapter() {
   }};
 }
 
-function modelResult(data) { const text=data.response||data.choices?.[0]?.message?.content||data.output; return validateRoute(typeof text==='string'?JSON.parse(text):data.route||data); }
-function modelPrompt(input,context) { return [{role:'system',content:'Return only JSON matching control-route.v1. Never propose a write outside research-vault.'},{role:'user',content:JSON.stringify({input,context})}]; }
+export class RoutingContractError extends Error {
+  constructor(code='routing_contract_invalid') {
+    super('Routing could not produce a valid control-plane result. No change was saved.');
+    this.code=code;
+    this.status=422;
+  }
+}
+
+// The deployed FP8 model supports Workers AI function calling. Keep the
+// provider-facing shape small; validateRoute remains the authoritative
+// application boundary for conditional write-policy requirements.
+export const CONTROL_ROUTE_TOOL = {
+  name:'submit_control_route',
+  description:'Submit exactly one control-route.v1 classification. This does not perform a write.',
+  parameters:{
+    type:'object',
+    properties:{
+      route_kind:{type:'string',enum:['state_update','decision','side_idea','temporary_context']},
+      responsibility:{type:'string',enum:['needs_ashley','ai_can_handle']},
+      confidence:{type:'string',enum:['high','medium','low']},
+      plain_summary:{type:'string'},
+      project_id:{type:'string'},
+      why:{type:'string'},
+      proposal:{type:'object'}
+    },
+    required:['route_kind','responsibility','confidence','plain_summary']
+  }
+};
+
+function validateModelRoute(candidate) {
+  try { return validateRoute(candidate); }
+  catch { throw new RoutingContractError(); }
+}
+function textModelResult(data) {
+  const text=data.response||data.choices?.[0]?.message?.content||data.output;
+  if (typeof text !== 'string') return validateModelRoute(data.route||data);
+  try { return validateModelRoute(JSON.parse(text)); }
+  catch (error) { if (error instanceof RoutingContractError) throw error; throw new RoutingContractError('routing_non_json_response'); }
+}
+function workersToolResult(data) {
+  const calls=data?.tool_calls;
+  if (!Array.isArray(calls)||calls.length!==1||calls[0]?.name!==CONTROL_ROUTE_TOOL.name||!calls[0]?.arguments||typeof calls[0].arguments!=='object') {
+    throw new RoutingContractError('routing_tool_call_missing');
+  }
+  return validateModelRoute(calls[0].arguments);
+}
+function modelPrompt(input,context) { return [{role:'system',content:'Classify this request by calling submit_control_route exactly once. Do not answer in prose. Never propose a write outside research-vault.'},{role:'user',content:JSON.stringify({input,context})}]; }
 
 export function createWorkersAiRoutingAdapter(env) {
   return { async route(input,context) {
     if(!env.AI) throw new Error('Workers AI is unavailable');
-    const data=await env.AI.run(env.CONTROL_WORKERS_AI_MODEL||'@cf/meta/llama-3.1-8b-instruct-fp8',{messages:modelPrompt(input,context),max_tokens:700,temperature:0});
-    return modelResult(data);
+    const data=await env.AI.run(env.CONTROL_WORKERS_AI_MODEL||'@cf/meta/llama-3.1-8b-instruct-fp8',{messages:modelPrompt(input,context),tools:[CONTROL_ROUTE_TOOL],max_tokens:700,temperature:0});
+    return workersToolResult(data);
   }};
 }
 
@@ -107,7 +152,7 @@ export function createOpenRouterFreeAdapter(env,{fetchImpl=fetch}={}) {
     if(!model.endsWith(':free')&&model!=='openrouter/free') throw new Error('OpenRouter fallback must use a free model');
     const response=await fetchImpl('https://openrouter.ai/api/v1/chat/completions',{method:'POST',headers:{authorization:'Bearer '+env.CONTROL_OPENROUTER_API_KEY,'content-type':'application/json'},body:JSON.stringify({model,messages:modelPrompt(input,context),temperature:0,max_tokens:700})});
     if(!response.ok) throw new Error('OpenRouter '+response.status);
-    return modelResult(await response.json());
+    return textModelResult(await response.json());
   }};
 }
 
