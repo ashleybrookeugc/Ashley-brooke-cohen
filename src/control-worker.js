@@ -1,7 +1,7 @@
 import app,{isAdmin} from './auth-worker.js';
 import controlPage from '../public/control/index.html';
 import {createGitHubAdapter,createGitHubAppTokenProvider,createPolicyRoutingAdapter} from './control/adapters.js';
-import {createControlService,createD1Store} from './control/service.js';
+import {controlErrorResponse,createControlService,createD1Store} from './control/service.js';
 
 let schemaReady;
 function ensureSchema(env){return schemaReady ||= env.DB.exec("CREATE TABLE IF NOT EXISTS control_interactions (id TEXT PRIMARY KEY,raw_text TEXT NOT NULL,route_json TEXT NOT NULL,plain_summary TEXT NOT NULL,project_id TEXT,route_kind TEXT NOT NULL CHECK(route_kind IN ('state_update','decision','side_idea','temporary_context')),responsibility TEXT NOT NULL CHECK(responsibility IN ('needs_ashley','ai_can_handle')),confidence TEXT NOT NULL CHECK(confidence IN ('high','medium','low')),created_at TEXT NOT NULL);CREATE INDEX IF NOT EXISTS idx_control_interactions_created ON control_interactions(created_at DESC);CREATE TABLE IF NOT EXISTS control_queue_items (id TEXT PRIMARY KEY,interaction_id TEXT NOT NULL REFERENCES control_interactions(id),responsibility TEXT NOT NULL CHECK(responsibility IN ('needs_ashley','ai_can_handle')),status TEXT NOT NULL CHECK(status IN ('pending','approved','rejected','failed')),plain_summary TEXT NOT NULL,why TEXT,proposal_json TEXT NOT NULL,resolution_note TEXT,technical_receipt_json TEXT,created_at TEXT NOT NULL,resolved_at TEXT);CREATE INDEX IF NOT EXISTS idx_control_queue_pending ON control_queue_items(status,responsibility,created_at DESC);CREATE TABLE IF NOT EXISTS control_context_packets (packet_key TEXT PRIMARY KEY,payload_json TEXT NOT NULL,created_at TEXT NOT NULL,expires_at TEXT NOT NULL,invalidated_at TEXT);")}
@@ -18,7 +18,7 @@ async function control(request,env) {
   const core=service(env);
   if(path==='/control') return new Response(controlPage,{headers:{'content-type':'text/html;charset=UTF-8','cache-control':'no-store'}});
   if(path==='/api/control/state'&&request.method==='GET') return json(await core.state({refresh:new URL(request.url).searchParams.get('refresh')==='1'}));
-  if(path==='/api/control/interactions'&&request.method==='POST'){try{const data=await body(request);return json(await core.capture(data.text,{requiredFactKeys:data.required_fact_keys||[]}),201)}catch(error){return json({error:error.message,code:error.code||'invalid_request'},error.status||400)}}
+  if(path==='/api/control/interactions'&&request.method==='POST'){try{const data=await body(request);return json(await core.capture(data.text,{requiredFactKeys:data.required_fact_keys||[]}),201)}catch(error){const response=controlErrorResponse(error);return json(response,error.status||400)}}
   const match=path.match(/^\/api\/control\/items\/([\w-]+)\/(approve|reject)$/);
   if(match&&request.method==='POST'){try{const data=await body(request);return json(match[2]==='approve'?await core.approve(match[1],data.note):await core.reject(match[1],data.note));}catch(error){return json({error:error?.message||'Mary Kate could not verify the approved change. Nothing was recorded as successful.',code:error?.code||'control_write_failed'},error?.status||400)}}
   return json({error:'Not found'},404);

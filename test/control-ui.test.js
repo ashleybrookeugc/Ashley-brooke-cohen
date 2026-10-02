@@ -28,6 +28,12 @@ test('routing status names truthful work stages and keeps technical detail separ
   assert.doesNotMatch(page,/Routing…/);
 });
 
+test('prior-state conflicts explain the stop and Ashley’s next choice before technical evidence', () => {
+  assert.match(page,/e\.action\?\.prompt/);
+  assert.match(page,/Saved options/);
+  assert.match(page,/e\.technical/);
+});
+
 test('write outcomes explain verification in plain English before technical detail', () => {
   assert.match(page,/Mary Kate made the approved change and confirmed the exact result in GitHub/);
   assert.match(page,/Mary Kate could not verify this change as complete\. Nothing was recorded as successful/);

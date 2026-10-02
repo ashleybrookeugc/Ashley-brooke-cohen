@@ -12,23 +12,31 @@ export class CanonicalWriteError extends Error {
   constructor(code,message,status=409){super(message);this.code=code;this.status=status;}
 }
 export class PriorStateGateError extends Error {
-  constructor(code, detail) { super(detail); this.code=code; this.status=code==='conflict'?409:422; }
+  constructor(code, detail, priorState=null) { super(detail); this.code=code; this.status=code==='conflict'?409:422; this.prior_state=priorState; }
 }
 const textWords=value=>' '+String(value || '').toLowerCase().replace(/[^a-z0-9]+/g,' ').replace(/\s+/g,' ').trim()+' ';
-const sectionMentioned=(text,section)=>{
-  const input=textWords(text), words=textWords(section).trim().split(' ').filter(word=>word.length>2&&!['active','now','parallel','blocked','resumable','paused','waiting','ashley'].includes(word));
-  if(!words.length) return false;
-  const distinctive=words.filter(word=>!['current','project','work','system','operating','reconciliation','truth'].includes(word));
-  const candidates=distinctive.length?distinctive:words;
-  return candidates.some(word=>input.includes(' '+word+' '));
+const sectionScore=(text,section)=>{
+  const heading=section.split(' — ')[0].trim();
+  const words=textWords(heading).trim().split(' ').filter(Boolean);
+  const input=textWords(text);
+  if(input.includes(' '+words.join(' ')+' ')) return words.length+100;
+  // A partial project name is useful only when it identifies one section.
+  const distinctive=words.filter(word=>word.length>2&&!['active','now','parallel','blocked','resumable','paused','waiting','ashley','current','project','work','system','operating','reconciliation','truth'].includes(word));
+  return distinctive.filter(word=>input.includes(' '+word+' ')).length;
 };
 const requestedFacts = (text, facts, projects, explicit=[]) => {
   if (!Array.isArray(explicit) || explicit.some(key => typeof key !== 'string')) throw new PriorStateGateError('invalid_request','required_fact_keys must be an array of strings');
   const words=textWords(text);
   const keys=[...new Set([...explicit.map(normalizeFactKey).filter(Boolean),...facts.filter(f => words.includes(' '+f.key.replaceAll('-',' ')+' ')).map(f => f.key)])];
   return keys.map(key=>{
-    const sections=[...new Set(facts.filter(f=>f.key===key&&sectionMentioned(text,f.section)).map(f=>f.section))];
-    return {key,section:sections.length===1?sections[0]:null};
+    // Resolve the named workstream before looking for a field in it. A missing
+    // field in the named workstream must not borrow a same-named field from a
+    // different Mary Kate projection or another project.
+    const sections=[...new Set(facts.map(f=>f.section))];
+    const scores=sections.map(section=>({section,score:sectionScore(text,section)}));
+    const best=Math.max(0,...scores.map(candidate=>candidate.score));
+    const matches=scores.filter(candidate=>best>0&&candidate.score===best);
+    return {key,section:matches.length===1?matches[0].section:null};
   });
 };
 export function createPriorStateReceipt(packet, requiredFacts=[]) {
@@ -41,8 +49,8 @@ export function createPriorStateReceipt(packet, requiredFacts=[]) {
     const matches=section?all.filter(f=>f.section===section):all;
     const values=[...new Set(matches.map(f => f.value))];
     if (!matches.length) blockers.push({key,section,reason:'missing'});
-    else if (!section&&new Set(matches.map(f=>f.section)).size>1) blockers.push({key,reason:'ambiguous_scope',facts:matches.map(({id,value,section})=>({id,value,section}))});
-    else if (values.length!==1) blockers.push({key,section,reason:'conflict',facts:matches.map(({id,value,section})=>({id,value,section}))});
+    else if (!section&&new Set(matches.map(f=>f.section)).size>1) blockers.push({key,reason:'ambiguous_scope',facts:matches.map(({id,label,value,section})=>({id,label,value,section}))});
+    else if (values.length!==1) blockers.push({key,section,reason:'conflict',facts:matches.map(({id,label,section,value})=>({id,label,section,value}))});
     else evidence.push({...matches[0],source:packet.source});
   }
   return {gate:'prior-state.context-retrieval',status:blockers.length?'blocked':requiredFacts.length?'passed':'not_required',required_fact_keys:requiredFacts.map(x=>typeof x==='string'?normalizeFactKey(x):normalizeFactKey(x?.key)),material,evidence,blockers};
@@ -50,10 +58,44 @@ export function createPriorStateReceipt(packet, requiredFacts=[]) {
 function requirePriorState(receipt) {
   if (receipt.status!=='blocked') return;
   const conflict=receipt.blockers.find(x=>x.reason==='conflict');
-  if (conflict) throw new PriorStateGateError('conflict','Mary Kate found conflicting saved information inside the same workstream, so it changed nothing.');
+  if (conflict) throw new PriorStateGateError('conflict','Mary Kate found conflicting saved information inside the same workstream, so it changed nothing.',receipt);
   const ambiguous=receipt.blockers.find(x=>x.reason==='ambiguous_scope');
-  if (ambiguous) throw new PriorStateGateError('ambiguous_scope','Mary Kate found this field in more than one workstream and could not safely tell which one you meant, so it changed nothing.');
-  throw new PriorStateGateError('missing','Mary Kate could not find the required saved information, so it changed nothing.');
+  if (ambiguous) throw new PriorStateGateError('ambiguous_scope','Mary Kate found this field in more than one workstream and could not safely tell which one you meant, so it changed nothing.',receipt);
+  throw new PriorStateGateError('missing','Mary Kate could not find the required saved information, so it changed nothing.',receipt);
+}
+
+// This is intentionally a translation boundary: policy and internal evidence stay
+// structured, while the UI receives a decision-ready explanation rather than a
+// schema key it would have to decipher.
+export function controlErrorResponse(error) {
+  if (error instanceof PriorStateGateError) {
+    const conflict=error.prior_state?.blockers?.find(blocker=>blocker.reason==='conflict');
+    if (conflict) {
+      const choices=conflict.facts.map(fact=>({source:fact.section||fact.id,value:fact.value}));
+      const field=conflict.facts[0]?.label||conflict.key.replaceAll('-',' ');
+      const nextAction=conflict.key==='next-bounded-action';
+      return {
+        error:nextAction?"I found conflicting saved information about what the next action should be, so I didn't change anything.":'I found conflicting saved information about '+field+', so I didn\'t change anything.',
+        code:'prior_state_conflict',
+        technical:{version:'control-error.v1',kind:'prior_state_conflict',prior_state:error.prior_state},
+        action:{required:true,prompt:nextAction?'Choose which saved next action is current before Mary Kate can continue.':'Choose which saved '+field+' is current before Mary Kate can continue.',choices}
+      };
+    }
+    const ambiguous=error.prior_state?.blockers?.find(blocker=>blocker.reason==='ambiguous_scope');
+    if (ambiguous) return {
+      error:"I can't safely tell which workstream you mean, so I didn't change anything.",
+      code:'prior_state_ambiguous_scope',
+      technical:{version:'control-error.v1',kind:'prior_state_ambiguous_scope',prior_state:error.prior_state},
+      action:{required:true,prompt:'Name the project or workstream whose saved information you mean.',choices:[...new Set(ambiguous.facts.map(fact=>fact.section))].map(source=>({source}))}
+    };
+    return {
+      error:"I couldn't find the saved information needed to make this change, so I didn't change anything.",
+      code:'prior_state_missing',
+      technical:{version:'control-error.v1',kind:'prior_state_missing',prior_state:error.prior_state},
+      action:{required:true,prompt:'Provide or confirm the missing current information before Mary Kate can continue.'}
+    };
+  }
+  return {error:error?.message||'Control request failed',code:error?.code||'invalid_request'};
 }
 export function createControlTaskPacket(snapshot) {
   return {
@@ -80,7 +122,6 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
     async capture(text,{requiredFactKeys=[]}={}) {
       if(typeof text!=='string'||!text.trim()||text.length>4000) throw new Error('Message must be 1–4000 characters');
       const initial=await state();
-      const requests=requestedFacts(text,initial.fact_keys.map(key=>({key,...initial.projects.find(project=>project.name===key)?.name})),initial.projects,requiredFactKeys);
       // Scope each requested fact against the actual canonical facts, not the de-duplicated key list.
       const packet=await store.getContextPacket('active-work.v1');
       const scoped=requestedFacts(text,packet?.facts||[],initial.projects,requiredFactKeys);
