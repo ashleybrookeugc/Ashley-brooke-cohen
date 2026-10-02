@@ -97,7 +97,12 @@ test('named workstream missing a field cannot borrow it from another Mary Kate p
   const app=appFor(content,{route:async()=>{called=true;return route;}});
   await assert.rejects(()=>app.capture('For Mary Kate / AI operating system, set the next bounded action to: Verify the V1 GitHub write contract through one approved production vertical slice.'),error=>{missing=error;return error.code==='missing';});
   assert.equal(missing.prior_state.blockers[0].section,'Mary Kate / AI operating system — **ACTIVE NOW**');
+  const response=controlErrorResponse(missing);
+  assert.equal(response.error,"I couldn't find a saved next action for Mary Kate / AI operating system, so I didn't change anything.");
+  assert.equal(response.action.prompt,'Confirm the current next action for Mary Kate / AI operating system in Project Truth before Mary Kate can continue.');
+  assert.equal(response.technical.prior_state.blockers[0].key,'next-bounded-action');
   assert.equal(called,false);
+  assert.deepEqual((await app.state()).queues,{needs_ashley:[],ai_can_handle:[]});
   assert.deepEqual((await app.state()).history,[]);
 });
 

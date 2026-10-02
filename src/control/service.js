@@ -88,11 +88,14 @@ export function controlErrorResponse(error) {
       technical:{version:'control-error.v1',kind:'prior_state_ambiguous_scope',prior_state:error.prior_state},
       action:{required:true,prompt:'Name the project or workstream whose saved information you mean.',choices:[...new Set(ambiguous.facts.map(fact=>fact.section))].map(source=>({source}))}
     };
+    const missing=error.prior_state?.blockers?.find(blocker=>blocker.reason==='missing');
+    const workstream=missing?.section?.split(' — ')[0];
+    const field=missing?.key==='next-bounded-action'?'next action':missing?.key?.replaceAll('-',' ')||'information';
     return {
-      error:"I couldn't find the saved information needed to make this change, so I didn't change anything.",
+      error:workstream?`I couldn't find a saved ${field} for ${workstream}, so I didn't change anything.`:"I couldn't find the saved information needed to make this change, so I didn't change anything.",
       code:'prior_state_missing',
       technical:{version:'control-error.v1',kind:'prior_state_missing',prior_state:error.prior_state},
-      action:{required:true,prompt:'Provide or confirm the missing current information before Mary Kate can continue.'}
+      action:{required:true,prompt:workstream?`Confirm the current ${field} for ${workstream} in Project Truth before Mary Kate can continue.`:'Provide or confirm the missing current information before Mary Kate can continue.'}
     };
   }
   return {error:error?.message||'Control request failed',code:error?.code||'invalid_request'};
