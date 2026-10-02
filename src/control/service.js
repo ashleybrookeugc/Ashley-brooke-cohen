@@ -14,29 +14,46 @@ export class CanonicalWriteError extends Error {
 export class PriorStateGateError extends Error {
   constructor(code, detail) { super(detail); this.code=code; this.status=code==='conflict'?409:422; }
 }
-const requestedFactKeys = (text, facts, explicit=[]) => {
-  if (!Array.isArray(explicit) || explicit.some(key => typeof key !== 'string')) throw new PriorStateGateError('invalid_request','required_fact_keys must be an array of strings');
-  const words=' '+String(text || '').toLowerCase().replace(/[^a-z0-9]+/g,' ')+' ';
-  const derived=facts.filter(f => words.includes(' '+f.key.replaceAll('-',' ')+' ')).map(f => f.key);
-  return [...new Set([...explicit.map(normalizeFactKey).filter(Boolean),...derived])];
+const textWords=value=>' '+String(value || '').toLowerCase().replace(/[^a-z0-9]+/g,' ').replace(/\s+/g,' ').trim()+' ';
+const sectionMentioned=(text,section)=>{
+  const input=textWords(text), words=textWords(section).trim().split(' ').filter(word=>word.length>2&&!['active','now','parallel','blocked','resumable','paused','waiting','ashley'].includes(word));
+  if(!words.length) return false;
+  const distinctive=words.filter(word=>!['current','project','work','system','operating','reconciliation','truth'].includes(word));
+  const candidates=distinctive.length?distinctive:words;
+  return candidates.some(word=>input.includes(' '+word+' '));
 };
-export function createPriorStateReceipt(packet, requiredFactKeys=[]) {
+const requestedFacts = (text, facts, projects, explicit=[]) => {
+  if (!Array.isArray(explicit) || explicit.some(key => typeof key !== 'string')) throw new PriorStateGateError('invalid_request','required_fact_keys must be an array of strings');
+  const words=textWords(text);
+  const keys=[...new Set([...explicit.map(normalizeFactKey).filter(Boolean),...facts.filter(f => words.includes(' '+f.key.replaceAll('-',' ')+' ')).map(f => f.key)])];
+  return keys.map(key=>{
+    const sections=[...new Set(facts.filter(f=>f.key===key&&sectionMentioned(text,f.section)).map(f=>f.section))];
+    return {key,section:sections.length===1?sections[0]:null};
+  });
+};
+export function createPriorStateReceipt(packet, requiredFacts=[]) {
   const material=[packet.source];
   const evidence=[], blockers=[];
-  for (const key of requiredFactKeys) {
-    const matches=packet.facts.filter(f => f.key===key);
+  for (const request of requiredFacts) {
+    const key=typeof request==='string'?normalizeFactKey(request):normalizeFactKey(request?.key);
+    const section=typeof request==='object'&&request?.section?request.section:null;
+    const all=packet.facts.filter(f => f.key===key);
+    const matches=section?all.filter(f=>f.section===section):all;
     const values=[...new Set(matches.map(f => f.value))];
-    if (!matches.length) blockers.push({key,reason:'missing'});
-    else if (values.length!==1) blockers.push({key,reason:'conflict',facts:matches.map(({id,value})=>({id,value}))});
+    if (!matches.length) blockers.push({key,section,reason:'missing'});
+    else if (!section&&new Set(matches.map(f=>f.section)).size>1) blockers.push({key,reason:'ambiguous_scope',facts:matches.map(({id,value,section})=>({id,value,section}))});
+    else if (values.length!==1) blockers.push({key,section,reason:'conflict',facts:matches.map(({id,value,section})=>({id,value,section}))});
     else evidence.push({...matches[0],source:packet.source});
   }
-  return {gate:'prior-state.context-retrieval',status:blockers.length?'blocked':requiredFactKeys.length?'passed':'not_required',required_fact_keys:requiredFactKeys,material,evidence,blockers};
+  return {gate:'prior-state.context-retrieval',status:blockers.length?'blocked':requiredFacts.length?'passed':'not_required',required_fact_keys:requiredFacts.map(x=>typeof x==='string'?normalizeFactKey(x):normalizeFactKey(x?.key)),material,evidence,blockers};
 }
 function requirePriorState(receipt) {
   if (receipt.status!=='blocked') return;
   const conflict=receipt.blockers.find(x=>x.reason==='conflict');
-  if (conflict) throw new PriorStateGateError('conflict','Prior-state conflict for '+conflict.key+'; clarification is required');
-  throw new PriorStateGateError('missing','Prior-state fact missing; clarification is required');
+  if (conflict) throw new PriorStateGateError('conflict','Mary Kate found conflicting saved information inside the same workstream, so it changed nothing.');
+  const ambiguous=receipt.blockers.find(x=>x.reason==='ambiguous_scope');
+  if (ambiguous) throw new PriorStateGateError('ambiguous_scope','Mary Kate found this field in more than one workstream and could not safely tell which one you meant, so it changed nothing.');
+  throw new PriorStateGateError('missing','Mary Kate could not find the required saved information, so it changed nothing.');
 }
 export function createControlTaskPacket(snapshot) {
   return {
@@ -48,14 +65,14 @@ export function createControlTaskPacket(snapshot) {
   };
 }
 export function createControlService({github,router,store,now=()=>Date.now(),packetTtlMs=300000}) {
-  const state = async ({refresh=false,requiredFactKeys=[]}={}) => {
+  const state = async ({refresh=false,requiredFacts=[],requiredFactKeys=[]}={}) => {
     const key='active-work.v1';
     if(refresh) await store.invalidateContextPacket(key);
     let packet=await store.getContextPacket(key);
     let reused=Boolean(packet);
     if(packet&&!Array.isArray(packet.facts)){packet=null;reused=false;}
     if(!packet){const source=await github.readFile(WRITE_REPO,'ACTIVE_WORK.md');const created_at=new Date(now()).toISOString();packet={projects:parseActiveWork(source.content),facts:parseCanonicalFacts(source.content),source:{repo:WRITE_REPO,path:'ACTIVE_WORK.md',sha:source.sha},created_at,expires_at:new Date(now()+packetTtlMs).toISOString()};await store.putContextPacket(key,packet);}
-    const prior_state=createPriorStateReceipt(packet,requiredFactKeys);
+    const prior_state=createPriorStateReceipt(packet,requiredFacts.length?requiredFacts:requiredFactKeys);
     return {projects:packet.projects,source:packet.source,context:{status:reused?'reused':'refreshed',created_at:packet.created_at,expires_at:packet.expires_at},fact_keys:[...new Set(packet.facts.map(f=>f.key))],prior_state,queues:await store.listQueues(),history:await store.listHistory(20)};
   };
   return {
@@ -63,8 +80,11 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
     async capture(text,{requiredFactKeys=[]}={}) {
       if(typeof text!=='string'||!text.trim()||text.length>4000) throw new Error('Message must be 1–4000 characters');
       const initial=await state();
-      const keys=requestedFactKeys(text,initial.fact_keys.map(key=>({key})),requiredFactKeys);
-      const snapshot=keys.length?await state({requiredFactKeys:keys}):initial;
+      const requests=requestedFacts(text,initial.fact_keys.map(key=>({key,...initial.projects.find(project=>project.name===key)?.name})),initial.projects,requiredFactKeys);
+      // Scope each requested fact against the actual canonical facts, not the de-duplicated key list.
+      const packet=await store.getContextPacket('active-work.v1');
+      const scoped=requestedFacts(text,packet?.facts||[],initial.projects,requiredFactKeys);
+      const snapshot=scoped.length?await state({requiredFacts:scoped}):initial;
       requirePriorState(snapshot.prior_state);
       const candidate=validateRoute(await router.route(text.trim(),createControlTaskPacket(snapshot)));
       if (Object.hasOwn(candidate,'prior_state')) throw new Error('Prior-state gate receipt is assigned by the control service');

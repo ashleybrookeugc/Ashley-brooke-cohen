@@ -33,3 +33,22 @@ test('worker cannot self-certify a passed prior-state gate without service evide
   const app=appFor(documentWith(['Uniform','NYPD police uniform']),{route:async()=>({...route,prior_state:{gate:'prior-state.context-retrieval',status:'passed',evidence:[]}})});
   await assert.rejects(()=>app.capture('What uniform applies?'),/assigned by the control service/);
 });
+
+
+test('same field in different workstreams is scoped by the workstream named in the request',async()=>{
+  let packet;
+  const content=['# Active Work','','## Current execution priority','','### Mary Kate / Project Truth reconciliation','**Next bounded action:** Enforce the V1 write boundary  ','','## Current active workstreams','','### Ashley portfolio / performance identity','**Next bounded action:** Review performance media  ','','## Session handoff rule',''].join('\n');
+  const app=appFor(content,{route:async(_text,next)=>{packet=next;return route;}});
+  await app.capture('Continue Mary Kate next bounded action.');
+  assert.equal(packet.prior_state.status,'passed');
+  assert.equal(packet.prior_state.evidence[0].section,'Mary Kate / Project Truth reconciliation');
+  assert.equal(packet.prior_state.evidence[0].value,'Enforce the V1 write boundary');
+});
+
+test('same field across unrelated workstreams is ambiguity, not a contradictory fact',async()=>{
+  let called=false;
+  const content=['# Active Work','','## Current active workstreams','','### Mary Kate','**Next bounded action:** Enforce gates  ','','### Portfolio','**Next bounded action:** Review media  ','','## Session handoff rule',''].join('\n');
+  const app=appFor(content,{route:async()=>{called=true;return route;}});
+  await assert.rejects(()=>app.capture('What is the next bounded action?'),error=>error.code==='ambiguous_scope'&&/more than one workstream/.test(error.message));
+  assert.equal(called,false);
+});
