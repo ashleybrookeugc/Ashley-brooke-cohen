@@ -91,6 +91,17 @@ test('A: different projects have different next actions without contradiction, i
   assert.equal(packet.prior_state.evidence[0].value,'Test the V1 slice');
 });
 
+test('the production phrase next bounded action does not also request an obsolete Next field',async()=>{
+  let packet;
+  const content=['# Active Work','','## Current execution priority','','### Mary Kate / Project Truth reconciliation','**Next bounded action:** Verify the V1 slice  ','','## Current active workstreams','','### Mary Kate / AI operating system — **ACTIVE NOW**','**Next bounded action:** Verify the V1 slice  ','','### Portfolio','**Next:** Review media  ','','## Session handoff rule',''].join('\n');
+  const app=appFor(content,{route:async(_text,next)=>{packet=next;return route;}});
+  await app.capture('For Mary Kate / AI operating system, set the next bounded action to: Verify the V1 GitHub write contract through one approved production vertical slice.');
+  assert.deepEqual(packet.prior_state.required_fact_keys,['next-bounded-action']);
+  assert.equal(packet.prior_state.status,'passed');
+  assert.equal(packet.prior_state.evidence[0].section,'Mary Kate / AI operating system — **ACTIVE NOW**');
+  assert.deepEqual((await app.state()).queues,{needs_ashley:[],ai_can_handle:[]});
+});
+
 test('named workstream missing a field cannot borrow it from another Mary Kate projection',async()=>{
   let called=false, missing;
   const content=['# Active Work','','## Current execution priority','','### Mary Kate / Project Truth reconciliation','**Next bounded action:** Old Temporal fixture  ','','## Current active workstreams','','### Mary Kate / AI operating system — **ACTIVE NOW**','**Next:** Stale Temporal fixture  ','','## Session handoff rule',''].join('\n');

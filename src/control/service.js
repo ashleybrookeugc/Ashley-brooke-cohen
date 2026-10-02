@@ -27,7 +27,16 @@ const sectionScore=(text,section)=>{
 const requestedFacts = (text, facts, projects, explicit=[]) => {
   if (!Array.isArray(explicit) || explicit.some(key => typeof key !== 'string')) throw new PriorStateGateError('invalid_request','required_fact_keys must be an array of strings');
   const words=textWords(text);
-  const keys=[...new Set([...explicit.map(normalizeFactKey).filter(Boolean),...facts.filter(f => words.includes(' '+f.key.replaceAll('-',' ')+' ')).map(f => f.key)])];
+  // A field name inside a longer field name is not a separate request. Keep
+  // standalone occurrences, so "next and next bounded action" still asks for both.
+  const spans=[...new Set(facts.map(f=>f.key))].flatMap(key=>{
+    const phrase=' '+key.replaceAll('-',' ')+' ', found=[];
+    for(let at=words.indexOf(phrase);at!==-1;at=words.indexOf(phrase,at+1)) found.push({key,start:at,end:at+phrase.length});
+    return found;
+  }).sort((a,b)=>(b.end-b.start)-(a.end-a.start)||a.start-b.start);
+  const selected=[];
+  for(const span of spans) if(!selected.some(other=>other.start<=span.start&&other.end>=span.end)) selected.push(span);
+  const keys=[...new Set([...explicit.map(normalizeFactKey).filter(Boolean),...selected.map(span=>span.key)])];
   return keys.map(key=>{
     // Resolve the named workstream before looking for a field in it. A missing
     // field in the named workstream must not borrow a same-named field from a
