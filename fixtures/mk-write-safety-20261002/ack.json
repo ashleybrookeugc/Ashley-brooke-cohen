@@ -1,4 +1,8 @@
 {
-  "value": "baseline",
-  "operation": null
+  "value": "approved harmless fixture change",
+  "operation": {
+    "id": "mk-gh-ack-20261002-01",
+    "payload_sha256": "a3994a6db18df2d5d0683cfb170baab93806146df0f5fdb1b376f9ce1ae2dd34",
+    "expected_prior_blob_sha": "a2c47da298281606cdf2d13d82038b79357d4337"
+  }
 }
