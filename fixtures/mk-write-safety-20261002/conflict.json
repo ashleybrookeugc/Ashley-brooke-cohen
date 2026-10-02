@@ -1,4 +1,7 @@
 {
-  "value": "baseline",
-  "operation": null
+  "value": "intervening unrelated edit",
+  "operation": {
+    "id": "other-writer-20261002",
+    "payload_sha256": "separate-fixture-edit"
+  }
 }
