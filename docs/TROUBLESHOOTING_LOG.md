@@ -13,6 +13,18 @@ Before repeating deployment, Cloudflare, Worker, build, routing, or asset troubl
 5. Do not tell the user to manually deploy or create new infrastructure unless the existing GitHub → Cloudflare path has actually been shown to be broken.
 6. When a new issue is solved, add it here using: **Symptom → Failed/looping attempts → Root cause → Verified fix → Prevention rule**.
 
+## 2026-10-02 — Rejected model route disappeared before diagnostic capture
+
+**Symptom:** one production request reached routing and returned `routing_contract_invalid`, but no interaction or diagnostic survived in D1. The original rejected route cannot be reconstructed reliably.
+
+**Root cause of evidence loss:** `validateModelRoute` replaced the validator's specific error with a generic routing error. `capture` persisted interactions only after valid routing, so rejected candidates were discarded. This establishes the diagnostic defect, not the cause of the malformed production route.
+
+**Repair:** preserve fixed validator path/reason, provider/model identity, and an allowlisted sanitized route projection in the existing `control_interactions.route_json`. Failed rows carry `outcome_status: failed` and a correlation ID, produce no queue item or write receipt, and remain inspectable through authenticated history and the separate technical-detail disclosure. Free-form text and unknown provider fields are omitted or represented by type/length. No D1 migration is required.
+
+**Verification boundary:** focused diagnostic regressions and the complete relevant control-plane suite passed locally. Production activation and the original routing root cause remain unverified at commit time. The authenticated state response exposes `routing_diagnostics.version: control-routing-failure.v1` for activation verification before another request.
+
+**Prevention:** preserve sanitized contract failure evidence before returning a routing error. Never manufacture a fixture for discarded production output, accept malformed output to advance a test, or claim a failed diagnostic row as a canonical write receipt.
+
 ---
 
 ## 2026-09-27 — Wrangler deployment replaced dashboard-only GitHub ID variables

@@ -25,3 +25,9 @@ The remaining production acceptance boundary is still:
 `identical natural-language request → scoped prior-state retrieval → routing → approval when genuinely required → conditional canonical GitHub write → exact GitHub reread → verified D1 receipt`
 
 Do not mark the vertical slice passed until the actual production write, canonical reread, and D1 receipt all verify. A direct GitHub maintenance edit performed outside the production control path is not evidence that this production slice passed.
+
+## Routing-failure diagnostics
+
+Rejected routing attempts are retained in the existing private D1 interaction table (`route_json.diagnostic`) with `outcome_status: failed` and the interaction ID as correlation ID. No approval item, canonical write, or verified receipt is created by this path. The authenticated history response and its separate Routing failure disclosure expose the sanitized route structure, fixed validator path/reason, and provider/model identity. Free-form strings are represented by type/length; unrelated provider fields and configured credential values are excluded.
+
+The state response advertises `routing_diagnostics.version: control-routing-failure.v1` only in this implementation. Verify that backend capability marker in production before submitting the single diagnostic request; repository publication alone does not prove deployment.

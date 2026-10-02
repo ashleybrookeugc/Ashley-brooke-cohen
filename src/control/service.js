@@ -1,3 +1,4 @@
+import {routingDiagnostic} from './diagnostics.js';
 import {applyProposal,normalizeFactKey,parseActiveWork,parseCanonicalFacts,validateRoute,WRITE_REPO} from './contracts.js';
 const markerStart='<!-- mary-kate-control-write:';
 const markerEnd='-->';
@@ -107,7 +108,7 @@ export function controlErrorResponse(error) {
       action:{required:true,prompt:workstream?`Confirm the current ${field} for ${workstream} in Project Truth before Mary Kate can continue.`:'Provide or confirm the missing current information before Mary Kate can continue.'}
     };
   }
-  return {error:error?.message||'Control request failed',code:error?.code||'invalid_request'};
+  return {error:error?.message||'Control request failed',code:error?.code||'invalid_request',...(error?.interaction_id?{interaction_id:error.interaction_id,technical:{interaction_id:error.interaction_id,diagnostic:error.diagnostic}}:{})};
 }
 export function createControlTaskPacket(snapshot) {
   return {
@@ -127,7 +128,7 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
     if(packet&&!Array.isArray(packet.facts)){packet=null;reused=false;}
     if(!packet){const source=await github.readFile(WRITE_REPO,'ACTIVE_WORK.md');const created_at=new Date(now()).toISOString();packet={projects:parseActiveWork(source.content),facts:parseCanonicalFacts(source.content),source:{repo:WRITE_REPO,path:'ACTIVE_WORK.md',sha:source.sha},created_at,expires_at:new Date(now()+packetTtlMs).toISOString()};await store.putContextPacket(key,packet);}
     const prior_state=createPriorStateReceipt(packet,requiredFacts.length?requiredFacts:requiredFactKeys);
-    return {projects:packet.projects,source:packet.source,context:{status:reused?'reused':'refreshed',created_at:packet.created_at,expires_at:packet.expires_at},fact_keys:[...new Set(packet.facts.map(f=>f.key))],prior_state,queues:await store.listQueues(),history:await store.listHistory(20)};
+    return {routing_diagnostics:{version:'control-routing-failure.v1',storage:'control_interactions.route_json'},projects:packet.projects,source:packet.source,context:{status:reused?'reused':'refreshed',created_at:packet.created_at,expires_at:packet.expires_at},fact_keys:[...new Set(packet.facts.map(f=>f.key))],prior_state,queues:await store.listQueues(),history:await store.listHistory(20)};
   };
   return {
     state,
@@ -139,7 +140,22 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
       const scoped=requestedFacts(text,packet?.facts||[],initial.projects,requiredFactKeys);
       const snapshot=scoped.length?await state({requiredFacts:scoped}):initial;
       requirePriorState(snapshot.prior_state);
-      const candidate=validateRoute(await router.route(text.trim(),createControlTaskPacket(snapshot)));
+      let candidate;
+      try {
+        const output=await router.route(text.trim(),createControlTaskPacket(snapshot));
+        try {candidate=validateRoute(output);} catch(error) {
+          error.code='routing_contract_invalid';error.status=422;
+          error.diagnostic=routingDiagnostic(output,{},error);
+          error.message='Routing could not produce a valid control-plane result. No change was saved.';
+          throw error;
+        }
+      } catch(error) {
+        if(error.diagnostic?.version==='control-routing-failure.v1') {
+          const failed=await store.addInteraction({raw_text:'[routing failed; request content omitted]',route:{route_kind:'temporary_context',responsibility:'ai_can_handle',confidence:'low',plain_summary:'Routing failed. No change was saved.',diagnostic:error.diagnostic,outcome_status:'failed'}});
+          error.interaction_id=failed.id;
+        }
+        throw error;
+      }
       if (Object.hasOwn(candidate,'prior_state')) throw new Error('Prior-state gate receipt is assigned by the control service');
       const route={...candidate,prior_state:snapshot.prior_state};
       const interaction=await store.addInteraction({raw_text:text.trim(),route});
@@ -208,7 +224,7 @@ export function createD1Store(db,{id=()=>crypto.randomUUID(),now=()=>new Date().
     async getQueueItem(key){return parse(await db.prepare('SELECT * FROM control_queue_items WHERE id=?').bind(key).first());},
     async resolveQueueItem(key,status,note,receipt){await db.prepare('UPDATE control_queue_items SET status=?,resolution_note=?,technical_receipt_json=?,resolved_at=? WHERE id=?').bind(status,note||null,receipt?JSON.stringify(receipt):null,now(),key).run();},
     async listQueues(){const rows=(await db.prepare("SELECT * FROM control_queue_items WHERE status='pending' ORDER BY created_at DESC").all()).results||[];return{needs_ashley:rows.filter(x=>x.responsibility==='needs_ashley').map(parse),ai_can_handle:rows.filter(x=>x.responsibility==='ai_can_handle').map(parse)};},
-    async listHistory(limit){const rows=(await db.prepare('SELECT i.id,i.plain_summary,i.route_kind,i.responsibility,i.created_at,q.status AS outcome_status,q.resolved_at,q.technical_receipt_json FROM control_interactions i LEFT JOIN control_queue_items q ON q.interaction_id=i.id ORDER BY i.created_at DESC LIMIT ?').bind(limit).all()).results||[];return rows.map(row=>({...row,outcome_status:row.outcome_status||'captured',receipt:row.technical_receipt_json?JSON.parse(row.technical_receipt_json):null}));}
+    async listHistory(limit){const rows=(await db.prepare('SELECT i.id,i.route_json,i.plain_summary,i.route_kind,i.responsibility,i.created_at,q.status AS outcome_status,q.resolved_at,q.technical_receipt_json FROM control_interactions i LEFT JOIN control_queue_items q ON q.interaction_id=i.id ORDER BY i.created_at DESC LIMIT ?').bind(limit).all()).results||[];return rows.map(({route_json,...row})=>{const route=JSON.parse(route_json||'{}');return {...row,outcome_status:route.outcome_status||row.outcome_status||'captured',diagnostic:route.diagnostic||null,receipt:row.technical_receipt_json?JSON.parse(row.technical_receipt_json):null};});}
   };
 }
 export function createMemoryStore({now=()=>new Date().toISOString()}={}) {
@@ -222,6 +238,6 @@ export function createMemoryStore({now=()=>new Date().toISOString()}={}) {
     async getQueueItem(id){return items.find(x=>x.id===id)||null;},
     async resolveQueueItem(id,status,note,receipt){Object.assign(items.find(x=>x.id===id),{status,resolution_note:note,receipt,resolved_at:now()});},
     async listQueues(){return{needs_ashley:items.filter(x=>x.status==='pending'&&x.responsibility==='needs_ashley'),ai_can_handle:items.filter(x=>x.status==='pending'&&x.responsibility==='ai_can_handle')};},
-    async listHistory(limit){return interactions.slice(-limit).reverse().map(row=>{const item=items.find(x=>x.interaction_id===row.id);return {...row,outcome_status:item?.status||'captured',resolved_at:item?.resolved_at||null,receipt:item?.receipt||null};});}
+    async listHistory(limit){return interactions.slice(-limit).reverse().map(row=>{const item=items.find(x=>x.interaction_id===row.id);return {...row,outcome_status:row.route?.outcome_status||item?.status||'captured',diagnostic:row.route?.diagnostic||null,resolved_at:item?.resolved_at||null,receipt:item?.receipt||null};});}
   };
 }

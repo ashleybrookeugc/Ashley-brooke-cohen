@@ -1,4 +1,5 @@
 import {WRITE_REPO, validateRoute} from './contracts.js';
+import {routingDiagnostic} from './diagnostics.js';
 import {githubPrivateKeyPkcs8Bytes} from './github-key.js';
 
 const READ_REPOS = new Set(['ashleybrookeugc/research-vault','ashleybrookeugc/ugc-creator-app','ashleybrookeugc/B-Paid','ashleybrookeugc/Ashley-brooke-cohen']);
@@ -105,10 +106,11 @@ export function createDeterministicRoutingAdapter() {
 }
 
 export class RoutingContractError extends Error {
-  constructor(code='routing_contract_invalid') {
+  constructor(code='routing_contract_invalid',diagnostic=null) {
     super('Routing could not produce a valid control-plane result. No change was saved.');
     this.code=code;
     this.status=422;
+    this.diagnostic=diagnostic;
   }
 }
 
@@ -133,30 +135,31 @@ export const CONTROL_ROUTE_TOOL = {
   }
 };
 
-function validateModelRoute(candidate) {
+function validateModelRoute(candidate,identity) {
   try { return validateRoute(candidate); }
-  catch { throw new RoutingContractError(); }
+  catch(error) { throw new RoutingContractError('routing_contract_invalid',routingDiagnostic(candidate,identity,error)); }
 }
-function textModelResult(data) {
+function textModelResult(data,identity) {
   const text=data.response||data.choices?.[0]?.message?.content||data.output;
-  if (typeof text !== 'string') return validateModelRoute(data.route||data);
-  try { return validateModelRoute(JSON.parse(text)); }
-  catch (error) { if (error instanceof RoutingContractError) throw error; throw new RoutingContractError('routing_non_json_response'); }
+  if (typeof text !== 'string') return validateModelRoute(data.route||data,identity);
+  try { return validateModelRoute(JSON.parse(text),identity); }
+  catch (error) { if (error instanceof RoutingContractError) throw error; throw new RoutingContractError('routing_non_json_response',routingDiagnostic(text,identity,{path:'response',reason:'Provider response is not JSON'})); }
 }
-function workersToolResult(data) {
+function workersToolResult(data,identity) {
   const calls=data?.tool_calls;
   if (!Array.isArray(calls)||calls.length!==1||calls[0]?.name!==CONTROL_ROUTE_TOOL.name||!calls[0]?.arguments||typeof calls[0].arguments!=='object') {
-    throw new RoutingContractError('routing_tool_call_missing');
+    throw new RoutingContractError('routing_tool_call_missing',routingDiagnostic(calls?.[0]?.arguments??data?.response,identity,{path:'tool_calls',reason:'Expected exactly one submit_control_route call with object arguments'}));
   }
-  return validateModelRoute(calls[0].arguments);
+  return validateModelRoute(calls[0].arguments,identity);
 }
 function modelPrompt(input,context) { return [{role:'system',content:'Classify this request by calling submit_control_route exactly once. Do not answer in prose. Never propose a write outside research-vault.'},{role:'user',content:JSON.stringify({input,context})}]; }
 
 export function createWorkersAiRoutingAdapter(env) {
   return { async route(input,context) {
     if(!env.AI) throw new Error('Workers AI is unavailable');
-    const data=await env.AI.run(env.CONTROL_WORKERS_AI_MODEL||'@cf/meta/llama-3.1-8b-instruct-fp8',{messages:modelPrompt(input,context),tools:[CONTROL_ROUTE_TOOL],max_tokens:700,temperature:0});
-    return workersToolResult(data);
+    const model=env.CONTROL_WORKERS_AI_MODEL||'@cf/meta/llama-3.1-8b-instruct-fp8';
+    const data=await env.AI.run(model,{messages:modelPrompt(input,context),tools:[CONTROL_ROUTE_TOOL],max_tokens:700,temperature:0});
+    return workersToolResult(data,{provider:'workers-ai',model,secrets:[env.CONTROL_OPENROUTER_API_KEY,env.CONTROL_MODEL_API_KEY,env.CONTROL_GITHUB_APP_PRIVATE_KEY]});
   }};
 }
 
@@ -167,7 +170,7 @@ export function createOpenRouterFreeAdapter(env,{fetchImpl=fetch}={}) {
     if(!model.endsWith(':free')&&model!=='openrouter/free') throw new Error('OpenRouter fallback must use a free model');
     const response=await fetchImpl('https://openrouter.ai/api/v1/chat/completions',{method:'POST',headers:{authorization:'Bearer '+env.CONTROL_OPENROUTER_API_KEY,'content-type':'application/json'},body:JSON.stringify({model,messages:modelPrompt(input,context),temperature:0,max_tokens:700})});
     if(!response.ok) throw new Error('OpenRouter '+response.status);
-    return textModelResult(await response.json());
+    return textModelResult(await response.json(),{provider:'openrouter',model,secrets:[env.CONTROL_OPENROUTER_API_KEY,env.CONTROL_MODEL_API_KEY,env.CONTROL_GITHUB_APP_PRIVATE_KEY]});
   }};
 }
 
@@ -188,6 +191,6 @@ export function createHttpRoutingAdapter(env,{fetchImpl=fetch}={}) {
     const response=await fetchImpl(env.CONTROL_MODEL_ENDPOINT,{method:'POST',headers:{authorization:'Bearer '+env.CONTROL_MODEL_API_KEY,'content-type':'application/json'},body:JSON.stringify({contract:'control-route.v1',model:env.CONTROL_MODEL_NAME||null,input,context})});
     if(!response.ok) throw new Error('Routing provider '+response.status);
     const data=await response.json();
-    return validateRoute(data.route||data);
+    return validateModelRoute(data.route||data,{provider:'http-routing',model:env.CONTROL_MODEL_NAME||null,secrets:[env.CONTROL_MODEL_API_KEY,env.CONTROL_GITHUB_APP_PRIVATE_KEY]});
   }};
 }

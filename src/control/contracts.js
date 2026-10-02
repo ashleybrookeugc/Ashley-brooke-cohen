@@ -34,18 +34,29 @@ export function parseActiveWork(markdown) {
   });
 }
 
+export class RouteValidationError extends Error {
+  constructor(path,reason){super(reason);this.path=path;this.reason=reason;}
+}
 export function validateRoute(candidate) {
-  if (!candidate || !ROUTE_KINDS.includes(candidate.route_kind)) throw new Error('Invalid route_kind');
-  if (!RESPONSIBILITIES.includes(candidate.responsibility)) throw new Error('Invalid responsibility');
-  if (!CONFIDENCE.includes(candidate.confidence)) throw new Error('Invalid confidence');
-  if (!candidate.plain_summary || typeof candidate.plain_summary !== 'string') throw new Error('Missing plain_summary');
-  if (candidate.route_kind === 'decision' && candidate.responsibility !== 'needs_ashley') throw new Error('Decisions require Ashley');
+  const reject=(path,reason)=>{throw new RouteValidationError(path,reason);};
+  if (!candidate || !ROUTE_KINDS.includes(candidate.route_kind)) reject('route_kind','Invalid route_kind');
+  if (!RESPONSIBILITIES.includes(candidate.responsibility)) reject('responsibility','Invalid responsibility');
+  if (!CONFIDENCE.includes(candidate.confidence)) reject('confidence','Invalid confidence');
+  if (!candidate.plain_summary || typeof candidate.plain_summary !== 'string') reject('plain_summary','Missing plain_summary');
+  if (candidate.route_kind === 'decision' && candidate.responsibility !== 'needs_ashley') reject('responsibility','Decisions require Ashley');
   if (candidate.proposal) {
     const p = candidate.proposal;
-    if (p.target_repo !== WRITE_REPO || !WRITE_PATHS.includes(p.target_path)) throw new Error('Proposal target is not allowed');
+    if (p.target_repo !== WRITE_REPO) reject('proposal.target_repo','Proposal target is not allowed');
+    if (!WRITE_PATHS.includes(p.target_path)) reject('proposal.target_path','Proposal target is not allowed');
     if (p.target_path === 'ACTIVE_WORK.md') {
-      if (p.operation !== 'replace_field' || !p.section || !MUTABLE_FIELDS.includes(p.field) || !p.value) throw new Error('Invalid state proposal');
-    } else if (p.operation !== 'append_side_idea' || !p.title || !p.body || !p.scope) throw new Error('Invalid side-idea proposal');
+      if (p.operation !== 'replace_field') reject('proposal.operation','Invalid state proposal');
+      if (!p.section) reject('proposal.section','Invalid state proposal');
+      if (!MUTABLE_FIELDS.includes(p.field)) reject('proposal.field','Invalid state proposal');
+      if (!p.value) reject('proposal.value','Invalid state proposal');
+    } else {
+      if (p.operation !== 'append_side_idea') reject('proposal.operation','Invalid side-idea proposal');
+      for(const key of ['title','body','scope']) if(!p[key]) reject('proposal.'+key,'Invalid side-idea proposal');
+    }
   }
   return structuredClone(candidate);
 }
