@@ -28,6 +28,11 @@ test('routing status names truthful work stages and keeps technical detail separ
   assert.doesNotMatch(page,/Routing…/);
 });
 
+test('write outcomes explain verification in plain English before technical detail', () => {
+  assert.match(page,/Mary Kate made the approved change and confirmed the exact result in GitHub/);
+  assert.match(page,/Mary Kate could not verify this change as complete\. Nothing was recorded as successful/);
+});
+
 test('embedded-script syntax guard rejects a literal escaped newline between statements', () => {
   const malformed = "const loaded = true;\\nload();";
   assert.throws(() => new Script(malformed), SyntaxError);

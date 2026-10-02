@@ -9,7 +9,13 @@ export function createGitHubAdapter({fetchImpl=fetch, tokenProvider}) {
   async function request(url, options, scope) {
     const token = await tokenProvider(scope);
     const response = await fetchImpl(api+url,{...options,headers:{...headers(token),...(options?.headers||{})}});
-    if (!response.ok) throw new Error('GitHub '+response.status+': '+(await response.text()).slice(0,300));
+    if (!response.ok) {
+      await response.text();
+      const error=new Error(scope==='write'&&response.status===409?'GitHub rejected the write because the canonical file changed first. Mary Kate did not overwrite it.':'GitHub '+response.status);
+      error.code=scope==='write'&&response.status===409?'canonical_version_conflict':'github_request_failed';
+      error.status=response.status===409?409:502;
+      throw error;
+    }
     return response.json();
   }
   return {
@@ -22,6 +28,15 @@ export function createGitHubAdapter({fetchImpl=fetch, tokenProvider}) {
       if (repo !== WRITE_REPO) throw new Error('Writes are restricted to research-vault');
       const data = await request('/repos/'+repo+'/contents/'+path,{method:'PUT',body:JSON.stringify({message,content:btoa(unescape(encodeURIComponent(content))),sha,branch:'main'}),headers:{'content-type':'application/json'}},'write');
       return {commit_sha:data.commit.sha,content_sha:data.content.sha};
+    },
+    async findFileCommit(repo,path,contentSha) {
+      if (!READ_REPOS.has(repo)) throw new Error('Repository is not readable');
+      const commits=await request('/repos/'+repo+'/commits?path='+encodeURIComponent(path)+'&sha=main&per_page=20',{},'read');
+      for (const commit of Array.isArray(commits)?commits:[]) {
+        const version=await this.readFile(repo,path,commit.sha);
+        if(version.sha===contentSha) return commit.sha;
+      }
+      return null;
     }
   };
 }
