@@ -129,7 +129,7 @@ export const CONTROL_ROUTE_TOOL = {
       plain_summary:{type:'string'},
       project_id:{type:'string'},
       why:{type:'string'},
-      proposal:{type:'object'}
+      proposal:{type:'object',additionalProperties:false,description:'Optional canonical change. For an ACTIVE_WORK state update, include target_repo exactly "ashleybrookeugc/research-vault", target_path exactly "ACTIVE_WORK.md", operation exactly "replace_field", plus section, field, and value. For a side idea, use target_path "SIDE_IDEAS.md", operation "append_side_idea", plus title, body, and scope.',properties:{target_repo:{type:'string',enum:['ashleybrookeugc/research-vault']},target_path:{type:'string',enum:['ACTIVE_WORK.md','SIDE_IDEAS.md']},operation:{type:'string',enum:['replace_field','append_side_idea']},section:{type:'string'},field:{type:'string'},value:{type:'string'},title:{type:'string'},body:{type:'string'},scope:{type:'string'}}}
     },
     required:['route_kind','responsibility','confidence','plain_summary']
   }
@@ -152,7 +152,7 @@ function workersToolResult(data,identity) {
   }
   return validateModelRoute(calls[0].arguments,identity);
 }
-function modelPrompt(input,context) { return [{role:'system',content:'Classify this request by calling submit_control_route exactly once. Do not answer in prose. Never propose a write outside research-vault.'},{role:'user',content:JSON.stringify({input,context})}]; }
+function modelPrompt(input,context) { return [{role:'system',content:'Classify this request by calling submit_control_route exactly once. Do not answer in prose. A state_update proposal must name the canonical research-vault target and all required operation fields shown in the tool schema. Never propose a write outside research-vault.'},{role:'user',content:JSON.stringify({input,context})}]; }
 
 export function createWorkersAiRoutingAdapter(env) {
   return { async route(input,context) {

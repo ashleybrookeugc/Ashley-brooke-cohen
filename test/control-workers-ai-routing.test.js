@@ -27,3 +27,24 @@ test('prose Workers AI output fails closed without a raw JSON parser exception',
     return true;
   });
 });
+
+
+test('the actual production failure shape receives the required canonical proposal schema',async()=>{
+  const proposal=CONTROL_ROUTE_TOOL.parameters.properties.proposal;
+  assert.equal(proposal.type,'object');
+  assert.equal(proposal.additionalProperties,false);
+  assert.deepEqual(proposal.properties.target_repo.enum,['ashleybrookeugc/research-vault']);
+  assert.deepEqual(proposal.properties.target_path.enum,['ACTIVE_WORK.md','SIDE_IDEAS.md']);
+  assert.deepEqual(proposal.properties.operation.enum,['replace_field','append_side_idea']);
+  let request;
+  const router=createWorkersAiRoutingAdapter({AI:{run:async(_model,input)=>{
+    request=input;
+    return {tool_calls:[{name:'submit_control_route',arguments:{route_kind:'state_update',responsibility:'ai_can_handle',confidence:'high',plain_summary:'A malformed state update',proposal:{}}}]};
+  }}});
+  await assert.rejects(()=>router.route('Set the next bounded action',context),error=>{
+    assert.equal(error.diagnostic.validation.path,'proposal.target_repo');
+    assert.equal(error.diagnostic.validation.reason,'Proposal target is not allowed');
+    return true;
+  });
+  assert.match(request.messages[0].content,/canonical research-vault target/);
+});
