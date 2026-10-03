@@ -9,6 +9,10 @@ export function normalizeFactKey(value) {
   return String(value || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 }
 
+function canonicalMutableField(value) {
+  return MUTABLE_FIELDS.find(field => normalizeFactKey(field) === normalizeFactKey(value)) || value;
+}
+
 export function parseCanonicalFacts(markdown) {
   let section = 'document', occurrence = 0;
   const facts = [];
@@ -45,7 +49,9 @@ export function validateRoute(candidate) {
   if (!candidate.plain_summary || typeof candidate.plain_summary !== 'string') reject('plain_summary','Missing plain_summary');
   if (candidate.route_kind === 'decision' && candidate.responsibility !== 'needs_ashley') reject('responsibility','Decisions require Ashley');
   if (candidate.proposal) {
-    const p = candidate.proposal;
+    const p = {...candidate.proposal};
+    if (p.target_path === 'ACTIVE_WORK.md') p.field = canonicalMutableField(p.field);
+    candidate = {...candidate,proposal:p};
     if (p.target_repo !== WRITE_REPO) reject('proposal.target_repo','Proposal target is not allowed');
     if (!WRITE_PATHS.includes(p.target_path)) reject('proposal.target_path','Proposal target is not allowed');
     if (p.target_path === 'ACTIVE_WORK.md') {
