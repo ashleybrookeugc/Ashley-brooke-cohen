@@ -1,5 +1,5 @@
 import {routingDiagnostic} from './diagnostics.js';
-import {applyProposal,normalizeFactKey,parseActiveWork,parseCanonicalFacts,validateRoute,WRITE_REPO} from './contracts.js';
+import {applyProposal,normalizeFactKey,parseActiveWork,parseCanonicalFacts,RouteValidationError,validateRoute,WRITE_REPO} from './contracts.js';
 const markerStart='<!-- mary-kate-control-write:';
 const markerEnd='-->';
 const encodeMarker=value=>btoa(unescape(encodeURIComponent(JSON.stringify(value)))).replaceAll('+','-').replaceAll('/','_').replaceAll('=','');
@@ -9,6 +9,24 @@ const stripMarker=content=>String(content).replace(markerPattern,'').trimEnd()+'
 const readMarker=content=>{const match=String(content).match(markerPattern);if(!match)return null;try{return decodeMarker(match[1]);}catch{return null;}};
 const hash=async value=>{const bytes=new TextEncoder().encode(value);return [...new Uint8Array(await crypto.subtle.digest('SHA-256',bytes))].map(x=>x.toString(16).padStart(2,'0')).join('');};
 const canonicalPayload=(target,proposal)=>JSON.stringify({target,proposal});
+const canonicalSectionName=value=>String(value||'').split(' — ')[0].trim();
+const resolvedWorkstreamSections=receipt=>[...new Set((receipt?.evidence||[]).map(fact=>fact.section).filter(Boolean))];
+function enforceResolvedWriteTarget(route,receipt) {
+  const proposal=route?.proposal;
+  if(!proposal||proposal.target_path!=='ACTIVE_WORK.md') return route;
+  const sections=resolvedWorkstreamSections(receipt);
+  if(!sections.length) return route;
+  if(sections.length!==1) throw new PriorStateGateError('conflict','Mary Kate resolved more than one workstream for this state change, so it changed nothing.',receipt);
+  const resolved=sections[0];
+  if(canonicalSectionName(proposal.section)!==canonicalSectionName(resolved)) {
+    const error=new RouteValidationError('proposal.section','Proposal section does not match the resolved workstream');
+    error.code='routing_contract_invalid'; error.status=422;
+    error.diagnostic=routingDiagnostic(route,{resolved_workstream:resolved},error);
+    error.message='Routing selected a write target outside the resolved workstream. No change was saved.';
+    throw error;
+  }
+  return route;
+}
 export class CanonicalWriteError extends Error {
   constructor(code,message,status=409){super(message);this.code=code;this.status=status;}
 }
@@ -157,7 +175,7 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
         throw error;
       }
       if (Object.hasOwn(candidate,'prior_state')) throw new Error('Prior-state gate receipt is assigned by the control service');
-      const route={...candidate,prior_state:snapshot.prior_state};
+      const route=enforceResolvedWriteTarget({...candidate,prior_state:snapshot.prior_state},snapshot.prior_state);
       const interaction=await store.addInteraction({raw_text:text.trim(),route});
       let item=null;
       if(route.proposal) item=await store.addQueueItem({interaction_id:interaction.id,...route});
