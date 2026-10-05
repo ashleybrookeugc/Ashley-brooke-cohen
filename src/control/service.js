@@ -11,11 +11,11 @@ const hash=async value=>{const bytes=new TextEncoder().encode(value);return [...
 const canonicalPayload=(target,proposal)=>JSON.stringify({target,proposal});
 const canonicalSectionName=value=>String(value||'').split(' — ')[0].trim();
 const resolvedWorkstreamSections=receipt=>[...new Set((receipt?.evidence||[]).map(fact=>fact.section).filter(Boolean))];
-function enforceResolvedWriteTarget(route,receipt) {
+function enforceResolvedWriteTarget(route,receipt,ambiguityGate) {
   const proposal=route?.proposal;
   if(!proposal||proposal.target_path!=='ACTIVE_WORK.md') return route;
-  const sections=resolvedWorkstreamSections(receipt);
-  if(!sections.length) return route;
+  const sections=[...new Set([...resolvedWorkstreamSections(receipt),...(ambiguityGate?.section?[ambiguityGate.section]:[])])];
+  if(!sections.length) throw new PriorStateGateError('ambiguous_scope','Mary Kate cannot bind this state change to a verified workstream, so it changed nothing.',{gate:'authoritative-ambiguity.v1',status:'blocked',evidence:[],blockers:[{reason:'ambiguous_scope',key:'workstream',facts:[]}]});
   if(sections.length!==1) throw new PriorStateGateError('conflict','Mary Kate resolved more than one workstream for this state change, so it changed nothing.',receipt);
   const resolved=sections[0];
   if(canonicalSectionName(proposal.section)!==canonicalSectionName(resolved)) {
@@ -43,6 +43,20 @@ const sectionScore=(text,section)=>{
   const distinctive=words.filter(word=>word.length>2&&!['active','now','parallel','blocked','resumable','paused','waiting','ashley','current','project','work','system','operating','reconciliation','truth'].includes(word));
   return distinctive.filter(word=>input.includes(' '+word+' ')).length;
 };
+export function resolveAuthoritativeWorkstream(text, facts) {
+  const sections=[...new Set(facts.map(f=>f.section))].filter(section=>section!=='document');
+  const scores=sections.map(section=>({section,score:sectionScore(text,section)}));
+  const best=Math.max(0,...scores.map(candidate=>candidate.score));
+  const candidates=scores.filter(candidate=>best>0&&candidate.score===best).map(candidate=>candidate.section);
+  return {status:candidates.length===1?'resolved':candidates.length>1?'ambiguous':'unknown',section:candidates.length===1?candidates[0]:null,candidates};
+}
+const continuationWithoutBinding=text=>/^(?:yes|yep|sure|ok(?:ay)?|fine|go ahead|carry on|continue|do that|use that|send it|send whichever|the one we discussed)\b/i.test(text.trim());
+export function createAmbiguityGate(text,facts) {
+  const resolution=resolveAuthoritativeWorkstream(text,facts);
+  if(resolution.status==='ambiguous') return {...resolution,status:'blocked',reason:'multiple_current_referents'};
+  if(resolution.status==='unknown'&&continuationWithoutBinding(text)) return {...resolution,status:'blocked',reason:'unbound_continuation'};
+  return {...resolution,status:'passed'};
+}
 const requestedFacts = (text, facts, projects, explicit=[]) => {
   if (!Array.isArray(explicit) || explicit.some(key => typeof key !== 'string')) throw new PriorStateGateError('invalid_request','required_fact_keys must be an array of strings');
   const words=textWords(text);
@@ -60,11 +74,7 @@ const requestedFacts = (text, facts, projects, explicit=[]) => {
     // Resolve the named workstream before looking for a field in it. A missing
     // field in the named workstream must not borrow a same-named field from a
     // different Mary Kate projection or another project.
-    const sections=[...new Set(facts.map(f=>f.section))];
-    const scores=sections.map(section=>({section,score:sectionScore(text,section)}));
-    const best=Math.max(0,...scores.map(candidate=>candidate.score));
-    const matches=scores.filter(candidate=>best>0&&candidate.score===best);
-    return {key,section:matches.length===1?matches[0].section:null};
+    return {key,section:resolveAuthoritativeWorkstream(text,facts).section};
   });
 };
 export function createPriorStateReceipt(packet, requiredFacts=[]) {
@@ -134,7 +144,8 @@ export function createControlTaskPacket(snapshot) {
     purpose:'control_route',
     active_work:{projects:snapshot.projects,source:snapshot.source},
     freshness:snapshot.context,
-    prior_state:snapshot.prior_state
+    prior_state:snapshot.prior_state,
+    ambiguity_gate:snapshot.ambiguity_gate
   };
 }
 export function createControlService({github,router,store,now=()=>Date.now(),packetTtlMs=300000}) {
@@ -146,7 +157,7 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
     if(packet&&!Array.isArray(packet.facts)){packet=null;reused=false;}
     if(!packet){const source=await github.readFile(WRITE_REPO,'ACTIVE_WORK.md');const created_at=new Date(now()).toISOString();packet={projects:parseActiveWork(source.content),facts:parseCanonicalFacts(source.content),source:{repo:WRITE_REPO,path:'ACTIVE_WORK.md',sha:source.sha},created_at,expires_at:new Date(now()+packetTtlMs).toISOString()};await store.putContextPacket(key,packet);}
     const prior_state=createPriorStateReceipt(packet,requiredFacts.length?requiredFacts:requiredFactKeys);
-    return {routing_diagnostics:{version:'control-routing-failure.v1',storage:'control_interactions.route_json'},projects:packet.projects,source:packet.source,context:{status:reused?'reused':'refreshed',created_at:packet.created_at,expires_at:packet.expires_at},fact_keys:[...new Set(packet.facts.map(f=>f.key))],prior_state,queues:await store.listQueues(),history:await store.listHistory(20)};
+    return {routing_diagnostics:{version:'control-routing-failure.v1',storage:'control_interactions.route_json'},ambiguity_gate:{version:'authoritative-ambiguity.v1'},projects:packet.projects,source:packet.source,context:{status:reused?'reused':'refreshed',created_at:packet.created_at,expires_at:packet.expires_at},fact_keys:[...new Set(packet.facts.map(f=>f.key))],prior_state,queues:await store.listQueues(),history:await store.listHistory(20)};
   };
   return {
     state,
@@ -155,8 +166,11 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
       const initial=await state();
       // Scope each requested fact against the actual canonical facts, not the de-duplicated key list.
       const packet=await store.getContextPacket('active-work.v1');
+      const ambiguity_gate=createAmbiguityGate(text,packet?.facts||[]);
+      if(ambiguity_gate.status==='blocked') throw new PriorStateGateError('ambiguous_scope','Mary Kate could not bind this request to one current workstream, so it changed nothing.',{gate:'authoritative-ambiguity.v1',status:'blocked',evidence:[],blockers:[{reason:'ambiguous_scope',key:'workstream',facts:ambiguity_gate.candidates.map(section=>({section,label:'workstream'}))}]});
       const scoped=requestedFacts(text,packet?.facts||[],initial.projects,requiredFactKeys);
       const snapshot=scoped.length?await state({requiredFacts:scoped}):initial;
+      snapshot.ambiguity_gate=ambiguity_gate;
       requirePriorState(snapshot.prior_state);
       let candidate;
       try {
@@ -175,7 +189,7 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
         throw error;
       }
       if (Object.hasOwn(candidate,'prior_state')) throw new Error('Prior-state gate receipt is assigned by the control service');
-      const route=enforceResolvedWriteTarget({...candidate,prior_state:snapshot.prior_state},snapshot.prior_state);
+      const route=enforceResolvedWriteTarget({...candidate,prior_state:snapshot.prior_state},snapshot.prior_state,ambiguity_gate);
       const interaction=await store.addInteraction({raw_text:text.trim(),route});
       let item=null;
       if(route.proposal) item=await store.addQueueItem({interaction_id:interaction.id,...route});

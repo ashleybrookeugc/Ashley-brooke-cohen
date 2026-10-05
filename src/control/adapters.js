@@ -77,7 +77,8 @@ export function safeGitHubTokenError(status, body, contentType='',hasGitHubReque
   try { parsed=JSON.parse(body); } catch { /* Do not echo non-JSON response text. */ }
   const kind=parsed ? 'json' : !body.trim() ? 'empty' : /<html|<!doctype html/i.test(body) ? 'html' : 'text';
   const declaredType=/json/i.test(contentType)?'json':/html/i.test(contentType)?'html':/text/i.test(contentType)?'text':'other';
-  const marker=/user.agent/i.test(body)?'user-agent':/rate.limit/i.test(body)?'rate-limit':/cloudflare/i.test(body)?'cloudflare':/jwt|signature/i.test(body)?'jwt-signature':/permission/i.test(body)?'permission':/forbidden/i.test(body)?'forbidden':'none';
+  const signal=kind==='json'?body:'';
+  const marker=/user.agent/i.test(signal)?'user-agent':/rate.limit/i.test(signal)?'rate-limit':/cloudflare/i.test(signal)?'cloudflare':/jwt|signature/i.test(signal)?'jwt-signature':/permission/i.test(signal)?'permission':/forbidden/i.test(signal)?'forbidden':'none';
   const summary=kind==='json'?safeTokenMessage(parsed?.message):'No JSON message';
   return new Error(`GitHub App token ${status}: ${summary}; response=${kind}/${declaredType}; body-length=${body.length}; marker=${marker}; github-request-id=${hasGitHubRequestId?'present':'absent'}`);
 }

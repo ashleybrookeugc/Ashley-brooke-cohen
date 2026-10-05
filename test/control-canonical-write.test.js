@@ -13,11 +13,11 @@ function fixture({writeError,readbackError}={}) {
     async writeFile(_repo,_path,next,expected){writes++;assert.equal(expected,sha);if(writeError)throw writeError;content=next;sha='written';failReadback=true;return{commit_sha:'commit-1',content_sha:'written'};},
     async findFileCommit(_repo,_path,fileSha){return fileSha==='written'?'commit-1':null;}
   };
-  const store=createMemoryStore();
+  const store=createMemoryStore({now:()=>new Date('2026-10-02T00:00:00Z').toISOString()});
   const app=createControlService({github,router,store,now:()=>Date.parse('2026-10-02T00:00:00Z')});
   return {app,store,github,get writes(){return writes},get content(){return content},set readbackFailure(v){failReadback=v;}};
 }
-async function pending(f){await f.app.capture('advance');return (await f.store.listQueues()).ai_can_handle[0];}
+async function pending(f){await f.app.capture('Advance UGC Creator App');return (await f.store.listQueues()).ai_can_handle[0];}
 
 test('same operation and payload recover from GitHub marker without a second mutation',async()=>{
   const f=fixture();const item=await pending(f);const first=await f.app.approve(item.id);assert.equal(first.receipt.status,'verified');assert.equal(f.writes,1);
