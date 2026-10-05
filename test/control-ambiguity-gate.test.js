@@ -21,6 +21,17 @@ test('authoritative ambiguity overrides any candidate claim of clear continuatio
   assert.ok(video.candidates.length>1);
 });
 
+test('ambiguous current work stops before model routing or an approval item',async()=>{
+  let routerCalls=0;
+  const store=createMemoryStore();
+  const service=createControlService({github:{readFile:async()=>({content:current,sha:'source'})},store,router:{route:async()=>{routerCalls++;throw new Error('model must not run');}}});
+  await assert.rejects(()=>service.capture('Fine, carry on.'),error=>error.code==='ambiguous_scope');
+  await assert.rejects(()=>service.capture('Make video analysis a priority and tell me the next steps'),error=>error.code==='ambiguous_scope');
+  assert.equal(routerCalls,0);
+  assert.equal((await store.listQueues()).needs_ashley.length,0);
+  assert.equal((await store.listHistory(10)).length,0);
+});
+
 test('an explicit canonical workstream binds the model to that one target',async()=>{
   let routerCalls=0;
   const github={readFile:async()=>({content:current,sha:'source'})};
