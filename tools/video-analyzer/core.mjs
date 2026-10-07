@@ -257,22 +257,87 @@ export async function resolveInput(input, { fetchImpl = fetch, maxBytes = 8_000_
   };
 }
 
-async function extractFrames(sourcePath, framesDirectory, durationSeconds, intervalSeconds) {
+async function listSourceFramePts(sourcePath) {
+  // F-003: recover the true presentation timestamp of every source frame, in
+  // presentation order (the order the select filter's `n` counts). This is the
+  // only ground truth for which pixels belong to which source time.
+  const result = await runCommand('ffmpeg', [
+    '-hide_banner', '-i', sourcePath, '-vf', 'showinfo', '-an', '-f', 'null', '-'
+  ], { allowFailure: true, maxOutputBytes: 256_000_000 });
+  if (result.code !== 0) {
+    throw new IntakeError('SOURCE_PTS_LISTING_FAILED', 'Could not list source frame presentation timestamps.', {
+      stderr: result.stderr.slice(-2000)
+    });
+  }
+  const pts = [...result.stderr.matchAll(/pts_time:([0-9.]+)/g)].map(match => Number(match[1]));
+  if (!pts.length) throw new IntakeError('SOURCE_PTS_LISTING_FAILED', 'No source frame timestamps recovered.', {});
+  for (let i = 1; i < pts.length; i++) {
+    if (!(pts[i] >= pts[i - 1])) {
+      throw new IntakeError('SOURCE_PTS_LISTING_FAILED', 'Source presentation timestamps are not non-decreasing; cannot bind pixels to source time.', {
+        index: i, previous: pts[i - 1], current: pts[i]
+      });
+    }
+  }
+  return pts;
+}
+
+function selectCadenceIndices(sourcePts, intervalSeconds, durationSeconds) {
+  const indices = [];
+  for (let k = 0, tick = 0; tick < durationSeconds; k += 1, tick = k * intervalSeconds) {
+    let selected = 0, low = 0, high = sourcePts.length - 1;
+    while (low <= high) {
+      const mid = (low + high) >> 1;
+      if (sourcePts[mid] <= tick + 1e-6) { selected = mid; low = mid + 1; }
+      else high = mid - 1;
+    }
+    indices.push(selected);
+  }
+  return indices;
+}
+
+async function extractFrames(sourcePath, framesDirectory, durationSeconds, intervalSeconds, sourcePts) {
   await mkdir(framesDirectory, { recursive: true });
-  await runCommand('ffmpeg', [
-    '-v', 'error', '-i', sourcePath, '-vf', `fps=1/${intervalSeconds}`, '-q:v', '4',
-    join(framesDirectory, 'frame-%06d.jpg')
-  ]);
+  const tickIndices = selectCadenceIndices(sourcePts, intervalSeconds, durationSeconds);
+  const uniqueIndices = [...new Set(tickIndices)];
+  const selectExpr = uniqueIndices.map(index => `eq(n\\,${index})`).join('+');
+  const result = await runCommand('ffmpeg', [
+    '-hide_banner', '-i', sourcePath, '-vf', `select='${selectExpr}',showinfo`,
+    '-fps_mode', 'passthrough', '-q:v', '4', join(framesDirectory, 'frame-%06d.jpg')
+  ], { maxOutputBytes: 256_000_000 });
   const names = (await readdir(framesDirectory)).filter(name => name.endsWith('.jpg')).sort();
+  const outPts = [...result.stderr.matchAll(/pts_time:([0-9.]+)/g)].map(match => Number(match[1]));
+  if (names.length !== uniqueIndices.length || outPts.length !== uniqueIndices.length) {
+    throw new IntakeError('VISUAL_EVIDENCE_INTEGRITY_FAILED', 'Selected frames, extracted files, and source timestamps did not bind one-to-one.', {
+      selected_frames: uniqueIndices.length, extracted_files: names.length, reported_timestamps: outPts.length
+    });
+  }
+  const extracted = [];
+  for (let u = 0; u < names.length; u++) {
+    const sourceTimestamp = sourcePts[uniqueIndices[u]];
+    if (Math.abs(outPts[u] - sourceTimestamp) > 1e-3) {
+      throw new IntakeError('VISUAL_EVIDENCE_INTEGRITY_FAILED', 'Extracted frame pixels do not match the selected source timestamp.', {
+        source_frame_index: uniqueIndices[u], expected_source_timestamp: sourceTimestamp, observed_pts_time: outPts[u]
+      });
+    }
+    extracted.push({
+      source_frame_index: uniqueIndices[u], source_timestamp_seconds: sourceTimestamp,
+      relative_path: `frames/${names[u]}`, sha256: await sha256File(join(framesDirectory, names[u]))
+    });
+  }
+  const byIndex = new Map(extracted.map(record => [record.source_frame_index, record]));
   const frames = [];
-  for (let index = 0; index < names.length; index++) {
-    const name = names[index];
+  for (let k = 0; k < tickIndices.length; k++) {
+    const base = byIndex.get(tickIndices[k]);
+    const sampleTimestamp = Math.min(k * intervalSeconds, durationSeconds);
     frames.push({
-      frame_id: name.replace('.jpg', ''),
-      timestamp_seconds: Math.min(index * intervalSeconds, durationSeconds),
-      timestamp_method: 'ffmpeg_fixed_cadence_filter',
-      relative_path: `frames/${name}`,
-      sha256: await sha256File(join(framesDirectory, name))
+      frame_id: `frame-${String(k + 1).padStart(6, '0')}`,
+      source_frame_index: base.source_frame_index,
+      source_timestamp_seconds: base.source_timestamp_seconds,
+      sample_timestamp_seconds: sampleTimestamp,
+      timestamp_seconds: base.source_timestamp_seconds,
+      timestamp_method: 'source_pts_preserving_select',
+      relative_path: base.relative_path,
+      sha256: base.sha256
     });
   }
   return frames;
@@ -373,20 +438,34 @@ async function runAsr(sourcePath, stagingDirectory, durationSeconds, asrPython) 
   return { ...parsed, speech_intervals: intervals, audio_derivative: { relative_path: 'audio-16khz-mono.wav', retained_in_local_package: true } };
 }
 
-async function extractMotionEvidence(sourcePath, intervalSeconds, expectedFrames) {
+async function extractMotionEvidence(sourcePath, frames) {
+  const uniqueIndices = [...new Set(frames.map(frame => frame.source_frame_index))];
+  const selectExpr = uniqueIndices.map(index => `eq(n\\,${index})`).join('+');
   const result = await runCommandBuffer('ffmpeg', [
-    '-hide_banner', '-i', sourcePath, '-vf', `fps=1/${intervalSeconds},scale=64:64,format=gray,showinfo`, '-an', '-f', 'rawvideo', 'pipe:1'
+    '-hide_banner', '-i', sourcePath,
+    '-vf', `select='${selectExpr}',scale=64:64,format=gray,showinfo`,
+    '-fps_mode', 'passthrough', '-an', '-f', 'rawvideo', 'pipe:1'
   ]);
   const timestamps = [...result.stderr.matchAll(/pts_time:([0-9.]+)/g)].map(match => Number(match[1]));
   const frameSize = 64 * 64;
   const count = Math.floor(result.stdout.length / frameSize);
-  if (count !== timestamps.length || count !== expectedFrames.length) {
+  if (count !== timestamps.length || count !== uniqueIndices.length) {
     throw new IntakeError('VISUAL_EVIDENCE_INTEGRITY_FAILED', 'Motion frames, timestamps, and sampled evidence frames did not bind one-to-one.', {
-      motion_frames: count, timestamps: timestamps.length, evidence_frames: expectedFrames.length
+      motion_frames: count, timestamps: timestamps.length, evidence_frames: uniqueIndices.length
     });
   }
-  const rawFrames = Array.from({ length: count }, (_, index) => result.stdout.subarray(index * frameSize, (index + 1) * frameSize));
-  return { rawFrames, timestamps };
+  const sourceByIndex = new Map(frames.map(frame => [frame.source_frame_index, frame.source_timestamp_seconds]));
+  for (let u = 0; u < count; u++) {
+    const expected = sourceByIndex.get(uniqueIndices[u]);
+    if (Math.abs(timestamps[u] - expected) > 1e-3) {
+      throw new IntakeError('VISUAL_EVIDENCE_INTEGRITY_FAILED', 'Motion evidence pixels do not match the sampled frame source timestamp.', {
+        source_frame_index: uniqueIndices[u], expected_source_timestamp: expected, observed_pts_time: timestamps[u]
+      });
+    }
+  }
+  const uniqueRaw = Array.from({ length: count }, (_, index) => result.stdout.subarray(index * frameSize, (index + 1) * frameSize));
+  const rawByIndex = new Map(uniqueIndices.map((index, u) => [index, uniqueRaw[u]]));
+  return { rawFrames: frames.map(frame => rawByIndex.get(frame.source_frame_index)), timestamps: frames.map(frame => frame.source_timestamp_seconds) };
 }
 
 async function detectVisualChanges(sourcePath) {
@@ -593,7 +672,8 @@ export async function processVideo(input, {
     const stagingDirectory = join(root, `.${packageId}-${randomUUID()}.staging`);
     await mkdir(stagingDirectory, { recursive: true });
 
-    const frames = await extractFrames(resolved.path, join(stagingDirectory, 'frames'), probe.duration_seconds, frameIntervalSeconds);
+    const sourcePts = await listSourceFramePts(resolved.path);
+    const frames = await extractFrames(resolved.path, join(stagingDirectory, 'frames'), probe.duration_seconds, frameIntervalSeconds, sourcePts);
     const width = probe.video_streams[0].width;
     const height = probe.video_streams[0].height;
     const rawOcr = await runOcr(frames, stagingDirectory, width, height);
@@ -610,7 +690,7 @@ export async function processVideo(input, {
       }
     }
     const changes = await detectVisualChanges(resolved.path);
-    const motion = await extractMotionEvidence(resolved.path, frameIntervalSeconds, frames);
+    const motion = await extractMotionEvidence(resolved.path, frames);
     const visualObservations = buildSemanticVisualObservations(motion.rawFrames, motion.timestamps, rawOcr);
     const evidence = makeEvidence({
       frames, rawOcr, changes, visualObservations, hasAudio: probe.audio_streams.length > 0, asr, asrState
@@ -647,7 +727,17 @@ export async function processVideo(input, {
         visual_sampling: {
           state: 'sampled_not_frame_exhaustive',
           interval_seconds: frameIntervalSeconds,
-          frame_count: frames.length
+          frame_count: frames.length,
+          timestamp_binding: 'source_pts_preserving_select',
+          frames: frames.map(frame => ({
+            frame_id: frame.frame_id,
+            source_frame_index: frame.source_frame_index,
+            source_timestamp_seconds: frame.source_timestamp_seconds,
+            sample_timestamp_seconds: frame.sample_timestamp_seconds,
+            timestamp_seconds: frame.timestamp_seconds,
+            sha256: frame.sha256,
+            relative_path: frame.relative_path
+          }))
         },
         transcript: evidence.lanes.spoken_audio.state,
         speaker_turns: evidence.lanes.speaker_turns.state,
