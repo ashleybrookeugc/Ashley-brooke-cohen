@@ -287,3 +287,62 @@ test('remote-store contract rejects corrupted remote read-back and local-only pa
     }
   }), error => assertIntakeCode(error, 'REMOTE_PERSISTENCE_READBACK_FAILED'));
 });
+
+
+async function makeVfrVideo(path) {
+  const keep = [0, 1, 2, 30, 31, 90, 91, 92, 93, 150, 210, 211, 239];
+  const selectExpr = keep.map(index => `eq(n\\,${index})`).join('+');
+  await runCommand('ffmpeg', [
+    '-y', '-f', 'lavfi', '-i', 'testsrc=duration=8:size=320x240:rate=30',
+    '-vf', `select='${selectExpr}'`, '-fps_mode', 'vfr',
+    '-c:v', 'libx264', '-pix_fmt', 'yuv420p', path
+  ]);
+}
+
+async function readSourcePts(path) {
+  const result = await runCommand('ffmpeg', [
+    '-hide_banner', '-i', path, '-vf', 'showinfo', '-an', '-f', 'null', '-'
+  ], { allowFailure: true, maxOutputBytes: 64_000_000 });
+  assert.equal(result.code, 0);
+  return [...result.stderr.matchAll(/pts_time:([0-9.]+)/g)].map(match => Number(match[1]));
+}
+
+test('F-003: sampled evidence carries source timestamps, not sampling-cadence timestamps', async t => {
+  const root = await fixtureRoot(t);
+  const source = join(root, 'vfr-source-time.mp4');
+  await makeVfrVideo(source);
+  const sourcePts = await readSourcePts(source);
+  assert.ok(sourcePts.length >= 10, `expected a VFR fixture with irregular PTS, got ${sourcePts.length} frames`);
+  const intervalSeconds = 1;
+  const durationSeconds = Number((await runCommand('ffprobe', [
+    '-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', source
+  ])).stdout.trim());
+  const expectedSource = [];
+  const expectedSample = [];
+  for (let k = 0, tick = 0; tick < durationSeconds; k += 1, tick = k * intervalSeconds) {
+    let selected = 0;
+    for (let i = 0; i < sourcePts.length; i++) if (sourcePts[i] <= tick + 1e-6) selected = i;
+    expectedSource.push(sourcePts[selected]);
+    expectedSample.push(tick);
+  }
+  assert.ok(expectedSource.some((pts, k) => Math.abs(pts - expectedSample[k]) > 0.01),
+    'fixture does not separate source time from sampling time; it cannot prove F-003');
+  const result = await processVideo(source, { outputRoot: join(root, 'packages'), frameIntervalSeconds: intervalSeconds });
+  const sampled = result.manifest.coverage.visual_sampling.frames;
+  assert.ok(Array.isArray(sampled), 'F-003: manifest must carry per-frame source-time provenance (visual_sampling.frames)');
+  assert.equal(sampled.length, expectedSource.length);
+  for (let k = 0; k < sampled.length; k++) {
+    assert.ok(Math.abs(sampled[k].source_timestamp_seconds - expectedSource[k]) < 1e-3,
+      `frame ${k}: source_timestamp_seconds=${sampled[k].source_timestamp_seconds}, expected source pts=${expectedSource[k]}`);
+    assert.ok(Math.abs(sampled[k].sample_timestamp_seconds - expectedSample[k]) < 1e-9,
+      `frame ${k}: sample_timestamp_seconds must be the cadence tick`);
+    assert.ok(Math.abs(sampled[k].timestamp_seconds - expectedSource[k]) < 1e-3,
+      `frame ${k}: timestamp_seconds must be source-faithful (F-003), got ${sampled[k].timestamp_seconds}`);
+  }
+  const observations = result.evidence.lanes.visible_actions_subjects_ui_state.observations;
+  assert.equal(observations.length, sampled.length);
+  for (let k = 0; k < observations.length; k++) {
+    assert.ok(Math.abs(observations[k].start_seconds - expectedSource[k]) < 1e-3,
+      `observation ${k}: start_seconds=${observations[k].start_seconds}, expected source pts=${expectedSource[k]}`);
+  }
+});
