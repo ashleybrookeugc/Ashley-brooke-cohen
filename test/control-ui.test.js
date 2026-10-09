@@ -49,6 +49,7 @@ test('production worker inventory remains behind admin auth while ingest uses it
   assert.ok(ingest>=0&&ingest<admin&&admin<inventory);
   assert.match(source,/verifyWorkerTelemetrySignature/);
   assert.match(source,/CONTROL_WORKER_TELEMETRY_SECRET/);
+  assert.match(source,/if\(request\.method!==\'POST\'\) return json\(\{error:\'Method not allowed\',code:\'read_only\'\},405\);\s*await ensureSchema/);
   assert.doesNotMatch(source,/console\.(?:log|error).*CONTROL_WORKER_TELEMETRY_SECRET/);
 });
 

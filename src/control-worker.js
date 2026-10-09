@@ -26,7 +26,10 @@ async function workerTelemetry(request,env) {
 }
 async function control(request,env) {
   const path=new URL(request.url).pathname.replace(/\/+$/,'')||'/';
-  if(path==='/api/control/workers/telemetry'){await ensureSchema(env);return workerTelemetry(request,env)}
+  if(path==='/api/control/workers/telemetry'){
+    if(request.method!=='POST') return json({error:'Method not allowed',code:'read_only'},405);
+    await ensureSchema(env);return workerTelemetry(request,env);
+  }
   if(!await isAdmin(request,env)) return new URL(request.url).pathname.startsWith('/api/')?json({error:'Unauthorized'},401):new Response(null,{status:303,headers:{location:'/admin/login','cache-control':'no-store'}});
   await ensureSchema(env);
   const core=service(env);
