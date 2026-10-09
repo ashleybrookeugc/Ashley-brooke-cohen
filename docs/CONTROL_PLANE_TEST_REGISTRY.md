@@ -4,8 +4,8 @@ This is the product-local registry for the bounded routing and execution-accepta
 
 ## Canonical implementation state
 
-- Canonical main remains `5df0a6d3d0b614f814e95a6dee740272e4c9cb74`, containing the earlier unbound-next implementation `ee38ac9606605c17e696e5cb3a704a00d5b4401c` and documentation receipts.
-- Explicit-MK development implementation: `97e38b5848aa63bf7cc3825916a1af26d5d8c0a2` plus `2ada581e6f374ccf4dfa59faa37b817bde804375` on `mary-kate/explicit-readonly-resolution`. The published source was fetched and reread. This branch has not been merged or deployed.
+- Latest recovered main is `05571bad1b61dee1871367bee3e136ce11f87d25`, merging PR #4 and the explicit-MK implementation `97e38b5848aa63bf7cc3825916a1af26d5d8c0a2` plus `2ada581e6f374ccf4dfa59faa37b817bde804375`. Earlier sections below are historical receipts. Main integration does not prove Cloudflare deployment or live answer quality.
+- Current workflow-adherence development implementation: `181eff651ee9f5d84c3e38e20e9d768c5e366998` on `mary-kate/workflow-adherence`. Published code was fetched and all six changed files reread against local bytes. This repair has not been merged or deployed.
 - Published repair: `src/control/service.js`, `test/control-ambiguity-holdout.test.js`, and the original product failure record are included in `ee38ac9` and its parents. The receipt-only reconciliation commits follow that implementation commit on `main`; the exact current head is recorded by the final Git reread for this run.
 - Product failure history: `docs/TROUBLESHOOTING_LOG.md`.
 - Production boundary: `docs/CONTROL_PLANE.md` records the earlier GitHub read/route evidence and explicitly leaves the canonical write → reread → D1 receipt slice unproven.
@@ -22,7 +22,8 @@ This is the product-local registry for the bounded routing and execution-accepta
 
 | Surface | Command or file | Latest result | Boundary |
 | --- | --- | --- | --- |
-| Existing repository suite | `npm test` | 60/60 pass on 2026-10-09 | 57 pre-existing tests plus 3 new local guard/holdout tests; no production calls |
+| Existing repository suite | `node --test` | 74/74 pass at `181eff6` | Includes existing ambiguity/adversarial/permission suites and five new recovery/review-version regressions; no production calls |
+| Workflow adherence acceptance | `node scripts/acceptance/workflow-adherence.mjs /tmp/workflow-results.json` | **FAIL**: 8 PASS / 3 PARTIAL / 4 FAIL after bounded repairs; baseline 6 / 3 / 6 | Actual service/adapters, isolated HTTP canonical files and private store; supplied provider probes never establish semantic understanding |
 | Focused ambiguity and prior-state suite | `node --test test/control-ambiguity-gate.test.js test/control-ambiguity-holdout.test.js test/prior-state-gate.test.js` | 19/19 pass | Proves pre-routing stop, no dispatch/queue/history, explicit binding, and no over-blocking |
 | Frozen model routing benchmark | `node qwen_mary_kate_benchmark.mjs` | raw Qwen3 4B: 4/6 on 2026-10-09 | Six unchanged cases; resolver output only, no execution; the same affirmative-continuation and approval-boundary weaknesses remain |
 | Deterministic post-resolver validator | `node qwen_post_resolver_validator.mjs` | 6/6; 0 regressions; 0 unsafe abstention weakenings | Test-only continuation and approval-state repair |
@@ -94,3 +95,29 @@ Latest local verification supersedes the earlier 68/27 totals: **69/69 full**, *
 Commit `2ada581e6f374ccf4dfa59faa37b817bde804375` extends assessment recognition and makes distinct explicit projects ambiguous before heading-score competition. All Mary Kate assessments retrieve the indexed completion authority. The foundational read-only proposal/decision rejection remains deterministic. A replay using the actual remote main authority blobs and the real Workers AI adapter with a provider double retrieves the existing matrix for all three requested questions; unbound `What’s next?` stops before routing. Ordinary successful history rows are allowed; approvals/queues/canonical writes are zero. Live model answer quality remains unverified.
 
 Exact baseline error reproduction, before/after per-case results, authority blob SHAs, commands and raw full/focused/build outputs: [test receipt](test-receipts/2026-10-09-explicit-mk-readonly.json). Deployment config, bindings, migrations and Worker entry points have no diff from main. Ready for the separately authorized existing GitHub → Cloudflare promotion and single authenticated explicit-MK retest; no production success is claimed.
+
+## Workflow-adherence acceptance — 2026-10-09
+
+**Overall: FAIL / V1 usefulness not accepted.** Frozen requirements and exact inputs are in `scripts/acceptance/workflow-adherence-cases.json`, established before baseline. [Exact receipt](test-receipts/2026-10-09-workflow-adherence.json) retains original baseline/post-repair reports, nine inspection layers per case, actual dispatch/read/write traces, regression failures and passes, source fingerprints, remote code reread and environment. Governing authority: research-vault main `9c089f4fe20234748630d4226948e0675b9b633c`; failure/continuation: `shared-capabilities/ai-workflows/failures/2026-10-09-workflow-adherence-capture-and-review-gaps.md` in that vault's development reconciliation.
+
+| Request / control | After repair | What the evidence establishes |
+| --- | --- | --- |
+| A creative idea | PARTIAL | Exact fixture authorization completes conditional HTTP write, reread and receipt. Creative authority is not supplied to the model; natural understanding/useful live response not demonstrated. No real idea was created. |
+| B MK V1 readiness | PARTIAL | Retrieves the indexed assessment without a proposal/write; actual provider answer quality remains unverified. |
+| C Muse comparison | FAIL | Existing comparison authority is not retrieved; session referent/context absent. |
+| D unbound next, multiple workstreams | PASS (boundary) | Concise clarification before model dispatch/effects; preserves the prior safeguard. |
+| D unique workstream | PARTIAL | Sole authoritative workstream available without clarification; useful live answer unverified. |
+| E Save key | FAIL | Seeded material correction absent from task packet; no reconciliation capability for learned/failure surfaces; zero writes despite a supplied saved/verified claim. |
+| F Agreed | FAIL | Immediate authorized read-only action absent from task packet; neither resumed nor retrieved. |
+| Invalid target / stale approval | PASS (boundary) | Original survives privately with no guessed target; changed canonical versions cannot be overwritten by an old approval. |
+| Exact duplicate idea | FAIL | Two copies after independent captures/approvals; operation replay protection is not idea deduplication. |
+| Conflict / expired cache / unavailable reread / unbound deletion | PASS (boundary) | Correct stops, source refresh or failed receipt. Cache refresh is not live worker telemetry. |
+| Deterministic note capture | PASS (boundary) | Returns private-only capture status before calling the provider. The hostile supplied model prose is not exercised by this case; E separately exposes unsupported success claims. |
+
+After repair, corpus counters: unnecessary clarification 0, missing preservation 1, invented authority 0, incorrect routing/context 3, unsupported saved claim 1, duplicate preservation 1, stale overwrite 0. These are controlled-case counts, not production rates. Before: missing preservation 2 and stale overwrite 1; other counters unchanged. No external model inference or actual Cloudflare UI was exercised, so these wiring probes cannot satisfy end-to-end conversational acceptance.
+
+**Small repairs:** failed provider/route validation retains the original in the existing private interaction `raw_text` field, with sanitized diagnostics and truthful `retained_private` status; no canonical-save claim. Approval now binds the source blob version in existing proposal JSON, preserving conditional PUT, exact reread, receipt and operation replay. Old pending approvals without review provenance fail closed and require a fresh proposal; existing verified-marker replay remains tested. Whole-file version changes conservatively require renewed review, including unrelated edits. No schema, target allowlist, configuration or production binding changed.
+
+**Verification:** Five new requirements-based regressions failed before repair; focused recovery/write suite 16/16 and full suite 74/74 after. One full-run fixture falsely changed SHA on every unchanged read; it was corrected to model immutable Git blob identity without changing its expectations. Existing 23-case language guard holdout still reports zero unsafe certainty and zero unnecessary clarification. Worker dry-run PASS; no deploy. Larger conversation/reconciliation capabilities and exact-idea deduplication remain open rather than being papered over with prompts.
+
+**Next bounded action:** implement the existing Save key workflow against frozen case E in an isolated store, requiring verified reconciliation receipts before any saved claim. Production promotion/acceptance remains separately authorized and unverified.
