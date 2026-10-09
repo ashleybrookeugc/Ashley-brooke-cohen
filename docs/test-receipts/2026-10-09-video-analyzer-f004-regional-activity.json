@@ -1,0 +1,88 @@
+{
+  "schema_version": "video-analyzer-test-receipt.v1",
+  "receipt_id": "video-analyzer-f004-regional-activity-2026-10-09T21:22:45Z",
+  "observed_at": "2026-10-09T21:22:45Z",
+  "scope": "F-004 deterministic regional-visual-activity regression",
+  "status": "PASS_FIXTURE_ONLY",
+  "production_change": false,
+  "source": {
+    "repository": "ashleybrookeugc/Ashley-brooke-cohen",
+    "branch": "video-analyzer/f003-source-time-fidelity",
+    "tested_commit": "f7689bdfc04ab0c06427a27d5be7cf4e2f9d6f9b",
+    "baseline_receipt_commit": "c13e80382c3ed846a379991beb421c9b4318897d",
+    "implementation_sha256": "7218be5c88583fa9cb01c1595636f4d626f3f3a32850b4e19800156bd5910adc",
+    "test_sha256": "67aedf32646f542dc4135ebe8322f4dc46b91e02054901bf6420e9cea7c87311"
+  },
+  "environment": {
+    "computer": "Ashley’s MacBook Pro",
+    "model_identifier": "Mac16,8",
+    "chip": "Apple M4 Pro",
+    "memory_gb": 24,
+    "operating_system": "macOS 26.6.2 (25G83)",
+    "architecture": "arm64",
+    "node": "26.3.1",
+    "python": "3.12.13",
+    "ffmpeg": "8.1.1",
+    "tesseract": "5.5.3"
+  },
+  "predeclared_expectation": {
+    "changed_frame": "An 8-by-8 changed region whose whole-frame mean difference remains below 0.025 must emit regional_visual_state_change at the supplied source timestamp.",
+    "static_control": "A byte-identical following frame must remain sampled_stable_state with no observable action.",
+    "regression_boundary": "The existing F-003 source-timestamp regression and every previously passing analyzer test must remain unchanged."
+  },
+  "pre_fix_reproduction": {
+    "command": "node --test --test-name-pattern='F-004' tests/video-analyzer.test.mjs",
+    "status": "FAIL_AS_EXPECTED",
+    "expected_state": "regional_visual_state_change",
+    "actual_state": "sampled_stable_state",
+    "tests": 1,
+    "passed": 0,
+    "failed": 1,
+    "duration_ms": 87.740208
+  },
+  "implementation": {
+    "frame_representation": "64x64 grayscale sampled frame",
+    "regional_grid": "8x8 non-overlapping regions",
+    "metric": "mean normalized absolute pixel difference per region",
+    "regional_threshold": 0.16,
+    "global_stable_threshold": 0.025,
+    "new_state": "regional_visual_state_change",
+    "provenance": "The observation retains the supplied source timestamp and records the strongest normalized region, threshold, and maximum regional difference."
+  },
+  "focused_post_fix": {
+    "command": "node --test --test-name-pattern='F-004' tests/video-analyzer.test.mjs",
+    "status": "PASS",
+    "tests": 1,
+    "passed": 1,
+    "failed": 0,
+    "duration_ms": 89.121583
+  },
+  "full_suite": {
+    "command": "/usr/bin/time -lp env PATH=/private/tmp/mk-py312-bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin npm run test:video-analyzer",
+    "status": "PARTIAL_FAIL_KNOWN_ASR_COUNTEREXAMPLE",
+    "tests": 15,
+    "passed": 14,
+    "failed": 1,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0,
+    "node_test_duration_ms": 9050.302625,
+    "wall_seconds": 9.25,
+    "maximum_resident_set_size_bytes": 204996608,
+    "swaps": 0,
+    "f004_duration_ms": 0.874375,
+    "f003_source_time_status": "PASS",
+    "previously_passing_regressions_changed": 0,
+    "known_failure": {
+      "test": "ASR preserves tested connector words and negation with versioned word timestamps",
+      "expected": "i do not think this is fair because you know the answer",
+      "actual": "i do not think this is there because you know the answer"
+    }
+  },
+  "evidence_boundary": {
+    "fixture_type": "deterministic synthetic 64x64 grayscale frame arrays",
+    "real_media_tested": false,
+    "claim": "F-004 passes for the frozen deterministic regional-change contract only. This does not prove semantic importance of arbitrary local changes or complete-video visual coverage."
+  },
+  "conclusion": "F-004 is resolved for the bounded fixture with no regression among the 13 previously passing analyzer tests. F-005, real-media regional-change behavior, production integration, and the known ASR wording defect remain open."
+}
