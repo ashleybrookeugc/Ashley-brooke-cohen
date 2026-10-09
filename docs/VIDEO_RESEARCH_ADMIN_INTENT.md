@@ -8,6 +8,8 @@ Cross-project video-understanding architecture, evidence standards, native-uploa
 
 `ashleybrookeugc/research-vault/shared-capabilities/video-understanding/`
 
+The staged implementation authority is `shared-capabilities/video-understanding/V1_IMPLEMENTATION_PLAN.md`. Mary Kate is the single conversational intake, progress, approval, and delivery surface over that shared capability; the website does not become a separate Video Studio.
+
 Do not duplicate that research here. This file records only the website-specific projection.
 
 ## Website-specific intent
