@@ -1,0 +1,122 @@
+{
+  "schema_version": "video-analyzer-test-receipt.v1",
+  "receipt_id": "video-analyzer-f005-event-selection-2026-10-09T21:36:29Z",
+  "observed_at": "2026-10-09T21:36:29Z",
+  "scope": "F-005 preserve qualifying visual activity when OCR text is unchanged",
+  "status": "PASS_FIXTURE_ONLY",
+  "production_change": false,
+  "source": {
+    "repository": "ashleybrookeugc/Ashley-brooke-cohen",
+    "branch": "video-analyzer/f003-source-time-fidelity",
+    "tested_commit": "774af3d050a3f992acc2b8038f9edf396a79db78",
+    "prior_receipt_commit": "b5c59787f2d843ced604786d19572cb0e1faaeeb",
+    "historical_failure_source": {
+      "repository": "ashleybrookeugc/ugc-creator-app",
+      "commit": "d6126bfb70ac648e2d7102c3081810e0a341e252",
+      "path": "server/local-analysis-server.mjs",
+      "discard_point": "The evidence-frame filter selected only OCR interaction-state transitions or low OCR text similarity; unchanged OCR could discard a later visual event."
+    },
+    "sha256": {
+      "tools/video-analyzer/understanding.mjs": "389463b526930caaf0bd9763e5e093ef218a96350bfb119a65fbc34828a89177",
+      "tools/video-analyzer/core.mjs": "6c26371ccc184c6ea45b4543baf2be2866d4b88b14565fa7426a7dbf5b5b2a82",
+      "tests/video-analyzer.test.mjs": "9ab324d58d22cf2d68b8ac5aad1c5aab4f426dbeba51c822d4f7d641169fc45a"
+    }
+  },
+  "environment": {
+    "computer": "Ashley’s MacBook Pro",
+    "model_identifier": "Mac16,8",
+    "chip": "Apple M4 Pro",
+    "memory_gb": 24,
+    "operating_system": "macOS 26.6.2 (25G83)",
+    "architecture": "arm64",
+    "node": "26.3.1",
+    "python": "3.12.13",
+    "ffmpeg": "8.1.1",
+    "tesseract": "5.5.3"
+  },
+  "frozen_fixture": {
+    "frame_timestamps_seconds": [3.25, 3.5, 3.75, 4.25],
+    "ocr_text_at_every_timestamp": "TRIM CLIP",
+    "visual_states": [
+      "initial_state",
+      "sampled_stable_state",
+      "regional_visual_state_change",
+      "sampled_stable_state"
+    ],
+    "expected_selected_observation_ids": ["visual-000001", "visual-000003"],
+    "expected_suppressed_observation_ids": ["visual-000002", "visual-000004"]
+  },
+  "pre_fix_reproduction": {
+    "method": "Execute the preserved OCR-only selection predicate against the deterministic four-frame fixture before editing current implementation.",
+    "selected_observation_ids": ["visual-000001", "visual-000002"],
+    "regional_visual_change_retained": false,
+    "final_static_duplicate_retained": false,
+    "status": "FAIL_REPRODUCED"
+  },
+  "implementation": {
+    "raw_evidence_retained": true,
+    "selection_method": "visual_or_motion_or_ocr_change_v1",
+    "independent_selection_reasons": [
+      "initial_sampled_state",
+      "sampled_viewport_motion",
+      "sampled_visual_change",
+      "sampled_ocr_change"
+    ],
+    "selected_event_provenance": [
+      "selection_id",
+      "observation_id",
+      "source_timestamp_seconds",
+      "reasons",
+      "source_refs",
+      "semantic_interpretation",
+      "uncertainty"
+    ],
+    "semantic_guard": "A selected pixel/motion/OCR change is recorded with semantic_interpretation not_determined and cannot by itself become a claim about what occurred."
+  },
+  "focused_tests": {
+    "f005": {
+      "command": "node --test --test-name-pattern='F-005' tests/video-analyzer.test.mjs",
+      "tests": 1,
+      "passed": 1,
+      "failed": 0,
+      "duration_ms": 88.87725,
+      "f005_test_duration_ms": 3.344333
+    },
+    "f003_f004_f005": {
+      "command": "node --test --test-name-pattern='F-00[345]' tests/video-analyzer.test.mjs",
+      "tests": 3,
+      "passed": 3,
+      "failed": 0,
+      "duration_ms": 736.682208
+    }
+  },
+  "full_suite": {
+    "command": "/usr/bin/time -lp env PATH=/private/tmp/mk-py312-bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin npm run test:video-analyzer",
+    "status": "PARTIAL_FAIL_KNOWN_ASR_COUNTEREXAMPLE",
+    "tests": 16,
+    "passed": 15,
+    "failed": 1,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0,
+    "node_test_duration_ms": 8994.606584,
+    "wall_seconds": 9.20,
+    "maximum_resident_set_size_bytes": 204881920,
+    "swaps": 0,
+    "f005_duration_ms": 0.527208,
+    "f003_status": "PASS",
+    "f004_status": "PASS",
+    "previously_passing_regressions_changed": 0,
+    "known_failure": {
+      "test": "ASR preserves tested connector words and negation with versioned word timestamps",
+      "expected": "i do not think this is fair because you know the answer",
+      "actual": "i do not think this is there because you know the answer"
+    }
+  },
+  "evidence_boundary": {
+    "real_media_tested": false,
+    "normal_semantic_model_input_tested": false,
+    "claim": "F-005 passes for deterministic event selection and provenance only. F-006 must separately prove that selected events reach the normal semantic-analysis input."
+  },
+  "conclusion": "The bounded F-005 selector now preserves qualifying sampled visual activity independently of unchanged OCR, suppresses truly static duplicates, retains source timestamps and evidence references, and does not assign semantic meaning to pixel change. No production integration occurred."
+}
