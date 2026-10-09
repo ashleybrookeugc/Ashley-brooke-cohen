@@ -547,6 +547,71 @@ function makeEvidence({ frames, rawOcr, changes, visualObservations, hasAudio, a
   return evidence;
 }
 
+function buildSemanticAnalysisInput({ mediaAsset, durationSeconds, coverage, frames, evidence }) {
+  const visualLane = evidence.lanes.visible_actions_subjects_ui_state;
+  const visualById = new Map(visualLane.observations.map(observation => [observation.observation_id, observation]));
+  const ocrById = new Map(evidence.lanes.other_on_screen_text.raw_observations.map(observation => [observation.observation_id, observation]));
+  const frameByTimestamp = new Map(frames.map(frame => [frame.source_timestamp_seconds, frame]));
+  const selectedEvents = visualLane.selection.receipts.map(selection => {
+    const observation = visualById.get(selection.observation_id);
+    const frame = frameByTimestamp.get(selection.source_timestamp_seconds);
+    if (!observation || !frame) {
+      throw new IntakeError('SEMANTIC_INPUT_INVALID', 'A selected event could not be resolved to its observation and extracted source frame.', {
+        observation_id: selection.observation_id,
+        source_timestamp_seconds: selection.source_timestamp_seconds
+      });
+    }
+    const ocrEvidence = selection.source_refs
+      .map(reference => ocrById.get(reference))
+      .filter(Boolean);
+    return {
+      selection_id: selection.selection_id,
+      observation_id: selection.observation_id,
+      source_timestamp_seconds: selection.source_timestamp_seconds,
+      selection_reasons: selection.reasons,
+      source_refs: selection.source_refs,
+      semantic_interpretation: selection.semantic_interpretation,
+      uncertainty: selection.uncertainty,
+      visual_observation: observation,
+      image_evidence: {
+        frame_id: frame.frame_id,
+        source_frame_index: frame.source_frame_index,
+        source_timestamp_seconds: frame.source_timestamp_seconds,
+        sample_timestamp_seconds: frame.sample_timestamp_seconds,
+        timestamp_method: frame.timestamp_method,
+        relative_path: frame.relative_path,
+        sha256: frame.sha256,
+        media_type: 'image/jpeg'
+      },
+      ocr_evidence: ocrEvidence
+    };
+  });
+  return {
+    contract: 'selected_visual_event_semantic_input_v1',
+    purpose: 'ordinary_semantic_analysis_consumer_input',
+    source_media: {
+      media_asset_id: mediaAsset.media_asset_id,
+      content_version_sha256: mediaAsset.content_version_sha256,
+      duration_seconds: durationSeconds
+    },
+    coverage: {
+      decode_state: coverage.decode.state,
+      decoded_through_seconds: coverage.decode.decoded_through_seconds,
+      visual_sampling_state: coverage.visual_sampling.state,
+      interval_seconds: coverage.visual_sampling.interval_seconds,
+      frame_count: coverage.visual_sampling.frame_count,
+      timestamp_binding: coverage.visual_sampling.timestamp_binding,
+      disclosure: evidence.sampling_disclosure
+    },
+    selected_events: selectedEvents,
+    consumer_constraints: {
+      selected_event_is_not_semantic_claim: true,
+      actual_image_must_be_loaded_from_verified_relative_path: true,
+      source_identity_and_timestamp_must_remain_bound: true
+    }
+  };
+}
+
 export function evaluateSafeDeletion({ manifest, evidence, readback }) {
   const laneStates = Object.fromEntries(REQUIRED_LANES.map(name => [name, evidence?.lanes?.[name]?.state || 'missing']));
   const allowedCompleteStates = new Set(['completed', 'not_present']);
@@ -572,7 +637,7 @@ export function evaluateSafeDeletion({ manifest, evidence, readback }) {
   };
 }
 
-function validatePackageShape(manifest, evidence) {
+function validatePackageShape(manifest, evidence, semanticInput) {
   const missing = [];
   for (const field of ['package_id', 'source', 'content_sha256', 'duration_seconds', 'processing', 'coverage', 'persistence', 'raw_source']) {
     if (manifest?.[field] === undefined || manifest?.[field] === null) missing.push(`manifest.${field}`);
@@ -581,7 +646,9 @@ function validatePackageShape(manifest, evidence) {
     ['media_asset', 'media_asset_id'],
     ['media_asset', 'content_version_sha256'],
     ['evidence_package', 'identity'],
+    ['evidence_package', 'semantic_input_relative_path'],
     ['persistence', 'evidence_sha256'],
+    ['persistence', 'semantic_input_sha256'],
     ['persistence', 'local'],
     ['persistence', 'remote']
   ]) {
@@ -591,6 +658,8 @@ function validatePackageShape(manifest, evidence) {
   }
   for (const lane of REQUIRED_LANES) if (!evidence?.lanes?.[lane]) missing.push(`evidence.lanes.${lane}`);
   if (!Array.isArray(evidence?.synchronized_timeline)) missing.push('evidence.synchronized_timeline');
+  if (semanticInput?.contract !== 'selected_visual_event_semantic_input_v1') missing.push('semantic_input.contract');
+  if (!Array.isArray(semanticInput?.selected_events)) missing.push('semantic_input.selected_events');
   if (missing.length) throw new IntakeError('EVIDENCE_PACKAGE_INCOMPLETE', 'The evidence package is missing required components.', { missing });
   try {
     validateSynchronizedTimeline(evidence);
@@ -599,16 +668,74 @@ function validatePackageShape(manifest, evidence) {
   }
 }
 
+async function validateSemanticInput(packageDirectory, manifest, evidence, semanticInput) {
+  if (semanticInput.source_media?.media_asset_id !== manifest.media_asset.media_asset_id
+    || semanticInput.source_media?.content_version_sha256 !== manifest.media_asset.content_version_sha256) {
+    throw new IntakeError('SEMANTIC_INPUT_INVALID', 'Semantic input source identity does not match the evidence package source.', {});
+  }
+  if (semanticInput.coverage?.timestamp_binding !== manifest.coverage.visual_sampling.timestamp_binding
+    || semanticInput.coverage?.visual_sampling_state !== manifest.coverage.visual_sampling.state) {
+    throw new IntakeError('SEMANTIC_INPUT_INVALID', 'Semantic input coverage does not match the evidence package coverage.', {});
+  }
+  const selected = evidence.lanes.visible_actions_subjects_ui_state.selection?.receipts || [];
+  if (JSON.stringify(semanticInput.selected_events.map(event => event.observation_id)) !== JSON.stringify(selected.map(event => event.observation_id))) {
+    throw new IntakeError('SEMANTIC_INPUT_INVALID', 'Semantic input selected events do not match the authoritative event selection.', {});
+  }
+  const observations = new Map(evidence.lanes.visible_actions_subjects_ui_state.observations.map(item => [item.observation_id, item]));
+  const ocrIds = new Set((evidence.lanes.other_on_screen_text.raw_observations || []).map(item => item.observation_id));
+  for (const event of semanticInput.selected_events) {
+    const selection = selected.find(item => item.observation_id === event.observation_id);
+    const observation = observations.get(event.observation_id);
+    if (!selection || !observation
+      || event.source_timestamp_seconds !== selection.source_timestamp_seconds
+      || event.image_evidence?.source_timestamp_seconds !== selection.source_timestamp_seconds
+      || event.visual_observation?.observation_id !== observation.observation_id
+      || event.uncertainty !== selection.uncertainty) {
+      throw new IntakeError('SEMANTIC_INPUT_INVALID', 'A semantic input event lost its authoritative selection, observation, timestamp, or uncertainty binding.', {
+        observation_id: event.observation_id
+      });
+    }
+    if (!(event.ocr_evidence || []).every(item => ocrIds.has(item.observation_id) && event.source_refs.includes(item.observation_id))) {
+      throw new IntakeError('SEMANTIC_INPUT_INVALID', 'A semantic input event contains an unresolved OCR reference.', {
+        observation_id: event.observation_id
+      });
+    }
+    const imagePath = resolve(packageDirectory, event.image_evidence.relative_path || '');
+    if (!imagePath.startsWith(`${resolve(packageDirectory)}/`) || !await exists(imagePath)) {
+      throw new IntakeError('SEMANTIC_INPUT_INVALID', 'A selected event image reference is missing or outside the evidence package.', {
+        observation_id: event.observation_id
+      });
+    }
+    const actualImageSha256 = await sha256File(imagePath);
+    if (actualImageSha256 !== event.image_evidence.sha256) {
+      throw new IntakeError('SEMANTIC_INPUT_INVALID', 'A selected event image digest does not match the extracted frame.', {
+        observation_id: event.observation_id,
+        expected: event.image_evidence.sha256,
+        actual: actualImageSha256
+      });
+    }
+  }
+}
+
 export async function verifyEvidencePackage(packageDirectory) {
   let manifest;
   let evidence;
+  let semanticInput;
   try {
     manifest = JSON.parse(await readFile(join(packageDirectory, 'manifest.json'), 'utf8'));
     evidence = JSON.parse(await readFile(join(packageDirectory, 'evidence.json'), 'utf8'));
   } catch (error) {
     throw new IntakeError('PERSISTENCE_READBACK_FAILED', 'The evidence package could not be read back and parsed.', { cause: error.message });
   }
-  validatePackageShape(manifest, evidence);
+  try {
+    semanticInput = JSON.parse(await readFile(join(packageDirectory, 'semantic-input.json'), 'utf8'));
+  } catch (error) {
+    if (error.code !== 'ENOENT') {
+      throw new IntakeError('PERSISTENCE_READBACK_FAILED', 'The semantic input could not be read back and parsed.', { cause: error.message });
+    }
+    semanticInput = null;
+  }
+  validatePackageShape(manifest, evidence, semanticInput);
   const evidenceText = JSON.stringify(evidence, null, 2) + '\n';
   const actualEvidenceSha256 = await sha256Text(evidenceText);
   if (actualEvidenceSha256 !== manifest.persistence.evidence_sha256) {
@@ -617,7 +744,22 @@ export async function verifyEvidencePackage(packageDirectory) {
       actual: actualEvidenceSha256
     });
   }
-  return { verified: true, package_id: manifest.package_id, evidence_sha256: actualEvidenceSha256, verified_at: now(), manifest, evidence };
+  const semanticInputText = JSON.stringify(semanticInput, null, 2) + '\n';
+  const actualSemanticInputSha256 = await sha256Text(semanticInputText);
+  if (actualSemanticInputSha256 !== manifest.persistence.semantic_input_sha256) {
+    throw new IntakeError('PERSISTENCE_READBACK_FAILED', 'The read-back semantic input digest does not match the manifest.', {
+      expected: manifest.persistence.semantic_input_sha256,
+      actual: actualSemanticInputSha256
+    });
+  }
+  await validateSemanticInput(packageDirectory, manifest, evidence, semanticInput);
+  return {
+    verified: true,
+    package_id: manifest.package_id,
+    evidence_sha256: actualEvidenceSha256,
+    semantic_input_sha256: actualSemanticInputSha256,
+    verified_at: now(), manifest, evidence, semantic_input: semanticInput
+  };
 }
 
 async function persistAndVerifyRemote(remoteStore, packageDirectory, packageId, expectedEvidenceSha256) {
@@ -705,61 +847,74 @@ export async function processVideo(input, {
     });
     if (asrFailure) evidence.lanes.spoken_audio.failure = asrFailure;
     const evidenceText = JSON.stringify(evidence, null, 2) + '\n';
+    const mediaAsset = {
+      media_asset_id: `mediaasset-sha256-${contentSha256}`,
+      identity_method: 'content_addressed_source_bytes_v1',
+      content_version_sha256: contentSha256,
+      asset_locations: [{
+        location_type: resolved.source.type,
+        state: 'available_during_processing',
+        original_filename: resolved.source.original_filename,
+        source_url: resolved.source.source_url
+      }]
+    };
+    const coverage = {
+      state: 'source_decoded_end_to_end',
+      decode,
+      visual_sampling: {
+        state: 'sampled_not_frame_exhaustive',
+        interval_seconds: frameIntervalSeconds,
+        frame_count: frames.length,
+        timestamp_binding: 'source_pts_preserving_select',
+        frames: frames.map(frame => ({
+          frame_id: frame.frame_id,
+          source_frame_index: frame.source_frame_index,
+          source_timestamp_seconds: frame.source_timestamp_seconds,
+          sample_timestamp_seconds: frame.sample_timestamp_seconds,
+          timestamp_seconds: frame.timestamp_seconds,
+          sha256: frame.sha256,
+          relative_path: frame.relative_path
+        }))
+      },
+      transcript: evidence.lanes.spoken_audio.state,
+      speaker_turns: evidence.lanes.speaker_turns.state,
+      ocr_classification: evidence.lanes.burned_in_captions.state,
+      semantic_visual_evidence: evidence.lanes.visible_actions_subjects_ui_state.state,
+      synchronized_timeline: 'structurally_validated'
+    };
+    const semanticInput = buildSemanticAnalysisInput({
+      mediaAsset,
+      durationSeconds: probe.duration_seconds,
+      coverage,
+      frames,
+      evidence
+    });
+    const semanticInputText = JSON.stringify(semanticInput, null, 2) + '\n';
     const manifest = {
       schema_version: PACKAGE_SCHEMA_VERSION,
       package_id: packageId,
       source: resolved.source,
       content_sha256: contentSha256,
-      media_asset: {
-        media_asset_id: `mediaasset-sha256-${contentSha256}`,
-        identity_method: 'content_addressed_source_bytes_v1',
-        content_version_sha256: contentSha256,
-        asset_locations: [{
-          location_type: resolved.source.type,
-          state: 'available_during_processing',
-          original_filename: resolved.source.original_filename,
-          source_url: resolved.source.source_url
-        }]
-      },
+      media_asset: mediaAsset,
       duration_seconds: probe.duration_seconds,
       media_probe: probe,
       processing: {
         state: 'synchronized_evidence_foundation_extracted',
+        semantic_analysis_input_state: 'prepared_and_verified',
         analyzer_version: ANALYZER_VERSION,
         started_at: startedAt,
         completed_at: now()
       },
-      coverage: {
-        state: 'source_decoded_end_to_end',
-        decode,
-        visual_sampling: {
-          state: 'sampled_not_frame_exhaustive',
-          interval_seconds: frameIntervalSeconds,
-          frame_count: frames.length,
-          timestamp_binding: 'source_pts_preserving_select',
-          frames: frames.map(frame => ({
-            frame_id: frame.frame_id,
-            source_frame_index: frame.source_frame_index,
-            source_timestamp_seconds: frame.source_timestamp_seconds,
-            sample_timestamp_seconds: frame.sample_timestamp_seconds,
-            timestamp_seconds: frame.timestamp_seconds,
-            sha256: frame.sha256,
-            relative_path: frame.relative_path
-          }))
-        },
-        transcript: evidence.lanes.spoken_audio.state,
-        speaker_turns: evidence.lanes.speaker_turns.state,
-        ocr_classification: evidence.lanes.burned_in_captions.state,
-        semantic_visual_evidence: evidence.lanes.visible_actions_subjects_ui_state.state,
-        synchronized_timeline: 'structurally_validated'
-      },
+      coverage,
       evidence_package: {
         identity: packageId,
         relative_manifest_path: 'manifest.json',
-        relative_evidence_path: 'evidence.json'
+        relative_evidence_path: 'evidence.json',
+        semantic_input_relative_path: 'semantic-input.json'
       },
       persistence: {
         evidence_sha256: await sha256Text(evidenceText),
+        semantic_input_sha256: await sha256Text(semanticInputText),
         local: {
           scope: 'current_machine_or_workspace',
           write_state: 'written',
@@ -780,6 +935,7 @@ export async function processVideo(input, {
       }
     };
     await writeFile(join(stagingDirectory, 'evidence.json'), evidenceText);
+    await writeFile(join(stagingDirectory, 'semantic-input.json'), semanticInputText);
     await writeFile(join(stagingDirectory, 'manifest.json'), JSON.stringify(manifest, null, 2) + '\n');
     await mkdir(root, { recursive: true });
     if (await exists(finalDirectory)) await rm(finalDirectory, { recursive: true, force: true });
@@ -802,6 +958,7 @@ export async function processVideo(input, {
       package_directory: finalDirectory,
       manifest: finalReadback.manifest,
       evidence: finalReadback.evidence,
+      semantic_input: finalReadback.semantic_input,
       readback: { verified: true, verified_at: finalReadback.verified_at }
     };
   } finally {

@@ -11,6 +11,7 @@ import {
   processVideo,
   resolveInput,
   runCommand,
+  sha256File,
   verifyEvidencePackage
 } from '../tools/video-analyzer/core.mjs';
 import { buildSemanticVisualObservations, selectVisualEvents } from '../tools/video-analyzer/understanding.mjs';
@@ -299,6 +300,37 @@ test('F-005: unchanged OCR cannot discard qualifying visual activity and static 
   assert.match(selected[1].uncertainty, /does not establish what the change means/i);
   assert.ok(!selected.some(item => item.observation_id === 'visual-000002'));
   assert.ok(!selected.some(item => item.observation_id === 'visual-000004'));
+});
+
+test('F-006: ordinary analyzer path binds selected events to semantic-consumer frame evidence', async t => {
+  const root = await fixtureRoot(t);
+  const source = join(root, 'semantic-consumer.mp4');
+  await makeScreenStateVideo(source);
+  const result = await processVideo(source, { outputRoot: join(root, 'packages'), frameIntervalSeconds: 0.5 });
+  const semanticInputPath = join(result.package_directory, 'semantic-input.json');
+  const semanticInput = JSON.parse(await readFile(semanticInputPath, 'utf8'));
+  const selected = result.evidence.lanes.visible_actions_subjects_ui_state.selection.receipts;
+
+  assert.equal(semanticInput.contract, 'selected_visual_event_semantic_input_v1');
+  assert.equal(semanticInput.source_media.media_asset_id, result.manifest.media_asset.media_asset_id);
+  assert.equal(semanticInput.source_media.content_version_sha256, result.manifest.media_asset.content_version_sha256);
+  assert.equal(semanticInput.coverage.visual_sampling_state, 'sampled_not_frame_exhaustive');
+  assert.equal(semanticInput.coverage.timestamp_binding, 'source_pts_preserving_select');
+  assert.deepEqual(semanticInput.selected_events.map(event => event.observation_id), selected.map(event => event.observation_id));
+  assert.ok(semanticInput.selected_events.length > 0, 'fixture must exercise at least one selected event');
+
+  for (const event of semanticInput.selected_events) {
+    const selection = selected.find(item => item.observation_id === event.observation_id);
+    assert.equal(event.source_timestamp_seconds, selection.source_timestamp_seconds);
+    assert.deepEqual(event.selection_reasons, selection.reasons);
+    assert.equal(event.uncertainty, selection.uncertainty);
+    assert.match(event.image_evidence.relative_path, /^frames\/frame-\d{6}\.jpg$/);
+    assert.equal(event.image_evidence.source_timestamp_seconds, event.source_timestamp_seconds);
+    assert.equal(await sha256File(join(result.package_directory, event.image_evidence.relative_path)), event.image_evidence.sha256);
+    assert.ok(Array.isArray(event.ocr_evidence));
+  }
+  assert.equal(result.manifest.evidence_package.semantic_input_relative_path, 'semantic-input.json');
+  assert.equal(result.manifest.processing.semantic_analysis_input_state, 'prepared_and_verified');
 });
 
 test('corrupted synchronized timeline and missing semantic evidence are rejected', async t => {
