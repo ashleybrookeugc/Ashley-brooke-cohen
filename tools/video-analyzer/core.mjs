@@ -5,6 +5,7 @@ import { tmpdir } from 'node:os';
 import { basename, dirname, extname, join, resolve } from 'node:path';
 import { spawn } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import { performance } from 'node:perf_hooks';
 import {
   buildSemanticVisualObservations,
   buildSpeakerTurns,
@@ -386,17 +387,50 @@ function parseTsv(tsv, frame, width, height, firstObservationIndex, extractorVer
   });
 }
 
-async function runOcr(frames, packageDirectory, width, height) {
+async function runOcr(frames, packageDirectory, width, height, performanceObserver = null) {
+  const stageStarted = performance.now();
+  const report = event => {
+    if (typeof performanceObserver === 'function') performanceObserver(event);
+  };
+  const versionStarted = performance.now();
   const versionResult = await runCommand('tesseract', ['--version'], { allowFailure: true });
+  report({
+    stage: 'ocr_version_probe',
+    elapsed_ms: Number((performance.now() - versionStarted).toFixed(3)),
+    exit_code: versionResult.code
+  });
   const extractorVersion = versionResult.code === 0
     ? versionResult.stdout.split(/\r?\n/, 1)[0].trim()
     : 'version_unavailable';
   const observations = [];
-  for (const frame of frames) {
+  for (let index = 0; index < frames.length; index++) {
+    const frame = frames[index];
+    const invocationStarted = performance.now();
     const result = await runCommand('tesseract', [join(packageDirectory, frame.relative_path), 'stdout', '--psm', '11', 'tsv'], { allowFailure: true });
-    if (result.code !== 0) continue;
-    observations.push(...parseTsv(result.stdout, frame, width, height, observations.length, extractorVersion));
+    const parsed = result.code === 0
+      ? parseTsv(result.stdout, frame, width, height, observations.length, extractorVersion)
+      : [];
+    observations.push(...parsed);
+    report({
+      stage: 'ocr_frame',
+      invocation_index: index + 1,
+      frame_id: frame.frame_id,
+      source_frame_index: frame.source_frame_index,
+      source_timestamp_seconds: frame.source_timestamp_seconds,
+      sample_timestamp_seconds: frame.sample_timestamp_seconds,
+      frame_sha256: frame.sha256,
+      elapsed_ms: Number((performance.now() - invocationStarted).toFixed(3)),
+      exit_code: result.code,
+      observation_count: parsed.length
+    });
   }
+  report({
+    stage: 'ocr_summary',
+    scheduling: 'one_sequential_tesseract_process_per_sampled_frame',
+    frame_invocation_count: frames.length,
+    observation_count: observations.length,
+    elapsed_ms: Number((performance.now() - stageStarted).toFixed(3))
+  });
   return observations;
 }
 
@@ -808,7 +842,8 @@ export async function processVideo(input, {
   fetchImpl = fetch,
   beforeReadback = null,
   asrPython = resolve(moduleDirectory, '../../.video-analysis-runtime/venv/bin/python'),
-  remoteStore = null
+  remoteStore = null,
+  performanceObserver = null
 } = {}) {
   const startedAt = now();
   const resolved = await resolveInput(input, { fetchImpl });
@@ -826,7 +861,7 @@ export async function processVideo(input, {
     const frames = await extractFrames(resolved.path, join(stagingDirectory, 'frames'), probe.duration_seconds, frameIntervalSeconds, sourcePts);
     const width = probe.video_streams[0].width;
     const height = probe.video_streams[0].height;
-    const rawOcr = await runOcr(frames, stagingDirectory, width, height);
+    const rawOcr = await runOcr(frames, stagingDirectory, width, height, performanceObserver);
     let asr = null;
     let asrState = probe.audio_streams.length ? 'extractor_unavailable' : 'not_present';
     let asrFailure = null;
