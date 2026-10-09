@@ -1,0 +1,166 @@
+{
+  "schema_version": "video-analyzer-test-receipt.v1",
+  "receipt_id": "video-analyzer-f006-semantic-input-2026-10-09T22:17:49Z",
+  "observed_at": "2026-10-09T22:17:49Z",
+  "scope": "F-006 bind selected visual events and their actual extracted frames to the ordinary semantic-analysis input",
+  "status": "PASS_BOUNDED_INPUT_CONTRACT",
+  "production_change": false,
+  "source": {
+    "repository": "ashleybrookeugc/Ashley-brooke-cohen",
+    "branch": "video-analyzer/f003-source-time-fidelity",
+    "tested_commit": "d7097b00ce5764b2eee3337fd9c7181b1242c430",
+    "prior_receipt_commit": "c94898f6302ea9ade17e3452d9a78a306d7138e9",
+    "historical_failure_source": {
+      "repository": "ashleybrookeugc/ugc-creator-app",
+      "commit": "d6126bfb70ac648e2d7102c3081810e0a341e252",
+      "path": "server/local-analysis-server.mjs",
+      "failure_point": "The preserved server built eventLog, but OllamaVideoAnalysisProvider.analyzeFrames received recordingName, durationSeconds, frames, textPassages, and additionalFocus without the selected eventLog. The current analyzer had no ordinary semantic consumer or input artifact at all."
+    },
+    "sha256": {
+      "tools/video-analyzer/core.mjs": "6b3d3fd336f5ad5e7d5eb37bc015f8c93dc1d51f974d1a847c97e7238f660912",
+      "tools/video-analyzer/understanding.mjs": "389463b526930caaf0bd9763e5e093ef218a96350bfb119a65fbc34828a89177",
+      "tests/video-analyzer.test.mjs": "c59784cbca723856363910ffe9e292d0560455614f6401320237cc752edd3330"
+    }
+  },
+  "environment": {
+    "computer": "Ashley’s MacBook Pro",
+    "model_identifier": "Mac16,8",
+    "chip": "Apple M4 Pro",
+    "cpu_cores": 12,
+    "memory_gb": 24,
+    "operating_system": "macOS 26.6.2 (25G83)",
+    "architecture": "arm64",
+    "node": "26.3.1",
+    "python": "3.12.13",
+    "ffmpeg": "8.1.1",
+    "tesseract": "5.5.3"
+  },
+  "pre_fix_reproduction": {
+    "ordinary_path": "processVideo",
+    "selected_events_present_in_evidence_json": true,
+    "semantic_consumer_present": false,
+    "semantic_input_artifact_present": false,
+    "failure": "ENOENT: semantic-input.json did not exist after a successful ordinary analyzer run",
+    "focused_test": {
+      "tests": 1,
+      "passed": 0,
+      "failed": 1,
+      "duration_ms": 712.369334,
+      "f006_test_duration_ms": 620.891459
+    },
+    "status": "FAIL_REPRODUCED"
+  },
+  "implementation": {
+    "parallel_analyzer_created": false,
+    "model_provider_added": false,
+    "ordinary_path_changed": "processVideo now always prepares, persists, returns, and readback-verifies semantic-input.json.",
+    "contract": "selected_visual_event_semantic_input_v1",
+    "bound_fields": [
+      "source MediaAsset identity",
+      "source content-version SHA-256",
+      "source duration",
+      "decode and visual-sampling coverage",
+      "sampling disclosure",
+      "selection ID and reasons",
+      "visual observation ID and payload",
+      "original source timestamp",
+      "source frame index",
+      "extracted JPEG relative path and SHA-256",
+      "OCR observations and references",
+      "selection uncertainty"
+    ],
+    "semantic_guard": "Selected pixel, motion, or OCR activity remains semantic_interpretation=not_determined; the payload does not claim what the image means.",
+    "readback_enforcement": "Package verification rejects missing or digest-mismatched semantic input, mismatched source identity or coverage, selection divergence, unresolved OCR references, missing/out-of-package frames, and frame SHA-256 mismatches."
+  },
+  "after_payload_evidence": {
+    "fixture_kind": "deterministic decoded MP4 built from checked-in screen-state fixture images",
+    "private_media_used": false,
+    "source_sha256": "9a0296537353fe1062c05a565f8d5c1dec2be41f1ed940a5fc1047e527989008",
+    "package_id": "video-9a0296537353fe1062c0",
+    "semantic_input_sha256": "b2660aea1298a23547e045cce7e4277111bd227396ed293ab9641e940b709670",
+    "frame_count": 6,
+    "selected_event_count": 2,
+    "selected_events": [
+      {
+        "observation_id": "visual-000001",
+        "source_timestamp_seconds": 0,
+        "selection_reasons": ["initial_sampled_state"],
+        "ocr_observation_ids": ["ocr-000001"],
+        "frame_sha256": "d0feda22e70c9b8aa1060a4900e1a54e4213443e870d6bda8faa04d23e852685"
+      },
+      {
+        "observation_id": "visual-000004",
+        "source_timestamp_seconds": 1.5,
+        "selection_reasons": ["sampled_ocr_change"],
+        "ocr_observation_ids": ["ocr-000004"],
+        "frame_sha256": "66a081c3b76238a97f6b9b108234ec1d9d8e1c37b3bc639b7868b5db84292a31"
+      }
+    ],
+    "coverage": {
+      "decode_state": "complete",
+      "decoded_through_seconds": 3,
+      "visual_sampling_state": "sampled_not_frame_exhaustive",
+      "interval_seconds": 0.5,
+      "timestamp_binding": "source_pts_preserving_select"
+    },
+    "package_readback_verified": true
+  },
+  "focused_tests": {
+    "f006": {
+      "command": "node --test --test-name-pattern='F-006' tests/video-analyzer.test.mjs",
+      "tests": 1,
+      "passed": 1,
+      "failed": 0,
+      "duration_ms": 639.417875,
+      "f006_test_duration_ms": 555.703167
+    },
+    "f003_f004_f005_f006": {
+      "command": "node --test --test-name-pattern='F-00[3456]' tests/video-analyzer.test.mjs",
+      "tests": 4,
+      "passed": 4,
+      "failed": 0,
+      "duration_ms": 1279.610125
+    },
+    "regression_recheck": {
+      "command": "node --test --test-name-pattern='evidence package missing|F-00[3456]' tests/video-analyzer.test.mjs",
+      "tests": 5,
+      "passed": 5,
+      "failed": 0,
+      "duration_ms": 1259.715334
+    }
+  },
+  "full_suite": {
+    "command": "/usr/bin/time -lp env PATH=/private/tmp/mk-py312-bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin npm run test:video-analyzer",
+    "status": "PARTIAL_FAIL_KNOWN_ASR_COUNTEREXAMPLE",
+    "tests": 17,
+    "passed": 16,
+    "failed": 1,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0,
+    "node_test_duration_ms": 9377.090917,
+    "wall_seconds": 9.58,
+    "maximum_resident_set_size_bytes": 205963264,
+    "peak_memory_footprint_bytes": 29543928,
+    "swaps": 0,
+    "f006_duration_ms": 544.164208,
+    "f003_status": "PASS",
+    "f004_status": "PASS",
+    "f005_status": "PASS",
+    "new_regressions": 0,
+    "known_failure": {
+      "test": "ASR preserves tested connector words and negation with versioned word timestamps",
+      "expected": "i do not think this is fair because you know the answer",
+      "actual": "i do not think this is there because you know the answer",
+      "changed_by_f006": false
+    }
+  },
+  "evidence_boundary": {
+    "ordinary_analyzer_execution_path_tested": true,
+    "actual_extracted_jpeg_evidence_verified": true,
+    "external_or_local_semantic_model_invoked": false,
+    "reason_model_not_invoked": "The current analyzer contains no semantic model provider. F-006 adds the smallest missing ordinary-consumer input interface without choosing or introducing a provider.",
+    "claim": "F-006 proves that selected events and their verified frame/OCR/source evidence reach the normal persisted semantic-consumer boundary. It does not prove model interpretation quality or a later claim-release gate."
+  },
+  "conclusion": "F-006 passes for the bounded ordinary semantic-input contract. Selected events no longer stop at evidence selection: the normal analyzer package includes readback-verified frame bytes, source identity, true timestamps, OCR references, reasons, coverage, and uncertainty. No production integration or deployment occurred."
+}
