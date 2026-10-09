@@ -345,3 +345,11 @@ Instead:
 6. Record the verified resolution here before moving on.
 
 The goal is to prevent a session from spending multiple turns rediscovering a solved problem or layering workarounds on top of a wrong diagnosis.
+
+## 2026-10-09 — Isolated FFmpeg fixture workaround exposed ASR wording regression
+
+- **Scope:** archived test-only workaround; no production dependency change.
+- **Environment repair tested:** pre-rendered local PNG and AIFF fixture assets avoid reliance on unavailable FFmpeg `drawtext` and `flite` filters.
+- **Observed result:** `npm run test:video-analyzer` completed 14 tests: 13 passed and 1 failed. F-003 source-timestamp fidelity, OCR, semantic screen-state, decode, persistence, and remote-store controls passed.
+- **Failure:** the ASR connector-word test expected `i do not think this is fair because you know the answer` but decoded `i do not think this is there because you know the answer`.
+- **Disposition:** preserved as a counterexample. This archived branch does not claim the previously blocked analyzer suite is fully passing and is not authorized for production integration.

@@ -25,7 +25,6 @@ async function makeVideo(path, { seconds = 2, audio = false } = {}) {
   if (audio) inputs.push('-f', 'lavfi', '-i', `sine=frequency=440:duration=${seconds}`);
   const args = [
     '-y', ...inputs,
-    '-vf', "drawtext=text='FRAME EVIDENCE':fontcolor=white:fontsize=24:x=20:y=100",
     '-c:v', 'libx264', '-pix_fmt', 'yuv420p'
   ];
   if (audio) args.push('-c:a', 'aac', '-shortest');
@@ -34,30 +33,29 @@ async function makeVideo(path, { seconds = 2, audio = false } = {}) {
 }
 
 async function makeDialogueVideo(path, { caption = 'I think this is fair' } = {}) {
-  const videoFilter = [
-    "drawtext=text='EXPORT':fontcolor=yellow:fontsize=26:x=20:y=20",
-    `drawtext=text='${caption}':fontcolor=white:fontsize=24:x=(w-text_w)/2:y=h-70`,
-    "drawtext=text='FLASH NOTICE':fontcolor=cyan:fontsize=22:x=20:y=90:enable='between(t\\,1.0\\,1.35)'"
-  ].join(',');
+  assert.equal(caption, 'I think this is fair');
+  const assets = join(process.cwd(), '.fixture-assets');
   await runCommand('ffmpeg', [
     '-y',
-    '-f', 'lavfi', '-i', 'color=c=navy:s=720x400:d=7:r=12',
-    '-f', 'lavfi', '-i', "flite=text='I do not think this is fair because you know the answer':voice=slt",
-    '-f', 'lavfi', '-i', 'anullsrc=r=16000:cl=mono:d=1.2',
-    '-f', 'lavfi', '-i', "flite=text='Why not because I already checked it':voice=kal",
-    '-filter_complex', '[1:a][2:a][3:a]concat=n=3:v=0:a=1[a]',
-    '-map', '0:v', '-map', '[a]', '-vf', videoFilter,
+    '-loop', '1', '-framerate', '12', '-t', '1', '-i', join(assets, 'dialogue-base.png'),
+    '-loop', '1', '-framerate', '12', '-t', '0.4', '-i', join(assets, 'dialogue-flash.png'),
+    '-loop', '1', '-framerate', '12', '-t', '5.6', '-i', join(assets, 'dialogue-base.png'),
+    '-i', join(assets, 'speech-one.aiff'),
+    '-f', 'lavfi', '-t', '1.2', '-i', 'anullsrc=r=16000:cl=mono',
+    '-i', join(assets, 'speech-two.aiff'),
+    '-filter_complex', '[0:v][1:v][2:v]concat=n=3:v=1:a=0[v];[3:a][4:a][5:a]concat=n=3:v=0:a=1[a]',
+    '-map', '[v]', '-map', '[a]',
     '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-shortest', path
   ]);
 }
 
 async function makeScreenStateVideo(path) {
+  const assets = join(process.cwd(), '.fixture-assets');
   await runCommand('ffmpeg', [
-    '-y', '-f', 'lavfi', '-i', 'color=c=black:s=640x360:d=3:r=12',
-    '-vf', [
-      "drawtext=text='EDIT TIMELINE SPLIT':fontcolor=white:fontsize=34:x=80:y=140:enable='lt(t\\,1.45)'",
-      "drawtext=text='FOR YOU LIKE SHARE':fontcolor=white:fontsize=34:x=80:y=140:enable='gte(t\\,1.45)'"
-    ].join(','),
+    '-y',
+    '-loop', '1', '-framerate', '12', '-t', '1.45', '-i', join(assets, 'screen-edit.png'),
+    '-loop', '1', '-framerate', '12', '-t', '1.55', '-i', join(assets, 'screen-watch.png'),
+    '-filter_complex', '[0:v][1:v]concat=n=2:v=1:a=0[v]', '-map', '[v]',
     '-c:v', 'libx264', '-pix_fmt', 'yuv420p', path
   ]);
 }
@@ -219,7 +217,7 @@ test('ASR unavailable and ASR failure remain explicit when audio requires a tran
   assert.equal(unavailable.evidence.lanes.spoken_audio.state, 'extractor_unavailable');
   assert.equal(unavailable.manifest.safe_deletion_gate.safe_to_delete_original, false);
   const failed = await processVideo(source, {
-    outputRoot: join(root, 'failed'), frameIntervalSeconds: 1, asrPython: '/bin/false'
+    outputRoot: join(root, 'failed'), frameIntervalSeconds: 1, asrPython: '/usr/bin/false'
   });
   assert.equal(failed.evidence.lanes.spoken_audio.state, 'extractor_failed');
   assert.equal(failed.evidence.lanes.spoken_audio.failure.code, 'ASR_FAILED');

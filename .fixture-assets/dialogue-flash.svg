@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="720">
+ <rect y="160" width="720" height="400" fill="navy"/>
+ <text x="20" y="210" fill="yellow" font-size="36" font-family="Arial" font-weight="bold">EXPORT</text>
+ <text x="210" y="500" fill="white" font-size="34" font-family="Arial" font-weight="bold">I think this is fair</text>
+ <text x="20" y="280" fill="cyan" font-size="34" font-family="Arial" font-weight="bold">FLASH NOTICE</text>
+</svg>
