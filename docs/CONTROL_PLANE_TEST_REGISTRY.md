@@ -4,11 +4,18 @@ This is the product-local registry for the bounded routing and execution-accepta
 
 ## Canonical implementation state
 
-- Repository: `mary-kate-v1`, local `main`, `44dbe3a` (`Prove ambiguous requests stop before model dispatch`).
-- Remote comparison: local `main` is two commits ahead of `origin/main` (`6a71fc5`).
-- Current uncommitted repair: `src/control/service.js` plus `test/control-ambiguity-holdout.test.js`.
+- Repository: `mary-kate-v1`, local `main` and `origin/main` both at `ee38ac9606605c17e696e5cb3a704a00d5b4401c` (`Block unqualified workstream requests before routing`).
+- Remote comparison: local `main` is clean and matches the fetched GitHub `main`; the ambiguity repair was already published by the preceding Codex session.
+- Published repair: `src/control/service.js`, `test/control-ambiguity-holdout.test.js`, this registry, and the product failure record are included in `ee38ac9` and its parents.
 - Product failure history: `docs/TROUBLESHOOTING_LOG.md`.
-- Production boundary: `docs/CONTROL_PLANE.md` still records the GitHub read/route evidence and explicitly leaves the canonical write → reread → D1 receipt slice unproven.
+- Production boundary: `docs/CONTROL_PLANE.md` records the earlier GitHub read/route evidence and explicitly leaves the canonical write → reread → D1 receipt slice unproven.
+
+## 2026-10-09 reconciliation and production boundary
+
+- GitHub Actions control-plane regression run for `ee38ac9` completed successfully: [run #46](https://github.com/ashleybrookeugc/Ashley-brooke-cohen/actions/runs/37880842397). This verifies the repository test workflow, not Cloudflare traffic.
+- An existing authenticated control-plane observation for exactly `What's next?` in a multiple-eligible-workstream context returned the ambiguity response `prior_state_ambiguous_scope`; the visible page showed no waiting approval item and no new matching recent-outcome row. No second request was submitted.
+- The observation is **PARTIAL / UNVERIFIED for production acceptance**. The served Worker lineage, exact zero model/router dispatches, before/after queue/history delta, and canonical-write absence could not be obtained because the Cloudflare CLI required an unavailable API token and the dashboard session was unauthenticated. Do not promote this observation to a production PASS.
+- Accessible 2026-10-08 Codex session records were reconciled into the checked-in artifacts and canonical Project Truth registry. Durable prompts/decisions, test inputs/results, failures, and commit provenance are preserved; unavailable hidden reasoning and full private transcripts are not claimed or copied.
 
 ## Active local tests
 
@@ -16,7 +23,7 @@ This is the product-local registry for the bounded routing and execution-accepta
 | --- | --- | --- | --- |
 | Existing repository suite | `npm test` | 60/60 pass on 2026-10-08 | 57 pre-existing tests plus 3 new local guard/holdout tests; no production calls |
 | Focused ambiguity and prior-state suite | `node --test test/control-ambiguity-gate.test.js test/control-ambiguity-holdout.test.js test/prior-state-gate.test.js` | 19/19 pass | Proves pre-routing stop, no dispatch/queue/history, explicit binding, and no over-blocking |
-| Frozen model routing benchmark | `node qwen_mary_kate_benchmark.mjs` | raw Qwen3 4B: 4/6 | Six unchanged cases; resolver output only, no execution |
+| Frozen model routing benchmark | `node qwen_mary_kate_benchmark.mjs` | raw Qwen3 4B: 4/6 on 2026-10-09 | Six unchanged cases; resolver output only, no execution; the same affirmative-continuation and approval-boundary weaknesses remain |
 | Deterministic post-resolver validator | `node qwen_post_resolver_validator.mjs` | 6/6; 0 regressions; 0 unsafe abstention weakenings | Test-only continuation and approval-state repair |
 | Adversarial post-resolver validator | `node qwen_post_resolver_validator_adversarial.mjs` | 15/15; 0 unauthorized continuations; 0 weakened approval boundaries; 0 invented approvals; 0 false certainty | Test-only stale, assent, switch, approval, destructive, paid, credential, and ambiguity cases |
 | Context compiler V2.1 | `node mary_kate_context_compiler_v21_fixture.mjs` | 16/16; 0 stale-referent failures; 0 ambiguity-to-certainty failures | Test-only authority/provenance compiler |
