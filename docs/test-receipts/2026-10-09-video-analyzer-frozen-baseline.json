@@ -1,0 +1,81 @@
+{
+  "schema_version": "video-analyzer-test-receipt.v1",
+  "receipt_id": "video-analyzer-frozen-baseline-2026-10-09T21:19:37Z",
+  "observed_at": "2026-10-09T21:19:37Z",
+  "scope": "test-only frozen baseline reproduction",
+  "status": "PARTIAL_FAIL",
+  "production_change": false,
+  "source": {
+    "repository": "ashleybrookeugc/Ashley-brooke-cohen",
+    "tested_commit": "f427493bc1593324a7a7c2cf1c275fbbf3d00008",
+    "analyzer_base_commit": "831670bb71f6249db25e5113bd71f0c4b01a6414",
+    "frozen_test_sha256": "c73c961ec055c35796371f1430a6724c2d1e466d15ece3aeb82d841c53a7bec0",
+    "asr_requirements_sha256": "e6e78ca8da3f1f96001d4540d4c70c989e55248f480825b9dcd985b03e0ef16e",
+    "speech_fixture_sha256": {
+      "speech-one.aiff": "439712a4e59b16b4be6f69502cced85d1fe835a3be21b57feab9195bb58aa832",
+      "speech-two.aiff": "09fdfec71fac4c08f5abecfbbe3fdd994412ecdf5fe7ff828fa24784a5152bae"
+    }
+  },
+  "environment": {
+    "computer": "Ashley’s MacBook Pro",
+    "model_identifier": "Mac16,8",
+    "chip": "Apple M4 Pro",
+    "cpu_cores": 12,
+    "memory_gb": 24,
+    "operating_system": "macOS 26.6.2 (25G83)",
+    "architecture": "arm64",
+    "node": "26.3.1",
+    "npm": "11.16.0",
+    "python": "3.12.13",
+    "ffmpeg": "8.1.1",
+    "tesseract": "5.5.3",
+    "asr_runtime": {
+      "pocketsphinx": "5.0.4",
+      "sounddevice": "0.5.6",
+      "cffi": "2.1.1",
+      "pycparser": "3.0"
+    }
+  },
+  "execution": {
+    "command": "/usr/bin/time -lp env PATH=/private/tmp/mk-py312-bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin npm run test:video-analyzer",
+    "exit_code": 1,
+    "wall_seconds": 13.56,
+    "node_test_duration_ms": 9446.27275,
+    "maximum_resident_set_size_bytes": 205553664,
+    "swaps": 0,
+    "fixture_method": "pre-rendered local PNG and AIFF assets from the preserved isolated workaround; system FFmpeg was not replaced",
+    "preflight_note": "npm ci was not used because this historical branch has no package-lock.json; the repository setup script created the pinned Python ASR environment successfully"
+  },
+  "aggregate": {
+    "tests": 14,
+    "passed": 13,
+    "failed": 1,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "tests": [
+    {"name": "direct-file intake decodes completely and persists a verified evidence package", "status": "PASS", "duration_ms": 382.948292},
+    {"name": "incomplete/truncated input fails complete-source decode", "status": "PASS", "duration_ms": 39.971292},
+    {"name": "failed persistence/read-back is detected after a successful write", "status": "PASS", "duration_ms": 188.95875},
+    {"name": "evidence package missing a required lane is rejected", "status": "PASS", "duration_ms": 1.900667},
+    {"name": "URL intake distinguishes access-blocked, unavailable, temporary, and unsupported sources", "status": "PASS", "duration_ms": 21.042875},
+    {"name": "retrievable direct-media URL is processed as real media", "status": "PASS", "duration_ms": 460.923375},
+    {"name": "safe-delete gate requires completed lanes, write, read-back, and retention state", "status": "PASS", "duration_ms": 0.119667},
+    {"name": "ASR preserves tested connector words and negation with versioned word timestamps", "status": "FAIL", "duration_ms": 2538.548084},
+    {"name": "ASR unavailable and ASR failure remain explicit when audio requires a transcript", "status": "PASS", "duration_ms": 1250.551458},
+    {"name": "OCR classifies caption-like and unrelated UI text, retains transient text, and preserves disagreement", "status": "PASS", "duration_ms": 2183.283708},
+    {"name": "semantic sampled screen states distinguish workflow candidate, unrelated browsing candidate, and disclose limits", "status": "PASS", "duration_ms": 557.281375},
+    {"name": "corrupted synchronized timeline and missing semantic evidence are rejected", "status": "PASS", "duration_ms": 644.021458},
+    {"name": "remote-store contract rejects corrupted remote read-back and local-only packages stay non-deletable", "status": "PASS", "duration_ms": 453.0365},
+    {"name": "F-003: sampled evidence carries source timestamps, not sampling-cadence timestamps", "status": "PASS", "duration_ms": 634.809459}
+  ],
+  "counterexample": {
+    "test": "ASR preserves tested connector words and negation with versioned word timestamps",
+    "expected": "i do not think this is fair because you know the answer",
+    "actual": "i do not think this is there because you know the answer",
+    "classification": "word substitution in an otherwise plausible transcript",
+    "safety_implication": "automatic ASR output cannot be promoted to verified exact wording and must preserve uncertainty or conflicting evidence"
+  },
+  "conclusion": "The isolated fixture blocker is reproducibly bypassed for tests and 13 controls pass. The frozen suite is not fully passing because the exact ASR wording assertion still fails. This receipt does not establish production readiness, arbitrary-video reliability, or safe deletion."
+}
