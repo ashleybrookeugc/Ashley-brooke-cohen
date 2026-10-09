@@ -33,7 +33,19 @@ export class CanonicalWriteError extends Error {
 export class PriorStateGateError extends Error {
   constructor(code, detail, priorState=null) { super(detail); this.code=code; this.status=code==='conflict'?409:422; this.prior_state=priorState; }
 }
-const textWords=value=>' '+String(value || '').toLowerCase().replace(/[^a-z0-9]+/g,' ').replace(/\s+/g,' ').trim()+' ';
+const normalizedInput=value=>String(value||'').replace(/[’‘]/g,"'");
+const textWords=value=>' '+normalizedInput(value).toLowerCase().replace(/[^a-z0-9]+/g,' ').replace(/\s+/g,' ').trim()+' ';
+const maryKateInput=text=>textWords(text).replace(/\b(?:mk|marykate)\b/g,'mary kate');
+const namesMaryKate=text=>/\b(?:mary kate|ai operating system)\b/.test(maryKateInput(text));
+const maryKateSection=section=>/^mary kate(?:\s*\/|$)/i.test(canonicalSectionName(section));
+// Mixed assessment/action requests keep the action gates and cannot borrow
+// the read-only preference for the canonical operating-system projection.
+const readOnlyAssessment=text=>{
+  const words=textWords(text);
+  return /^\s*(?:please\s+)?(?:(?:can|could|would) you\s+)?(?:do you think|does|is|are|has|have|where|what|how|tell me|show me|give me|assess|evaluate|explain|summarize)\b/i.test(normalizedInput(text))
+    && /\b(?:v1|first version|status|stage|stand|complete|completed|completion|finished|unfinished|ready|readiness|left|remain|remains|remaining|outstanding|gaps?|missing|progress)\b/.test(words)
+    && !/\b(?:update|set|change|mark|approve|publish|ship|post|send|delete|spend|pay|purchase|transfer|remove|deploy|merge|buy|upload|execute|run|resume|continue|advance)\b/.test(words);
+};
 const sectionScore=(text,section)=>{
   const heading=section.split(' — ')[0].trim();
   const words=textWords(heading).trim().split(' ').filter(Boolean);
@@ -45,7 +57,24 @@ const sectionScore=(text,section)=>{
 };
 export function resolveAuthoritativeWorkstream(text, facts) {
   const sections=[...new Set(facts.map(f=>f.section))].filter(section=>section!=='document');
-  const scores=sections.map(section=>({section,score:sectionScore(text,section)}));
+  const aliasInput=maryKateInput(text);
+  const input=namesMaryKate(text)?(/\bmary kate\b/.test(aliasInput)?aliasInput:aliasInput.replace(/\bai operating system\b/g,'mary kate')):text;
+  const scores=sections.map(section=>({section,score:sectionScore(input,section)}));
+  // Distinct explicit project names cannot compete by heading length. This
+  // applies to actions as well as questions, including a short alias vs a name.
+  const family=section=>canonicalSectionName(section).split(' / ')[0];
+  const explicitFamilies=[...new Set(sections.map(family).filter(name=>textWords(input).includes(textWords(name))))];
+  if(explicitFamilies.length>1) return {status:'ambiguous',section:null,candidates:sections.filter(section=>explicitFamilies.includes(family(section)))};
+  if(namesMaryKate(text)&&readOnlyAssessment(text)) {
+    const named=scores.filter(candidate=>candidate.score>0);
+    // A second named project remains ambiguous, even if its shorter heading
+    // would have lost the token-overlap competition.
+    if(named.some(candidate=>!maryKateSection(candidate.section))) return {status:'ambiguous',section:null,candidates:named.map(candidate=>candidate.section)};
+    const exact=named.filter(candidate=>candidate.score>100);
+    const current=named.filter(candidate=>/^mary kate\s*\/\s*ai operating system$/i.test(canonicalSectionName(candidate.section)));
+    const preferred=exact.length?exact:current.length?current:named;
+    return {status:preferred.length===1?'resolved':preferred.length>1?'ambiguous':'unknown',section:preferred.length===1?preferred[0].section:null,candidates:preferred.map(candidate=>candidate.section)};
+  }
   const best=Math.max(0,...scores.map(candidate=>candidate.score));
   const candidates=scores.filter(candidate=>best>0&&candidate.score===best).map(candidate=>candidate.section);
   return {status:candidates.length===1?'resolved':candidates.length>1?'ambiguous':'unknown',section:candidates.length===1?candidates[0]:null,candidates};
@@ -57,8 +86,10 @@ const activeWorkstreamSections=facts=>[...new Set((facts||[]).map(fact=>fact.sec
 }))];
 const unqualifiedWorkstreamRequest=text=>/^(?:(?:(?:can you|could you|please)\s+)?(?:tell me\s+|show me\s+|give me\s+)?(?:what(?:'s| is)\s+(?:the\s+)?(?:next|next step|next action|next bounded action|current action|current priority|current status|current stage|latest status)\b|what should (?:(?:we|i)\s+)?(?:do|happen)\s+next\b|what needs to happen next\b)|(?:(?:which|what)\s+(?:project|workstream|thread)\s+should\s+(?:we|i)\b)|(?:(?:advance|resume|continue|proceed|move forward|update|set|change|approve|publish|send|delete|spend|transfer|remove)\b))/i.test(String(text||'').trim());
 export function createAmbiguityGate(text,facts) {
+  text=normalizedInput(text);
   const resolution=resolveAuthoritativeWorkstream(text,facts);
   if(resolution.status==='ambiguous') return {...resolution,status:'blocked',reason:'multiple_current_referents'};
+  if(resolution.status==='unknown'&&namesMaryKate(text)) return {...resolution,status:'blocked',reason:'missing_workstream_context'};
   if(resolution.status==='unknown'&&continuationWithoutBinding(text)) return {...resolution,status:'blocked',reason:'unbound_continuation'};
   if(resolution.status==='unknown'&&unqualifiedWorkstreamRequest(text)) {
     const active=activeWorkstreamSections(facts);
@@ -154,8 +185,20 @@ export function createControlTaskPacket(snapshot) {
     active_work:{projects:snapshot.projects,source:snapshot.source},
     freshness:snapshot.context,
     prior_state:snapshot.prior_state,
-    ambiguity_gate:snapshot.ambiguity_gate
+    ambiguity_gate:snapshot.ambiguity_gate,
+    ...(snapshot.intent?{intent:snapshot.intent}:{}),
+    ...(snapshot.completion_authority?{completion_authority:snapshot.completion_authority}:{})
   };
+}
+async function retrieveCompletionAuthority(github) {
+  // Follow the existing index instead of baking in a dated filename or verdict.
+  const index=await github.readFile(WRITE_REPO,'PROJECT_INDEX.md');
+  const routes=String(index.content).split(/\r?\n/).filter(line=>/^\| Mary Kate current V1 completion\/gap\/evidence status \|/.test(line));
+  const path=routes.length===1?routes[0].split('|')[2]?.match(/`([^`]+)`/)?.[1]:null;
+  if(!index.sha||!path||!/^research\/ai-workflows\/[a-zA-Z0-9_-]+\.md$/.test(path)) throw new PriorStateGateError('missing','Mary Kate could not verify its indexed completion authority. No change was saved.');
+  const source=await github.readFile(WRITE_REPO,path);
+  if(!source.sha||!String(source.content||'').includes('V1 completion assessment')) throw new PriorStateGateError('missing','Mary Kate could not retrieve verified completion evidence. No change was saved.');
+  return {source:{repo:WRITE_REPO,path,sha:source.sha},routing_source:{repo:WRITE_REPO,path:'PROJECT_INDEX.md',sha:index.sha},content:source.content};
 }
 export function createControlService({github,router,store,now=()=>Date.now(),packetTtlMs=300000}) {
   const state = async ({refresh=false,requiredFacts=[],requiredFactKeys=[]}={}) => {
@@ -180,10 +223,15 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
         const detail=ambiguity_gate.reason==='unbound_workstream_request'?'Mary Kate found more than one workstream and could not bind this request to one current workstream, so it changed nothing.':'Mary Kate could not bind this request to one current workstream, so it changed nothing.';
         throw new PriorStateGateError('ambiguous_scope',detail,{gate:'authoritative-ambiguity.v1',status:'blocked',evidence:[],blockers:[{reason:'ambiguous_scope',key:'workstream',facts:ambiguity_gate.candidates.map(section=>({section,label:'workstream'}))}]});
       }
-      const scoped=requestedFacts(text,packet?.facts||[],initial.projects,requiredFactKeys);
+      const readOnly=readOnlyAssessment(text);
+      if(!Array.isArray(requiredFactKeys)) throw new PriorStateGateError('invalid_request','required_fact_keys must be an array of strings');
+      const assessmentKeys=readOnly&&maryKateSection(ambiguity_gate.section)?[...new Set((packet?.facts||[]).filter(fact=>fact.section===ambiguity_gate.section&&['current-stage','current','current-assessment'].includes(fact.key)).map(fact=>fact.key))]:[];
+      const scoped=requestedFacts(text,packet?.facts||[],initial.projects,[...requiredFactKeys,...(readOnly&&maryKateSection(ambiguity_gate.section)?assessmentKeys.length?assessmentKeys:['current-stage']:[])]);
       const snapshot=scoped.length?await state({requiredFacts:scoped}):initial;
       snapshot.ambiguity_gate=ambiguity_gate;
+      if(readOnly) snapshot.intent='read_only_assessment';
       requirePriorState(snapshot.prior_state);
+      if(readOnly&&maryKateSection(ambiguity_gate.section)) snapshot.completion_authority=await retrieveCompletionAuthority(github);
       let candidate;
       try {
         const output=await router.route(text.trim(),createControlTaskPacket(snapshot));
@@ -201,7 +249,12 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
         throw error;
       }
       if (Object.hasOwn(candidate,'prior_state')) throw new Error('Prior-state gate receipt is assigned by the control service');
-      const route=enforceResolvedWriteTarget({...candidate,prior_state:snapshot.prior_state},snapshot.prior_state,ambiguity_gate);
+      if(readOnly&&(candidate.proposal||candidate.route_kind!=='temporary_context'||candidate.responsibility!=='ai_can_handle')) {
+        const error=new RouteValidationError('proposal','Read-only assessment cannot propose or authorize an action');
+        error.code='read_only_route_violation';error.status=422;error.message='Routing proposed an action for a read-only question. No approval or change was saved.';
+        throw error;
+      }
+      const route=enforceResolvedWriteTarget({...candidate,prior_state:snapshot.prior_state,...(snapshot.completion_authority?{retrieval_authority:{source:snapshot.completion_authority.source,routing_source:snapshot.completion_authority.routing_source}}:{})},snapshot.prior_state,ambiguity_gate);
       const interaction=await store.addInteraction({raw_text:text.trim(),route});
       let item=null;
       if(route.proposal) item=await store.addQueueItem({interaction_id:interaction.id,...route});

@@ -4,8 +4,8 @@ This is the product-local registry for the bounded routing and execution-accepta
 
 ## Canonical implementation state
 
-- Repository: `mary-kate-v1`, local `main` is clean and matches `origin/main`; the reviewed implementation remains `ee38ac9606605c17e696e5cb3a704a00d5b4401c`.
-- Remote comparison: local `main` is clean and matches the fetched GitHub `main`; the ambiguity repair was already published by the preceding Codex session.
+- Canonical main remains `5df0a6d3d0b614f814e95a6dee740272e4c9cb74`, containing the earlier unbound-next implementation `ee38ac9606605c17e696e5cb3a704a00d5b4401c` and documentation receipts.
+- Explicit-MK development implementation: `97e38b5848aa63bf7cc3825916a1af26d5d8c0a2` plus `2ada581e6f374ccf4dfa59faa37b817bde804375` on `mary-kate/explicit-readonly-resolution`. The published source was fetched and reread. This branch has not been merged or deployed.
 - Published repair: `src/control/service.js`, `test/control-ambiguity-holdout.test.js`, and the original product failure record are included in `ee38ac9` and its parents. The receipt-only reconciliation commits follow that implementation commit on `main`; the exact current head is recorded by the final Git reread for this run.
 - Product failure history: `docs/TROUBLESHOOTING_LOG.md`.
 - Production boundary: `docs/CONTROL_PLANE.md` records the earlier GitHub read/route evidence and explicitly leaves the canonical write → reread → D1 receipt slice unproven.
@@ -49,3 +49,20 @@ This is the product-local registry for the bounded routing and execution-accepta
 1. The local pre-routing ambiguity repair is verified; deployment and live behavior are not.
 2. The local hybrid is viable only as deterministic controls → allowlisted candidate retrieval → bounded resolver → deterministic authority/approval/write gates. Qwen alone is not acceptable.
 3. The real Cloudflare V1 acceptance slice remains unproven: scoped Project Truth retrieval, routing, required approval, conditional canonical write, exact reread, and verified D1 receipt must all be observed together.
+# 2026-10-09 explicit-subject/read-only development receipt
+
+- Implementation: `97e38b5848aa63bf7cc3825916a1af26d5d8c0a2` on `mary-kate/explicit-readonly-resolution`, based on main `5df0a6d3d0b614f814e95a6dee740272e4c9cb74`.
+- Current authority input: research-vault main snapshot `899ea1d222d47dd612fd4efb9dd7a3cce8af7af5`. PROJECT_INDEX routes completion questions to the existing completion/reuse-gap matrix. Neither a verdict nor dated authority filename is hardcoded.
+- Before: first six independent regression groups FAIL; the exact MK question has no binding, the Mary Kate paraphrase hits two project projections, and a state candidate for the exact phrase reproduces the empty-evidence downstream ambiguity signature. Exact production candidate/dispatch trace remains unverified.
+- After on physical Apple M4 Pro: **68/68 full**, **27/27 focused**, Worker packaging dry-run PASS. Frozen positives and adversarial negatives live in `test/control-readonly-holdout.test.js`. Real current-authority replay PASS through the actual Workers AI adapter with a provider double: scoped current/current-assessment evidence, indexed matrix with provenance, no approval/canonical write. Rejected hostile assessment routes also produce no history row. Successful retrieval answers may create normal private interaction history.
+- Prior genuinely ambiguous `What's next?` production PASS is preserved; its local regression includes both apostrophe styles. No production canary was submitted and no production configuration changed.
+- Pending: separately authorized normal main → Cloudflare promotion; verify deployed lineage, then exactly one authenticated explicit-MK read-only canary with telemetry and evidence-qualified answer. Full route → approval → conditional write → reread → D1 receipt acceptance remains unproven.
+- Detailed durable failure/lesson reconciliation is on research-vault development branch `mary-kate/explicit-readonly-receipt`; canonical main promotion is pending. Existing frozen model/compiler benchmarks remain unchanged.
+
+## Expanded acceptance continuation — 2026-10-09
+
+Latest local verification supersedes the earlier 68/27 totals: **69/69 full**, **28/28 focused**, Worker packaging dry-run PASS. The additional frozen, requirements-based 23-case holdout initially measured six unnecessary clarifications and two unsafe routing acceptances (zero writes). The unchanged holdout now measures **zero** of each. It covers the exact reported input, `Is Mary Kate ready?`, `What’s left for MK?`, polite/unseen readiness and remaining-proof questions, switches, bound continuation, stale/missing/conflicting evidence, unbound-next and consequential/mixed-action ambiguity.
+
+Commit `2ada581e6f374ccf4dfa59faa37b817bde804375` extends assessment recognition and makes distinct explicit projects ambiguous before heading-score competition. All Mary Kate assessments retrieve the indexed completion authority. The foundational read-only proposal/decision rejection remains deterministic. A replay using the actual remote main authority blobs and the real Workers AI adapter with a provider double retrieves the existing matrix for all three requested questions; unbound `What’s next?` stops before routing. Ordinary successful history rows are allowed; approvals/queues/canonical writes are zero. Live model answer quality remains unverified.
+
+Exact baseline error reproduction, before/after per-case results, authority blob SHAs, commands and raw full/focused/build outputs: [test receipt](test-receipts/2026-10-09-explicit-mk-readonly.json). Deployment config, bindings, migrations and Worker entry points have no diff from main. Ready for the separately authorized existing GitHub → Cloudflare promotion and single authenticated explicit-MK retest; no production success is claimed.
