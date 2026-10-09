@@ -185,6 +185,34 @@ export function buildSemanticVisualObservations(rawFrames, timestamps, ocr) {
   return observations;
 }
 
+export function selectVisualEvents(visualObservations, rawOcr) {
+  const selected = [];
+  let previousText = '';
+  for (let index = 0; index < visualObservations.length; index++) {
+    const observation = visualObservations[index];
+    const exactOcr = rawOcr.filter(item => Math.abs(item.start_seconds - observation.start_seconds) < 0.001);
+    const currentText = exactOcr.map(item => item.text).join(' ').trim();
+    const reasons = [];
+    if (index === 0) reasons.push('initial_sampled_state');
+    if (observation.motion) reasons.push('sampled_viewport_motion');
+    if (observation.state === 'regional_visual_state_change' || observation.state === 'visual_state_change' || observation.state === 'major_visual_state_change') {
+      reasons.push('sampled_visual_change');
+    }
+    if (index > 0 && currentText && (!previousText || textSimilarity(currentText, previousText) < 0.88)) reasons.push('sampled_ocr_change');
+    if (reasons.length) selected.push({
+      selection_id: `selected-${observation.observation_id}`,
+      observation_id: observation.observation_id,
+      source_timestamp_seconds: observation.start_seconds,
+      reasons,
+      source_refs: [observation.observation_id, ...exactOcr.map(item => item.observation_id)].filter(Boolean),
+      semantic_interpretation: 'not_determined',
+      uncertainty: 'Selection preserves sampled pixel, motion, or OCR change. It does not establish what the change means.'
+    });
+    previousText = currentText;
+  }
+  return selected;
+}
+
 export function buildSpeakerTurns(speechSpans) {
   return speechSpans.map((span, index) => ({
     observation_id: `turn-${String(index + 1).padStart(6, '0')}`,

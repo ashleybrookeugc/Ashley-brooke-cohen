@@ -10,6 +10,7 @@ import {
   buildSpeakerTurns,
   buildSynchronizedTimeline,
   classifyOcr,
+  selectVisualEvents,
   validateSynchronizedTimeline
 } from './understanding.mjs';
 
@@ -484,6 +485,7 @@ function makeEvidence({ frames, rawOcr, changes, visualObservations, hasAudio, a
   const speechSpans = asr?.spans || [];
   const classified = classifyOcr(rawOcr, speechSpans);
   const speakerTurns = buildSpeakerTurns(speechSpans);
+  const selectedVisualEvents = selectVisualEvents(visualObservations, rawOcr);
   const lanes = {
     spoken_audio: {
       state: !hasAudio ? 'not_present' : asrState,
@@ -517,6 +519,12 @@ function makeEvidence({ frames, rawOcr, changes, visualObservations, hasAudio, a
       state: 'bounded_screen_state_classifier',
       verification_modality: 'sampled_64x64_visual_change_plus_ocr_heuristic',
       observations: visualObservations,
+      selection: {
+        method: 'visual_or_motion_or_ocr_change_v1',
+        selected_observation_ids: selectedVisualEvents.map(item => item.observation_id),
+        receipts: selectedVisualEvents,
+        suppressed_observation_count: visualObservations.length - selectedVisualEvents.length
+      },
       uncertainty: 'Screen-state/activity candidates are sampled and heuristic; subject/object recognition remains unrecovered.'
     },
     visual_shot_state_changes: {

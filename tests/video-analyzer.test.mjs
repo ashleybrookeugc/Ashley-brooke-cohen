@@ -13,7 +13,7 @@ import {
   runCommand,
   verifyEvidencePackage
 } from '../tools/video-analyzer/core.mjs';
-import { buildSemanticVisualObservations } from '../tools/video-analyzer/understanding.mjs';
+import { buildSemanticVisualObservations, selectVisualEvents } from '../tools/video-analyzer/understanding.mjs';
 
 async function fixtureRoot(t) {
   const root = await mkdtemp(join(tmpdir(), 'abc-video-test-'));
@@ -270,6 +270,35 @@ test('F-004: meaningful regional visual change survives a globally stable frame 
   assert.equal(observations[2].start_seconds, 4.25);
   assert.equal(observations[2].regional_change.detected, false);
   assert.deepEqual(observations[2].observable_actions, []);
+});
+
+test('F-005: unchanged OCR cannot discard qualifying visual activity and static duplicates stay suppressed', () => {
+  const initial = Buffer.alloc(64 * 64, 0);
+  const unchangedBefore = Buffer.from(initial);
+  const regionalChange = Buffer.from(initial);
+  for (let y = 24; y < 32; y++) for (let x = 40; x < 48; x++) regionalChange[y * 64 + x] = 255;
+  const unchangedAfter = Buffer.from(regionalChange);
+  const timestamps = [3.25, 3.5, 3.75, 4.25];
+  const ocr = timestamps.map((timestamp, index) => ({
+    observation_id: `ocr-${index + 1}`,
+    start_seconds: timestamp,
+    end_seconds: timestamp,
+    text: 'TRIM CLIP'
+  }));
+
+  const observations = buildSemanticVisualObservations(
+    [initial, unchangedBefore, regionalChange, unchangedAfter], timestamps, ocr
+  );
+  const selected = selectVisualEvents(observations, ocr);
+
+  assert.deepEqual(selected.map(item => item.observation_id), ['visual-000001', 'visual-000003']);
+  assert.equal(selected[1].source_timestamp_seconds, 3.75);
+  assert.deepEqual(selected[1].reasons, ['sampled_visual_change']);
+  assert.deepEqual(selected[1].source_refs, ['visual-000003', 'ocr-3']);
+  assert.equal(selected[1].semantic_interpretation, 'not_determined');
+  assert.match(selected[1].uncertainty, /does not establish what the change means/i);
+  assert.ok(!selected.some(item => item.observation_id === 'visual-000002'));
+  assert.ok(!selected.some(item => item.observation_id === 'visual-000004'));
 });
 
 test('corrupted synchronized timeline and missing semantic evidence are rejected', async t => {
