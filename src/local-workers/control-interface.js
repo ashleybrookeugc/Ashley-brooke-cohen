@@ -24,11 +24,11 @@ export function createLocalWorkerControlInterface({
   let server;
 
   async function workersResponse() {
-    if(enabled!==true) return json({version:'mary-kate.local-workers.v1',enabled:false,read_only:true,observed_at:now(),workers:[]});
+    if(enabled!==true) return json({version:'mary-kate.local-workers.v1',enabled:false,read_only:true,observed_at:now(),connection:{state:'disconnected',fresh:false,last_received_at:null},workers:[]});
     if(!adapter||typeof adapter.list!=='function') return json({error:'Local worker monitoring is not configured.',code:'worker_monitor_not_configured'},503);
     try {
-      const response={version:'mary-kate.local-workers.v1',enabled:true,read_only:true,observed_at:now(),workers:await adapter.list()};
-      onSnapshot(structuredClone(response));
+      const response={version:'mary-kate.local-workers.v1',enabled:true,read_only:true,observed_at:now(),connection:{state:'connected',fresh:true,last_received_at:now()},workers:await adapter.list()};
+      await onSnapshot(structuredClone(response));
       return json(response);
     } catch(error) {
       const diagnosticCode=typeof error?.code==='string'&&/^[a-z0-9_]{1,64}$/.test(error.code)?error.code:'worker_observation_failed';

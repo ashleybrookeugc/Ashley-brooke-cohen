@@ -7,7 +7,7 @@
     "dev": "npx wrangler dev",
     "deploy": "npx wrangler deploy",
     "test": "node --test",
-    "check:herdr-acceptance": "node --check scripts/acceptance/herdr-worker-adapter-live.mjs && node --check scripts/acceptance/herdr-worker-interface-live.mjs",
+    "check:herdr-acceptance": "node --check scripts/acceptance/herdr-worker-adapter-live.mjs && node --check scripts/acceptance/herdr-worker-interface-live.mjs && node --check scripts/acceptance/herdr-worker-cloudflare-live.mjs",
     "check:worker": "wrangler deploy --dry-run --outdir /tmp/control-worker-build"
   },
   "devDependencies": {
