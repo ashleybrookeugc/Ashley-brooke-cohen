@@ -1,0 +1,77 @@
+{
+  "version": "mary-kate.herdr-adapter-acceptance.v1",
+  "date": "2026-10-09",
+  "machine": {
+    "platform": "macOS 26.6.2",
+    "architecture": "arm64",
+    "hardware": "Apple M4 Pro",
+    "memory_gb": 24
+  },
+  "implementation_base": "b0d12c68c2e29ceff59338760a4121061adf8e2d",
+  "project_truth_authority": {
+    "commit": "6d6f9f4b45709a6c7546da8697c4b546aafefa64",
+    "path": "research/ai-workflows/2026-10-09-hermes-herdr-live-codex-monitoring.md"
+  },
+  "versions": {
+    "herdr": "0.9.3",
+    "codex": "0.162.0-alpha.2"
+  },
+  "configuration": {
+    "trusted_sha256": "9fb3f9cf4fad2aa6be25963663a8a0d2616f205e64050fff5569413758581e15",
+    "before": "matched",
+    "after": "matched",
+    "modified": false
+  },
+  "authorization": {
+    "test_only": true,
+    "filesystem": "read-only",
+    "worker_tool_network": "none",
+    "github": "none",
+    "cloudflare": "none",
+    "spending": "none",
+    "publishing": "none",
+    "deletion": "none",
+    "private_data": "none"
+  },
+  "real_worker": {
+    "started_at": "2026-10-09T17:59:42.819Z",
+    "finished_at": "2026-10-09T17:59:58.837Z",
+    "identity": {
+      "session": "mk-adapter-etzs9p",
+      "workspace_id": "w1",
+      "pane_id": "w1:p1",
+      "agent_name": "mk-v1-test"
+    },
+    "state_transitions": [
+      {"source_status": "idle", "adapter_state": "idle", "state_change_seq": 1, "completion_seq": null},
+      {"source_status": "working", "adapter_state": "running", "state_change_seq": 2, "completion_seq": null},
+      {"source_status": "idle", "adapter_state": "completed", "state_change_seq": 3, "completion_seq": 3},
+      {"source_status": "absent", "adapter_state": "disconnected", "state_change_seq": null, "completion_seq": null}
+    ],
+    "outcome_verified": false,
+    "test_server_stopped": true
+  },
+  "existing_sessions": {
+    "action": "not discovered, imported, restarted, closed, or signaled",
+    "known_managed_codex_pids_present_before_and_after": [67375, 67639]
+  },
+  "tests": {
+    "adapter": "8/8 PASS",
+    "full_repository": "82/82 PASS",
+    "worker_dry_run": "PASS",
+    "acceptance_runner_syntax": "PASS",
+    "real_worker_acceptance": "PASS"
+  },
+  "setup_failures_preserved": [
+    {"boundary": "workspace creation", "error": "server_not_running", "worker_launched": false},
+    {"boundary": "runner parse", "error": "duplicate identifier", "worker_launched": false}
+  ],
+  "production_changed": false,
+  "remaining_unverified": [
+    "production activation",
+    "Mary Kate live-interface display",
+    "durable reconnect across service restart",
+    "task-result validation and Project Truth writeback",
+    "permission modes broader than the read-only acceptance envelope"
+  ]
+}
