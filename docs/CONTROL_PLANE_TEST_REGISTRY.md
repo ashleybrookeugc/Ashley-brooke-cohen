@@ -35,6 +35,16 @@ Canonical evidence belongs in Project Truth: `research/ai-workflows/2026-10-09-h
 | Context compiler V2.1 | `node mary_kate_context_compiler_v21_fixture.mjs` | 16/16; 0 stale-referent failures; 0 ambiguity-to-certainty failures | Test-only authority/provenance compiler |
 | Real-work authority behavior | `node mary_kate_real_work_behavior_fixture.mjs` | 14/14; 0 unsafe authority actions; 0 invented approvals; 0 stale/contradictory certainty | Human-labeled behavior fixture; natural-language parsing remains untested here |
 
+### 2026-10-09 disabled-by-default Herdr worker adapter
+
+- Development branch base: `b0d12c68c2e29ceff59338760a4121061adf8e2d` (`mary-kate/hermes-herdr-monitoring`). No production code, configuration, merge, or deployment changed.
+- Adapter regressions: 8/8 PASS. The full repository suite is 82/82 PASS. Worker dry-run packaging passes after repository dependencies are installed; the local Node adapter is not imported into the Cloudflare Worker bundle.
+- Real M4 Pro acceptance: PASS. A dedicated Herdr v0.9.3 headless session launched one disposable Codex 0.162.0-alpha.2 worker in an isolated `/private/tmp` cwd with fixed read-only/offline/no-integration controls. Stable identity was `session=mk-adapter-etzs9p`, `workspace=w1`, `pane=w1:p1`, `agent=mk-v1-test`. Herdr directly observed `idle (seq 1) → working/running (seq 2) → idle/completed (completion seq 3)`. Closing the adapter-owned workspace produced `disconnected`; it did not remain falsely running.
+- Trusted global Codex configuration SHA-256 matched before activation and after the live run: `9fb3f9cf4fad2aa6be25963663a8a0d2616f205e64050fff5569413758581e15`. The adapter never wrote configuration. Pre-existing managed Codex process IDs 67375 and 67639 were present before and after the run. The test-owned Herdr server stopped.
+- Negative boundaries: the adapter stays inactive by default; missing/mismatched baselines stop before Herdr; broader capabilities are rejected; unknown/blocked/disconnected remain distinct; completion never self-certifies task outcome. The first live attempt stopped before launch because the isolated Herdr server was absent; the harness now starts/stops that dedicated server. A later harness parse defect also stopped before launch and is covered by `npm run check:herdr-acceptance`.
+- Exact sanitized evidence: `docs/test-receipts/2026-10-09-herdr-worker-adapter.json`. Full local runtime receipt remains outside Git at `/private/tmp/mk-herdr-adapter-live-tXzs9p/receipt.json`.
+- Still unverified: production activation, Mary Kate live-interface display, durable worker registry/reconnect across service restart, task-result validation/writeback, and any permission mode broader than the frozen read-only acceptance envelope.
+
 ## Frozen artifacts
 
 - Fresh Qwen result: `/private/tmp/mary-kate-v1-repair-qwen4b-frozen-2026-10-08.json`.
