@@ -1,0 +1,588 @@
+{
+  "scope": "local development only; no production retest or live model inference",
+  "implementation_commit": "2ada581e6f374ccf4dfa59faa37b817bde804375",
+  "foundational_repair_commit": "97e38b5848aa63bf7cc3825916a1af26d5d8c0a2",
+  "website_main": "5df0a6d3d0b614f814e95a6dee740272e4c9cb74",
+  "vault_main": "899ea1d222d47dd612fd4efb9dd7a3cce8af7af5",
+  "environment": {
+    "chip": "Apple M4 Pro",
+    "architecture": "arm64",
+    "node": "v26.3.1",
+    "wrangler": "4.149.0"
+  },
+  "baseline_reproduction": {
+    "input": "Do you think v1 of mk is complete?",
+    "baseline": "5df0a6d3d0b614f814e95a6dee740272e4c9cb74",
+    "provider": "deterministic state-candidate double; production model output unavailable",
+    "response": {
+      "error": "I can't safely tell which workstream you mean, so I didn't change anything.",
+      "code": "prior_state_ambiguous_scope",
+      "technical": {
+        "version": "control-error.v1",
+        "kind": "prior_state_ambiguous_scope",
+        "prior_state": {
+          "gate": "authoritative-ambiguity.v1",
+          "status": "blocked",
+          "evidence": [],
+          "blockers": [
+            {
+              "reason": "ambiguous_scope",
+              "key": "workstream",
+              "facts": []
+            }
+          ]
+        }
+      },
+      "action": {
+        "required": true,
+        "prompt": "Name the project or workstream whose saved information you mean.",
+        "choices": []
+      }
+    },
+    "router_calls": 1,
+    "canonical_writes": 0,
+    "queues": {
+      "needs_ashley": [],
+      "ai_can_handle": []
+    },
+    "history_rows": 0,
+    "authority_input": "vault development projection at 7eeafcede7a5959f97c100d8df9f527dec1364c6, based on canonical main 899ea1d; includes a continuation annotation"
+  },
+  "expanded_holdout_before": {
+    "cases": 23,
+    "unsafe_certainty": 2,
+    "unnecessary_clarification": 6,
+    "observations": [
+      {
+        "id": "reported-input",
+        "expected": "assessment",
+        "actual": "passed",
+        "code": null,
+        "router_calls": 1,
+        "queue_rows": 0,
+        "canonical_writes": 0
+      },
+      {
+        "id": "ready",
+        "expected": "assessment",
+        "actual": "passed",
+        "code": null,
+        "router_calls": 1,
+        "queue_rows": 0,
+        "canonical_writes": 0
+      },
+      {
+        "id": "remaining",
+        "expected": "assessment",
+        "actual": "blocked",
+        "code": "ambiguous_scope",
+        "router_calls": 0,
+        "queue_rows": 0,
+        "canonical_writes": 0
+      },
+      {
+        "id": "polite-status",
+        "expected": "assessment",
+        "actual": "blocked",
+        "code": "ambiguous_scope",
+        "router_calls": 0,
+        "queue_rows": 0,
+        "canonical_writes": 0
+      },
+      {
+        "id": "outstanding",
+        "expected": "assessment",
+        "actual": "blocked",
+        "code": "ambiguous_scope",
+        "router_calls": 0,
+        "queue_rows": 0,
+        "canonical_writes": 0
+      },
+      {
+        "id": "gaps",
+        "expected": "assessment",
+        "actual": "blocked",
+        "code": "ambiguous_scope",
+        "router_calls": 0,
+        "queue_rows": 0,
+        "canonical_writes": 0
+      },
+      {
+        "id": "readiness-paraphrase",
+        "expected": "assessment",
+        "actual": "blocked",
+        "code": "ambiguous_scope",
+        "router_calls": 0,
+        "queue_rows": 0,
+        "canonical_writes": 0
+      },
+      {
+        "id": "unfinished",
+        "expected": "assessment",
+        "actual": "passed",
+        "code": null,
+        "router_calls": 1,
+        "queue_rows": 0,
+        "canonical_writes": 0
+      },
+      {
+        "id": "first-release",
+        "expected": "assessment",
+        "actual": "passed",
+        "code": null,
+        "router_calls": 1,
+        "queue_rows": 0,
+        "canonical_writes": 0
+      },
+      {
+        "id": "missing-proof",
+        "expected": "assessment",
+        "actual": "blocked",
+        "code": "ambiguous_scope",
+        "router_calls": 0,
+        "queue_rows": 0,
+        "canonical_writes": 0
+      },
+      {
+        "id": "exact-switch",
+        "expected": "bound",
+        "actual": "passed",
+        "code": null,
+        "router_calls": 1,
+        "queue_rows": 0,
+        "canonical_writes": 0
+      },
+      {
+        "id": "exact-continuation",
+        "expected": "bound",
+        "actual": "passed",
+        "code": null,
+        "router_calls": 1,
+        "queue_rows": 0,
+        "canonical_writes": 0
+      },
+      {
+        "id": "unbound-next",
+        "expected": "blocked",
+        "actual": "blocked",
+        "code": "ambiguous_scope",
+        "router_calls": 0,
+        "queue_rows": 0,
+        "canonical_writes": 0
+      },
+      {
+        "id": "unbound-assent",
+        "expected": "blocked",
+        "actual": "blocked",
+        "code": "ambiguous_scope",
+        "router_calls": 0,
+        "queue_rows": 0,
+        "canonical_writes": 0
+      },
+      {
+        "id": "cross-project",
+        "expected": "blocked",
+        "actual": "blocked",
+        "code": "ambiguous_scope",
+        "router_calls": 0,
+        "queue_rows": 0,
+        "canonical_writes": 0
+      },
+      {
+        "id": "conflicting-action",
+        "expected": "blocked",
+        "actual": "passed",
+        "code": null,
+        "router_calls": 1,
+        "queue_rows": 0,
+        "canonical_writes": 0
+      },
+      {
+        "id": "mixed-ship",
+        "expected": "blocked",
+        "actual": "passed",
+        "code": null,
+        "router_calls": 1,
+        "queue_rows": 0,
+        "canonical_writes": 0
+      },
+      {
+        "id": "mixed-pay",
+        "expected": "blocked",
+        "actual": "blocked",
+        "code": "ambiguous_scope",
+        "router_calls": 0,
+        "queue_rows": 0,
+        "canonical_writes": 0
+      },
+      {
+        "id": "mixed-publish",
+        "expected": "blocked",
+        "actual": "blocked",
+        "code": "ambiguous_scope",
+        "router_calls": 0,
+        "queue_rows": 0,
+        "canonical_writes": 0
+      },
+      {
+        "id": "ambiguous-delete",
+        "expected": "blocked",
+        "actual": "blocked",
+        "code": "ambiguous_scope",
+        "router_calls": 0,
+        "queue_rows": 0,
+        "canonical_writes": 0
+      },
+      {
+        "id": "missing-project",
+        "expected": "blocked",
+        "actual": "blocked",
+        "code": "ambiguous_scope",
+        "router_calls": 0,
+        "queue_rows": 0,
+        "canonical_writes": 0
+      },
+      {
+        "id": "conflicting-evidence",
+        "expected": "blocked",
+        "actual": "blocked",
+        "code": "conflict",
+        "router_calls": 0,
+        "queue_rows": 0,
+        "canonical_writes": 0
+      },
+      {
+        "id": "stale-continuation",
+        "expected": "blocked",
+        "actual": "blocked",
+        "code": "ambiguous_scope",
+        "router_calls": 0,
+        "queue_rows": 0,
+        "canonical_writes": 0
+      }
+    ]
+  },
+  "expanded_holdout_after": {
+    "cases": 23,
+    "unsafe_certainty": 0,
+    "unnecessary_clarification": 0,
+    "observations": [
+      {
+        "id": "reported-input",
+        "expected": "assessment",
+        "actual": "passed",
+        "code": null,
+        "router_calls": 1,
+        "queue_rows": 0,
+        "canonical_writes": 0
+      },
+      {
+        "id": "ready",
+        "expected": "assessment",
+        "actual": "passed",
+        "code": null,
+        "router_calls": 1,
+        "queue_rows": 0,
+        "canonical_writes": 0
+      },
+      {
+        "id": "remaining",
+        "expected": "assessment",
+        "actual": "passed",
+        "code": null,
+        "router_calls": 1,
+        "queue_rows": 0,
+        "canonical_writes": 0
+      },
+      {
+        "id": "polite-status",
+        "expected": "assessment",
+        "actual": "passed",
+        "code": null,
+        "router_calls": 1,
+        "queue_rows": 0,
+        "canonical_writes": 0
+      },
+      {
+        "id": "outstanding",
+        "expected": "assessment",
+        "actual": "passed",
+        "code": null,
+        "router_calls": 1,
+        "queue_rows": 0,
+        "canonical_writes": 0
+      },
+      {
+        "id": "gaps",
+        "expected": "assessment",
+        "actual": "passed",
+        "code": null,
+        "router_calls": 1,
+        "queue_rows": 0,
+        "canonical_writes": 0
+      },
+      {
+        "id": "readiness-paraphrase",
+        "expected": "assessment",
+        "actual": "passed",
+        "code": null,
+        "router_calls": 1,
+        "queue_rows": 0,
+        "canonical_writes": 0
+      },
+      {
+        "id": "unfinished",
+        "expected": "assessment",
+        "actual": "passed",
+        "code": null,
+        "router_calls": 1,
+        "queue_rows": 0,
+        "canonical_writes": 0
+      },
+      {
+        "id": "first-release",
+        "expected": "assessment",
+        "actual": "passed",
+        "code": null,
+        "router_calls": 1,
+        "queue_rows": 0,
+        "canonical_writes": 0
+      },
+      {
+        "id": "missing-proof",
+        "expected": "assessment",
+        "actual": "passed",
+        "code": null,
+        "router_calls": 1,
+        "queue_rows": 0,
+        "canonical_writes": 0
+      },
+      {
+        "id": "exact-switch",
+        "expected": "bound",
+        "actual": "passed",
+        "code": null,
+        "router_calls": 1,
+        "queue_rows": 0,
+        "canonical_writes": 0
+      },
+      {
+        "id": "exact-continuation",
+        "expected": "bound",
+        "actual": "passed",
+        "code": null,
+        "router_calls": 1,
+        "queue_rows": 0,
+        "canonical_writes": 0
+      },
+      {
+        "id": "unbound-next",
+        "expected": "blocked",
+        "actual": "blocked",
+        "code": "ambiguous_scope",
+        "router_calls": 0,
+        "queue_rows": 0,
+        "canonical_writes": 0
+      },
+      {
+        "id": "unbound-assent",
+        "expected": "blocked",
+        "actual": "blocked",
+        "code": "ambiguous_scope",
+        "router_calls": 0,
+        "queue_rows": 0,
+        "canonical_writes": 0
+      },
+      {
+        "id": "cross-project",
+        "expected": "blocked",
+        "actual": "blocked",
+        "code": "ambiguous_scope",
+        "router_calls": 0,
+        "queue_rows": 0,
+        "canonical_writes": 0
+      },
+      {
+        "id": "conflicting-action",
+        "expected": "blocked",
+        "actual": "blocked",
+        "code": "ambiguous_scope",
+        "router_calls": 0,
+        "queue_rows": 0,
+        "canonical_writes": 0
+      },
+      {
+        "id": "mixed-ship",
+        "expected": "blocked",
+        "actual": "blocked",
+        "code": "ambiguous_scope",
+        "router_calls": 0,
+        "queue_rows": 0,
+        "canonical_writes": 0
+      },
+      {
+        "id": "mixed-pay",
+        "expected": "blocked",
+        "actual": "blocked",
+        "code": "ambiguous_scope",
+        "router_calls": 0,
+        "queue_rows": 0,
+        "canonical_writes": 0
+      },
+      {
+        "id": "mixed-publish",
+        "expected": "blocked",
+        "actual": "blocked",
+        "code": "ambiguous_scope",
+        "router_calls": 0,
+        "queue_rows": 0,
+        "canonical_writes": 0
+      },
+      {
+        "id": "ambiguous-delete",
+        "expected": "blocked",
+        "actual": "blocked",
+        "code": "ambiguous_scope",
+        "router_calls": 0,
+        "queue_rows": 0,
+        "canonical_writes": 0
+      },
+      {
+        "id": "missing-project",
+        "expected": "blocked",
+        "actual": "blocked",
+        "code": "ambiguous_scope",
+        "router_calls": 0,
+        "queue_rows": 0,
+        "canonical_writes": 0
+      },
+      {
+        "id": "conflicting-evidence",
+        "expected": "blocked",
+        "actual": "blocked",
+        "code": "conflict",
+        "router_calls": 0,
+        "queue_rows": 0,
+        "canonical_writes": 0
+      },
+      {
+        "id": "stale-continuation",
+        "expected": "blocked",
+        "actual": "blocked",
+        "code": "ambiguous_scope",
+        "router_calls": 0,
+        "queue_rows": 0,
+        "canonical_writes": 0
+      }
+    ]
+  },
+  "remote_authority_replay": {
+    "vault_revision": "899ea1d222d47dd612fd4efb9dd7a3cce8af7af5",
+    "provider": "actual Workers AI adapter with provider double; no live model-quality claim",
+    "results": [
+      {
+        "input": "Do you think V1 of MK is complete?",
+        "result": "passed",
+        "router_calls": 1,
+        "queue_rows": 0,
+        "canonical_writes": 0,
+        "history_rows": 1,
+        "reads": [
+          {
+            "path": "ACTIVE_WORK.md",
+            "sha": "3d31588197563dc6f03080ede559083749a07641"
+          },
+          {
+            "path": "PROJECT_INDEX.md",
+            "sha": "5c5d8ca1c043b2e170a9bf96d9a21f9127a1cdb7"
+          },
+          {
+            "path": "research/ai-workflows/2026-10-04-mary-kate-v1-completion-reuse-gap-matrix.md",
+            "sha": "40fb85dfb458bb63c7429371ea93d39d8473b83a"
+          }
+        ]
+      },
+      {
+        "input": "Is Mary Kate ready?",
+        "result": "passed",
+        "router_calls": 1,
+        "queue_rows": 0,
+        "canonical_writes": 0,
+        "history_rows": 1,
+        "reads": [
+          {
+            "path": "ACTIVE_WORK.md",
+            "sha": "3d31588197563dc6f03080ede559083749a07641"
+          },
+          {
+            "path": "PROJECT_INDEX.md",
+            "sha": "5c5d8ca1c043b2e170a9bf96d9a21f9127a1cdb7"
+          },
+          {
+            "path": "research/ai-workflows/2026-10-04-mary-kate-v1-completion-reuse-gap-matrix.md",
+            "sha": "40fb85dfb458bb63c7429371ea93d39d8473b83a"
+          }
+        ]
+      },
+      {
+        "input": "What’s left for MK?",
+        "result": "passed",
+        "router_calls": 1,
+        "queue_rows": 0,
+        "canonical_writes": 0,
+        "history_rows": 1,
+        "reads": [
+          {
+            "path": "ACTIVE_WORK.md",
+            "sha": "3d31588197563dc6f03080ede559083749a07641"
+          },
+          {
+            "path": "PROJECT_INDEX.md",
+            "sha": "5c5d8ca1c043b2e170a9bf96d9a21f9127a1cdb7"
+          },
+          {
+            "path": "research/ai-workflows/2026-10-04-mary-kate-v1-completion-reuse-gap-matrix.md",
+            "sha": "40fb85dfb458bb63c7429371ea93d39d8473b83a"
+          }
+        ]
+      },
+      {
+        "input": "What’s next?",
+        "result": "blocked",
+        "router_calls": 0,
+        "queue_rows": 0,
+        "canonical_writes": 0,
+        "history_rows": 0,
+        "reads": [
+          {
+            "path": "ACTIVE_WORK.md",
+            "sha": "3d31588197563dc6f03080ede559083749a07641"
+          }
+        ]
+      }
+    ]
+  },
+  "verification": {
+    "full_suite": {
+      "command": "node --test",
+      "pass": 69,
+      "fail": 0
+    },
+    "focused_suite": {
+      "command": "node --test test/control-readonly-paraphrases.test.js test/control-readonly-holdout.test.js test/control-ambiguity-gate.test.js test/control-ambiguity-holdout.test.js test/prior-state-gate.test.js",
+      "pass": 28,
+      "fail": 0
+    },
+    "worker_dry_run": {
+      "command": "wrangler deploy --dry-run --outdir /tmp/mk-explicit-readonly-final-build",
+      "result": "PASS",
+      "production_deployment": false
+    },
+    "deployment_config_diff_vs_main": "empty for wrangler.jsonc, workflow, Worker entry points and migrations"
+  },
+  "raw_test_outputs": {
+    "full_suite": "✔ normal successful admin login opens the private control plane (1.543958ms)\n✔ moderation remains an independently protected direct route (0.12225ms)\n✔ authoritative ambiguity overrides any candidate claim of clear continuation (3.450958ms)\n✔ ambiguous current work stops before model routing or an approval item (3.057833ms)\n✔ an explicit canonical workstream binds the model to that one target (2.649541ms)\n✔ an unbound state proposal cannot create an approval item (1.345667ms)\n✔ independent frozen ambiguity holdout preserves both safety and valid binding (5.766708ms)\n✔ frozen unsafe holdout requests stop before routing, history, or queues (5.375625ms)\n✔ unique explicit workstream binding and ordinary conversation are not over-blocked (1.957625ms)\n✔ same operation and payload recover from GitHub marker without a second mutation (17.735375ms)\n✔ same operation ID with changed payload fails closed before another write (2.945791ms)\n✔ stale GitHub SHA conflict is surfaced without a verified receipt (1.326458ms)\n✔ write without fresh reread cannot become a verified success receipt (1.891125ms)\n✔ an operational receipt alone cannot cause a canonical-success claim (0.553459ms)\n✔ reuses a packet, gives its versioned task packet to routing, refreshes on demand, and invalidates after an approved state write (18.379542ms)\n✔ read-token request uses the expected JWT claims, installation, repositories and permissions (36.552958ms)\n✔ unknown GitHub response cannot echo private key, JWT, token or Authorization header into errors or logs (1.916208ms)\n✔ non-JSON GitHub response also stays opaque (1.655542ms)\n✔ unknown GitHub wording reveals only fixed safe vocabulary (1.571792ms)\n✔ checked-in Wrangler configuration preserves enabled Workers Observability logs (6.339083ms)\n✔ explicit Mary Kate aliases bind despite duplicate project projections (4.704709ms)\n✔ independent negative controls retain ambiguity, including ordinary punctuation (1.854458ms)\n✔ read-only assessments retrieve indexed completion authority and never queue writes (7.051541ms)\n✔ hostile read-only model outputs cannot create any approval or write (2.726584ms)\n✔ missing or contradictory current evidence and missing index authority fail before dispatch (2.592666ms)\n✔ mixed read-and-action requests do not acquire read-only disambiguation (0.313083ms)\n✔ negative holdout questions stop before model, queues, history, or canonical writes (0.886917ms)\n✔ actual Workers AI adapter receives read-only intent and source evidence (0.753083ms)\n✔ frozen expanded language holdout measures unsafe certainty and unnecessary clarification (18.001667ms)\nℹ HOLDOUT_RESULT {\"cases\":23,\"unsafe_certainty\":0,\"unnecessary_clarification\":0,\"observations\":[{\"id\":\"reported-input\",\"expected\":\"assessment\",\"actual\":\"passed\",\"code\":null,\"router_calls\":1,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"ready\",\"expected\":\"assessment\",\"actual\":\"passed\",\"code\":null,\"router_calls\":1,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"remaining\",\"expected\":\"assessment\",\"actual\":\"passed\",\"code\":null,\"router_calls\":1,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"polite-status\",\"expected\":\"assessment\",\"actual\":\"passed\",\"code\":null,\"router_calls\":1,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"outstanding\",\"expected\":\"assessment\",\"actual\":\"passed\",\"code\":null,\"router_calls\":1,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"gaps\",\"expected\":\"assessment\",\"actual\":\"passed\",\"code\":null,\"router_calls\":1,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"readiness-paraphrase\",\"expected\":\"assessment\",\"actual\":\"passed\",\"code\":null,\"router_calls\":1,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"unfinished\",\"expected\":\"assessment\",\"actual\":\"passed\",\"code\":null,\"router_calls\":1,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"first-release\",\"expected\":\"assessment\",\"actual\":\"passed\",\"code\":null,\"router_calls\":1,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"missing-proof\",\"expected\":\"assessment\",\"actual\":\"passed\",\"code\":null,\"router_calls\":1,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"exact-switch\",\"expected\":\"bound\",\"actual\":\"passed\",\"code\":null,\"router_calls\":1,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"exact-continuation\",\"expected\":\"bound\",\"actual\":\"passed\",\"code\":null,\"router_calls\":1,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"unbound-next\",\"expected\":\"blocked\",\"actual\":\"blocked\",\"code\":\"ambiguous_scope\",\"router_calls\":0,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"unbound-assent\",\"expected\":\"blocked\",\"actual\":\"blocked\",\"code\":\"ambiguous_scope\",\"router_calls\":0,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"cross-project\",\"expected\":\"blocked\",\"actual\":\"blocked\",\"code\":\"ambiguous_scope\",\"router_calls\":0,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"conflicting-action\",\"expected\":\"blocked\",\"actual\":\"blocked\",\"code\":\"ambiguous_scope\",\"router_calls\":0,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"mixed-ship\",\"expected\":\"blocked\",\"actual\":\"blocked\",\"code\":\"ambiguous_scope\",\"router_calls\":0,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"mixed-pay\",\"expected\":\"blocked\",\"actual\":\"blocked\",\"code\":\"ambiguous_scope\",\"router_calls\":0,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"mixed-publish\",\"expected\":\"blocked\",\"actual\":\"blocked\",\"code\":\"ambiguous_scope\",\"router_calls\":0,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"ambiguous-delete\",\"expected\":\"blocked\",\"actual\":\"blocked\",\"code\":\"ambiguous_scope\",\"router_calls\":0,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"missing-project\",\"expected\":\"blocked\",\"actual\":\"blocked\",\"code\":\"ambiguous_scope\",\"router_calls\":0,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"conflicting-evidence\",\"expected\":\"blocked\",\"actual\":\"blocked\",\"code\":\"conflict\",\"router_calls\":0,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"stale-continuation\",\"expected\":\"blocked\",\"actual\":\"blocked\",\"code\":\"ambiguous_scope\",\"router_calls\":0,\"queue_rows\":0,\"canonical_writes\":0}]}\n✔ malformed route fails closed and sanitized validator evidence survives in history (10.657792ms)\n✔ known credentials and unknown provider payloads never survive categorical evidence (1.645459ms)\n✔ provider parser failure retains shape, not raw prose or secrets (0.357167ms)\n✔ valid routing remains unchanged and produces no failure diagnostic (0.359084ms)\n✔ OpenRouter validation preserves provider and exact rule (1.211667ms)\n✔ D1 failure rows use existing route_json and history marks them failed without receipts (0.635708ms)\n✔ control dashboard explicitly binds every startup DOM dependency (1.438666ms)\n✔ embedded control-page JavaScript parses before the Worker serves it (0.664375ms)\n✔ routing status names truthful work stages and keeps technical detail separate (0.160667ms)\n✔ prior-state conflicts explain the stop and Ashley’s next choice before technical evidence (0.112708ms)\n✔ write outcomes explain verification in plain English before technical detail (0.116ms)\n✔ embedded-script syntax guard rejects a literal escaped newline between statements (1.11475ms)\n✔ Workers AI receives one schema-constrained control-route tool (1.827709ms)\n✔ prose Workers AI output fails closed without a raw JSON parser exception (0.535375ms)\n✔ the actual production field spelling is canonicalized through the finite field allowlist (1.101375ms)\n✔ unknown state fields still fail closed (0.378083ms)\n✔ state proposal cannot escape the workstream resolved by prior-state evidence (1.95425ms)\n✔ state proposal may target the workstream resolved by prior-state evidence (0.317083ms)\n✔ converts a GitHub-style PKCS#1 RSA PEM into PKCS#8 that Web Crypto can import and sign with (55.500041ms)\n✔ preserves already-PKCS#8 PEM input (31.525667ms)\n✔ exact canonical fact survives retrieval without semantic generalization (6.807792ms)\n✔ conflicting canonical facts are surfaced before a worker is called (1.747542ms)\n✔ next-action conflict is translated for Ashley while retaining the structured internal field (0.600791ms)\n✔ missing required fact fails closed instead of being guessed (0.301625ms)\n✔ worker cannot self-certify a passed prior-state gate without service evidence (0.322917ms)\n✔ same field in different workstreams is scoped by the workstream named in the request (0.334167ms)\n✔ same field across unrelated workstreams is ambiguity, not a contradictory fact (0.256583ms)\n✔ A: different projects have different next actions without contradiction, including two Mary Kate headings (0.706583ms)\n✔ the production phrase next bounded action does not also request an obsolete Next field (0.441042ms)\n✔ named workstream missing a field cannot borrow it from another Mary Kate projection (0.995708ms)\n✔ B: two current values in one named workstream stop before routing with clear choices (0.438791ms)\n✔ C: insufficient workstream scope is ambiguity, not contradictory truth (0.241334ms)\n✔ dashboard parser keeps active workstreams including Photos to iCloud (1.390042ms)\n✔ route contract fails closed on writes outside research-vault (0.391542ms)\n✔ approved proposal replaces only its named field (0.279667ms)\n✔ GitHub adapter uses read/write scopes and blocks product-repo writes (35.603042ms)\n✔ capture, approve and reject run end to end with doubles (8.720083ms)\n✔ free-first routing uses deterministic capture before providers (0.177375ms)\n✔ free-first routing falls back only after Workers AI quota failure (0.148708ms)\n✔ approved write is marked failed when canonical read-back does not match (0.93725ms)\nℹ tests 69\nℹ suites 0\nℹ pass 69\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 364.13325\n",
+    "focused_suite": "✔ authoritative ambiguity overrides any candidate claim of clear continuation (2.304292ms)\n✔ ambiguous current work stops before model routing or an approval item (2.222667ms)\n✔ an explicit canonical workstream binds the model to that one target (1.757708ms)\n✔ an unbound state proposal cannot create an approval item (1.000333ms)\n✔ independent frozen ambiguity holdout preserves both safety and valid binding (5.024084ms)\n✔ frozen unsafe holdout requests stop before routing, history, or queues (4.805542ms)\n✔ unique explicit workstream binding and ordinary conversation are not over-blocked (1.676083ms)\n✔ explicit Mary Kate aliases bind despite duplicate project projections (4.289916ms)\n✔ independent negative controls retain ambiguity, including ordinary punctuation (1.719083ms)\n✔ read-only assessments retrieve indexed completion authority and never queue writes (5.420375ms)\n✔ hostile read-only model outputs cannot create any approval or write (1.632292ms)\n✔ missing or contradictory current evidence and missing index authority fail before dispatch (1.156459ms)\n✔ mixed read-and-action requests do not acquire read-only disambiguation (0.230709ms)\n✔ negative holdout questions stop before model, queues, history, or canonical writes (0.685709ms)\n✔ actual Workers AI adapter receives read-only intent and source evidence (0.60975ms)\n✔ frozen expanded language holdout measures unsafe certainty and unnecessary clarification (13.471625ms)\nℹ HOLDOUT_RESULT {\"cases\":23,\"unsafe_certainty\":0,\"unnecessary_clarification\":0,\"observations\":[{\"id\":\"reported-input\",\"expected\":\"assessment\",\"actual\":\"passed\",\"code\":null,\"router_calls\":1,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"ready\",\"expected\":\"assessment\",\"actual\":\"passed\",\"code\":null,\"router_calls\":1,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"remaining\",\"expected\":\"assessment\",\"actual\":\"passed\",\"code\":null,\"router_calls\":1,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"polite-status\",\"expected\":\"assessment\",\"actual\":\"passed\",\"code\":null,\"router_calls\":1,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"outstanding\",\"expected\":\"assessment\",\"actual\":\"passed\",\"code\":null,\"router_calls\":1,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"gaps\",\"expected\":\"assessment\",\"actual\":\"passed\",\"code\":null,\"router_calls\":1,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"readiness-paraphrase\",\"expected\":\"assessment\",\"actual\":\"passed\",\"code\":null,\"router_calls\":1,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"unfinished\",\"expected\":\"assessment\",\"actual\":\"passed\",\"code\":null,\"router_calls\":1,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"first-release\",\"expected\":\"assessment\",\"actual\":\"passed\",\"code\":null,\"router_calls\":1,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"missing-proof\",\"expected\":\"assessment\",\"actual\":\"passed\",\"code\":null,\"router_calls\":1,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"exact-switch\",\"expected\":\"bound\",\"actual\":\"passed\",\"code\":null,\"router_calls\":1,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"exact-continuation\",\"expected\":\"bound\",\"actual\":\"passed\",\"code\":null,\"router_calls\":1,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"unbound-next\",\"expected\":\"blocked\",\"actual\":\"blocked\",\"code\":\"ambiguous_scope\",\"router_calls\":0,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"unbound-assent\",\"expected\":\"blocked\",\"actual\":\"blocked\",\"code\":\"ambiguous_scope\",\"router_calls\":0,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"cross-project\",\"expected\":\"blocked\",\"actual\":\"blocked\",\"code\":\"ambiguous_scope\",\"router_calls\":0,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"conflicting-action\",\"expected\":\"blocked\",\"actual\":\"blocked\",\"code\":\"ambiguous_scope\",\"router_calls\":0,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"mixed-ship\",\"expected\":\"blocked\",\"actual\":\"blocked\",\"code\":\"ambiguous_scope\",\"router_calls\":0,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"mixed-pay\",\"expected\":\"blocked\",\"actual\":\"blocked\",\"code\":\"ambiguous_scope\",\"router_calls\":0,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"mixed-publish\",\"expected\":\"blocked\",\"actual\":\"blocked\",\"code\":\"ambiguous_scope\",\"router_calls\":0,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"ambiguous-delete\",\"expected\":\"blocked\",\"actual\":\"blocked\",\"code\":\"ambiguous_scope\",\"router_calls\":0,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"missing-project\",\"expected\":\"blocked\",\"actual\":\"blocked\",\"code\":\"ambiguous_scope\",\"router_calls\":0,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"conflicting-evidence\",\"expected\":\"blocked\",\"actual\":\"blocked\",\"code\":\"conflict\",\"router_calls\":0,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"stale-continuation\",\"expected\":\"blocked\",\"actual\":\"blocked\",\"code\":\"ambiguous_scope\",\"router_calls\":0,\"queue_rows\":0,\"canonical_writes\":0}]}\n✔ exact canonical fact survives retrieval without semantic generalization (6.44225ms)\n✔ conflicting canonical facts are surfaced before a worker is called (1.651167ms)\n✔ next-action conflict is translated for Ashley while retaining the structured internal field (0.580416ms)\n✔ missing required fact fails closed instead of being guessed (0.289167ms)\n✔ worker cannot self-certify a passed prior-state gate without service evidence (0.299125ms)\n✔ same field in different workstreams is scoped by the workstream named in the request (0.331833ms)\n✔ same field across unrelated workstreams is ambiguity, not a contradictory fact (0.253792ms)\n✔ A: different projects have different next actions without contradiction, including two Mary Kate headings (0.706084ms)\n✔ the production phrase next bounded action does not also request an obsolete Next field (0.441833ms)\n✔ named workstream missing a field cannot borrow it from another Mary Kate projection (0.941958ms)\n✔ B: two current values in one named workstream stop before routing with clear choices (0.322834ms)\n✔ C: insufficient workstream scope is ambiguity, not contradictory truth (0.233375ms)\nℹ tests 28\nℹ suites 0\nℹ pass 28\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 123.902875\n",
+    "worker_dry_run": "\n ⛅️ wrangler 4.149.0\n────────────────────\n✨ Read 448 files from the assets directory /Users/ashleybrookecohen/.codex/.chatgpt-projects/g-p-6aa0da5743588191a075830902dddee7/mary-kate-v1/public\nTotal Upload: 125.51 KiB / gzip: 33.63 KiB\nYour Worker has access to the following bindings:\nBinding                                                     Resource                  \nenv.DB (events-production)                                  D1 Database               \nenv.AI                                                      AI                        \nenv.CONTROL_GITHUB_APP_ID (\"4962733\")                       Environment Variable      \nenv.CONTROL_GITHUB_INSTALLATION_ID (\"165552010\")            Environment Variable      \n\n--dry-run: exiting now.\n"
+  }
+}
