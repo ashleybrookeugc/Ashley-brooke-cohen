@@ -42,9 +42,9 @@ const maryKateSection=section=>/^mary kate(?:\s*\/|$)/i.test(canonicalSectionNam
 // the read-only preference for the canonical operating-system projection.
 const readOnlyAssessment=text=>{
   const words=textWords(text);
-  return /^\s*(?:do you think|is|are|has|have|where|what|how|tell me|show me|give me|assess|evaluate)\b/i.test(normalizedInput(text))
-    && /\b(?:v1|first version|status|stage|stand|complete|completed|completion|finished|ready|readiness)\b/.test(words)
-    && !/\b(?:update|set|change|mark|approve|publish|send|delete|spend|transfer|remove|deploy|merge|buy|upload|execute|run|resume|continue|advance)\b/.test(words);
+  return /^\s*(?:please\s+)?(?:(?:can|could|would) you\s+)?(?:do you think|does|is|are|has|have|where|what|how|tell me|show me|give me|assess|evaluate|explain|summarize)\b/i.test(normalizedInput(text))
+    && /\b(?:v1|first version|status|stage|stand|complete|completed|completion|finished|unfinished|ready|readiness|left|remain|remains|remaining|outstanding|gaps?|missing|progress)\b/.test(words)
+    && !/\b(?:update|set|change|mark|approve|publish|ship|post|send|delete|spend|pay|purchase|transfer|remove|deploy|merge|buy|upload|execute|run|resume|continue|advance)\b/.test(words);
 };
 const sectionScore=(text,section)=>{
   const heading=section.split(' — ')[0].trim();
@@ -60,6 +60,11 @@ export function resolveAuthoritativeWorkstream(text, facts) {
   const aliasInput=maryKateInput(text);
   const input=namesMaryKate(text)?(/\bmary kate\b/.test(aliasInput)?aliasInput:aliasInput.replace(/\bai operating system\b/g,'mary kate')):text;
   const scores=sections.map(section=>({section,score:sectionScore(input,section)}));
+  // Distinct explicit project names cannot compete by heading length. This
+  // applies to actions as well as questions, including a short alias vs a name.
+  const family=section=>canonicalSectionName(section).split(' / ')[0];
+  const explicitFamilies=[...new Set(sections.map(family).filter(name=>textWords(input).includes(textWords(name))))];
+  if(explicitFamilies.length>1) return {status:'ambiguous',section:null,candidates:sections.filter(section=>explicitFamilies.includes(family(section)))};
   if(namesMaryKate(text)&&readOnlyAssessment(text)) {
     const named=scores.filter(candidate=>candidate.score>0);
     // A second named project remains ambiguous, even if its shorter heading
@@ -226,7 +231,7 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
       snapshot.ambiguity_gate=ambiguity_gate;
       if(readOnly) snapshot.intent='read_only_assessment';
       requirePriorState(snapshot.prior_state);
-      if(readOnly&&maryKateSection(ambiguity_gate.section)&&/\b(?:v1|first version|complete|completed|completion|finished|ready|readiness)\b/.test(textWords(text))) snapshot.completion_authority=await retrieveCompletionAuthority(github);
+      if(readOnly&&maryKateSection(ambiguity_gate.section)) snapshot.completion_authority=await retrieveCompletionAuthority(github);
       let candidate;
       try {
         const output=await router.route(text.trim(),createControlTaskPacket(snapshot));
