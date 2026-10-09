@@ -48,3 +48,27 @@ test('D1 failure rows use existing route_json and history marks them failed with
  const store=createD1Store(db,{id:()=> 'correlation'});const diagnostic={version:'control-routing-failure.v1',status:'failed',validation:{path:'confidence',reason:'Invalid confidence'}};
  await store.addInteraction({raw_text:'[omitted]',route:{...valid,outcome_status:'failed',diagnostic}});const rows=await store.listHistory(20);assert.equal(records.length,1);assert.match(records[0].query,/INSERT INTO control_interactions/);assert.equal(rows[0].outcome_status,'failed');assert.deepEqual(rows[0].diagnostic,diagnostic);assert.equal(rows[0].receipt,null);
 });
+test('rejected idea target retains original privately without inventing a canonical destination',async()=>{
+ const input='I have an idea about the time a short audition takes to film.';
+ const output={tool_calls:[{name:'submit_control_route',arguments:{route_kind:'side_idea',responsibility:'ai_can_handle',confidence:'high',plain_summary:'Save the idea',proposal:{target_repo:'fixture/invalid-target',target_path:'SIDE_IDEAS.md',operation:'append_side_idea',title:'Audition effort',body:input,scope:'acting'}}}]};
+ const {app,store,writes}=setup(output);let failure;
+ await assert.rejects(app.capture(input),error=>{failure=error;return error.code==='routing_contract_invalid';});
+ const row=(await store.listHistory(1))[0];
+ assert.equal(row.raw_text,input);assert.equal(row.outcome_status,'failed');assert.equal(row.receipt,null);
+ assert.equal(row.diagnostic.validation.path,'proposal.target_repo');
+ assert.deepEqual(await store.listQueues(),{needs_ashley:[],ai_can_handle:[]});assert.equal(writes(),0);
+ const response=controlErrorResponse(failure);
+ assert.equal(response.capture_status,'retained_private');assert.match(response.error,/No change was saved/);
+ assert.ok(!JSON.stringify(response).includes(input),'private input must not be echoed in the error response');
+});
+test('failed routing preserves original in existing D1 raw_text column, not diagnostic payload',async()=>{
+ const input='A synthetic creative idea requiring recoverable capture';const rows=[];
+ const db={prepare:query=>({bind:(...values)=>({run:async()=>rows.push({query,values})})})};
+ const store=createD1Store(db,{id:()=> 'retained-input'});
+ const app=createControlService({store,github:{readFile:async()=>({content:active,sha:'base'})},router:createWorkersAiRoutingAdapter({AI:{run:async()=>({response:'invalid provider prose Bearer private-token'})}})});
+ // Supply cache operations separately; this scenario isolates D1 interaction persistence.
+ const cache=createMemoryStore();for(const method of ['getContextPacket','putContextPacket','listQueues','listHistory'])store[method]=cache[method];
+ await assert.rejects(app.capture(input),error=>error.interaction_id==='retained-input');
+ const inserted=rows.find(row=>row.query.startsWith('INSERT INTO control_interactions'));
+ assert.equal(inserted.values[1],input);assert.ok(!inserted.values[2].includes(input));assert.ok(!inserted.values[2].includes('private-token'));
+});

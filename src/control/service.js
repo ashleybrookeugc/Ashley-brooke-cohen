@@ -176,7 +176,7 @@ export function controlErrorResponse(error) {
       action:{required:true,prompt:workstream?`Confirm the current ${field} for ${workstream} in Project Truth before Mary Kate can continue.`:'Provide or confirm the missing current information before Mary Kate can continue.'}
     };
   }
-  return {error:error?.message||'Control request failed',code:error?.code||'invalid_request',...(error?.interaction_id?{interaction_id:error.interaction_id,technical:{interaction_id:error.interaction_id,diagnostic:error.diagnostic}}:{})};
+  return {error:error?.message||'Control request failed',code:error?.code||'invalid_request',...(error?.capture_status?{capture_status:error.capture_status}:{}),...(error?.interaction_id?{interaction_id:error.interaction_id,technical:{interaction_id:error.interaction_id,diagnostic:error.diagnostic}}:{})};
 }
 export function createControlTaskPacket(snapshot) {
   return {
@@ -243,8 +243,11 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
         }
       } catch(error) {
         if(error.diagnostic?.version==='control-routing-failure.v1') {
-          const failed=await store.addInteraction({raw_text:'[routing failed; request content omitted]',route:{route_kind:'temporary_context',responsibility:'ai_can_handle',confidence:'low',plain_summary:'Routing failed. No change was saved.',diagnostic:error.diagnostic,outcome_status:'failed'}});
+          // Keep the original only in the existing private interaction column;
+          // provider diagnostics and the returned error remain sanitized.
+          const failed=await store.addInteraction({raw_text:text.trim(),route:{route_kind:'temporary_context',responsibility:'ai_can_handle',confidence:'low',plain_summary:'Routing failed. Original retained privately; no canonical change was saved.',diagnostic:error.diagnostic,outcome_status:'failed'}});
           error.interaction_id=failed.id;
+          error.capture_status='retained_private';
         }
         throw error;
       }
@@ -255,6 +258,13 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
         throw error;
       }
       const route=enforceResolvedWriteTarget({...candidate,prior_state:snapshot.prior_state,...(snapshot.completion_authority?{retrieval_authority:{source:snapshot.completion_authority.source,routing_source:snapshot.completion_authority.routing_source}}:{})},snapshot.prior_state,ambiguity_gate);
+      if(route.proposal) {
+        // Bind approval to the authority actually used to prepare this proposal.
+        // Persist inside the existing proposal JSON; never trust a model SHA.
+        const reviewed=route.proposal.target_path==='ACTIVE_WORK.md'?snapshot.source:await github.readFile(route.proposal.target_repo,route.proposal.target_path);
+        if(!reviewed.sha) throw new CanonicalWriteError('canonical_review_missing','Mary Kate could not verify the proposal source version. Nothing was queued.');
+        route.proposal.reviewed_sha=reviewed.sha;
+      }
       const interaction=await store.addInteraction({raw_text:text.trim(),route});
       let item=null;
       if(route.proposal) item=await store.addQueueItem({interaction_id:interaction.id,...route});
@@ -278,6 +288,11 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
         if(!commit_sha) throw new CanonicalWriteError('canonical_provenance_unavailable','Mary Kate found the prior change but could not verify its GitHub provenance. Nothing new was written.',502);
       } else {
         if(item.status==='approved') throw new CanonicalWriteError('canonical_receipt_not_verified','Mary Kate has an operational receipt but GitHub does not verify this change. Nothing new was written.');
+        if(!item.proposal.reviewed_sha) throw new CanonicalWriteError('canonical_review_missing','Mary Kate cannot verify the source version reviewed for this pending approval. Prepare a fresh proposal before approving. Nothing was written.');
+        if(current.sha!==item.proposal.reviewed_sha) {
+          if(target.path==='ACTIVE_WORK.md') await store.invalidateContextPacket('active-work.v1');
+          throw new CanonicalWriteError('canonical_review_stale','Project Truth changed after this proposal was prepared. Review a fresh proposal before approving. Nothing was written.');
+        }
         const canonical=applyProposal(stripMarker(current.content),item.proposal);
         const operation={version:'control-write-operation.v1',operation_id:item.id,payload_digest,expected_prior_sha:current.sha,target_repo:target.repo,target_path:target.path,content_digest:await hash(canonical)};
         updated=canonical.trimEnd()+'\n\n'+markerStart+encodeMarker(operation)+markerEnd+'\n';
