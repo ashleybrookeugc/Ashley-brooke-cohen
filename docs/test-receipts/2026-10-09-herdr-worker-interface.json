@@ -1,0 +1,93 @@
+{
+  "version": "mary-kate.herdr-worker-interface-receipt.v1",
+  "recorded_at": "2026-10-09T18:25:00Z",
+  "branch": "mary-kate/herdr-worker-adapter",
+  "source_commit_at_acceptance": "1436a9bc21c9d878f476ff870293ccf743ed186c",
+  "environment": {
+    "machine": "Ashley M4 Pro MacBook",
+    "herdr": "0.9.3",
+    "codex": "0.162.0-alpha.2",
+    "trusted_codex_config_sha256": "9fb3f9cf4fad2aa6be25963663a8a0d2616f205e64050fff5569413758581e15",
+    "config_unchanged": true
+  },
+  "scope": {
+    "interface": "existing local /control/ page",
+    "bridge": "127.0.0.1 read-only GET endpoint",
+    "adapter_enabled_by_default": false,
+    "launch_controls_added": false,
+    "production_changed": false,
+    "external_sessions_modified": false
+  },
+  "worker": {
+    "id": "herdr:mk-ui-n635tj:w1:mk-ui-test",
+    "session": "mk-ui-n635tj",
+    "workspace_id": "w1",
+    "pane_id": "w1:p1",
+    "agent_name": "mk-ui-test",
+    "task_id": "herdr-interface-acceptance",
+    "task_summary": "Read-only local worker display acceptance",
+    "authorization_source": {
+      "repo": "ashleybrookeugc/research-vault",
+      "path": "research/ai-workflows/2026-10-09-hermes-herdr-live-codex-monitoring.md",
+      "commit": "47347093d3deee12c36272c2008afa49c15c60dd"
+    }
+  },
+  "runtime_evidence": {
+    "states_delivered_to_interface": ["idle", "running", "completed", "disconnected"],
+    "browser_observed_states": ["idle", "running", "completed", "telemetry_unavailable_after_shutdown"],
+    "completed_copy": "Worker execution completed. The result has not been independently verified.",
+    "all_snapshots_outcome_verified": false,
+    "model": null,
+    "tokens": null,
+    "cost": null,
+    "missing_metrics_rendered_as": "Unavailable",
+    "preexisting_codex_processes_survived": true,
+    "raw_local_receipt": "/private/tmp/mk-hui-N635tj/receipt.json"
+  },
+  "mobile_visual_acceptance": {
+    "viewport": {"width": 390, "height": 844},
+    "inner_width": 390,
+    "document_client_width": 390,
+    "document_scroll_width": 390,
+    "horizontal_overflow": false,
+    "result": "PASS"
+  },
+  "automated_verification": {
+    "focused_adapter_interface": "14/14 PASS",
+    "focused_with_control_page_ui": "21/21 PASS",
+    "full_repository": "89/89 PASS",
+    "acceptance_runner_syntax": "PASS",
+    "worker_packaging_dry_run": "PASS",
+    "real_visual_acceptance": "PASS"
+  },
+  "prelaunch_failures_preserved": [
+    {
+      "attempt": 1,
+      "worker_launched": false,
+      "cause": "data volume had insufficient writable headroom",
+      "receipt": "/private/tmp/mk-herdr-interface-live-Niin1R/receipt.json"
+    },
+    {
+      "attempt": "bounded foreground diagnostic after disk relief",
+      "worker_launched": false,
+      "cause": "original Unix-domain socket path exceeded sockaddr_un.sun_path capacity"
+    }
+  ],
+  "file_sha256_at_acceptance": {
+    "public/control/index.html": "3e42192da9e19b3b21071eea7b7239c3ec675aa4e5e6a0a3674ada7dc123c1d6",
+    "src/local-workers/control-interface.js": "97b72a7375692ae1f4b73f704422e9aac797322d07fbb1360a2d7e626d5ff56e",
+    "src/local-workers/herdr-adapter.js": "5d90bf1c623fd6169c377e552ba397dab73eaa038c708bf1e01cae3ffbbd67dc",
+    "test/control-ui.test.js": "959a449469b6ae3f1f69ece1762e7b7f8042ac2eca105d09c44781e620a32b4f",
+    "test/herdr-adapter.test.js": "cbdad87eb48ba3e9412fb84b5adba55d149013467d05654d8324bf1813c0bac4",
+    "test/herdr-control-interface.test.js": "585d1effaabcaeaed521b4251fdb4dce977ea581cf79cc0e9e23a88bb2cb7172"
+  },
+  "acceptance": "PASS",
+  "not_proven": [
+    "restart or reconnect persistence",
+    "heartbeat expiry",
+    "model, token, or cost telemetry",
+    "independent task-result verification or Project Truth writeback",
+    "production activation or deployment",
+    "permissions broader than the frozen read-only test envelope"
+  ]
+}
