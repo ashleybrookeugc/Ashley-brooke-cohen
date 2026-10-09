@@ -542,3 +542,13 @@ Do not infer five-state accuracy, stale expiry or provider usage from screens, c
 The first real adapter acceptance reached no Codex worker: a new named Herdr session returned `server_not_running` at workspace creation. Herdr API commands do not create that session's headless server. The isolated acceptance runner now creates only its own temporary Herdr config/runtime directories, starts `herdr server`, waits for `api snapshot`, runs the adapter, and stops that server. Do not attach the adapter to an unrelated Herdr session or treat a missing server as a worker failure.
 
 The next attempted runner invocation also reached no server or worker because duplicate JavaScript identifiers caused a parse-time error. `npm run check:herdr-acceptance` now parses the actual runner before use. After both bounded setup repairs, one real worker produced Herdr lifecycle evidence `idle → working → completed`, then `disconnected` after its owned workspace closed. The global Codex config hash stayed at the separately recorded Project Truth baseline. Never derive-and-accept a new baseline inside the adapter, silently rewrite shared Codex configuration, or translate Herdr `unknown`/absence into `running`.
+
+## 2026-10-09 — Isolated Herdr runtime paths need disk headroom and a short socket path
+
+**Symptom:** The first local-interface acceptance stopped before server readiness and before any worker launch. The captured foreground error was `No space left on device`. After only regenerable dependency caches were removed, a diagnostic using the original long temporary root exposed a second pre-launch error: the Unix-domain socket path exceeded `sockaddr_un.sun_path` capacity.
+
+**Confirmed causes:** The Mac data volume had insufficient writable headroom for Herdr's runtime state, and the acceptance prefix plus nested XDG runtime path was too long for a local Unix socket. Neither error was a Codex-worker failure, adapter-state failure, or evidence about an external session.
+
+**Verified fix:** Preserve repositories/evidence, remove only disposable package/dependency caches, require a successful bounded write before launch, and use a short isolated root (`/private/tmp/mk-hui-*` with short `c`, `s`, `r`, and `w` subdirectories). The corrected run started its own server and passed the complete UI lifecycle. The runner syntax is checked before execution.
+
+**Prevention:** Before a disposable Herdr acceptance, verify writable disk headroom and keep the complete XDG runtime/socket path comfortably below the platform limit. Stop before worker launch on either failure; do not treat repeated server startup as worker evidence, attach to an unrelated session, delete project evidence, or weaken isolation to make the test green.

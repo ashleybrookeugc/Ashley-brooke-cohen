@@ -11,9 +11,31 @@ const embeddedControlScript = html => {
 };
 
 test('control dashboard explicitly binds every startup DOM dependency', () => {
-  for (const id of ['context-status','refresh-context','thought','send','result','projects','needs','ai','history']) {
+  for (const id of ['context-status','refresh-context','thought','send','result','projects','needs','ai','history','workers','workers-status']) {
     assert.match(page, new RegExp("document\\.getElementById\\('" + id + "'\\)"));
   }
+});
+
+test('existing control page presents truthful read-only worker telemetry on mobile', () => {
+  assert.match(page,/Worker activity/);
+  assert.match(page,/Read-only status for Mary Kate-managed local workers/);
+  assert.match(page,/Running/);
+  assert.match(page,/Idle/);
+  assert.match(page,/Execution completed/);
+  assert.match(page,/Disconnected/);
+  assert.match(page,/Unknown/);
+  assert.match(page,/has not been independently verified/);
+  assert.match(page,/Model<\/strong><span>/);
+  assert.match(page,/Tokens<\/strong><span>/);
+  assert.match(page,/Cost<\/strong><span>/);
+  assert.match(page,/Unavailable/);
+  assert.match(page,/Technical diagnostics/);
+  assert.match(page,/@media\(max-width:700px\)/);
+  assert.match(page,/worker-metrics\{grid-template-columns:1fr\}/);
+  const section=page.match(/<section aria-labelledby="workers-heading">([\s\S]*?)<\/section>\s*<h2>Projects/);
+  assert.ok(section);
+  assert.doesNotMatch(section[1],/<button/i);
+  assert.doesNotMatch(page,/launchWorker|data-worker-action/i);
 });
 
 test('embedded control-page JavaScript parses before the Worker serves it', () => {

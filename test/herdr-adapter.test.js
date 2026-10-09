@@ -112,3 +112,27 @@ test('unknown and blocked Herdr states stay distinct',async()=>{
   assert.equal((await f.adapter.observe(worker.id)).state,'blocked');
   assert.equal((await f.adapter.observe(worker.id)).state,'unknown');
 });
+
+test('read-only worker inventory returns managed snapshots without claiming metrics or verification',async()=>{
+  const f=await fixture();await f.adapter.activate();
+  await f.adapter.launch({task:{id:'worker-test',summary:'Inventory worker'},authorization:allowed,cwd:f.cwd,agentName:'mk-worker'});
+  const [worker]=await f.adapter.list();
+  assert.equal(worker.state,'idle');
+  assert.equal(worker.outcome_verified,false);
+  assert.deepEqual(worker.runtime_metrics,{model:null,tokens:null,cost:null});
+});
+
+test('inventory reports unavailable telemetry as unknown rather than active',async()=>{
+  const f=await fixture({run:async(_file,args)=>{
+    if(args[0]==='workspace'&&args[1]==='create') return {status:0,stdout:JSON.stringify({result:{workspace:{workspace_id:'w1'},root_pane:{pane_id:'w1:p1'}}}),stderr:''};
+    if(args[0]==='agent'&&args[1]==='start') return {status:0,stdout:JSON.stringify({result:{agent:{agent_status:'idle',state_change_seq:1,revision:1}}}),stderr:''};
+    if(args[0]==='agent'&&args[1]==='get') return {status:1,stdout:JSON.stringify({error:{code:'server_not_running'}}),stderr:''};
+    throw new Error('unexpected command');
+  }});
+  await f.adapter.activate();
+  await f.adapter.launch({task:{id:'worker-test',summary:'Unavailable worker'},authorization:allowed,cwd:f.cwd,agentName:'mk-worker'});
+  const [worker]=await f.adapter.list();
+  assert.equal(worker.state,'unknown');
+  assert.equal(worker.telemetry.status,'unavailable');
+  assert.equal(worker.telemetry.diagnostic_code,'server_not_running');
+});
