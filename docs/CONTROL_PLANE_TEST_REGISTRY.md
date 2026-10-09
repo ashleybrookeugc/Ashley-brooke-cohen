@@ -20,6 +20,10 @@ This is the product-local registry for the bounded routing and execution-accepta
 
 ## Active local tests
 
+### 2026-10-09 bounded live coding-worker monitoring comparison
+
+Canonical evidence belongs in Project Truth: `research/ai-workflows/2026-10-09-hermes-herdr-live-codex-monitoring.md` and adjacent sanitized JSON, indexed by existing evaluation registry row 12. Hermes current source / Herdr v0.9.3 on the M4 Pro both **FAIL the existing live Codex-session requirement**. Herdr demonstrated working/idle for a new owned CLI; Hermes demonstrated saved-log discovery only. Five states, heartbeat expiry, complete usage and GUI rendering were not proven. No current product custom component can be removed on this evidence; this task changes documentation only. Global Codex config hash drift during test startup remains unattributed, preventing a clean isolation PASS. Test-owned processes stopped; existing Codex processes survived. No hooks, paid connection, implementation, merge, Cloudflare or production changes. Prior workflow-adherence and V1 acceptance gaps remain open. Exact published provenance follows the canonical receipt.
+
 | Surface | Command or file | Latest result | Boundary |
 | --- | --- | --- | --- |
 | Existing repository suite | `node --test` | 74/74 pass at `181eff6` | Includes existing ambiguity/adversarial/permission suites and five new recovery/review-version regressions; no production calls |
