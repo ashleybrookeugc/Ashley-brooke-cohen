@@ -1,0 +1,783 @@
+{
+  "schema_version": "video-analyzer-p001-benchmark.v1",
+  "receipt_id": "video-analyzer-p001-selective-ocr-baseline-2026-10-09T22:29:12Z",
+  "observed_at": "2026-10-09T22:29:12Z",
+  "scope": "P-001 measurement-only selective-OCR baseline before scheduling changes",
+  "status": "PASS_BASELINE_ESTABLISHED",
+  "production_change": false,
+  "scheduling_changed": false,
+  "source": {
+    "repository": "ashleybrookeugc/Ashley-brooke-cohen",
+    "branch": "video-analyzer/f003-source-time-fidelity",
+    "benchmark_instrumentation_commit": "d272ba963f1b86b9ec1ffb3750b21baa5c1dec3f",
+    "prior_f006_receipt_commit": "6141689d83a762d565715e5745d2b5cff7837266",
+    "sha256": {
+      "tools/video-analyzer/core.mjs": "af9f0320cdfdc4df60a937e60f8243f55002347373ddcfcf2f01bdfd9eca0b81",
+      "tools/video-analyzer/benchmark-ocr.mjs": "a865f1e75797929cfb4f8b410640b7d802dbf61796bbebac4894256c2a74eab9",
+      "tests/video-analyzer.test.mjs": "c59784cbca723856363910ffe9e292d0560455614f6401320237cc752edd3330"
+    }
+  },
+  "environment": {
+    "computer": "Ashley’s MacBook Pro",
+    "model_identifier": "Mac16,8",
+    "chip": "Apple M4 Pro",
+    "cpu_cores": 12,
+    "memory_gb": 24,
+    "operating_system": "macOS 26.6.2 (25G83)",
+    "architecture": "arm64",
+    "node": "v26.3.1",
+    "python": "3.12.13",
+    "ffmpeg": "8.1.1",
+    "tesseract": "5.5.3",
+    "memory_pressure": {
+      "before_free_percent": 80,
+      "after_free_percent": 81
+    },
+    "swap": {
+      "before_used_mib": 2913.56,
+      "after_used_mib": 2913.56,
+      "delta_mib": 0,
+      "per_process_swaps_all_runs": 0
+    }
+  },
+  "ordinary_path_trace": {
+    "order": [
+      "extract sampled JPEG frames",
+      "invoke tesseract --version once",
+      "invoke one sequential tesseract TSV process for every sampled frame",
+      "classify all OCR",
+      "extract motion evidence",
+      "select visual events using visual/motion/OCR change",
+      "build semantic input"
+    ],
+    "invariant": "OCR executes before selected visual events are known. A sampled frame later suppressed by the selector has already incurred OCR.",
+    "invocation_formula": "one version probe plus sampled_frame_count OCR processes per processVideo run"
+  },
+  "benchmark_runs": [
+    {
+      "fixture_id": "deterministic-screen-states",
+      "media_class": "deterministic_fixture_media",
+      "input": {
+        "sha256": "9a0296537353fe1062c05a565f8d5c1dec2be41f1ed940a5fc1047e527989008",
+        "duration_seconds": 3,
+        "has_audio": false,
+        "private_media_persisted_to_git": false
+      },
+      "cadence_seconds": 0.5,
+      "sampled_frame_count": 6,
+      "selected_visual_event_count": 2,
+      "raw_ocr_observation_count": 6,
+      "analyzer_wall_ms": 537.169,
+      "package_readback_verified": true,
+      "ocr": {
+        "scheduling": "one_sequential_tesseract_process_per_sampled_frame",
+        "version_probe_count": 1,
+        "version_probe_elapsed_ms": 6.018,
+        "frame_invocation_count": 6,
+        "total_stage_elapsed_ms": 383.534,
+        "summed_frame_invocation_elapsed_ms": 377.469,
+        "fraction_of_analyzer_wall_percent": 71.4,
+        "latency_ms": {
+          "min": 60.19,
+          "median": 60.943,
+          "p95": 63.769,
+          "max": 70.494
+        },
+        "unique_extracted_frame_sha256_count": 4,
+        "exact_duplicate_frame_invocation_count": 2,
+        "exact_duplicate_frame_elapsed_ms": 122.299,
+        "post_hoc_nonselected_frame_invocation_count": 4,
+        "invocations": [
+          {
+            "stage": "ocr_frame",
+            "invocation_index": 1,
+            "frame_id": "frame-000001",
+            "source_frame_index": 0,
+            "source_timestamp_seconds": 0,
+            "sample_timestamp_seconds": 0,
+            "frame_sha256": "d0feda22e70c9b8aa1060a4900e1a54e4213443e870d6bda8faa04d23e852685",
+            "elapsed_ms": 70.494,
+            "exit_code": 0,
+            "observation_count": 1
+          },
+          {
+            "stage": "ocr_frame",
+            "invocation_index": 2,
+            "frame_id": "frame-000002",
+            "source_frame_index": 6,
+            "source_timestamp_seconds": 0.5,
+            "sample_timestamp_seconds": 0.5,
+            "frame_sha256": "59a1a6e702aa3763ca5433b359a024851ae6489b562f1ae8e3be0453c658f101",
+            "elapsed_ms": 60.19,
+            "exit_code": 0,
+            "observation_count": 1
+          },
+          {
+            "stage": "ocr_frame",
+            "invocation_index": 3,
+            "frame_id": "frame-000003",
+            "source_frame_index": 12,
+            "source_timestamp_seconds": 1,
+            "sample_timestamp_seconds": 1,
+            "frame_sha256": "59a1a6e702aa3763ca5433b359a024851ae6489b562f1ae8e3be0453c658f101",
+            "elapsed_ms": 60.943,
+            "exit_code": 0,
+            "observation_count": 1
+          },
+          {
+            "stage": "ocr_frame",
+            "invocation_index": 4,
+            "frame_id": "frame-000004",
+            "source_frame_index": 18,
+            "source_timestamp_seconds": 1.5,
+            "sample_timestamp_seconds": 1.5,
+            "frame_sha256": "66a081c3b76238a97f6b9b108234ec1d9d8e1c37b3bc639b7868b5db84292a31",
+            "elapsed_ms": 60.717,
+            "exit_code": 0,
+            "observation_count": 1
+          },
+          {
+            "stage": "ocr_frame",
+            "invocation_index": 5,
+            "frame_id": "frame-000005",
+            "source_frame_index": 24,
+            "source_timestamp_seconds": 2,
+            "sample_timestamp_seconds": 2,
+            "frame_sha256": "953c25168668a459acad066ebf05e2a6e3fcce075436c0d31fc98589630c7724",
+            "elapsed_ms": 63.769,
+            "exit_code": 0,
+            "observation_count": 1
+          },
+          {
+            "stage": "ocr_frame",
+            "invocation_index": 6,
+            "frame_id": "frame-000006",
+            "source_frame_index": 30,
+            "source_timestamp_seconds": 2.5,
+            "sample_timestamp_seconds": 2.5,
+            "frame_sha256": "953c25168668a459acad066ebf05e2a6e3fcce075436c0d31fc98589630c7724",
+            "elapsed_ms": 61.356,
+            "exit_code": 0,
+            "observation_count": 1
+          }
+        ]
+      },
+      "process_resource_usage": {
+        "max_rss_kib_reported_by_node": 63680,
+        "user_cpu_time_us": 80798,
+        "system_cpu_time_us": 42499,
+        "wall_seconds": null,
+        "maximum_resident_set_size_bytes": 65404928,
+        "swaps": 0,
+        "peak_memory_footprint_bytes": 24595312
+      }
+    },
+    {
+      "fixture_id": "deterministic-dialogue-transient-dense",
+      "media_class": "deterministic_fixture_media",
+      "input": {
+        "sha256": "c46243423bdbd1e7b368670d834f134761f7e8b6719e8c589160fa0b995ea4ed",
+        "duration_seconds": 5.185986,
+        "has_audio": true,
+        "private_media_persisted_to_git": false
+      },
+      "cadence_seconds": 0.25,
+      "sampled_frame_count": 21,
+      "selected_visual_event_count": 3,
+      "raw_ocr_observation_count": 44,
+      "analyzer_wall_ms": 2110.299,
+      "package_readback_verified": true,
+      "ocr": {
+        "scheduling": "one_sequential_tesseract_process_per_sampled_frame",
+        "version_probe_count": 1,
+        "version_probe_elapsed_ms": 6.559,
+        "frame_invocation_count": 21,
+        "total_stage_elapsed_ms": 1402.85,
+        "summed_frame_invocation_elapsed_ms": 1396.189,
+        "fraction_of_analyzer_wall_percent": 66.5,
+        "latency_ms": {
+          "min": 64.519,
+          "median": 65.721,
+          "p95": 74.466,
+          "max": 75.506
+        },
+        "unique_extracted_frame_sha256_count": 5,
+        "exact_duplicate_frame_invocation_count": 16,
+        "exact_duplicate_frame_elapsed_ms": 1048.632,
+        "post_hoc_nonselected_frame_invocation_count": 18,
+        "invocations": [
+          {
+            "stage": "ocr_frame",
+            "invocation_index": 1,
+            "frame_id": "frame-000001",
+            "source_frame_index": 0,
+            "source_timestamp_seconds": 0,
+            "sample_timestamp_seconds": 0,
+            "frame_sha256": "81e1adc3affdc30abb5888818df500b89e4557c0bdc219e0469e6ce88f1ecd89",
+            "elapsed_ms": 65.269,
+            "exit_code": 0,
+            "observation_count": 2
+          },
+          {
+            "stage": "ocr_frame",
+            "invocation_index": 2,
+            "frame_id": "frame-000002",
+            "source_frame_index": 3,
+            "source_timestamp_seconds": 0.25,
+            "sample_timestamp_seconds": 0.25,
+            "frame_sha256": "10c3354e492f230e1dbc91b61cd584432d8e9ee3572b35cdc2171b82b49e0726",
+            "elapsed_ms": 66.595,
+            "exit_code": 0,
+            "observation_count": 2
+          },
+          {
+            "stage": "ocr_frame",
+            "invocation_index": 3,
+            "frame_id": "frame-000003",
+            "source_frame_index": 6,
+            "source_timestamp_seconds": 0.5,
+            "sample_timestamp_seconds": 0.5,
+            "frame_sha256": "7bda52a384d593019ee731ebb9fd932da5f2fa98b6e9db21f865d83d402174e0",
+            "elapsed_ms": 65.721,
+            "exit_code": 0,
+            "observation_count": 2
+          },
+          {
+            "stage": "ocr_frame",
+            "invocation_index": 4,
+            "frame_id": "frame-000004",
+            "source_frame_index": 9,
+            "source_timestamp_seconds": 0.75,
+            "sample_timestamp_seconds": 0.75,
+            "frame_sha256": "7bda52a384d593019ee731ebb9fd932da5f2fa98b6e9db21f865d83d402174e0",
+            "elapsed_ms": 67.022,
+            "exit_code": 0,
+            "observation_count": 2
+          },
+          {
+            "stage": "ocr_frame",
+            "invocation_index": 5,
+            "frame_id": "frame-000005",
+            "source_frame_index": 12,
+            "source_timestamp_seconds": 1,
+            "sample_timestamp_seconds": 1,
+            "frame_sha256": "459cc9beececbfa20357ea2511f51051f7d8f065d2d377d0860bf03db02c2065",
+            "elapsed_ms": 74.466,
+            "exit_code": 0,
+            "observation_count": 3
+          },
+          {
+            "stage": "ocr_frame",
+            "invocation_index": 6,
+            "frame_id": "frame-000006",
+            "source_frame_index": 15,
+            "source_timestamp_seconds": 1.25,
+            "sample_timestamp_seconds": 1.25,
+            "frame_sha256": "46cacb4e2ff491bb182c69db225822c1e84de9b95dd100ca2af9e7f391622f16",
+            "elapsed_ms": 75.506,
+            "exit_code": 0,
+            "observation_count": 3
+          },
+          {
+            "stage": "ocr_frame",
+            "invocation_index": 7,
+            "frame_id": "frame-000007",
+            "source_frame_index": 18,
+            "source_timestamp_seconds": 1.5,
+            "sample_timestamp_seconds": 1.5,
+            "frame_sha256": "7bda52a384d593019ee731ebb9fd932da5f2fa98b6e9db21f865d83d402174e0",
+            "elapsed_ms": 65.557,
+            "exit_code": 0,
+            "observation_count": 2
+          },
+          {
+            "stage": "ocr_frame",
+            "invocation_index": 8,
+            "frame_id": "frame-000008",
+            "source_frame_index": 21,
+            "source_timestamp_seconds": 1.75,
+            "sample_timestamp_seconds": 1.75,
+            "frame_sha256": "7bda52a384d593019ee731ebb9fd932da5f2fa98b6e9db21f865d83d402174e0",
+            "elapsed_ms": 65.903,
+            "exit_code": 0,
+            "observation_count": 2
+          },
+          {
+            "stage": "ocr_frame",
+            "invocation_index": 9,
+            "frame_id": "frame-000009",
+            "source_frame_index": 24,
+            "source_timestamp_seconds": 2,
+            "sample_timestamp_seconds": 2,
+            "frame_sha256": "7bda52a384d593019ee731ebb9fd932da5f2fa98b6e9db21f865d83d402174e0",
+            "elapsed_ms": 65.83,
+            "exit_code": 0,
+            "observation_count": 2
+          },
+          {
+            "stage": "ocr_frame",
+            "invocation_index": 10,
+            "frame_id": "frame-000010",
+            "source_frame_index": 27,
+            "source_timestamp_seconds": 2.25,
+            "sample_timestamp_seconds": 2.25,
+            "frame_sha256": "7bda52a384d593019ee731ebb9fd932da5f2fa98b6e9db21f865d83d402174e0",
+            "elapsed_ms": 65.269,
+            "exit_code": 0,
+            "observation_count": 2
+          },
+          {
+            "stage": "ocr_frame",
+            "invocation_index": 11,
+            "frame_id": "frame-000011",
+            "source_frame_index": 30,
+            "source_timestamp_seconds": 2.5,
+            "sample_timestamp_seconds": 2.5,
+            "frame_sha256": "7bda52a384d593019ee731ebb9fd932da5f2fa98b6e9db21f865d83d402174e0",
+            "elapsed_ms": 65.837,
+            "exit_code": 0,
+            "observation_count": 2
+          },
+          {
+            "stage": "ocr_frame",
+            "invocation_index": 12,
+            "frame_id": "frame-000012",
+            "source_frame_index": 33,
+            "source_timestamp_seconds": 2.75,
+            "sample_timestamp_seconds": 2.75,
+            "frame_sha256": "7bda52a384d593019ee731ebb9fd932da5f2fa98b6e9db21f865d83d402174e0",
+            "elapsed_ms": 66.013,
+            "exit_code": 0,
+            "observation_count": 2
+          },
+          {
+            "stage": "ocr_frame",
+            "invocation_index": 13,
+            "frame_id": "frame-000013",
+            "source_frame_index": 36,
+            "source_timestamp_seconds": 3,
+            "sample_timestamp_seconds": 3,
+            "frame_sha256": "7bda52a384d593019ee731ebb9fd932da5f2fa98b6e9db21f865d83d402174e0",
+            "elapsed_ms": 65.245,
+            "exit_code": 0,
+            "observation_count": 2
+          },
+          {
+            "stage": "ocr_frame",
+            "invocation_index": 14,
+            "frame_id": "frame-000014",
+            "source_frame_index": 39,
+            "source_timestamp_seconds": 3.25,
+            "sample_timestamp_seconds": 3.25,
+            "frame_sha256": "7bda52a384d593019ee731ebb9fd932da5f2fa98b6e9db21f865d83d402174e0",
+            "elapsed_ms": 66.494,
+            "exit_code": 0,
+            "observation_count": 2
+          },
+          {
+            "stage": "ocr_frame",
+            "invocation_index": 15,
+            "frame_id": "frame-000015",
+            "source_frame_index": 42,
+            "source_timestamp_seconds": 3.5,
+            "sample_timestamp_seconds": 3.5,
+            "frame_sha256": "7bda52a384d593019ee731ebb9fd932da5f2fa98b6e9db21f865d83d402174e0",
+            "elapsed_ms": 65.437,
+            "exit_code": 0,
+            "observation_count": 2
+          },
+          {
+            "stage": "ocr_frame",
+            "invocation_index": 16,
+            "frame_id": "frame-000016",
+            "source_frame_index": 45,
+            "source_timestamp_seconds": 3.75,
+            "sample_timestamp_seconds": 3.75,
+            "frame_sha256": "7bda52a384d593019ee731ebb9fd932da5f2fa98b6e9db21f865d83d402174e0",
+            "elapsed_ms": 64.679,
+            "exit_code": 0,
+            "observation_count": 2
+          },
+          {
+            "stage": "ocr_frame",
+            "invocation_index": 17,
+            "frame_id": "frame-000017",
+            "source_frame_index": 48,
+            "source_timestamp_seconds": 4,
+            "sample_timestamp_seconds": 4,
+            "frame_sha256": "7bda52a384d593019ee731ebb9fd932da5f2fa98b6e9db21f865d83d402174e0",
+            "elapsed_ms": 64.933,
+            "exit_code": 0,
+            "observation_count": 2
+          },
+          {
+            "stage": "ocr_frame",
+            "invocation_index": 18,
+            "frame_id": "frame-000018",
+            "source_frame_index": 51,
+            "source_timestamp_seconds": 4.25,
+            "sample_timestamp_seconds": 4.25,
+            "frame_sha256": "7bda52a384d593019ee731ebb9fd932da5f2fa98b6e9db21f865d83d402174e0",
+            "elapsed_ms": 64.519,
+            "exit_code": 0,
+            "observation_count": 2
+          },
+          {
+            "stage": "ocr_frame",
+            "invocation_index": 19,
+            "frame_id": "frame-000019",
+            "source_frame_index": 54,
+            "source_timestamp_seconds": 4.5,
+            "sample_timestamp_seconds": 4.5,
+            "frame_sha256": "7bda52a384d593019ee731ebb9fd932da5f2fa98b6e9db21f865d83d402174e0",
+            "elapsed_ms": 65.001,
+            "exit_code": 0,
+            "observation_count": 2
+          },
+          {
+            "stage": "ocr_frame",
+            "invocation_index": 20,
+            "frame_id": "frame-000020",
+            "source_frame_index": 57,
+            "source_timestamp_seconds": 4.75,
+            "sample_timestamp_seconds": 4.75,
+            "frame_sha256": "7bda52a384d593019ee731ebb9fd932da5f2fa98b6e9db21f865d83d402174e0",
+            "elapsed_ms": 65.743,
+            "exit_code": 0,
+            "observation_count": 2
+          },
+          {
+            "stage": "ocr_frame",
+            "invocation_index": 21,
+            "frame_id": "frame-000021",
+            "source_frame_index": 60,
+            "source_timestamp_seconds": 5,
+            "sample_timestamp_seconds": 5,
+            "frame_sha256": "7bda52a384d593019ee731ebb9fd932da5f2fa98b6e9db21f865d83d402174e0",
+            "elapsed_ms": 65.15,
+            "exit_code": 0,
+            "observation_count": 2
+          }
+        ]
+      },
+      "process_resource_usage": {
+        "max_rss_kib_reported_by_node": 69040,
+        "user_cpu_time_us": 99176,
+        "system_cpu_time_us": 24037,
+        "wall_seconds": null,
+        "maximum_resident_set_size_bytes": 205783040,
+        "swaps": 0,
+        "peak_memory_footprint_bytes": 30641824
+      }
+    },
+    {
+      "fixture_id": "deterministic-dialogue-transient-default-cadence",
+      "media_class": "deterministic_fixture_media",
+      "input": {
+        "sha256": "c46243423bdbd1e7b368670d834f134761f7e8b6719e8c589160fa0b995ea4ed",
+        "duration_seconds": 5.185986,
+        "has_audio": true,
+        "private_media_persisted_to_git": false
+      },
+      "cadence_seconds": 5,
+      "sampled_frame_count": 2,
+      "selected_visual_event_count": 1,
+      "raw_ocr_observation_count": 4,
+      "analyzer_wall_ms": 787.49,
+      "package_readback_verified": true,
+      "ocr": {
+        "scheduling": "one_sequential_tesseract_process_per_sampled_frame",
+        "version_probe_count": 1,
+        "version_probe_elapsed_ms": 6.298,
+        "frame_invocation_count": 2,
+        "total_stage_elapsed_ms": 134.61,
+        "summed_frame_invocation_elapsed_ms": 128.271,
+        "fraction_of_analyzer_wall_percent": 17.1,
+        "latency_ms": {
+          "min": 63.741,
+          "median": 63.741,
+          "p95": 63.741,
+          "max": 64.53
+        },
+        "unique_extracted_frame_sha256_count": 2,
+        "exact_duplicate_frame_invocation_count": 0,
+        "exact_duplicate_frame_elapsed_ms": 0,
+        "post_hoc_nonselected_frame_invocation_count": 1,
+        "invocations": [
+          {
+            "stage": "ocr_frame",
+            "invocation_index": 1,
+            "frame_id": "frame-000001",
+            "source_frame_index": 0,
+            "source_timestamp_seconds": 0,
+            "sample_timestamp_seconds": 0,
+            "frame_sha256": "81e1adc3affdc30abb5888818df500b89e4557c0bdc219e0469e6ce88f1ecd89",
+            "elapsed_ms": 63.741,
+            "exit_code": 0,
+            "observation_count": 2
+          },
+          {
+            "stage": "ocr_frame",
+            "invocation_index": 2,
+            "frame_id": "frame-000002",
+            "source_frame_index": 60,
+            "source_timestamp_seconds": 5,
+            "sample_timestamp_seconds": 5,
+            "frame_sha256": "7bda52a384d593019ee731ebb9fd932da5f2fa98b6e9db21f865d83d402174e0",
+            "elapsed_ms": 64.53,
+            "exit_code": 0,
+            "observation_count": 2
+          }
+        ]
+      },
+      "process_resource_usage": {
+        "max_rss_kib_reported_by_node": 60192,
+        "user_cpu_time_us": 81070,
+        "system_cpu_time_us": 16136,
+        "wall_seconds": null,
+        "maximum_resident_set_size_bytes": 205881344,
+        "swaps": 0,
+        "peak_memory_footprint_bytes": 24185712
+      }
+    },
+    {
+      "fixture_id": "authorized-walmart-popup-muse-v6",
+      "media_class": "authorized_representative_real_media",
+      "input": {
+        "sha256": "e64948c25f80d7aa87268c9da1c51d0a60e82324da4ee23a4584f1adc19df31a",
+        "duration_seconds": 38.443677,
+        "has_audio": true,
+        "private_media_persisted_to_git": false
+      },
+      "cadence_seconds": 5,
+      "sampled_frame_count": 8,
+      "selected_visual_event_count": 8,
+      "raw_ocr_observation_count": 150,
+      "analyzer_wall_ms": 11999.177,
+      "package_readback_verified": true,
+      "ocr": {
+        "scheduling": "one_sequential_tesseract_process_per_sampled_frame",
+        "version_probe_count": 1,
+        "version_probe_elapsed_ms": 7.22,
+        "frame_invocation_count": 8,
+        "total_stage_elapsed_ms": 1032.865,
+        "summed_frame_invocation_elapsed_ms": 1025.588,
+        "fraction_of_analyzer_wall_percent": 8.6,
+        "latency_ms": {
+          "min": 94.604,
+          "median": 97.368,
+          "p95": 155.084,
+          "max": 250.98
+        },
+        "unique_extracted_frame_sha256_count": 8,
+        "exact_duplicate_frame_invocation_count": 0,
+        "exact_duplicate_frame_elapsed_ms": 0,
+        "post_hoc_nonselected_frame_invocation_count": 0,
+        "invocations": [
+          {
+            "stage": "ocr_frame",
+            "invocation_index": 1,
+            "frame_id": "frame-000001",
+            "source_frame_index": 0,
+            "source_timestamp_seconds": 0,
+            "sample_timestamp_seconds": 0,
+            "frame_sha256": "fc460b6132138c2bb1b474747c027f73e00e63378e8ab487512ae36b488c80b1",
+            "elapsed_ms": 250.98,
+            "exit_code": 0,
+            "observation_count": 55
+          },
+          {
+            "stage": "ocr_frame",
+            "invocation_index": 2,
+            "frame_id": "frame-000002",
+            "source_frame_index": 150,
+            "source_timestamp_seconds": 5,
+            "sample_timestamp_seconds": 5,
+            "frame_sha256": "e2ea517bf830d0787246c0aa0f54c260732cd3d3d3bc9da631d4509a67deb075",
+            "elapsed_ms": 106.021,
+            "exit_code": 0,
+            "observation_count": 10
+          },
+          {
+            "stage": "ocr_frame",
+            "invocation_index": 3,
+            "frame_id": "frame-000003",
+            "source_frame_index": 299,
+            "source_timestamp_seconds": 10,
+            "sample_timestamp_seconds": 10,
+            "frame_sha256": "3b35bc1972bd5f937629f8664802ad4fd2125c887b2a1138aab38bdcecf6fab7",
+            "elapsed_ms": 96.135,
+            "exit_code": 0,
+            "observation_count": 5
+          },
+          {
+            "stage": "ocr_frame",
+            "invocation_index": 4,
+            "frame_id": "frame-000004",
+            "source_frame_index": 449,
+            "source_timestamp_seconds": 15,
+            "sample_timestamp_seconds": 15,
+            "frame_sha256": "dc86252422e0d5ba60ea1520b16b7375ece25685fe6d0202ea92ca0e64a2b93b",
+            "elapsed_ms": 155.084,
+            "exit_code": 0,
+            "observation_count": 32
+          },
+          {
+            "stage": "ocr_frame",
+            "invocation_index": 5,
+            "frame_id": "frame-000005",
+            "source_frame_index": 599,
+            "source_timestamp_seconds": 20,
+            "sample_timestamp_seconds": 20,
+            "frame_sha256": "531eb8afc316ec133cc3bc6292b2867378ff9bb381edace963d903b96effe91a",
+            "elapsed_ms": 95.703,
+            "exit_code": 0,
+            "observation_count": 17
+          },
+          {
+            "stage": "ocr_frame",
+            "invocation_index": 6,
+            "frame_id": "frame-000006",
+            "source_frame_index": 749,
+            "source_timestamp_seconds": 25,
+            "sample_timestamp_seconds": 25,
+            "frame_sha256": "0d6fbd9befe06322a20247f4e17d75bf98bd86ce5480398f762ed3f9d8aa164e",
+            "elapsed_ms": 97.368,
+            "exit_code": 0,
+            "observation_count": 2
+          },
+          {
+            "stage": "ocr_frame",
+            "invocation_index": 7,
+            "frame_id": "frame-000007",
+            "source_frame_index": 899,
+            "source_timestamp_seconds": 30,
+            "sample_timestamp_seconds": 30,
+            "frame_sha256": "69a7aba823ab335a0473d58574452c0ec9ebec8b2ad54a017df1b87e404fd1e0",
+            "elapsed_ms": 94.604,
+            "exit_code": 0,
+            "observation_count": 10
+          },
+          {
+            "stage": "ocr_frame",
+            "invocation_index": 8,
+            "frame_id": "frame-000008",
+            "source_frame_index": 1049,
+            "source_timestamp_seconds": 35,
+            "sample_timestamp_seconds": 35,
+            "frame_sha256": "b0fa72313f14bc91f99a477a9964449ac8ffef06b3704a9146080da29f90e703",
+            "elapsed_ms": 129.693,
+            "exit_code": 0,
+            "observation_count": 19
+          }
+        ]
+      },
+      "process_resource_usage": {
+        "max_rss_kib_reported_by_node": 88464,
+        "user_cpu_time_us": 134002,
+        "system_cpu_time_us": 36414,
+        "wall_seconds": null,
+        "maximum_resident_set_size_bytes": 188301312,
+        "swaps": 0,
+        "peak_memory_footprint_bytes": 60150200
+      }
+    }
+  ],
+  "transient_text_ground_truth": {
+    "input_sha256": "c46243423bdbd1e7b368670d834f134761f7e8b6719e8c589160fa0b995ea4ed",
+    "expected_text": "FLASH NOTICE",
+    "authored_visible_interval_seconds": {
+      "start": 1,
+      "end": 1.4,
+      "duration": 0.4
+    },
+    "dense_0_25_second_cadence": {
+      "detected": true,
+      "detected_source_timestamps_seconds": [
+        1,
+        1.25
+      ],
+      "sampled_frames": 21,
+      "ocr_invocations": 21
+    },
+    "default_5_second_cadence": {
+      "detected": false,
+      "detected_source_timestamps_seconds": [],
+      "sampled_frames": 2,
+      "ocr_invocations": 2
+    },
+    "conclusion": "The default five-second cadence misses the verified transient text. Indiscriminate cadence reduction is not a safe optimization."
+  },
+  "measured_redundancy": {
+    "exact_duplicate_frame_calls": {
+      "screen_state_fixture": 2,
+      "dialogue_dense_fixture": 16,
+      "dialogue_sparse_fixture": 0,
+      "authorized_real_media": 0
+    },
+    "exact_duplicate_frame_measured_elapsed_ms": {
+      "screen_state_fixture": 122.299,
+      "dialogue_dense_fixture": 1048.632,
+      "dialogue_sparse_fixture": 0,
+      "authorized_real_media": 0
+    },
+    "caution": "Post-hoc nonselected frames are not automatically redundant because OCR changes participate in selection. The representative real sample had eight distinct sampled frames and all eight were selected."
+  },
+  "decision": {
+    "selective_ocr_justified": "ONLY_FOR_A_BOUNDED_EXACT_FRAME_DEDUPLICATION_EXPERIMENT",
+    "broad_event_only_ocr_justified": false,
+    "broad_cadence_reduction_justified": false,
+    "evidence": [
+      "Exact duplicate frame bytes caused 18 repeated OCR processes across two deterministic runs, consuming 1170.931 ms in those single observations.",
+      "OCR consumed 66.5% to 71.4% of analyzer wall time in dense/static deterministic fixtures.",
+      "The representative real clip had no exact duplicate sampled-frame hashes; OCR consumed 1032.865 ms, 8.6% of its 11999.177 ms analyzer wall time.",
+      "The five-second cadence missed known 0.4-second transient text, so fewer periodic samples would weaken evidence coverage."
+    ],
+    "candidate_opportunities": [
+      {
+        "candidate": "exact extracted-frame SHA-256 memoization with timestamp-specific observation cloning",
+        "status": "MEASURED_OPPORTUNITY_NOT_IMPLEMENTED",
+        "safety_requirement": "OCR content, source-frame identity, source timestamps, observation IDs and F-003 through F-006 provenance must remain identical."
+      },
+      {
+        "candidate": "skip OCR on frames later unselected",
+        "status": "NOT_JUSTIFIED",
+        "reason": "Selection currently depends partly on OCR change; using the result to decide whether OCR should run is circular."
+      },
+      {
+        "candidate": "increase sampling interval",
+        "status": "REJECTED_BY_TRANSIENT_FIXTURE",
+        "reason": "The default five-second cadence missed FLASH NOTICE."
+      }
+    ]
+  },
+  "regressions": {
+    "focused_f003_f004_f005_f006": {
+      "tests": 4,
+      "passed": 4,
+      "failed": 0,
+      "duration_ms": 1273.510916
+    },
+    "complete_suite": {
+      "tests": 17,
+      "passed": 16,
+      "failed": 1,
+      "node_test_duration_ms": 9536.53875,
+      "wall_seconds": 9.77,
+      "maximum_resident_set_size_bytes": 206323712,
+      "swaps": 0,
+      "new_regressions": 0,
+      "unchanged_known_failure": {
+        "expected": "i do not think this is fair because you know the answer",
+        "actual": "i do not think this is there because you know the answer"
+      }
+    }
+  },
+  "uncertainty": [
+    "Each benchmark cell is one observed run, sufficient to establish this baseline but not a distribution or stable performance SLA.",
+    "Exact duplicate-frame opportunity is demonstrated mainly by deterministic static-image fixtures and did not appear in the one representative real clip.",
+    "System swap already existed before the benchmark; unchanged system-wide usage and zero per-process swaps do not attribute that existing swap to the analyzer.",
+    "The authorized real video remained local and is identified in this receipt by hash only; raw private media is not stored in GitHub."
+  ],
+  "conclusion": "P-001 establishes a reproducible measurement baseline without changing OCR scheduling. Targeted exact-frame deduplication merits an isolated A/B experiment; broader event-only OCR or cadence reduction is not supported by this evidence."
+}
