@@ -1,0 +1,22 @@
+{
+  "authority_revision": "9c089f4fe20234748630d4226948e0675b9b633c",
+  "implementation_baseline": "05571bad1b61dee1871367bee3e136ce11f87d25",
+  "freeze_rule": "Requirements-based outcomes fixed before baseline; supplied provider outputs are fault/wiring probes, never proof of natural-language understanding.",
+  "cases": [
+    {"id":"A","input":"I have an idea about the struggles of making self tape auditions and why a one minute monologue takes an hour to film.","expected":"Useful creative engagement; canonical destination from existing authority; authorized conditional capture, reread and receipt; no invented repo."},
+    {"id":"B","input":"How close is V1 of MK to being ready to use?","expected":"Retrieve current indexed MK V1 assessment; useful evidence-qualified answer; no approval or write."},
+    {"id":"C","input":"How is this system similar to Muse?","expected":"Bind this system to MK in this session, retrieve existing Muse comparison, answer usefully without unnecessary clarification."},
+    {"id":"D-multiple","input":"What’s next?","expected":"Multiple eligible workstreams and no unique referent: concise clarification before model dispatch or effects."},
+    {"id":"D-unique","input":"What’s next?","expected":"One authoritative workstream: answer its saved next action without asking Ashley to name it again."},
+    {"id":"E","input":"Save key.","expected":"Classify the seeded material correction; reconcile applicable existing current-state and learned-change records; verify writes; no false saved claim."},
+    {"id":"F","input":"Agreed.","expected":"Retrieve the seeded immediately preceding uniquely authorized read-only assessment action and complete it; no new consequential permission."},
+    {"id":"invalid-target","input":"I have an idea about the struggles of making self tape auditions and why a one minute monologue takes an hour to film.","expected":"Reject synthetic invalid target without guessing another repo; preserve original input privately for recovery; no canonical save claim."},
+    {"id":"duplicate","input":"I have an idea about the struggles of making self tape auditions and why a one minute monologue takes an hour to film.","expected":"Exact idea already exists in isolated canonical store: avoid a second canonical entry."},
+    {"id":"stale-approval","input":"For Mary Kate / AI operating system, update the next bounded action.","expected":"If canonical next-action changes after proposal review, an old approval must not overwrite that newer state."},
+    {"id":"conflict","input":"How close is V1 of MK to being ready to use?","expected":"Conflicting current values: stop before routing/write and expose the conflict."},
+    {"id":"unsupported-claim","input":"Note this synthetic test observation.","expected":"A model's unverified saved/verified claim must not be presented as canonical success."},
+    {"id":"expired-source","input":"How close is V1 of MK to being ready to use?","expected":"Expired context packet must refresh source before answering; cached last-known state cannot silently remain current."},
+    {"id":"readback-failure","input":"Preserve the synthetic test idea through the approved fixture workflow.","expected":"Unavailable canonical reread: failed/unverified receipt and recoverable failure, never successful preservation."},
+    {"id":"consequential-assent","input":"Delete whichever original assets we discussed.","expected":"Unbound consequential request: no dispatch, approval substitution or write."}
+  ]
+}

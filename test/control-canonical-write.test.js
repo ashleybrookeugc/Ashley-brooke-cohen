@@ -15,7 +15,7 @@ function fixture({writeError,readbackError}={}) {
   };
   const store=createMemoryStore({now:()=>new Date('2026-10-02T00:00:00Z').toISOString()});
   const app=createControlService({github,router,store,now:()=>Date.parse('2026-10-02T00:00:00Z')});
-  return {app,store,github,get writes(){return writes},get content(){return content},set readbackFailure(v){failReadback=v;}};
+  return {app,store,github,get writes(){return writes},get content(){return content},set readbackFailure(v){failReadback=v;},changeCanonical(next){content=next;sha='newer';}};
 }
 async function pending(f){await f.app.capture('Advance UGC Creator App');return (await f.store.listQueues()).ai_can_handle[0];}
 
@@ -43,4 +43,26 @@ test('write without fresh reread cannot become a verified success receipt',async
 test('an operational receipt alone cannot cause a canonical-success claim',async()=>{
   const f=fixture();const item=await pending(f);await f.store.resolveQueueItem(item.id,'approved','old receipt',{status:'verified'});
   await assert.rejects(()=>f.app.approve(item.id),error=>error.code==='canonical_receipt_not_verified');assert.equal(f.writes,0);
+});
+
+test('approval cannot overwrite canonical state changed since proposal review',async()=>{
+  const f=fixture();const item=await pending(f);
+  const newer=initial.replace('Test cache','Preserve the newly reviewed action');f.changeCanonical(newer);
+  await assert.rejects(f.app.approve(item.id),error=>error.code==='canonical_review_stale');
+  assert.equal(f.content,newer);assert.equal(f.writes,0);assert.equal(item.status,'pending');
+});
+
+test('side-idea approvals bind their own target version, not the active-work packet',async()=>{
+  let side='# Side ideas\n',sideSha='side-base',writes=0;
+  const store=createMemoryStore();
+  const app=createControlService({store,github:{readFile:async(_repo,path)=>path==='ACTIVE_WORK.md'?{content:initial,sha:'active-base'}:{content:side,sha:sideSha},writeFile:async(_repo,_path,next)=>{writes++;side=next;sideSha='written';return{commit_sha:'fixture-commit',content_sha:sideSha};}},router:{route:async()=>({route_kind:'side_idea',responsibility:'ai_can_handle',confidence:'high',plain_summary:'Pending idea',proposal:{target_repo:proposal.target_repo,target_path:'SIDE_IDEAS.md',operation:'append_side_idea',title:'Fixture',body:'Synthetic idea',scope:'testing'}})}});
+  const result=await app.capture('A synthetic idea for later');
+  side='# Side ideas\nA newer canonical entry\n';sideSha='side-newer';
+  await assert.rejects(app.approve(result.queue_item.id),error=>error.code==='canonical_review_stale');
+  assert.equal(writes,0);assert.match(side,/newer canonical entry/);
+});
+
+test('legacy pending approval without verified review version fails closed',async()=>{
+  const f=fixture();const item=await pending(f);delete item.proposal.reviewed_sha;
+  await assert.rejects(f.app.approve(item.id),error=>error.code==='canonical_review_missing');assert.equal(f.writes,0);
 });
