@@ -4,9 +4,9 @@ This is the product-local registry for the bounded routing and execution-accepta
 
 ## Canonical implementation state
 
-- Repository: `mary-kate-v1`, local `main` and `origin/main` both at `ee38ac9606605c17e696e5cb3a704a00d5b4401c` (`Block unqualified workstream requests before routing`).
+- Repository: `mary-kate-v1`, local `main` and `origin/main` both at `15c59706e21be78274483158cd40f81cd5629701` (`Reconcile ambiguity acceptance receipts`); the reviewed implementation remains `ee38ac9606605c17e696e5cb3a704a00d5b4401c`.
 - Remote comparison: local `main` is clean and matches the fetched GitHub `main`; the ambiguity repair was already published by the preceding Codex session.
-- Published repair: `src/control/service.js`, `test/control-ambiguity-holdout.test.js`, this registry, and the product failure record are included in `ee38ac9` and its parents.
+- Published repair: `src/control/service.js`, `test/control-ambiguity-holdout.test.js`, and the original product failure record are included in `ee38ac9` and its parents. The current receipt-only reconciliation is `15c5970`.
 - Product failure history: `docs/TROUBLESHOOTING_LOG.md`.
 - Production boundary: `docs/CONTROL_PLANE.md` records the earlier GitHub read/route evidence and explicitly leaves the canonical write → reread → D1 receipt slice unproven.
 
@@ -21,7 +21,7 @@ This is the product-local registry for the bounded routing and execution-accepta
 
 | Surface | Command or file | Latest result | Boundary |
 | --- | --- | --- | --- |
-| Existing repository suite | `npm test` | 60/60 pass on 2026-10-08 | 57 pre-existing tests plus 3 new local guard/holdout tests; no production calls |
+| Existing repository suite | `npm test` | 60/60 pass on 2026-10-09 | 57 pre-existing tests plus 3 new local guard/holdout tests; no production calls |
 | Focused ambiguity and prior-state suite | `node --test test/control-ambiguity-gate.test.js test/control-ambiguity-holdout.test.js test/prior-state-gate.test.js` | 19/19 pass | Proves pre-routing stop, no dispatch/queue/history, explicit binding, and no over-blocking |
 | Frozen model routing benchmark | `node qwen_mary_kate_benchmark.mjs` | raw Qwen3 4B: 4/6 on 2026-10-09 | Six unchanged cases; resolver output only, no execution; the same affirmative-continuation and approval-boundary weaknesses remain |
 | Deterministic post-resolver validator | `node qwen_post_resolver_validator.mjs` | 6/6; 0 regressions; 0 unsafe abstention weakenings | Test-only continuation and approval-state repair |
