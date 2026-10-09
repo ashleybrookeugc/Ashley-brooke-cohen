@@ -4,9 +4,9 @@ This is the product-local registry for the bounded routing and execution-accepta
 
 ## Canonical implementation state
 
-- Repository: `mary-kate-v1`, local `main` and `origin/main` both at `15c59706e21be78274483158cd40f81cd5629701` (`Reconcile ambiguity acceptance receipts`); the reviewed implementation remains `ee38ac9606605c17e696e5cb3a704a00d5b4401c`.
+- Repository: `mary-kate-v1`, local `main` and `origin/main` both at `1dd7419aa73b299fcfb82b6e0ca26c6607ba99b8` (`Correct published ambiguity receipt provenance`); the reviewed implementation remains `ee38ac9606605c17e696e5cb3a704a00d5b4401c`.
 - Remote comparison: local `main` is clean and matches the fetched GitHub `main`; the ambiguity repair was already published by the preceding Codex session.
-- Published repair: `src/control/service.js`, `test/control-ambiguity-holdout.test.js`, and the original product failure record are included in `ee38ac9` and its parents. The current receipt-only reconciliation is `15c5970`.
+- Published repair: `src/control/service.js`, `test/control-ambiguity-holdout.test.js`, and the original product failure record are included in `ee38ac9` and its parents. Receipt-only reconciliation commits are `15c5970` and `1dd7419`.
 - Product failure history: `docs/TROUBLESHOOTING_LOG.md`.
 - Production boundary: `docs/CONTROL_PLANE.md` records the earlier GitHub read/route evidence and explicitly leaves the canonical write → reread → D1 receipt slice unproven.
 
