@@ -51,6 +51,13 @@ This is the product-local registry for the bounded routing and execution-accepta
 - Exact sanitized evidence: `docs/test-receipts/2026-10-09-herdr-worker-interface.json`. Full local runtime receipt remains outside Git at `/private/tmp/mk-hui-N635tj/receipt.json`.
 - Still unverified: restart/reconnect persistence, heartbeat expiry, actual model/token/cost telemetry, task-result validation/writeback, production activation, and any broader permission envelope.
 
+### 2026-10-09 Cloudflare worker-telemetry implementation (pre-production)
+
+- The existing Worker activity section now has a bounded Cloudflare data path. The M4 publisher remains disabled by default, sends only an allowlisted snapshot over outbound HTTPS, and signs the exact body plus a short-lived timestamp. The production inventory route remains behind the existing admin session. No Herdr/M4 service or launch action is exposed publicly.
+- D1 retains one latest sanitized `m4-herdr` snapshot. A 20-second expiry deterministically changes cached workers from any prior state to `disconnected`; unknown telemetry is never promoted to active. Model, token, and cost remain unavailable unless the runtime supplies them. Execution completion remains explicitly unverified.
+- New regressions cover exact-body signatures, tamper/stale rejection, credential-field exclusion, forced-unverified outcomes, fresh-to-disconnected projection, disabled-by-default publishing, fixed HTTPS target, and credential-safe failures. Full repository suite: **95/95 PASS** on the physical M4 Pro. Worker dry-run packaging: PASS.
+- Not yet proven at this checkpoint: Cloudflare secret binding, main integration/deployment, authenticated production rendering, one real M4 heartbeat through production, or offline display after heartbeat expiry. Those require the bounded deployment acceptance and must not be inferred from tests.
+
 ## Frozen artifacts
 
 - Fresh Qwen result: `/private/tmp/mary-kate-v1-repair-qwen4b-frozen-2026-10-08.json`.

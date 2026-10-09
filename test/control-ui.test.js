@@ -18,7 +18,7 @@ test('control dashboard explicitly binds every startup DOM dependency', () => {
 
 test('existing control page presents truthful read-only worker telemetry on mobile', () => {
   assert.match(page,/Worker activity/);
-  assert.match(page,/Read-only status for Mary Kate-managed local workers/);
+  assert.match(page,/Read-only status for Mary Kate-managed M4 workers/);
   assert.match(page,/Running/);
   assert.match(page,/Idle/);
   assert.match(page,/Execution completed/);
@@ -36,6 +36,20 @@ test('existing control page presents truthful read-only worker telemetry on mobi
   assert.ok(section);
   assert.doesNotMatch(section[1],/<button/i);
   assert.doesNotMatch(page,/launchWorker|data-worker-action/i);
+  assert.match(page,/M4 connected/);
+  assert.match(page,/M4 unavailable/);
+  assert.match(page,/setInterval\(\(\)=>loadWorkers\(false\),5000\)/);
+});
+
+test('production worker inventory remains behind admin auth while ingest uses its narrow signature gate', async () => {
+  const source=await readFile(new URL('../src/control-worker.js',import.meta.url),'utf8');
+  const ingest=source.indexOf("path==='/api/control/workers/telemetry'");
+  const admin=source.indexOf('if(!await isAdmin(request,env))');
+  const inventory=source.indexOf("path==='/api/control/workers'&&request.method==='GET'");
+  assert.ok(ingest>=0&&ingest<admin&&admin<inventory);
+  assert.match(source,/verifyWorkerTelemetrySignature/);
+  assert.match(source,/CONTROL_WORKER_TELEMETRY_SECRET/);
+  assert.doesNotMatch(source,/console\.(?:log|error).*CONTROL_WORKER_TELEMETRY_SECRET/);
 });
 
 test('embedded control-page JavaScript parses before the Worker serves it', () => {

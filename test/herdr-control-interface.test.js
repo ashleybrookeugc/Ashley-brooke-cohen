@@ -18,6 +18,7 @@ test('local worker endpoint remains disabled by default without touching the ada
     assert.equal(body.version,'mary-kate.local-workers.v1');
     assert.equal(body.enabled,false);
     assert.equal(body.read_only,true);
+    assert.equal(body.connection.state,'disconnected');
     assert.deepEqual(body.workers,[]);
     assert.equal(typeof body.observed_at,'string');
   });
@@ -33,6 +34,7 @@ test('enabled endpoint returns only read-only worker snapshots and has no launch
     const body=await response.json();
     assert.equal(body.enabled,true);
     assert.equal(body.read_only,true);
+    assert.equal(body.connection.state,'connected');
     assert.deepEqual(body.workers,[worker]);
     const mutation=await fetch(new URL('/api/control/workers',url),{method:'POST'});
     assert.equal(mutation.status,405);

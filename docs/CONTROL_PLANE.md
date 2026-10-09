@@ -6,7 +6,7 @@
 
 Non-secret variables: `CONTROL_GITHUB_APP_ID`, `CONTROL_GITHUB_INSTALLATION_ID`, `CONTROL_MODEL_ENDPOINT`, and optional `CONTROL_MODEL_NAME`.
 
-Runtime secrets: `CONTROL_GITHUB_APP_PRIVATE_KEY` and `CONTROL_MODEL_API_KEY`.
+Runtime secrets: `CONTROL_GITHUB_APP_PRIVATE_KEY`, `CONTROL_MODEL_API_KEY`, and (when M4 telemetry is enabled) `CONTROL_WORKER_TELEMETRY_SECRET`.
 
 Install the GitHub App on `research-vault`, `ugc-creator-app`, `B-Paid`, and `Ashley-brooke-cohen`. Grant repository Contents read/write so the Worker can mint two down-scoped installation tokens: Contents read across those four repositories and Contents write for `research-vault` only. The adapter independently rejects every write outside `research-vault`.
 
@@ -53,3 +53,11 @@ The adapter controls only workspaces it creates in its named Herdr session. It d
 `src/local-workers/control-interface.js` is the loopback-only, read-only bridge into the existing `/control/` page. It binds `127.0.0.1`, exposes only `GET /api/control/workers`, returns HTTP 405 for mutation attempts, and remains disabled unless its caller explicitly supplies `enabled: true`. The page polls actual adapter snapshots and shows worker identity, assigned task, Herdr state, observation/progress evidence, and the separate result-verification boundary. Missing model, token, and cost telemetry renders as `Unavailable`; telemetry failure renders `Unknown`/unavailable rather than active. The local bridge does not duplicate Project Truth state and labels that state endpoint unavailable in its worker-only view.
 
 This development branch adds no worker-launch control to the page and does not activate the adapter in the Cloudflare Worker. Production enablement, durable reconnect, broader permissions, and result-validation/writeback remain outside this local display slice.
+
+## Private M4 worker telemetry bridge
+
+The Cloudflare projection reuses the same Worker activity section and never exposes Herdr or a local M4 port. The M4-side publisher is disabled by default and can only send an allowlisted, read-only worker snapshot to the fixed HTTPS path `/api/control/workers/telemetry`. It signs the exact body plus a short-lived timestamp with `CONTROL_WORKER_TELEMETRY_SECRET`; the Worker rejects invalid, changed, or stale signatures. The worker child never receives that credential.
+
+The Worker stores only the latest sanitized snapshot in the existing D1 binding. Private keys, tokens, authorization headers, arbitrary worker fields, and worker-result claims are excluded; `outcome_verified` remains false. The authenticated browser reads `GET /api/control/workers` through the existing admin session. After 20 seconds without a heartbeat, every retained worker is projected as `disconnected` with unavailable telemetry rather than active. Polling is bounded to five seconds. There is no launch or mutation route.
+
+This is operational telemetry, not a second Project Truth. A connected heartbeat proves only current Herdr observation of an adapter-owned worker. It does not prove the worker result, canonical writeback, production mutation slice, broader permissions, or model/token/cost data that Herdr does not expose.
