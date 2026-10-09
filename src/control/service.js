@@ -51,10 +51,19 @@ export function resolveAuthoritativeWorkstream(text, facts) {
   return {status:candidates.length===1?'resolved':candidates.length>1?'ambiguous':'unknown',section:candidates.length===1?candidates[0]:null,candidates};
 }
 const continuationWithoutBinding=text=>/^(?:yes|yep|sure|ok(?:ay)?|fine|go ahead|carry on|continue|do that|use that|send it|send whichever|the one we discussed)\b/i.test(text.trim());
+const activeWorkstreamSections=facts=>[...new Set((facts||[]).map(fact=>fact.section).filter(section=>{
+  if(!section||section==='document'||/^(?:session handoff rule|current active workstreams|current execution priority)$/i.test(section)) return false;
+  return !/\b(?:paused|waiting|blocked|inactive|completed|done)\b/i.test(section);
+}))];
+const unqualifiedWorkstreamRequest=text=>/^(?:(?:(?:can you|could you|please)\s+)?(?:tell me\s+|show me\s+|give me\s+)?(?:what(?:'s| is)\s+(?:the\s+)?(?:next|next step|next action|next bounded action|current action|current priority|current status|current stage|latest status)\b|what should (?:(?:we|i)\s+)?(?:do|happen)\s+next\b|what needs to happen next\b)|(?:(?:which|what)\s+(?:project|workstream|thread)\s+should\s+(?:we|i)\b)|(?:(?:advance|resume|continue|proceed|move forward|update|set|change|approve|publish|send|delete|spend|transfer|remove)\b))/i.test(String(text||'').trim());
 export function createAmbiguityGate(text,facts) {
   const resolution=resolveAuthoritativeWorkstream(text,facts);
   if(resolution.status==='ambiguous') return {...resolution,status:'blocked',reason:'multiple_current_referents'};
   if(resolution.status==='unknown'&&continuationWithoutBinding(text)) return {...resolution,status:'blocked',reason:'unbound_continuation'};
+  if(resolution.status==='unknown'&&unqualifiedWorkstreamRequest(text)) {
+    const active=activeWorkstreamSections(facts);
+    if(active.length!==1) return {...resolution,status:'blocked',reason:active.length>1?'unbound_workstream_request':'missing_workstream_context',candidates:active};
+  }
   return {...resolution,status:'passed'};
 }
 const requestedFacts = (text, facts, projects, explicit=[]) => {
@@ -167,7 +176,10 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
       // Scope each requested fact against the actual canonical facts, not the de-duplicated key list.
       const packet=await store.getContextPacket('active-work.v1');
       const ambiguity_gate=createAmbiguityGate(text,packet?.facts||[]);
-      if(ambiguity_gate.status==='blocked') throw new PriorStateGateError('ambiguous_scope','Mary Kate could not bind this request to one current workstream, so it changed nothing.',{gate:'authoritative-ambiguity.v1',status:'blocked',evidence:[],blockers:[{reason:'ambiguous_scope',key:'workstream',facts:ambiguity_gate.candidates.map(section=>({section,label:'workstream'}))}]});
+      if(ambiguity_gate.status==='blocked') {
+        const detail=ambiguity_gate.reason==='unbound_workstream_request'?'Mary Kate found more than one workstream and could not bind this request to one current workstream, so it changed nothing.':'Mary Kate could not bind this request to one current workstream, so it changed nothing.';
+        throw new PriorStateGateError('ambiguous_scope',detail,{gate:'authoritative-ambiguity.v1',status:'blocked',evidence:[],blockers:[{reason:'ambiguous_scope',key:'workstream',facts:ambiguity_gate.candidates.map(section=>({section,label:'workstream'}))}]});
+      }
       const scoped=requestedFacts(text,packet?.facts||[],initial.projects,requiredFactKeys);
       const snapshot=scoped.length?await state({requiredFacts:scoped}):initial;
       snapshot.ambiguity_gate=ambiguity_gate;

@@ -13,6 +13,20 @@ Before repeating deployment, Cloudflare, Worker, build, routing, or asset troubl
 5. Do not tell the user to manually deploy or create new infrastructure unless the existing GitHub → Cloudflare path has actually been shown to be broken.
 6. When a new issue is solved, add it here using: **Symptom → Failed/looping attempts → Root cause → Verified fix → Prevention rule**.
 
+## 2026-10-08 — Unqualified next-action query still reaches the model before the ambiguity stop
+
+**Symptom:** In the current local control-plane implementation, the unqualified request `what is next?` reached the routing adapter even though several workstreams were current. A hostile test router returned a state proposal, but the later resolved-write-target gate stopped it with `ambiguous_scope`; no queue item, interaction history row, or canonical write was created.
+
+**Confirmed root cause:** `createAmbiguityGate` blocks lexical multi-workstream matches and unbound continuation phrases, but an unknown non-continuation request such as `what is next?` currently returns `status: passed` with no bound section. The downstream write invariant is safe, but model dispatch is not prevented.
+
+**Verified boundary:** Isolated service fixture: `router_calls: 1`, `error: ambiguous_scope`, `needs_ashley: []`, `ai_can_handle: []`, and `history: []`. This is a routing-boundary gap, not evidence of an unauthorized canonical write.
+
+**Smallest justified repair:** Require an explicit workstream, or stop before model routing, for workstream-dependent unqualified requests such as `next`, `current action`, or state-update language when no unique authoritative section is resolved. Add a regression asserting that the router is not called and no interaction/queue row is created.
+
+**Local repair verification (2026-10-08):** The deterministic pre-routing guard now blocks unqualified workstream-dependent requests when zero or multiple eligible sections exist, while allowing uniquely named workstreams and ordinary non-action conversation. The focused ambiguity/prior-state set passed 19/19; the full local repository suite passed 60/60. The independent frozen holdout covered Mary Kate, video, UGC, website, B-Paid, stale continuation, conflicting cross-project references, vague assent, explicit switches, and missing evidence. Blocked cases had zero router calls, history rows, or queue rows. This is local/test-only evidence; it does not establish deployment or production acceptance.
+
+**Prevention:** A downstream no-write invariant is not equivalent to a pre-routing ambiguity gate. Test both properties independently: ambiguous work must not dispatch, and a model-selected state proposal must not create a queue or write without a unique authoritative section.
+
 ## 2026-10-02 — Rejected model route disappeared before diagnostic capture
 
 **Symptom:** one production request reached routing and returned `routing_contract_invalid`, but no interaction or diagnostic survived in D1. The original rejected route cannot be reconstructed reliably.
