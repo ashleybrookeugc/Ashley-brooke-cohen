@@ -114,9 +114,31 @@ function safeWorker(worker,agent,observedAt) {
     state,
     state_source:'herdr',
     outcome_verified:false,
+    runtime_metrics:{model:null,tokens:null,cost:null},
     last_observed_at:observedAt,
     progress_events:structuredClone(worker.progress_events),
     identity:{session:worker.session,workspace_id:worker.workspace_id,pane_id:worker.pane_id,agent_name:worker.agent_name},
+  };
+}
+
+function unavailableWorker(worker,error,observedAt) {
+  const code=typeof error?.code==='string'&&/^[a-z0-9_]{1,64}$/.test(error.code)?error.code:'observation_failed';
+  const latest={observed_at:observedAt,source:'herdr',source_status:'telemetry_unavailable',state:'unknown',state_change_seq:null,completion_seq:null,revision:null};
+  const previous=worker.progress_events.at(-1);
+  if(!previous||JSON.stringify({...previous,observed_at:null})!==JSON.stringify({...latest,observed_at:null})) worker.progress_events.push(latest);
+  worker.last_observed_at=observedAt;
+  worker.state='unknown';
+  return {
+    id:worker.id,
+    task:{id:worker.task.id,summary:worker.task.summary},
+    state:'unknown',
+    state_source:'herdr',
+    outcome_verified:false,
+    runtime_metrics:{model:null,tokens:null,cost:null},
+    last_observed_at:observedAt,
+    progress_events:structuredClone(worker.progress_events),
+    identity:{session:worker.session,workspace_id:worker.workspace_id,pane_id:worker.pane_id,agent_name:worker.agent_name},
+    telemetry:{status:'unavailable',message:'Worker telemetry is temporarily unavailable.',diagnostic_code:code},
   };
 }
 
@@ -219,6 +241,15 @@ export function createHerdrWorkerAdapter({
         if(['agent_not_found','target_not_found','herdr_command_failed'].includes(error.code)) return safeWorker(worker,null,now());
         throw error;
       }
+    },
+    async list() {
+      if(!active) throw new HerdrAdapterError('adapter_inactive','The Herdr adapter has not been activated');
+      const snapshots=[];
+      for(const worker of workers.values()) {
+        try { snapshots.push(await this.observe(worker.id)); }
+        catch(error) { snapshots.push(unavailableWorker(worker,error,now())); }
+      }
+      return snapshots;
     },
     async close(workerId) {
       const worker=workers.get(workerId);
