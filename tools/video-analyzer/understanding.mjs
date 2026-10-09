@@ -73,6 +73,35 @@ function pixelDifference(previous, current) {
   return total / current.length;
 }
 
+function regionalDifference(previous, current) {
+  const threshold = 0.16;
+  if (!previous) return { detected: false, max_region_difference: 0, threshold, region: null };
+  const frameSize = 64;
+  const regionSize = 8;
+  let strongest = { difference: 0, x: 0, y: 0 };
+  for (let y = 0; y < frameSize; y += regionSize) for (let x = 0; x < frameSize; x += regionSize) {
+    let total = 0;
+    for (let row = y; row < y + regionSize; row++) for (let column = x; column < x + regionSize; column++) {
+      const index = row * frameSize + column;
+      total += Math.abs(current[index] - previous[index]) / 255;
+    }
+    const difference = total / (regionSize * regionSize);
+    if (difference > strongest.difference) strongest = { difference, x, y };
+  }
+  const detected = strongest.difference >= threshold;
+  return {
+    detected,
+    max_region_difference: Number(strongest.difference.toFixed(4)),
+    threshold,
+    region: detected ? {
+      x: strongest.x / frameSize,
+      y: strongest.y / frameSize,
+      width: regionSize / frameSize,
+      height: regionSize / frameSize
+    } : null
+  };
+}
+
 function translation(previous, current, baselineMagnitude) {
   if (!previous || baselineMagnitude < 0.025) return null;
   const score = (dx, dy) => {
@@ -112,9 +141,20 @@ export function buildSemanticVisualObservations(rawFrames, timestamps, ocr) {
     const pixels = rawFrames[index];
     const timestamp = timestamps[index];
     const difference = pixelDifference(previous, pixels);
+    const regionalChange = regionalDifference(previous, pixels);
     const movement = translation(previous, pixels, difference);
     const frameText = ocr.filter(item => Math.abs(item.start_seconds - timestamp) < 0.001).map(item => item.text).join(' ');
-    const state = index === 0 ? 'initial_state' : difference < 0.025 ? 'sampled_stable_state' : movement ? `${movement.axis}_viewport_motion` : difference >= 0.16 ? 'major_visual_state_change' : 'visual_state_change';
+    const state = index === 0
+      ? 'initial_state'
+      : difference < 0.025 && regionalChange.detected
+        ? 'regional_visual_state_change'
+        : difference < 0.025
+          ? 'sampled_stable_state'
+          : movement
+            ? `${movement.axis}_viewport_motion`
+            : difference >= 0.16
+              ? 'major_visual_state_change'
+              : 'visual_state_change';
     observations.push({
       observation_id: `visual-${String(index + 1).padStart(6, '0')}`,
       start_seconds: timestamp,
@@ -123,14 +163,21 @@ export function buildSemanticVisualObservations(rawFrames, timestamps, ocr) {
       state,
       frame_fingerprint: createHash('sha256').update(pixels).digest('hex').slice(0, 20),
       difference_from_previous: Number(difference.toFixed(4)),
+      regional_change: regionalChange,
       motion: movement,
       visible_subjects: [],
       visible_objects: [],
       setting: null,
-      observable_actions: movement ? [`viewport_motion_${movement.direction}`] : state.includes('change') ? ['visual_state_changed'] : [],
+      observable_actions: movement
+        ? [`viewport_motion_${movement.direction}`]
+        : state === 'regional_visual_state_change'
+          ? ['regional_visual_state_changed']
+          : state.includes('change')
+            ? ['visual_state_changed']
+            : [],
       ui_text_observation_ids: ocr.filter(item => Math.abs(item.start_seconds - timestamp) < 0.001).map(item => item.observation_id),
       activity: activityForText(frameText),
-      verification_modality: 'sampled_64x64_grayscale_change_plus_ocr_heuristic',
+      verification_modality: 'sampled_64x64_grayscale_global_and_regional_change_plus_ocr_heuristic',
       uncertainty: 'This is sampled screen-state evidence, not frame-exhaustive subject/object recognition. Empty subject/object fields mean not recovered, not absent.'
     });
     previous = pixels;

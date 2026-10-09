@@ -13,6 +13,7 @@ import {
   runCommand,
   verifyEvidencePackage
 } from '../tools/video-analyzer/core.mjs';
+import { buildSemanticVisualObservations } from '../tools/video-analyzer/understanding.mjs';
 
 async function fixtureRoot(t) {
   const root = await mkdtemp(join(tmpdir(), 'abc-video-test-'));
@@ -246,6 +247,29 @@ test('semantic sampled screen states distinguish workflow candidate, unrelated b
   assert.ok(observations.some(item => item.activity.state === 'unrelated_browsing_watching_candidate'));
   assert.match(result.evidence.sampling_disclosure, /not frame-exhaustive/i);
   assert.ok(observations.every(item => item.uncertainty && Array.isArray(item.visible_subjects)));
+});
+
+test('F-004: meaningful regional visual change survives a globally stable frame decision', () => {
+  const initial = Buffer.alloc(64 * 64, 0);
+  const regionalChange = Buffer.from(initial);
+  for (let y = 24; y < 32; y++) for (let x = 40; x < 48; x++) regionalChange[y * 64 + x] = 255;
+  const unchanged = Buffer.from(regionalChange);
+  const timestamps = [3.25, 3.75, 4.25];
+
+  const observations = buildSemanticVisualObservations([initial, regionalChange, unchanged], timestamps, []);
+
+  assert.equal(observations[0].state, 'initial_state');
+  assert.ok(observations[1].difference_from_previous < 0.025,
+    'fixture must reproduce the whole-frame stable decision that hid regional activity');
+  assert.equal(observations[1].state, 'regional_visual_state_change');
+  assert.equal(observations[1].start_seconds, 3.75);
+  assert.equal(observations[1].regional_change.detected, true);
+  assert.ok(observations[1].regional_change.max_region_difference >= 0.16);
+  assert.deepEqual(observations[1].observable_actions, ['regional_visual_state_changed']);
+  assert.equal(observations[2].state, 'sampled_stable_state');
+  assert.equal(observations[2].start_seconds, 4.25);
+  assert.equal(observations[2].regional_change.detected, false);
+  assert.deepEqual(observations[2].observable_actions, []);
 });
 
 test('corrupted synchronized timeline and missing semantic evidence are rejected', async t => {
