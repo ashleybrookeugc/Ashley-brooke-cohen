@@ -27,6 +27,8 @@ Before repeating deployment, Cloudflare, Worker, build, routing, or asset troubl
 
 **Production observation boundary (2026-10-09):** An existing authenticated control-plane observation of `What's next?` in a multiple-eligible-workstream context returned `prior_state_ambiguous_scope`, with no visible waiting approval item and no new matching recent-outcome row. This supports the user-facing ambiguity result only. Cloudflare deployment lineage, exact zero model/router dispatches, before/after queue/history deltas, and canonical-write absence were not observable because the CLI required an unavailable API token and the dashboard session was unauthenticated. Keep the canary **UNVERIFIED** and do not submit a second request merely to obtain a stronger receipt.
 
+**Canonical supersession (2026-10-09):** The latest Project Truth `ACTIVE_WORK.md` and Mary Kate test registry now preserve the prior unbound `What's next?` production canary as a separate **PASS**. The limited direct observation above remains preserved as provenance, but it is not the current canonical classification. The same latest state records a separate confirmed production false-ambiguity failure for `Do you think v1 of mk is complete?`; repair and regression-test that explicit read-only path before another production acceptance attempt.
+
 **Prevention:** A downstream no-write invariant is not equivalent to a pre-routing ambiguity gate. Test both properties independently: ambiguous work must not dispatch, and a model-selected state proposal must not create a queue or write without a unique authoritative section.
 
 ## 2026-10-02 — Rejected model route disappeared before diagnostic capture
