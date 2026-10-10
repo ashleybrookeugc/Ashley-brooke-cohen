@@ -3,6 +3,7 @@ import controlPage from '../public/control/index.html';
 import {createGitHubAdapter,createGitHubAppTokenProvider,createPolicyRoutingAdapter} from './control/adapters.js';
 import {controlErrorResponse,createControlService,createD1Store} from './control/service.js';
 import {createWorkerTelemetryStore,verifyWorkerTelemetrySignature,WORKER_TELEMETRY_SCHEMA} from './control/worker-telemetry.js';
+import {createVideoEvidenceService} from './control/video-evidence.js';
 
 let schemaReady;
 function ensureSchema(env){return schemaReady ||= env.DB.exec("CREATE TABLE IF NOT EXISTS control_interactions (id TEXT PRIMARY KEY,raw_text TEXT NOT NULL,route_json TEXT NOT NULL,plain_summary TEXT NOT NULL,project_id TEXT,route_kind TEXT NOT NULL CHECK(route_kind IN ('state_update','decision','side_idea','temporary_context')),responsibility TEXT NOT NULL CHECK(responsibility IN ('needs_ashley','ai_can_handle')),confidence TEXT NOT NULL CHECK(confidence IN ('high','medium','low')),created_at TEXT NOT NULL);CREATE INDEX IF NOT EXISTS idx_control_interactions_created ON control_interactions(created_at DESC);CREATE TABLE IF NOT EXISTS control_queue_items (id TEXT PRIMARY KEY,interaction_id TEXT NOT NULL REFERENCES control_interactions(id),responsibility TEXT NOT NULL CHECK(responsibility IN ('needs_ashley','ai_can_handle')),status TEXT NOT NULL CHECK(status IN ('pending','approved','rejected','failed')),plain_summary TEXT NOT NULL,why TEXT,proposal_json TEXT NOT NULL,resolution_note TEXT,technical_receipt_json TEXT,created_at TEXT NOT NULL,resolved_at TEXT);CREATE INDEX IF NOT EXISTS idx_control_queue_pending ON control_queue_items(status,responsibility,created_at DESC);CREATE TABLE IF NOT EXISTS control_context_packets (packet_key TEXT PRIMARY KEY,payload_json TEXT NOT NULL,created_at TEXT NOT NULL,expires_at TEXT NOT NULL,invalidated_at TEXT);"+WORKER_TELEMETRY_SCHEMA)}
@@ -10,6 +11,10 @@ const json=(body,status=200)=>new Response(JSON.stringify(body),{status,headers:
 function service(env) {
   const tokens=createGitHubAppTokenProvider(env);
   return createControlService({github:createGitHubAdapter({tokenProvider:tokens}),router:createPolicyRoutingAdapter(env),store:createD1Store(env.DB)});
+}
+function evidenceService(env) {
+  const tokens=createGitHubAppTokenProvider(env);
+  return createVideoEvidenceService({github:createGitHubAdapter({tokenProvider:tokens})});
 }
 async function body(request){try{return await request.json()}catch{throw new Error('Valid JSON body required')}}
 async function workerTelemetry(request,env) {
@@ -24,13 +29,19 @@ async function workerTelemetry(request,env) {
   try { return json(await createWorkerTelemetryStore(env.DB).put(payload),202); }
   catch { return json({error:'Worker telemetry payload is invalid',code:'worker_telemetry_invalid'},400); }
 }
-async function control(request,env) {
+export async function handleControlRequest(request,env,{adminCheck=isAdmin,createEvidence=evidenceService}={}) {
   const path=new URL(request.url).pathname.replace(/\/+$/,'')||'/';
   if(path==='/api/control/workers/telemetry'){
     if(request.method!=='POST') return json({error:'Method not allowed',code:'read_only'},405);
     await ensureSchema(env);return workerTelemetry(request,env);
   }
-  if(!await isAdmin(request,env)) return new URL(request.url).pathname.startsWith('/api/')?json({error:'Unauthorized'},401):new Response(null,{status:303,headers:{location:'/admin/login','cache-control':'no-store'}});
+  if(!await isAdmin(request,env))    return new URL(request.url).pathname.startsWith('/api/')?json({error:'Unauthorized'},401):new Response(null,{status:303,headers:{location:'/admin/login','cache-control':'no-store'}});
+  if(path==='/api/control/video-evidence'&&request.method==='GET') return json(await createEvidence(env).list());
+  const assetMatch=path.match(/^\/api\/control\/video-evidence\/assets\/([a-z0-9-]+)$/);
+  if(assetMatch&&request.method==='GET'){
+    const asset=await createEvidence(env).asset(assetMatch[1]);
+    return asset?new Response(asset.bytes,{headers:{'content-type':asset.content_type,'cache-control':'private, no-store','x-content-type-options':'nosniff'}}):json({error:'Evidence preview unavailable'},404);
+  }
   await ensureSchema(env);
   const core=service(env);
   if(path==='/control') return new Response(controlPage,{headers:{'content-type':'text/html;charset=UTF-8','cache-control':'no-store'}});
@@ -42,6 +53,6 @@ async function control(request,env) {
   return json({error:'Not found'},404);
 }
 export default {
-  async fetch(request,env,ctx){const path=new URL(request.url).pathname;if(path==='/control'||path.startsWith('/control/')||path.startsWith('/api/control/')){try{return await control(request,env)}catch(error){console.error('Control request failed',error?.message||error);return json({error:error?.message||'Control request failed'},400)}}return app.fetch(request,env,ctx);},
+  async fetch(request,env,ctx){const path=new URL(request.url).pathname;if(path==='/control'||path.startsWith('/control/')||path.startsWith('/api/control/')){try{return await handleControlRequest(request,env)}catch(error){console.error('Control request failed',error?.message||error);return json({error:error?.message||'Control request failed'},400)}}return app.fetch(request,env,ctx);},
   async scheduled(controller,env,ctx){if(typeof app.scheduled==='function')return app.scheduled(controller,env,ctx);}
 };
