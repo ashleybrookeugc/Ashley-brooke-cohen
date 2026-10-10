@@ -333,6 +333,39 @@ test('F-006: ordinary analyzer path binds selected events to semantic-consumer f
   assert.equal(result.manifest.processing.semantic_analysis_input_state, 'prepared_and_verified');
 });
 
+test('P-002: exact-frame-SHA OCR memoization preserves occurrence-specific evidence', async t => {
+  const root = await fixtureRoot(t);
+  const source = join(root, 'ocr-memoization.mp4');
+  await makeScreenStateVideo(source);
+  const baselineEvents = [];
+  const candidateEvents = [];
+  const baseline = await processVideo(source, {
+    outputRoot: join(root, 'baseline'),
+    frameIntervalSeconds: 0.5,
+    performanceObserver: event => baselineEvents.push(event)
+  });
+  const candidate = await processVideo(source, {
+    outputRoot: join(root, 'candidate'),
+    frameIntervalSeconds: 0.5,
+    ocrMemoization: 'exact_frame_sha256',
+    performanceObserver: event => candidateEvents.push(event)
+  });
+
+  assert.deepEqual(candidate.evidence, baseline.evidence);
+  assert.deepEqual(candidate.semantic_input, baseline.semantic_input);
+  assert.equal((await verifyEvidencePackage(candidate.package_directory)).verified, true);
+  const baselineSummary = baselineEvents.find(event => event.stage === 'ocr_summary');
+  const candidateSummary = candidateEvents.find(event => event.stage === 'ocr_summary');
+  assert.equal(baselineSummary.tesseract_invocation_count, 6);
+  assert.equal(baselineSummary.cache_hit_count, 0);
+  assert.equal(candidateSummary.frame_occurrence_count, 6);
+  assert.equal(candidateSummary.tesseract_invocation_count, 4);
+  assert.equal(candidateSummary.cache_hit_count, 2);
+  const rawOcr = candidate.evidence.lanes.other_on_screen_text.raw_observations;
+  assert.deepEqual(rawOcr.map(item => item.observation_id), rawOcr.map((_, index) => `ocr-${String(index + 1).padStart(6, '0')}`));
+  assert.ok(rawOcr.every(item => item.source_frame_id && Number.isFinite(item.start_seconds)));
+});
+
 test('corrupted synchronized timeline and missing semantic evidence are rejected', async t => {
   const root = await fixtureRoot(t);
   const source = join(root, 'timeline.mp4');

@@ -16,6 +16,7 @@ const outputRoot = valueAfter(args, '--output-root');
 const receiptPath = valueAfter(args, '--receipt');
 const intervalSeconds = Number(valueAfter(args, '--interval', '5'));
 const fixtureId = valueAfter(args, '--fixture-id', 'unlabeled');
+const memoization = valueAfter(args, '--memoization', 'none');
 if (!input || !outputRoot || !receiptPath || !Number.isFinite(intervalSeconds) || intervalSeconds <= 0) {
   console.error('Usage: benchmark-ocr.mjs --input VIDEO --output-root DIR --receipt FILE --interval SECONDS --fixture-id ID');
   process.exit(2);
@@ -37,6 +38,7 @@ const started = performance.now();
 const result = await processVideo(resolvedInput, {
   outputRoot: resolve(outputRoot),
   frameIntervalSeconds: intervalSeconds,
+  ocrMemoization: memoization,
   performanceObserver: event => performanceEvents.push(event)
 });
 const analyzerWallMs = Number((performance.now() - started).toFixed(3));
@@ -71,9 +73,13 @@ const receipt = {
   },
   ocr: {
     scheduling: ocrSummary.scheduling,
+    memoization: ocrSummary.memoization,
     version_probe_count: versionProbe ? 1 : 0,
     version_probe_elapsed_ms: versionProbe?.elapsed_ms ?? null,
-    frame_invocation_count: frameInvocations.length,
+    frame_occurrence_count: frameInvocations.length,
+    tesseract_invocation_count: ocrSummary.tesseract_invocation_count,
+    cache_hit_count: ocrSummary.cache_hit_count,
+    cache_miss_count: ocrSummary.cache_miss_count,
     total_stage_elapsed_ms: ocrSummary.elapsed_ms,
     summed_frame_invocation_elapsed_ms: Number(frameInvocations.reduce((sum, event) => sum + event.elapsed_ms, 0).toFixed(3)),
     latency_ms: {

@@ -387,7 +387,7 @@ function parseTsv(tsv, frame, width, height, firstObservationIndex, extractorVer
   });
 }
 
-async function runOcr(frames, packageDirectory, width, height, performanceObserver = null) {
+async function runOcr(frames, packageDirectory, width, height, performanceObserver = null, memoization = 'none') {
   const stageStarted = performance.now();
   const report = event => {
     if (typeof performanceObserver === 'function') performanceObserver(event);
@@ -403,10 +403,23 @@ async function runOcr(frames, packageDirectory, width, height, performanceObserv
     ? versionResult.stdout.split(/\r?\n/, 1)[0].trim()
     : 'version_unavailable';
   const observations = [];
+  const exactFrameCache = new Map();
+  let cacheHits = 0;
+  let tesseractInvocationCount = 0;
   for (let index = 0; index < frames.length; index++) {
     const frame = frames[index];
     const invocationStarted = performance.now();
-    const result = await runCommand('tesseract', [join(packageDirectory, frame.relative_path), 'stdout', '--psm', '11', 'tsv'], { allowFailure: true });
+    const cached = memoization === 'exact_frame_sha256' ? exactFrameCache.get(frame.sha256) : null;
+    const cacheHit = cached !== undefined && cached !== null;
+    let result;
+    if (cacheHit) {
+      cacheHits += 1;
+      result = { code: 0, stdout: cached, stderr: '' };
+    } else {
+      tesseractInvocationCount += 1;
+      result = await runCommand('tesseract', [join(packageDirectory, frame.relative_path), 'stdout', '--psm', '11', 'tsv'], { allowFailure: true });
+      if (memoization === 'exact_frame_sha256' && result.code === 0) exactFrameCache.set(frame.sha256, result.stdout);
+    }
     const parsed = result.code === 0
       ? parseTsv(result.stdout, frame, width, height, observations.length, extractorVersion)
       : [];
@@ -419,6 +432,9 @@ async function runOcr(frames, packageDirectory, width, height, performanceObserv
       source_timestamp_seconds: frame.source_timestamp_seconds,
       sample_timestamp_seconds: frame.sample_timestamp_seconds,
       frame_sha256: frame.sha256,
+      memoization,
+      cache_hit: cacheHit,
+      tesseract_invoked: !cacheHit,
       elapsed_ms: Number((performance.now() - invocationStarted).toFixed(3)),
       exit_code: result.code,
       observation_count: parsed.length
@@ -426,8 +442,14 @@ async function runOcr(frames, packageDirectory, width, height, performanceObserv
   }
   report({
     stage: 'ocr_summary',
-    scheduling: 'one_sequential_tesseract_process_per_sampled_frame',
-    frame_invocation_count: frames.length,
+    scheduling: memoization === 'exact_frame_sha256'
+      ? 'one_sequential_tesseract_process_per_unique_exact_frame_sha256'
+      : 'one_sequential_tesseract_process_per_sampled_frame',
+    memoization,
+    frame_occurrence_count: frames.length,
+    tesseract_invocation_count: tesseractInvocationCount,
+    cache_hit_count: cacheHits,
+    cache_miss_count: tesseractInvocationCount,
     observation_count: observations.length,
     elapsed_ms: Number((performance.now() - stageStarted).toFixed(3))
   });
@@ -843,8 +865,12 @@ export async function processVideo(input, {
   beforeReadback = null,
   asrPython = resolve(moduleDirectory, '../../.video-analysis-runtime/venv/bin/python'),
   remoteStore = null,
-  performanceObserver = null
+  performanceObserver = null,
+  ocrMemoization = 'none'
 } = {}) {
+  if (!['none', 'exact_frame_sha256'].includes(ocrMemoization)) {
+    throw new IntakeError('OCR_MEMOIZATION_INVALID', 'OCR memoization must be none or exact_frame_sha256.', { ocr_memoization: ocrMemoization });
+  }
   const startedAt = now();
   const resolved = await resolveInput(input, { fetchImpl });
   try {
@@ -861,7 +887,7 @@ export async function processVideo(input, {
     const frames = await extractFrames(resolved.path, join(stagingDirectory, 'frames'), probe.duration_seconds, frameIntervalSeconds, sourcePts);
     const width = probe.video_streams[0].width;
     const height = probe.video_streams[0].height;
-    const rawOcr = await runOcr(frames, stagingDirectory, width, height, performanceObserver);
+    const rawOcr = await runOcr(frames, stagingDirectory, width, height, performanceObserver, ocrMemoization);
     let asr = null;
     let asrState = probe.audio_streams.length ? 'extractor_unavailable' : 'not_present';
     let asrFailure = null;
