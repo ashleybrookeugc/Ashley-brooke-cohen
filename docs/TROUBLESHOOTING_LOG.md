@@ -13,6 +13,14 @@ Before repeating deployment, Cloudflare, Worker, build, routing, or asset troubl
 5. Do not tell the user to manually deploy or create new infrastructure unless the existing GitHub → Cloudflare path has actually been shown to be broken.
 6. When a new issue is solved, add it here using: **Symptom → Failed/looping attempts → Root cause → Verified fix → Prevention rule**.
 
+## 2026-10-09 — Ordinary conversation is still sent through a mutation router
+
+**Symptom:** Production `Are you online?` became an invalid `ACTIVE_WORK.md` state proposal. The existing frozen acceptance rerun remains **8 PASS / 3 PARTIAL / 4 FAIL** after the isolated safety repair, with Muse comparison, Save key, assent, and idea deduplication failing.
+
+**Cause found in source:** The only model interface requires `submit_control_route` and forbids an answer outside it. The service packet lacks recent-turn and pending-action context; the write contract has only two canonical targets. Thus a normal question is forced into classification/proposal output, and a rejected proposal can surface a technical validation error rather than an answer. The previous safety repairs address lost input and stale approvals only.
+
+**Stop and prevention:** No conversational fix or production acceptance was verified. Adding phrase exceptions or prompt changes would not supply missing context, broad retrieval, Save key fan-out, or evidence-bound completion. Freeze independent multi-turn cases and prove one useful read-only turn plus one verified reconciliation through the existing authority/write gates before resuming promotion. Wrangler authentication was unavailable, and the attempted CLI install hit disk `ENOSPC`; no bindings or deployment were changed. See `docs/CONTROL_PLANE_TEST_REGISTRY.md` for the exact stop receipt.
+
 ## 2026-10-08 — Unqualified next-action query still reaches the model before the ambiguity stop
 
 **Symptom:** In the current local control-plane implementation, the unqualified request `what is next?` reached the routing adapter even though several workstreams were current. A hostile test router returned a state proposal, but the later resolved-write-target gate stopped it with `ambiguous_scope`; no queue item, interaction history row, or canonical write was created.
