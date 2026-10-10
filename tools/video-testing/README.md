@@ -1,6 +1,6 @@
 # Private video testing — implementation and activation
 
-Status: implemented development slice; not deployed or accepted on iPhone.
+Status: local mobile-browser and Worker-packaging checks pass; not deployed or accepted on a real iPhone.
 
 ## Source / reuse
 
@@ -48,8 +48,8 @@ Cloud receipt: `docs/test-receipts/2026-10-10-video-testing.json`.
 
 This branch adds a Wrangler custom-build stop (`scripts/video-testing-build-guard.mjs`) for CI/Workers Builds unless `VIDEO_TEST_DEPLOY_APPROVED=1` is explicitly set after separate approval. This prevents an authorized branch push from silently becoming an unauthorized preview upload. Do not remove/enable it without approval. It intentionally blocks the CI Worker packaging step too; local dry-run is allowed. No main merge, preview or production deploy is authorized.
 
-1. Run actual browser acceptance (mobile viewport and iPhone Photos/Files selection, playback codec support, token cookie, correction reload, disconnect/reconnect). This cloud runtime has Playwright but no browser executable; rendered acceptance is unverified.
-2. Run Worker packaging dry-run in the existing Wrangler environment. Wrangler is absent here and registry network access is unavailable; packaging is unverified.
+1. Mobile-browser check: the checked-in shell rendered at 390×844 with no horizontal overflow or console errors, and its independent testing-token gate, video-only picker and offline-disabled Analyze control were visible. This is not iPhone Safari/Photos/Files, codec, real-cookie or correction-round-trip proof. Receipt: `docs/test-receipts/2026-10-10-video-testing-mobile-packaging.json`.
+2. Worker packaging dry-run: PASS with Wrangler 4.63.0 (149.99 KiB / 40.09 KiB gzip). The build guard ran locally and no upload occurred. This is not a Cloudflare preview or production deployment. Receipt: `docs/test-receipts/2026-10-10-video-testing-mobile-packaging.json`.
 3. On the authorized Mac, point to the unchanged analyzer checkout and run its frozen suite with existing ASR runtime. Cloud preserved F-003–F-006/P-002, but the full cloud replay has ASR-dependent failures; it is not a full regression PASS.
 4. Establish/reuse the existing authorized HTTPS worker transport, set the three testing bindings and start the adapter. If no existing transport exists, report this one infrastructure gap before creating anything.
 5. Obtain separate approval for normal existing GitHub→Cloudflare promotion; then enable the build guard deliberately, merge/deploy by the established path, and verify `/video-test/` on a phone without the admin password.

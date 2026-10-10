@@ -1,0 +1,57 @@
+{
+  "schema_version": "mary-kate.video-testing.mobile-packaging.v1",
+  "observed_at": "2026-10-10T05:37:00Z",
+  "implementation_commit": "fc4ae0ba03bdf3fae4ca0da84c8cd527e5a3f757",
+  "scope": "development-only local verification; no Cloudflare upload, merge, production deployment, private-footage transfer, or paid service",
+  "browser_mobile": {
+    "result": "PASS",
+    "environment": "local Chromium browser viewport",
+    "url": "local static fixture serving the checked-in /video-test/ shell",
+    "viewport": {"width": 390, "height": 844},
+    "document_client_width": 390,
+    "document_scroll_width": 390,
+    "horizontal_overflow": false,
+    "visible_access_state": "testing-token form visible; no admin session",
+    "file_accept": "video/*,.mov,.mp4,.m4v,.webm",
+    "analyze_disabled_without_connection": true,
+    "console_errors": []
+  },
+  "worker_packaging": {
+    "result": "PASS",
+    "command": "npx --yes wrangler@4.63.0 deploy --dry-run --outdir /tmp/video-testing-worker-build",
+    "custom_build_guard": "ran locally without VIDEO_TEST_DEPLOY_APPROVED and permitted dry-run because no CI/Workers-build environment was present",
+    "total_kib": 149.99,
+    "gzip_kib": 40.09,
+    "upload_performed": false
+  },
+  "regressions": {
+    "command": "npm test",
+    "pass": 95,
+    "fail": 0,
+    "skip": 1,
+    "skipped_test": "actual synthetic upload requires the unchanged analyzer checkout; no substitute analyzer was used",
+    "existing_asr_failures": "preserved without code or test changes; their prior recorded states remain extractor_unavailable and ASR-dependent caption classification absent"
+  },
+  "testing_access": {
+    "prepared": "independent VIDEO_TEST_ACCESS_TOKEN creates only a signed, expiring, revocable __Host-video_test cookie; it cannot satisfy admin authentication",
+    "not_provisioned": true,
+    "secrets_or_tokens_created": false
+  },
+  "analyzer_connection": {
+    "state": "BLOCKED",
+    "current_workspace": {
+      "analyzer_module": "absent",
+      "configured_worker_url": "absent",
+      "configured_worker_token": "absent"
+    },
+    "available_local_primitives": ["ffmpeg", "ffprobe", "tesseract"],
+    "boundary": "Those local tools do not prove the authorized Mac analyzer, its optional ASR runtime, or the fixed HTTPS transport is available."
+  },
+  "not_proven": [
+    "real iPhone Safari rendering, Photos/Files picker, codec playback, or cookie behavior",
+    "reachable authorized HTTPS analyzer transport",
+    "Mac analyzer run, frozen analyzer suite, or ASR availability",
+    "real-footage upload, source-time review, correction round trip, or creator acceptance"
+  ],
+  "status": "READY_FOR_SEPARATE_DEPLOYMENT_APPROVAL"
+}
