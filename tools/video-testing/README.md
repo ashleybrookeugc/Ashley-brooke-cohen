@@ -2,6 +2,12 @@
 
 Status: implemented development slice; not deployed or accepted on iPhone.
 
+## Activation continuation — 2026-10-10
+
+Ashley's “Make it usable” authorizes activation after safety checks; no additional paid infrastructure or private AI transfer is authorized. Worker packaging now PASSES using Wrangler 4.54.0 (`deploy --dry-run`, no upload). Real Chromium at 390×844 now PASSES actual upload to the unchanged analyzer, frame rendering, source playback, cookie persistence, real IndexedDB correction/reload, worker-offline review, exact-file relinking, and offline correction synchronization after reconnect. See `scripts/acceptance/video-testing-browser.mjs`; this uses synthetic media and loopback transport only. Physical iPhone and live Cloudflare remain unverified.
+
+Live activation is ACCESS-BLOCKED: Wrangler whoami explicitly reports unauthenticated; this session has no configured Cloudflare credential or direct Mac execution connection. Cloudflare plugin discovery returned no matching integration. Do not merge an unusable token-gated shell, weaken access checks, embed a token, or claim the Mac is online. Resume with authenticated Cloudflare access and the authorized analyzer host connection, configure the three testing bindings, then activate through the normal deployment path. Deployment guard remains until those prerequisites are met.
+
 ## Source / reuse
 
 Website base: main `be17a176943261c165d0f160f472aa16ddc3a21b`.
