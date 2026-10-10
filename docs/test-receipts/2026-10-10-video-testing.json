@@ -1,0 +1,94 @@
+{
+  "status": "PARTIAL_IMPLEMENTATION_NOT_DEPLOYED",
+  "date": "2026-10-10",
+  "website_base": "be17a176943261c165d0f160f472aa16ddc3a21b",
+  "pr5_reviewed_head": "f272b5a151e75991055accad4d6b16a0d8766cf6",
+  "existing_analyzer_ref": "e5dfe3e4d3967615f23eb064896de1303f86ded9",
+  "analyzer_core_git_blob": "63a25d537f0055f578409135152352f4a517faaa",
+  "analyzer_understanding_git_blob": "b7ca0508675a953419ac7268f0d2f5712e84ba2c",
+  "analyzer_changes": false,
+  "cloud_tests": {
+    "command": "node --test test/*.test.js tests/control-plane.test.js",
+    "total": 96,
+    "pass": 96,
+    "fail": 0,
+    "skip": 0,
+    "scope": "90 existing main tests, 5 testing gateway/adapter/security groups, 1 frontend DOM/storage-double group"
+  },
+  "actual_synthetic_extraction": {
+    "input": "FFmpeg-generated 1-second 160x120 navy MP4, no private media",
+    "upload": "PASS actual bytes",
+    "existing_processVideo": "PASS",
+    "verified_package": "PASS",
+    "source_frames_and_times": "PASS",
+    "range_playback_bytes": "PASS",
+    "feedback_write_read_restart": "PASS",
+    "source_and_observation_mismatch_rejected": "PASS",
+    "feedback_idempotency_and_no_overwrite": "PASS",
+    "invalid_video_failed": "PASS"
+  },
+  "ui_execution": {
+    "status": "PASS_WITH_DOUBLES",
+    "proves": [
+      "actual app module startup",
+      "offline cached evidence rendering",
+      "correction local write and reload retrieval",
+      "hostile correction treated as text"
+    ],
+    "does_not_prove": [
+      "browser rendering",
+      "real IndexedDB durability",
+      "iPhone picker",
+      "cookie behavior in Safari",
+      "playable codecs"
+    ]
+  },
+  "security": {
+    "unauthenticated_denied": true,
+    "csrf_denied": true,
+    "testing_session_admin_access_denied": true,
+    "signed_expiring_revocable_cookie": true,
+    "fixed_https_worker_no_redirect": true,
+    "private_credentials_absent_from_frontend": true,
+    "loopback_adapter": true,
+    "uploads_capped_bytes": 67108864,
+    "no_new_paid_services": true,
+    "ci_deployment_guard": "tested rejects unapproved build"
+  },
+  "unchanged_analyzer_suite": {
+    "total": 18,
+    "pass": 16,
+    "fail": 2,
+    "F003_F004_F005_F006_P002": "PASS",
+    "failures": [
+      {
+        "test": "ASR preserves tested connector words and negation",
+        "actual": "extractor_unavailable",
+        "expected": "completed",
+        "cause": "Existing PocketSphinx Python runtime absent in cloud"
+      },
+      {
+        "test": "OCR caption-like classification and disagreement",
+        "actual": "expected caption classification absent",
+        "dependency": "Caption classification relies on ASR overlap; no ASR available"
+      }
+    ],
+    "full_pass": false,
+    "initial_fixture_failures": "6 before frozen binary fixtures were recovered; final replay uses original committed fixtures",
+    "mac_replay": "NOT_RUN"
+  },
+  "blocked": [
+    "Playwright executable absent; real rendered browser acceptance not run",
+    "Wrangler unavailable; registry access restricted; packaging not run",
+    "No authorized reachable Mac HTTPS analyzer transport established",
+    "No private real-video acceptance or creator review"
+  ],
+  "prohibited_actions": {
+    "merge": false,
+    "deploy": false,
+    "private_ai_transfer": false,
+    "deletion": false,
+    "new_paid_service": false
+  },
+  "next": "Use tools/video-testing/README.md activation and acceptance steps. Full feature acceptance remains open."
+}

@@ -1,4 +1,5 @@
 import app from './control-worker.js';
+import {videoTestingRoute} from './video-testing/page-worker.js';
 
 function eventDetailPage(occurrenceId) {
   const id = String(occurrenceId || '').replace(/[^a-zA-Z0-9_-]/g, '');
@@ -31,6 +32,8 @@ function getOccurrenceId(url) {
 
 export default {
   async fetch(request, env, ctx) {
+    const testing = await videoTestingRoute(request, env);
+    if (testing) return testing;
     const url = new URL(request.url);
     const occurrenceId = getOccurrenceId(url);
     if (occurrenceId) return eventDetailPage(occurrenceId);
@@ -43,3 +46,4 @@ export default {
     }
   },
 };
+
