@@ -11,6 +11,39 @@ const hash=async value=>{const bytes=new TextEncoder().encode(value);return [...
 const canonicalPayload=(target,proposal)=>JSON.stringify({target,proposal});
 const canonicalSectionName=value=>String(value||'').split(' — ')[0].trim();
 const resolvedWorkstreamSections=receipt=>[...new Set((receipt?.evidence||[]).map(fact=>fact.section).filter(Boolean))];
+async function verifyIndexedDestination(github,target,route) {
+  // An automatic write is not complete merely because its target rereads.  The
+  // route phrase is checked against the existing Project Truth index before a
+  // mutation so a new fact cannot become an unfindable leaf.
+  const routeText=String(route?.proposal?.index_route||'').trim();
+  if(!routeText) {
+    if(route?.automatic_preservation) throw new CanonicalWriteError('canonical_index_route_missing','Mary Kate could not verify an index route for this automatic preservation. Nothing was written.');
+    return {status:'not_required'};
+  }
+  const index=await github.readFile(WRITE_REPO,'PROJECT_INDEX.md');
+  const indexed=String(index.content||'').includes(routeText)&&String(index.content||'').includes(target.path);
+  if(!index.sha||!indexed) throw new CanonicalWriteError('canonical_index_route_missing','Mary Kate could not verify that this preservation destination is discoverable through Project Truth. Nothing was written.');
+  return {status:'verified',source:{repo:WRITE_REPO,path:'PROJECT_INDEX.md',sha:index.sha},route:routeText};
+}
+function assertAutomaticExpectedCurrent(content,proposal) {
+  if(!proposal.automatic_preservation) return;
+  if(typeof proposal.expected_current_value!=='string') throw new CanonicalWriteError('canonical_expected_value_missing','Mary Kate could not compare this automatic preservation with the current canonical value. Nothing was written.');
+  if(proposal.target_path!=='ACTIVE_WORK.md') return;
+  const facts=parseCanonicalFacts(content).filter(fact=>canonicalSectionName(fact.section)===canonicalSectionName(proposal.section)&&fact.label===proposal.field);
+  if(facts.length!==1||facts[0].value!==proposal.expected_current_value) throw new CanonicalWriteError('canonical_conflict','Mary Kate found conflicting canonical information and did not overwrite it automatically.');
+}
+
+// A receiver must demonstrate use of the same authoritative instruction, not
+// merely report that it was delivered.  Callers supply a bounded envelope and
+// retain the failed result as a receipt rather than treating a worker claim as
+// completion.
+export function verifyWorkerHandoff(envelope,result) {
+  const expected=String(envelope?.expected_application||'');
+  const applied=String(result?.applied_decision||'');
+  const authorityMatches=Boolean(envelope?.authority?.repo&&envelope?.authority?.path&&envelope?.authority?.sha&&result?.authority_sha===envelope.authority.sha);
+  const status=Boolean(expected)&&applied===expected&&authorityMatches?'verified':'failed';
+  return {version:'worker-handoff-receipt.v1',status,task_id:envelope?.task_id||null,authority:envelope?.authority||null,expected_application:expected,applied_decision:applied||null,reason:status==='verified'?null:'Worker output did not demonstrate application of the original authoritative instruction.'};
+}
 function enforceResolvedWriteTarget(route,receipt,ambiguityGate) {
   const proposal=route?.proposal;
   if(!proposal||proposal.target_path!=='ACTIVE_WORK.md') return route;
@@ -213,7 +246,7 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
   };
   return {
     state,
-    async capture(text,{requiredFactKeys=[]}={}) {
+    async capture(text,{requiredFactKeys=[],automaticPreservation=false}={}) {
       if(typeof text!=='string'||!text.trim()||text.length>4000) throw new Error('Message must be 1–4000 characters');
       const initial=await state();
       // Scope each requested fact against the actual canonical facts, not the de-duplicated key list.
@@ -257,10 +290,13 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
         error.code='read_only_route_violation';error.status=422;error.message='Routing proposed an action for a read-only question. No approval or change was saved.';
         throw error;
       }
-      const route=enforceResolvedWriteTarget({...candidate,prior_state:snapshot.prior_state,...(snapshot.completion_authority?{retrieval_authority:{source:snapshot.completion_authority.source,routing_source:snapshot.completion_authority.routing_source}}:{})},snapshot.prior_state,ambiguity_gate);
+      const route=enforceResolvedWriteTarget({...candidate,automatic_preservation:Boolean(automaticPreservation),prior_state:snapshot.prior_state,...(snapshot.completion_authority?{retrieval_authority:{source:snapshot.completion_authority.source,routing_source:snapshot.completion_authority.routing_source}}:{})},snapshot.prior_state,ambiguity_gate);
       if(route.proposal) {
         // Bind approval to the authority actually used to prepare this proposal.
         // Persist inside the existing proposal JSON; never trust a model SHA.
+        // This is service-owned metadata, so a later D1-backed approval can
+        // retain the stricter automatic-preservation index check.
+        route.proposal.automatic_preservation=Boolean(automaticPreservation);
         const reviewed=route.proposal.target_path==='ACTIVE_WORK.md'?snapshot.source:await github.readFile(route.proposal.target_repo,route.proposal.target_path);
         if(!reviewed.sha) throw new CanonicalWriteError('canonical_review_missing','Mary Kate could not verify the proposal source version. Nothing was queued.');
         route.proposal.reviewed_sha=reviewed.sha;
@@ -268,13 +304,30 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
       const interaction=await store.addInteraction({raw_text:text.trim(),route});
       let item=null;
       if(route.proposal) item=await store.addQueueItem({interaction_id:interaction.id,...route});
-      return {interaction_id:interaction.id,plain_summary:route.plain_summary,responsibility:route.responsibility,route_kind:route.route_kind,queue_item:item};
+      let preservation=null;
+      if(automaticPreservation) {
+        if(!item) preservation={status:'not_material',message:'Mary Kate kept this turn out of durable Project Truth because it did not contain a proposed durable change.'};
+        else if(route.responsibility!=='ai_can_handle') preservation={status:'pending_approval',message:'Mary Kate retained this consequential change as a recoverable pending approval. No canonical change was made.'};
+        else {
+          try {
+            const approved=await this.approve(item.id,'Automatic preservation from Ashley conversation');
+            preservation={status:approved.receipt.already_canonical?'already_canonical':'verified',receipt:approved.receipt,message:approved.message};
+          } catch(error) {
+            const receipt={version:'conversation-preservation-receipt.v1',status:'failed',phase:'automatic_write_or_verification',target:{repo:item.proposal.target_repo,path:item.proposal.target_path},operation_id:item.id,code:error?.code||'automatic_preservation_failed',message:error?.message||'Automatic preservation failed'};
+            await store.resolveQueueItem(item.id,'failed','Automatic preservation did not verify; the original conversation remains recoverable.',receipt);
+            preservation={status:'failed',receipt,message:'Mary Kate retained the conversation and a failed preservation receipt. It did not claim a canonical save.'};
+          }
+        }
+      }
+      const summary=preservation?.status==='verified'||preservation?.status==='already_canonical'?preservation.message:preservation?.message||route.plain_summary;
+      return {interaction_id:interaction.id,plain_summary:summary,responsibility:route.responsibility,route_kind:route.route_kind,queue_item:item,preservation};
     },
     async approve(id,note='') {
       const item=await store.getQueueItem(id);
       if(!item||!['pending','approved'].includes(item.status)||!item.proposal) throw new Error('Pending item not found');
       const target={repo:item.proposal.target_repo,path:item.proposal.target_path};
       const current=await github.readFile(target.repo,target.path);
+      const index=await verifyIndexedDestination(github,target,{proposal:item.proposal,automatic_preservation:item.proposal.automatic_preservation});
       const payload_digest=await hash(canonicalPayload(target,item.proposal));
       const existing=readMarker(current.content);
       let updated,write,recovered=false,commit_sha=null;
@@ -294,6 +347,12 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
           throw new CanonicalWriteError('canonical_review_stale','Project Truth changed after this proposal was prepared. Review a fresh proposal before approving. Nothing was written.');
         }
         const canonical=applyProposal(stripMarker(current.content),item.proposal);
+        if(canonical===stripMarker(current.content)) {
+          const receipt={version:'control-write-receipt.v1',status:'verified',target,source_before_sha:current.sha,commit_sha:null,github_content_sha:current.sha,operation_id:item.id,payload_digest,recovered:false,already_canonical:true,index,verification:{status:'verified',verified_at:new Date(now()).toISOString(),readback_sha:current.sha}};
+          await store.resolveQueueItem(id,'approved',note,receipt);
+          return {status:'approved',plain_summary:item.plain_summary,receipt,message:'Mary Kate found this exact change already canonical and made no duplicate GitHub write.'};
+        }
+        assertAutomaticExpectedCurrent(current.content,item.proposal);
         const operation={version:'control-write-operation.v1',operation_id:item.id,payload_digest,expected_prior_sha:current.sha,target_repo:target.repo,target_path:target.path,content_digest:await hash(canonical)};
         updated=canonical.trimEnd()+'\n\n'+markerStart+encodeMarker(operation)+markerEnd+'\n';
         write=await github.writeFile(target.repo,target.path,updated,current.sha,'Control plane: '+item.plain_summary);
@@ -301,13 +360,13 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
       }
       let readback;
       try { readback=await github.readFile(target.repo,target.path); } catch {
-        const receipt={version:'control-write-receipt.v1',status:'failed',target,source_before_sha:current.sha,commit_sha,github_content_sha:write?.content_sha||current.sha,operation_id:item.id,payload_digest,verification:{status:'unavailable',verified_at:new Date(now()).toISOString()}};
+        const receipt={version:'control-write-receipt.v1',status:'failed',target,source_before_sha:current.sha,commit_sha,github_content_sha:write?.content_sha||current.sha,operation_id:item.id,payload_digest,index,verification:{status:'unavailable',verified_at:new Date(now()).toISOString()}};
         await store.resolveQueueItem(id,'failed','Write completed but canonical read-back was unavailable',receipt);
         if(target.path==='ACTIVE_WORK.md') await store.invalidateContextPacket('active-work.v1');
         throw new Error('GitHub write did not pass canonical read-back verification');
       }
       const verified=readback.content===updated&&(!write||readback.sha===write.content_sha)&&Boolean(commit_sha);
-      const receipt={version:'control-write-receipt.v1',status:verified?'verified':'failed',target,source_before_sha:existing?.expected_prior_sha||current.sha,commit_sha,github_content_sha:write?.content_sha||current.sha,operation_id:item.id,payload_digest,recovered,verification:{status:verified?'verified':'mismatch',verified_at:new Date(now()).toISOString(),readback_sha:readback.sha||null}};
+      const receipt={version:'control-write-receipt.v1',status:verified?'verified':'failed',target,source_before_sha:existing?.expected_prior_sha||current.sha,commit_sha,github_content_sha:write?.content_sha||current.sha,operation_id:item.id,payload_digest,recovered,index,verification:{status:verified?'verified':'mismatch',verified_at:new Date(now()).toISOString(),readback_sha:readback.sha||null}};
       if(!verified) {
         await store.resolveQueueItem(id,'failed','Canonical read-back did not match the approved proposal',receipt);
         if(target.path==='ACTIVE_WORK.md') await store.invalidateContextPacket('active-work.v1');

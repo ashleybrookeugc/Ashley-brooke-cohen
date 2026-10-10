@@ -13,6 +13,16 @@ Before repeating deployment, Cloudflare, Worker, build, routing, or asset troubl
 5. Do not tell the user to manually deploy or create new infrastructure unless the existing GitHub → Cloudflare path has actually been shown to be broken.
 6. When a new issue is solved, add it here using: **Symptom → Failed/looping attempts → Root cause → Verified fix → Prevention rule**.
 
+## 2026-10-10 — Preservation cannot be inferred from a successful router response
+
+**Symptom:** The prior control path could classify a conversation but had no connection that proved an eligible change had reached an indexed canonical destination, been reread, and could be used by another worker. A model sentence saying “saved” was not evidence.
+
+**Root cause:** The route/approval/write primitives existed separately, but conversation ingress neither invoked them automatically for already-authorized material changes nor carried index verification, exact-current conflict comparison, a failed preservation receipt, or downstream handoff verification.
+
+**Verified fix:** The isolated automatic-preservation fixture now calls the existing route, queue, approval, conditional write, reread, and receipt primitives when `automatic_preservation` is explicitly enabled. It requires the existing `ai_can_handle` authorization, an indexed destination, and an exact expected canonical value. The fixture independently proves write/readback/index/fresh-worker retrieval and seven negative outcomes; full suite 103/103. The Worker packaging dry-run remains blocked because local Wrangler is unavailable.
+
+**Prevention rule:** Never call a conversation item preserved from classifier output, an approval row, or a commit alone. Require the indexed destination, exact reread receipt, and downstream retrieval/application check. Conflicts, missing routes, failed writes, dropped handoffs, and approval-required changes must remain failed or pending—not successful.
+
 ## 2026-10-09 — Ordinary conversation is still sent through a mutation router
 
 **Symptom:** Production `Are you online?` became an invalid `ACTIVE_WORK.md` state proposal. The existing frozen acceptance rerun remains **8 PASS / 3 PARTIAL / 4 FAIL** after the isolated safety repair, with Muse comparison, Save key, assent, and idea deduplication failing.

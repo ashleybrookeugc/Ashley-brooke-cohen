@@ -1,5 +1,13 @@
 # Mary Kate V1 control-plane test registry
 
+## 2026-10-10 — Automatic preservation + fresh-worker handoff fixture
+
+**Status: PASS — isolated end-to-end fixture only; production and broad conversational understanding remain unverified.** The frozen contract is `scripts/acceptance/automatic-preservation-handoff-cases.json` at `23665ea`. It fixes the no-save-command video-analyzer decision, expected canonical `ACTIVE_WORK.md` destination, index route, existing `ai_can_handle` permission, exact write/reread receipt, and fresh-worker retrieval/application before the implementation commit.
+
+`test/control-automatic-preservation.test.js` passes **8/8** in an isolated in-memory Project Truth fixture. It exercises automatic preservation, exact canonical reread, index discoverability, fresh no-conversation worker retrieval, already-canonical no-op, canonical conflict, missing index route, failed GitHub write, pending required approval, non-durable conversation, and a worker that drops the original instruction. The full repository suite passes **103/103**. The Worker dry-run is **BLOCKED**, not passed: this checkout currently has no `wrangler` executable. No production endpoint, Cloudflare deployment, credential, real GitHub file, or real Project Truth document changed.
+
+The implementation is deliberately a narrow ingress connection: `automatic_preservation: true` can use the existing router, approval policy, conditional GitHub writer, reread receipt, D1/memory history, and current-state packet. It auto-finalizes only an existing `ai_can_handle` proposal with an indexed destination and exact expected current value. Consequential routes remain pending; any write/index/verification failure records a failed receipt and leaves the original interaction recoverable. Controlled routing output proves wiring and safeguards, not live semantic-model correctness.
+
 ## 2026-10-09 — Natural conversation acceptance stop
 
 **Status: FAIL / implementation stopped before promotion.** The existing frozen workflow A–F fixture was rerun on `mary-kate/workflow-adherence`: **8 PASS / 3 PARTIAL / 4 FAIL**, with controlled provider outputs and isolated GitHub contents. Muse comparison, Save key reconciliation, immediate assent, and duplicate idea capture still fail. The separately observed authenticated production `Are you online?` request became an invalid `ACTIVE_WORK.md` state proposal (Project Truth learned-change log, interaction `c90af02d-3863-4475-9f7a-060c835d3664`). Existing safety passes do not establish conversational usefulness.
