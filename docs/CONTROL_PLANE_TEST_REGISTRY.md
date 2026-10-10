@@ -77,6 +77,16 @@ This is the product-local registry for the bounded routing and execution-accepta
 1. The local pre-routing ambiguity repair is verified; deployment and live behavior are not.
 2. The local hybrid is viable only as deterministic controls → allowlisted candidate retrieval → bounded resolver → deterministic authority/approval/write gates. Qwen alone is not acceptable.
 3. The real Cloudflare V1 acceptance slice remains unproven: scoped Project Truth retrieval, routing, required approval, conditional canonical write, exact reread, and verified D1 receipt must all be observed together.
+
+## 2026-10-09 Video Evidence V0 cloud continuation
+
+- PR #5 now points to `26140bf1fe24e50368a7aa227d99b6bfe252a8b4`, based on production `be17a176943261c165d0f160f472aa16ddc3a21b`. It remains draft and unmerged.
+- The cloud continuation reread all six immutable analyzer receipts. F-003 through F-006 and P-001/P-002 normalize as their recorded PASS states; these remain bounded component results rather than creative approval or complete video-understanding evidence.
+- A verified display defect was fixed: P-001's canonical `ocr.frame_invocation_count` was previously normalized as unavailable. The interface now shows its actual call counts (6, 21, 2, and 8) and exposes the existing OCR observation counts. P-002 now visibly includes baseline/candidate calls, cache hits, and output-equivalence status. F-006 visibly includes source timestamps and OCR observation references beside its two deterministic frame previews.
+- Canonical receipt readback also verified both F-006 preview objects as PNG data. Private source playback, receipt-absent OCR detail, and receipt-absent ASR remain explicitly unavailable. All runs remain labeled as having no recorded human creative acceptance.
+- Automated verification: local cloud suite 96/96 PASS; Worker dry-run PASS. GitHub Actions run `38016765575` repeated 96/96 and Worker packaging PASS. Cloudflare preview build `1c898dfb-2595-40c4-985f-aa8fb96c3001` PASS. An unauthenticated browser request to the branch preview `/control/` redirected to `/admin/login`.
+- **Remaining gate:** authenticated browser rendering through the deployed preview and its real GitHub App reader is BLOCKED because this cloud session has no signed admin session or admin credential. The Mac and private media are offline and were not accessed or replaced with synthetic evidence. PR #5 is therefore not yet marked ready to merge.
+- Exact machine-readable evidence and boundaries: `docs/test-receipts/2026-10-09-video-evidence-v0-cloud-acceptance.json`.
 # 2026-10-09 explicit-subject/read-only development receipt
 
 - Implementation: `97e38b5848aa63bf7cc3825916a1af26d5d8c0a2` on `mary-kate/explicit-readonly-resolution`, based on main `5df0a6d3d0b614f814e95a6dee740272e4c9cb74`.
