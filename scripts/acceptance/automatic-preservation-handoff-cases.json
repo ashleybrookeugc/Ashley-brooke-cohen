@@ -1,0 +1,28 @@
+{
+  "status": "FROZEN_BEFORE_IMPLEMENTATION",
+  "scope": "Isolated disposable Project Truth fixture only; no production or real Project Truth mutation.",
+  "conversation": [
+    "The video analyzer should prioritize accurate source timestamps over processing speed.",
+    "Okay, what should we tackle next?"
+  ],
+  "primary_expected": [
+    "Classify the first turn as a durable video-analyzer decision without a save command.",
+    "Resolve the indexed Video analyzer ACTIVE_WORK destination and compare the exact current canonical value.",
+    "Use the existing ai_can_handle authorization and existing conditional GitHub write/reread receipt path.",
+    "Verify the exact write, index discoverability, and receipt before reporting preservation.",
+    "A fresh no-conversation worker retrieves the decision from Project Truth and demonstrates the expected application."
+  ],
+  "adversarial_expected": {
+    "already_saved": "Verified no-op; no duplicate commit.",
+    "canonical_conflict": "No overwrite; failed recoverable receipt.",
+    "missing_index_route": "No write; discoverability verification fails.",
+    "github_write_failure": "No saved claim; failed recoverable receipt.",
+    "handoff_instruction_dropped": "Reject completion.",
+    "consequential_without_approval": "Pending recoverable approval; no write.",
+    "temporary_conversation": "No canonical commit."
+  },
+  "non_goals": [
+    "Natural-language model quality is not established by controlled provider output.",
+    "Production deployment, Cloudflare lineage, real GitHub mutation, and real Project Truth mutation are out of scope."
+  ]
+}
