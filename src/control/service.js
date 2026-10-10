@@ -41,8 +41,10 @@ export function verifyWorkerHandoff(envelope,result) {
   const expected=String(envelope?.expected_application||'');
   const applied=String(result?.applied_decision||'');
   const authorityMatches=Boolean(envelope?.authority?.repo&&envelope?.authority?.path&&envelope?.authority?.sha&&result?.authority_sha===envelope.authority.sha);
-  const status=Boolean(expected)&&applied===expected&&authorityMatches?'verified':'failed';
-  return {version:'worker-handoff-receipt.v1',status,task_id:envelope?.task_id||null,authority:envelope?.authority||null,expected_application:expected,applied_decision:applied||null,reason:status==='verified'?null:'Worker output did not demonstrate application of the original authoritative instruction.'};
+  const envelopeComplete=Boolean(String(envelope?.original_request||'').trim()&&String(envelope?.scoped_task||'').trim()&&String(envelope?.permissions||'').trim());
+  const status=Boolean(expected)&&envelopeComplete&&applied===expected&&authorityMatches?'verified':'failed';
+  const reason=!envelopeComplete?'Handoff envelope is missing the original request, scoped task, or permissions.':status==='verified'?null:'Worker output did not demonstrate application of the original authoritative instruction.';
+  return {version:'worker-handoff-receipt.v1',status,task_id:envelope?.task_id||null,authority:envelope?.authority||null,expected_application:expected,applied_decision:applied||null,reason};
 }
 function enforceResolvedWriteTarget(route,receipt,ambiguityGate) {
   const proposal=route?.proposal;

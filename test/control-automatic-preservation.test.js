@@ -44,7 +44,7 @@ test('automatic conversation preservation writes, rereads, indexes, and gives a 
   const current=await fresh.state({refresh:true});
   const retrieved=current.projects.find(project=>project.name===section)['Next decision'];
   assert.equal(retrieved,decision);
-  const handoff=verifyWorkerHandoff({task_id:'fixture-video-priority',authority:current.source,expected_application:decision},{authority_sha:current.source.sha,applied_decision:retrieved});
+  const handoff=verifyWorkerHandoff({task_id:'fixture-video-priority',original_request:'The video analyzer should prioritize accurate source timestamps over processing speed.',scoped_task:'Apply the persisted video-analyzer source-priority decision.',permissions:'read Project Truth only',authority:current.source,expected_application:decision},{authority_sha:current.source.sha,applied_decision:retrieved});
   assert.equal(handoff.status,'verified');
 });
 
@@ -86,6 +86,6 @@ test('temporary conversation makes no canonical commit',async()=>{
 });
 
 test('a handoff that drops the original decision cannot complete',()=>{
-  const receipt=verifyWorkerHandoff({task_id:'fixture-video-priority',authority:{repo,path:'ACTIVE_WORK.md',sha:'active-2'},expected_application:decision},{authority_sha:'active-2',applied_decision:'Prioritize processing speed.'});
+  const receipt=verifyWorkerHandoff({task_id:'fixture-video-priority',original_request:'The video analyzer should prioritize accurate source timestamps over processing speed.',scoped_task:'Apply the persisted video-analyzer source-priority decision.',permissions:'read Project Truth only',authority:{repo,path:'ACTIVE_WORK.md',sha:'active-2'},expected_application:decision},{authority_sha:'active-2',applied_decision:'Prioritize processing speed.'});
   assert.equal(receipt.status,'failed');assert.match(receipt.reason,/did not demonstrate application/);
 });
