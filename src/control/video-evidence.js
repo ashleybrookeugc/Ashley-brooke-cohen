@@ -33,7 +33,7 @@ const publicRuns=(receipt)=>{
       ocr_observations:baseline.ocr_observation_count??baseline.ocr?.invocations?.reduce((n,x)=>n+(x.observation_count||0),0)??null,
       baseline_analyzer_ms:baseline.analyzer_wall_ms??null,
       candidate_analyzer_ms:candidate?.analyzer_wall_ms??null,
-      baseline_ocr_calls:baseline.ocr?.tesseract_invocation_count??null,
+      baseline_ocr_calls:baseline.ocr?.tesseract_invocation_count??baseline.ocr?.frame_invocation_count??null,
       candidate_ocr_calls:candidate?.ocr?.tesseract_invocation_count??null,
       cache_hits:candidate?.ocr?.cache_hit_count??null,
       output_equivalent:run.comparison?.evidence_json_equal??null,

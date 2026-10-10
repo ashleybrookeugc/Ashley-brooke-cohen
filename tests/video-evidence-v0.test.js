@@ -36,6 +36,12 @@ test('receipt service reads only allowlisted paths pinned to canonical commits a
   assert.equal(out.runs.find(x=>x.id==='P-001').benchmark_runs[0].input_type,'real video');
 });
 
+test('P-001 receipt vocabulary preserves actual OCR invocation counts',()=>{
+  const entry=VIDEO_EVIDENCE_CATALOG.find(x=>x.id==='P-001');
+  const out=normalizeVideoEvidenceReceipt(entry,{...receipt,status:'PASS_BASELINE_ESTABLISHED',benchmark_runs:[{fixture_id:'p001-control',media_class:'deterministic_fixture',input:{duration_seconds:3},sampled_frame_count:6,selected_visual_event_count:2,raw_ocr_observation_count:6,analyzer_wall_ms:537.169,ocr:{frame_invocation_count:6,invocations:[]}}]},'2026-10-09T23:00:00Z');
+  assert.equal(out.benchmark_runs[0].baseline_ocr_calls,6);
+});
+
 test('GitHub binary reads retain server-side authorization and use a fixed ref',async()=>{
   const calls=[];
   const github=createGitHubAdapter({tokenProvider:async scope=>'secret-'+scope,fetchImpl:async(url,options)=>{calls.push({url,options});return new Response(JSON.stringify({sha:'blob',content:btoa('PNG')}),{status:200})}});
@@ -51,6 +57,9 @@ test('control page labels technical evidence, unavailable media, and creator rev
   assert.match(html,/A passing component test is not creative approval/);
   assert.match(html,/Source playback/); 
   assert.match(html,/Human creative review/);
+  assert.match(html,/OCR references/);
+  assert.match(html,/baseline OCR calls/);
+  assert.match(html,/output equivalent/);
   assert.match(html,/api\/control\/video-evidence/);
 });
 
