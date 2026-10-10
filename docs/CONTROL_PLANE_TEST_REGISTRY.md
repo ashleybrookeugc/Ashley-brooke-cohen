@@ -1,5 +1,13 @@
 # Mary Kate V1 control-plane test registry
 
+## 2026-10-10 — Workers AI automatic-preservation routing contract
+
+**Status: DETERMINISTIC CONTRACT PASS; FRESH-WORKER HANDOFF PASS; LIVE PROVIDER AND PRODUCTION ACCEPTANCE UNVERIFIED.** The frozen automatic-preservation contract remains `scripts/acceptance/automatic-preservation-handoff-cases.json` from `23665ea`; this test does not revise its expected outcome. `test/control-workers-ai-automatic-preservation.test.js` exercises the actual `createWorkersAiRoutingAdapter` with a recorded, schema-valid `submit_control_route` response in a disposable in-memory Project Truth store. The recorded model response contains only existing tool-schema fields. It does not contain `index_route`, `expected_current_value`, reviewed SHA, or approval state.
+
+The service obtains the current canonical packet and SHA, derives the one indexed route from `PROJECT_INDEX.md`, binds the current canonical value for the allowed `ACTIVE_WORK.md` field, and applies the existing target enforcement, `ai_can_handle` policy, conditional writer, exact reread receipt, and handoff verifier. The primary no-save-command decision writes once, rereads exactly, proves its index route, and is retrieved and applied by a fresh worker with no replay of the original turn. The added adversarial controls fail closed for absent index route, review staleness despite a model-supplied expected value, contradictory Project Truth facts, unsupported proposal value, invalid destination/field, invented approval, duplicate request, and temporary context. No negative case writes canonically.
+
+Focused automatic-preservation/routing suite: **26/26 PASS**. Complete repository suite: **115/115 PASS**. `npm run check:worker` remains **BLOCKED** because this checkout has no local Wrangler executable; no dependency was installed. No live Workers AI provider call was made because no authorized runtime/credential was available. No Cloudflare deployment, production request, real GitHub write, real Project Truth mutation, credential, or approval changed. Exact receipt: `docs/test-receipts/2026-10-10-workers-ai-automatic-preservation-contract.md`.
+
 ## 2026-10-10 — Automatic preservation + fresh-worker handoff fixture
 
 **Status: PASS — isolated end-to-end fixture only; production and broad conversational understanding remain unverified.** The frozen contract is `scripts/acceptance/automatic-preservation-handoff-cases.json` at `23665ea`. It fixes the no-save-command video-analyzer decision, expected canonical `ACTIVE_WORK.md` destination, index route, existing `ai_can_handle` permission, exact write/reread receipt, and fresh-worker retrieval/application before the implementation commit.

@@ -55,7 +55,7 @@ test('already canonical information produces a verified no-op rather than a dupl
 });
 
 test('conflicting canonical information fails closed and retains a failed preservation receipt',async()=>{
-  const f=fixture({initial:active('Prioritize processing speed over source timestamp accuracy.')});
+  const f=fixture({initial:active(oldPriority)+`\n### ${section}\n**Next decision:** Prioritize processing speed over source timestamp accuracy.  \n`});
   const result=await f.service.capture('The video analyzer should prioritize accurate source timestamps over processing speed.',{automaticPreservation:true});
   assert.equal(result.preservation.status,'failed');assert.equal(result.preservation.receipt.code,'canonical_conflict');assert.equal(f.writes,0);
   assert.equal((await f.store.listHistory(1))[0].receipt.status,'failed');

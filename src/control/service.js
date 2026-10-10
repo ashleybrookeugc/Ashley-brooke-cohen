@@ -13,24 +13,41 @@ const canonicalSectionName=value=>String(value||'').split(' — ')[0].trim();
 const resolvedWorkstreamSections=receipt=>[...new Set((receipt?.evidence||[]).map(fact=>fact.section).filter(Boolean))];
 async function verifyIndexedDestination(github,target,route) {
   // An automatic write is not complete merely because its target rereads.  The
-  // route phrase is checked against the existing Project Truth index before a
-  // mutation so a new fact cannot become an unfindable leaf.
-  const routeText=String(route?.proposal?.index_route||'').trim();
-  if(!routeText) {
-    if(route?.automatic_preservation) throw new CanonicalWriteError('canonical_index_route_missing','Mary Kate could not verify an index route for this automatic preservation. Nothing was written.');
-    return {status:'not_required'};
-  }
+  // existing Project Truth index, not a model-supplied route phrase, is checked
+  // before a mutation so a new fact cannot become an unfindable leaf.
+  if(!route?.automatic_preservation) return {status:'not_required'};
   const index=await github.readFile(WRITE_REPO,'PROJECT_INDEX.md');
-  const indexed=String(index.content||'').includes(routeText)&&String(index.content||'').includes(target.path);
-  if(!index.sha||!indexed) throw new CanonicalWriteError('canonical_index_route_missing','Mary Kate could not verify that this preservation destination is discoverable through Project Truth. Nothing was written.');
+  const routes=String(index.content||'').split(/\r?\n/).filter(line=>line.includes(target.path)&&line.trim().startsWith('|')).map(line=>line.split('|')[1]?.trim()).filter(Boolean);
+  if(!index.sha||routes.length!==1) throw new CanonicalWriteError('canonical_index_route_missing','Mary Kate could not verify one authoritative Project Truth index route for this preservation destination. Nothing was written.');
+  const routeText=routes[0];
   return {status:'verified',source:{repo:WRITE_REPO,path:'PROJECT_INDEX.md',sha:index.sha},route:routeText};
 }
 function assertAutomaticExpectedCurrent(content,proposal) {
   if(!proposal.automatic_preservation) return;
+  if(proposal.source_supported!==true) throw new CanonicalWriteError('canonical_evidence_missing','Mary Kate could not verify that the proposed durable value is supported by Ashley\'s original request. Nothing was written.');
+  if(proposal.authority_binding?.conflict===true) throw new CanonicalWriteError('canonical_conflict','Mary Kate found conflicting canonical information and did not overwrite it automatically.');
   if(typeof proposal.expected_current_value!=='string') throw new CanonicalWriteError('canonical_expected_value_missing','Mary Kate could not compare this automatic preservation with the current canonical value. Nothing was written.');
   if(proposal.target_path!=='ACTIVE_WORK.md') return;
   const facts=parseCanonicalFacts(content).filter(fact=>canonicalSectionName(fact.section)===canonicalSectionName(proposal.section)&&fact.label===proposal.field);
   if(facts.length!==1||facts[0].value!==proposal.expected_current_value) throw new CanonicalWriteError('canonical_conflict','Mary Kate found conflicting canonical information and did not overwrite it automatically.');
+}
+const significantWords=value=>normalizedInput(value).toLowerCase().match(/[a-z0-9]{4,}/g)||[];
+function bindAutomaticPreservation(route,packet,originalText) {
+  const proposal=route?.proposal;
+  if(!route?.automatic_preservation||!proposal) return route;
+  // These fields are service-owned. A provider is allowed to express a bounded
+  // change, never to assert the authority/index/current version that authorizes it.
+  delete proposal.expected_current_value;
+  delete proposal.index_route;
+  delete proposal.reviewed_sha;
+  if(route.route_kind!=='state_update'||proposal.target_path!=='ACTIVE_WORK.md'||proposal.field!=='Next decision') return route;
+  const matches=(packet?.facts||[]).filter(fact=>canonicalSectionName(fact.section)===canonicalSectionName(proposal.section)&&fact.label===proposal.field);
+  if(matches.length===1) proposal.expected_current_value=matches[0].value;
+  const proposalWords=significantWords(proposal.value);
+  const sourceWords=new Set(significantWords(originalText));
+  proposal.source_supported=proposalWords.length>0&&proposalWords.every(word=>sourceWords.has(word));
+  proposal.authority_binding={version:'automatic-preservation-binding.v1',source:packet?.source||null,field:proposal.field,section:proposal.section,conflict:matches.length>1};
+  return route;
 }
 
 // A receiver must demonstrate use of the same authoritative instruction, not
@@ -292,7 +309,7 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
         error.code='read_only_route_violation';error.status=422;error.message='Routing proposed an action for a read-only question. No approval or change was saved.';
         throw error;
       }
-      const route=enforceResolvedWriteTarget({...candidate,automatic_preservation:Boolean(automaticPreservation),prior_state:snapshot.prior_state,...(snapshot.completion_authority?{retrieval_authority:{source:snapshot.completion_authority.source,routing_source:snapshot.completion_authority.routing_source}}:{})},snapshot.prior_state,ambiguity_gate);
+      const route=bindAutomaticPreservation(enforceResolvedWriteTarget({...candidate,automatic_preservation:Boolean(automaticPreservation),prior_state:snapshot.prior_state,...(snapshot.completion_authority?{retrieval_authority:{source:snapshot.completion_authority.source,routing_source:snapshot.completion_authority.routing_source}}:{})},snapshot.prior_state,ambiguity_gate),packet,text);
       if(route.proposal) {
         // Bind approval to the authority actually used to prepare this proposal.
         // Persist inside the existing proposal JSON; never trust a model SHA.

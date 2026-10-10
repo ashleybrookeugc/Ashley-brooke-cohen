@@ -13,6 +13,16 @@ Before repeating deployment, Cloudflare, Worker, build, routing, or asset troubl
 5. Do not tell the user to manually deploy or create new infrastructure unless the existing GitHub → Cloudflare path has actually been shown to be broken.
 6. When a new issue is solved, add it here using: **Symptom → Failed/looping attempts → Root cause → Verified fix → Prevention rule**.
 
+## 2026-10-10 — Workers AI cannot be the authority source for write bindings
+
+**Symptom:** The automatic-preservation ingress had a correct isolated fixture, but its proposal shape expected `index_route` and `expected_current_value` even though the real Workers AI `submit_control_route` schema does not permit those fields. Making the model produce them would either reject schema-valid routing or allow invented Project Truth authority.
+
+**Root cause:** Authority binding was connected after routing but had not been explicitly separated from the model's limited proposal contract. The router can suggest a constrained target/action; it cannot establish the current canonical field value, its version, index discoverability, or approval state.
+
+**Verified fix:** The service now derives the indexed route and exact expected current value from the retrieved Project Truth packet after the real adapter validates recorded tool output. It deletes any model-supplied versions of those bindings, adds a service-owned authority binding, rejects absent/ambiguous index routes, contradictory facts, stale review versions, and proposal text unsupported by the original request. It reuses the existing authorization, conditional writer, reread receipt, and handoff verifier. Actual-adapter focused tests pass 26/26 and full suite 115/115 in an isolated store.
+
+**Prevention rule:** A tool-schema-valid proposal is only a candidate. Keep canonical path/index/current-value/reviewed-SHA/approval facts deterministic and source-versioned. A model assertion, a successful adapter response, or a proposal field must never substitute for Project Truth retrieval and exact reread evidence.
+
 ## 2026-10-10 — Preservation cannot be inferred from a successful router response
 
 **Symptom:** The prior control path could classify a conversation but had no connection that proved an eligible change had reached an indexed canonical destination, been reread, and could be used by another worker. A model sentence saying “saved” was not evidence.
