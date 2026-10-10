@@ -1,5 +1,11 @@
 # Mary Kate V1 control-plane test registry
 
+## 2026-10-10 — Live Workers AI automatic-preservation acceptance access gate
+
+**Status: BLOCKED BEFORE INFERENCE — no live-provider claim.** The frozen isolated fixture and actual adapter contract were recovered unchanged from `1cc91c1`. The current execution environment has no Cloudflare API/account credential exposed to this task, no `.dev.vars` or local environment file, no authenticated Wrangler executable or configuration directory, and no local Worker runtime that supplies `env.AI`. `wrangler.jsonc` declares the production Worker AI binding, but a source declaration is not an authorized non-production runtime. No provider request was sent, so no provider/model identity, tool response, write/readback/index/handoff result, or live PASS exists.
+
+This stopped before the single permitted inference. The configured adapter default remains `@cf/meta/llama-3.1-8b-instruct-fp8`, but it is not provider-observed evidence. The recorded adapter contract, isolated write/reread/index/fresh-worker evidence, and 115/115 full suite remain their prior deterministic results; they are not relabelled as live. No production deployment, configuration, credential, Cloudflare request, real GitHub write, or Project Truth canonical mutation occurred. Exact access receipt: `docs/test-receipts/2026-10-10-live-workers-ai-preservation-access-blocker.md`.
+
 ## 2026-10-10 — Workers AI automatic-preservation routing contract
 
 **Status: DETERMINISTIC CONTRACT PASS; FRESH-WORKER HANDOFF PASS; LIVE PROVIDER AND PRODUCTION ACCEPTANCE UNVERIFIED.** The frozen automatic-preservation contract remains `scripts/acceptance/automatic-preservation-handoff-cases.json` from `23665ea`; this test does not revise its expected outcome. `test/control-workers-ai-automatic-preservation.test.js` exercises the actual `createWorkersAiRoutingAdapter` with a recorded, schema-valid `submit_control_route` response in a disposable in-memory Project Truth store. The recorded model response contains only existing tool-schema fields. It does not contain `index_route`, `expected_current_value`, reviewed SHA, or approval state.

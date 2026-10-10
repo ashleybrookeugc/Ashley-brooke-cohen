@@ -13,6 +13,16 @@ Before repeating deployment, Cloudflare, Worker, build, routing, or asset troubl
 5. Do not tell the user to manually deploy or create new infrastructure unless the existing GitHub → Cloudflare path has actually been shown to be broken.
 6. When a new issue is solved, add it here using: **Symptom → Failed/looping attempts → Root cause → Verified fix → Prevention rule**.
 
+## 2026-10-10 — Live Workers AI acceptance stopped before an unauthorized provider call
+
+**Symptom:** The next frozen acceptance requires exactly one genuine non-production Workers AI inference. This task has a declared `AI` Worker binding in source but no authorized provider runtime in the current execution environment.
+
+**Root cause:** No Cloudflare API/account credential was available to the task; no local `.dev.vars`/environment file, Wrangler executable, authenticated Wrangler configuration, or local Worker runtime provided `env.AI`. The configured source binding cannot be used as evidence of provider access, and calling production would violate the isolated non-production scope.
+
+**Verified stop:** Zero provider inferences were sent. The adapter's default model string is configuration only, not a provider identity receipt. Existing recorded-contract evidence remains deterministic; no model output, write/reread, index, or handoff may be called live evidence from this task.
+
+**Prevention rule:** When live access is unavailable, preserve the access blocker and stop before the first inference. Do not install a CLI, mint/request credentials, use production as a substitute, retry with a mock, or change model/prompt/binding state to manufacture a live result.
+
 ## 2026-10-10 — Workers AI cannot be the authority source for write bindings
 
 **Symptom:** The automatic-preservation ingress had a correct isolated fixture, but its proposal shape expected `index_route` and `expected_current_value` even though the real Workers AI `submit_control_route` schema does not permit those fields. Making the model produce them would either reject schema-valid routing or allow invented Project Truth authority.
