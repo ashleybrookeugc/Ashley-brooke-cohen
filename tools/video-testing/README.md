@@ -52,13 +52,13 @@ Cloud receipt: `docs/test-receipts/2026-10-10-video-testing.json`.
 
 ## Deployment hold and exact remaining acceptance
 
-This branch adds a Wrangler custom-build stop (`scripts/video-testing-build-guard.mjs`) for CI/Workers Builds unless `VIDEO_TEST_DEPLOY_APPROVED=1` is explicitly set after separate approval. This prevents an authorized branch push from silently becoming an unauthorized preview upload. Do not remove/enable it without approval. It intentionally blocks the CI Worker packaging step too; local dry-run is allowed. No main merge, preview or production deploy is authorized.
+This branch adds a Wrangler custom-build stop (`scripts/video-testing-build-guard.mjs`) for CI/Workers Builds unless `VIDEO_TEST_DEPLOY_APPROVED=1` is explicitly set after approval. Ashley has authorized an isolated preview of this branch only; `main` and production remain unauthorized. Enable the guard only in the existing Cloudflare preview-build scope. Do not use a direct local deploy: the normal Wrangler configuration names the production Worker and includes production bindings. Local dry-run is allowed.
 
 1. Mobile-browser check: the checked-in shell rendered at 390×844 with no horizontal overflow or console errors, and its independent testing-token gate, video-only picker and offline-disabled Analyze control were visible. This is not iPhone Safari/Photos/Files, codec, real-cookie or correction-round-trip proof. Receipt: `docs/test-receipts/2026-10-10-video-testing-mobile-packaging.json`.
 2. Worker packaging dry-run: PASS with Wrangler 4.63.0 (149.99 KiB / 40.09 KiB gzip). The build guard ran locally and no upload occurred. This is not a Cloudflare preview or production deployment. Receipt: `docs/test-receipts/2026-10-10-video-testing-mobile-packaging.json`.
 3. On the authorized Mac, point to the unchanged analyzer checkout and run its frozen suite with existing ASR runtime. Cloud preserved F-003–F-006/P-002, but the full cloud replay has ASR-dependent failures; it is not a full regression PASS.
 4. Establish/reuse the existing authorized HTTPS worker transport, set the three testing bindings and start the adapter. If no existing transport exists, report this one infrastructure gap before creating anything.
-5. Obtain separate approval for normal existing GitHub→Cloudflare promotion; then enable the build guard deliberately, merge/deploy by the established path, and verify `/video-test/` on a phone without the admin password.
+5. With authenticated Cloudflare access, configure this branch's isolated preview build with the separate testing bindings, then enable the build guard deliberately and verify `/video-test/` on a phone without the admin password. Do not merge or promote to production.
 6. With Ashley's authorized real clip, verify upload → existing analyzer → exact source/time review → correction → restart/retrieval. Repeat with worker unavailable and a failed file. Creator acceptance and semantic accuracy remain separate from technical tests.
 
 No deletion is implemented or authorized. Raw footage is never committed to GitHub or transferred to an external AI provider.
