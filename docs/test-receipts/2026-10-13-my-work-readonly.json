@@ -3,7 +3,8 @@
   "date": "2026-10-13",
   "branch": "codex/my-work-readonly-20261013",
   "base_commit": "be17a176943261c165d0f160f472aa16ddc3a21b",
-  "implementation_commit": "9c9048d4dee85785b376c2bd0223afdd4a03a942",
+  "local_implementation_commit": "9c9048d4dee85785b376c2bd0223afdd4a03a942",
+  "published_tree_commit": "21681a861fbfda43b5d8ea3a20492ce5e115f11c",
   "scope": {
     "route": "/control/my-work/",
     "api": "/api/control/my-work",
