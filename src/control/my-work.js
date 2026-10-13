@@ -26,14 +26,6 @@ function approvedDeferred(markdown, evidence) {
   return items;
 }
 
-function promotedIdeas(markdown, evidence) {
-  const promoted=String(markdown||'').split('## Promoted')[1]?.split('## Open ideas')[0] || '';
-  return [...promoted.matchAll(/^### (.+)\n([\s\S]*?)(?=^### |^## |$(?![\s\S]))/gm)].map(match=>{
-    const status=match[2].match(/^\*\*Status:\*\*\s*(.+)$/m)?.[1]?.trim() || 'Promoted';
-    return {label:match[1].trim(), status, source:evidence};
-  });
-}
-
 function verifiedUpdates(history=[]) {
   return history.filter(item=>item?.receipt?.status==='verified'
     && item.receipt?.verification?.status==='verified'
@@ -47,9 +39,8 @@ function verifiedUpdates(history=[]) {
     }));
 }
 
-export function buildMyWorkProjection({activeWork,activeSha,sideIdeas,sideIdeasSha,history=[],generatedAt=new Date().toISOString()}) {
+export function buildMyWorkProjection({activeWork,activeSha,history=[],generatedAt=new Date().toISOString()}) {
   const activeSource=source('ACTIVE_WORK.md',activeSha);
-  const sideSource=source('SIDE_IDEAS.md',sideIdeasSha);
   const work=parseActiveWork(activeWork).map(item=>{
     const identity=stateFromName(item.name);
     return {
@@ -67,10 +58,9 @@ export function buildMyWorkProjection({activeWork,activeSha,sideIdeas,sideIdeasS
     version:'mary-kate.my-work.v1',
     read_only:true,
     generated_at:generatedAt,
-    sources:[activeSource,sideSource],
+    sources:[activeSource],
     work,
     approved_deferred:approvedDeferred(activeWork,activeSource),
-    promoted:promotedIdeas(sideIdeas,sideSource),
     verified_completion:verifiedUpdates(history)
   };
 }

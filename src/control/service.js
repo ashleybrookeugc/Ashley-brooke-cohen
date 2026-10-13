@@ -215,12 +215,11 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
   return {
     state,
     async myWork() {
-      const [activeWork,sideIdeas,history]=await Promise.all([
+      const [activeWork,history]=await Promise.all([
         github.readFile(WRITE_REPO,'ACTIVE_WORK.md'),
-        github.readFile(WRITE_REPO,'SIDE_IDEAS.md'),
         store.listHistory(50)
       ]);
-      return buildMyWorkProjection({activeWork:activeWork.content,activeSha:activeWork.sha,sideIdeas:sideIdeas.content,sideIdeasSha:sideIdeas.sha,history,generatedAt:new Date(now()).toISOString()});
+      return buildMyWorkProjection({activeWork:activeWork.content,activeSha:activeWork.sha,history,generatedAt:new Date(now()).toISOString()});
     },
     async capture(text,{requiredFactKeys=[]}={}) {
       if(typeof text!=='string'||!text.trim()||text.length>4000) throw new Error('Message must be 1–4000 characters');
