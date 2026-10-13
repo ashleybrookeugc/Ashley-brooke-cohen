@@ -6,15 +6,24 @@ import {Script} from 'node:vm';
 const page=await readFile(new URL('../public/control/my-work/index.html',import.meta.url),'utf8');
 const script=page.match(/<script>([\s\S]*?)<\/script>/)?.[1];
 
-test('My Work page is mobile, source-backed, automatically refreshed and read-only',()=>{
+test('My Work page is mobile, automatically refreshed and read-only',()=>{
   assert.match(page,/Private · read-only/);
   assert.match(page,/Current work/);
   assert.match(page,/Approved for later/);
-  assert.match(page,/Verified completion/);
-  assert.match(page,/Source evidence/);
+  assert.match(page,/Verified records/);
+  assert.match(page,/What works/);
+  assert.match(page,/Still blocked or unverified/);
+  assert.match(page,/Current verified next step/);
+  assert.match(page,/Technical details/);
   assert.match(page,/@media\(max-width:640px\)/);
   assert.match(page,/setInterval\(load,60000\)/);
   assert.doesNotMatch(page,/data-action="approve"|data-action="reject"|Route this|<textarea/i);
+});
+
+test('technical source records stay in expandable details and errors stay understandable',()=>{
+  assert.match(page,/function technical\(item\).*?<details>/s);
+  assert.match(page,/The latest next step needs verification/);
+  assert.doesNotMatch(page,/error\.message/);
 });
 
 test('My Work embedded JavaScript parses',()=>assert.doesNotThrow(()=>new Script(script,{filename:'public/control/my-work/index.html'})));
