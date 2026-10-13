@@ -61,3 +61,11 @@ The Cloudflare projection reuses the same Worker activity section and never expo
 The Worker stores only the latest sanitized snapshot in the existing D1 binding. Private keys, tokens, authorization headers, arbitrary worker fields, and worker-result claims are excluded; `outcome_verified` remains false. The authenticated browser reads `GET /api/control/workers` through the existing admin session. After 20 seconds without a heartbeat, every retained worker is projected as `disconnected` with unavailable telemetry rather than active. Polling is bounded to five seconds. There is no launch or mutation route.
 
 This is operational telemetry, not a second Project Truth. A connected heartbeat proves only current Herdr observation of an adapter-owned worker. It does not prove the worker result, canonical writeback, production mutation slice, broader permissions, or model/token/cost data that Herdr does not expose.
+
+## Read-only My Work projection (development only)
+
+`/control/my-work/` is the smallest authenticated My Work dashboard slice. Its API rereads `research-vault/ACTIVE_WORK.md` through the existing down-scoped GitHub adapter on every request, then derives current workstream state, blockers/waiting conditions, next actions, and founder-approved deferred work. The UI refreshes automatically every 60 seconds and exposes the GitHub blob SHA so stale-source questions are inspectable.
+
+The projection has no task table, migration, canonical-write route, approval button, or worker-launch control. It does not turn open side ideas into approved tasks. Its Verified completion view accepts only existing D1 history rows with a `verified` canonical-write receipt, verified reread status, and GitHub commit SHA; this proves that the canonical update completed, not that the broader project or worker outcome is complete. Worker-claimed completion and prose containing `PASS` are excluded.
+
+This development slice does not prove Cloudflare deployment, authenticated browser rendering, Mac connectivity, or real-time completeness. Those remain separate acceptance gates.
