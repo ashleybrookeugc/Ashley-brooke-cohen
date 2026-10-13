@@ -1,5 +1,6 @@
 import app,{isAdmin} from './auth-worker.js';
 import controlPage from '../public/control/index.html';
+import myWorkPage from '../public/control/my-work/index.html';
 import {createGitHubAdapter,createGitHubAppTokenProvider,createPolicyRoutingAdapter} from './control/adapters.js';
 import {controlErrorResponse,createControlService,createD1Store} from './control/service.js';
 import {createWorkerTelemetryStore,verifyWorkerTelemetrySignature,WORKER_TELEMETRY_SCHEMA} from './control/worker-telemetry.js';
@@ -34,6 +35,8 @@ async function control(request,env) {
   await ensureSchema(env);
   const core=service(env);
   if(path==='/control') return new Response(controlPage,{headers:{'content-type':'text/html;charset=UTF-8','cache-control':'no-store'}});
+  if(path==='/control/my-work') return new Response(myWorkPage,{headers:{'content-type':'text/html;charset=UTF-8','cache-control':'no-store'}});
+  if(path==='/api/control/my-work'&&request.method==='GET') return json(await core.myWork());
   if(path==='/api/control/workers'&&request.method==='GET') return json(env.CONTROL_WORKER_TELEMETRY_SECRET?await createWorkerTelemetryStore(env.DB).read():{version:'mary-kate.worker-telemetry.v1',enabled:false,read_only:true,observed_at:new Date().toISOString(),connection:{state:'disconnected',fresh:false,last_received_at:null},workers:[]});
   if(path==='/api/control/state'&&request.method==='GET') return json(await core.state({refresh:new URL(request.url).searchParams.get('refresh')==='1'}));
   if(path==='/api/control/interactions'&&request.method==='POST'){try{const data=await body(request);return json(await core.capture(data.text,{requiredFactKeys:data.required_fact_keys||[]}),201)}catch(error){const response=controlErrorResponse(error);return json(response,error.status||400)}}

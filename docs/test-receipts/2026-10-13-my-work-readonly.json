@@ -1,0 +1,51 @@
+{
+  "version": "mary-kate.my-work-readonly.receipt.v1",
+  "date": "2026-10-13",
+  "branch": "codex/my-work-readonly-20261013",
+  "base_commit": "be17a176943261c165d0f160f472aa16ddc3a21b",
+  "implementation_commit": "9c9048d4dee85785b376c2bd0223afdd4a03a942",
+  "scope": {
+    "route": "/control/my-work/",
+    "api": "/api/control/my-work",
+    "authentication": "existing admin session",
+    "sources": [
+      "ashleybrookeugc/research-vault/ACTIVE_WORK.md",
+      "ashleybrookeugc/research-vault/SIDE_IDEAS.md",
+      "existing verified D1 canonical-write receipts"
+    ],
+    "writes": "none",
+    "new_database_or_migration": false
+  },
+  "acceptance": {
+    "repository_tests": {
+      "command": "npm test",
+      "result": "PASS",
+      "passed": 96,
+      "failed": 0
+    },
+    "worker_packaging": {
+      "command": "wrangler 4.54.0 deploy --dry-run --outdir /tmp/my-work-dashboard-build",
+      "result": "PASS",
+      "upload_kib": 151.74,
+      "gzip_kib": 40.02
+    },
+    "guards": [
+      "source files are reread on every API request",
+      "no dashboard task mutation controls or routes",
+      "founder-approved deferred work is derived from Project Truth",
+      "open side ideas are not relabeled as approved",
+      "only verified canonical-write receipts appear as verified completion",
+      "mobile CSS and embedded JavaScript syntax are regression tested"
+    ]
+  },
+  "not_proven": [
+    "Cloudflare deployment or preview",
+    "authenticated browser rendering",
+    "Mac or private worker connectivity",
+    "project completion beyond the exact verified canonical update",
+    "real-time completeness outside the two canonical source reads"
+  ],
+  "deployment": "NOT ATTEMPTED",
+  "merge": "NOT ATTEMPTED",
+  "spend": "NONE"
+}
