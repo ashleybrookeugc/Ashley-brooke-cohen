@@ -4,14 +4,13 @@
   "branch": "codex/my-work-readonly-20261013",
   "base_commit": "be17a176943261c165d0f160f472aa16ddc3a21b",
   "local_implementation_commit": "9c9048d4dee85785b376c2bd0223afdd4a03a942",
-  "published_tree_commit": "21681a861fbfda43b5d8ea3a20492ce5e115f11c",
+  "published_tree_commit": "b45929134022c881b9580d814bb1c93edfa31216",
   "scope": {
     "route": "/control/my-work/",
     "api": "/api/control/my-work",
     "authentication": "existing admin session",
     "sources": [
       "ashleybrookeugc/research-vault/ACTIVE_WORK.md",
-      "ashleybrookeugc/research-vault/SIDE_IDEAS.md",
       "existing verified D1 canonical-write receipts"
     ],
     "writes": "none",
@@ -27,11 +26,11 @@
     "worker_packaging": {
       "command": "wrangler 4.54.0 deploy --dry-run --outdir /tmp/my-work-dashboard-build",
       "result": "PASS",
-      "upload_kib": 151.74,
-      "gzip_kib": 40.02
+      "upload_kib": 150.96,
+      "gzip_kib": 39.81
     },
     "guards": [
-      "source files are reread on every API request",
+      "the canonical source file is reread on every API request",
       "no dashboard task mutation controls or routes",
       "founder-approved deferred work is derived from Project Truth",
       "open side ideas are not relabeled as approved",
@@ -44,7 +43,7 @@
     "authenticated browser rendering",
     "Mac or private worker connectivity",
     "project completion beyond the exact verified canonical update",
-    "real-time completeness outside the two canonical source reads"
+    "real-time completeness outside the canonical source read"
   ],
   "deployment": "NOT ATTEMPTED",
   "merge": "NOT ATTEMPTED",
