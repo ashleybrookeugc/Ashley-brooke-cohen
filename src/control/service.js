@@ -76,7 +76,7 @@ function readOnlyAssentScope(text,recent,facts,initial,now,ttl) {
   // never approves a write; consequential or alternative offers stay blocked.
   const unnegated=offer.replace(/\b(?:i|we) (?:will|shall) not (?:change|modify|write|delete|deploy|publish|send)[^.?!]*[.?!]?/gi,'');
   if(!/\b(?:i|we) can (?:read|inspect|check|review)\b/i.test(unnegated)||!/\b(?:v1|assessment|status|readiness|completion|proof)\b/i.test(unnegated)) return null;
-  if(/\b(?:or|either|alternatively|update|change|modify|write|delete|deploy|publish|send|spend|pay|merge|approve|execute|run|save|record)\b/i.test(unnegated)) return null;
+  if(/\b(?:or|either|alternatively|update|change|modify|write|delete|deploy|publish|send|spend|pay|merge|approve|execute|run|save|record|buy|purchase|transfer|remove|post|upload|build|edit|hire|book|schedule|launch)\b/i.test(unnegated)) return null;
   if((unnegated.match(/\b(?:can|and|then|also)\s+(?:read|inspect|check|review)\b/gi)||[]).length!==1) return null;
   const resolution=resolveAuthoritativeWorkstream('What is the V1 assessment? '+user.content,facts);
   return resolution.status==='resolved'&&maryKateSection(resolution.section)?resolution.section:null;

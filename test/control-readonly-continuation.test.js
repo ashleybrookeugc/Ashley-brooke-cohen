@@ -23,7 +23,7 @@ test('fresh single read-only offer binds assent and retrieves existing indexed a
   assert.equal(result.queue_item,null);assert.deepEqual(await f.store.listQueues(),{needs_ashley:[],ai_can_handle:[]});
 });
 test('assent with alternative, consequential, stale, truncated or competing offers stays blocked',async()=>{
-  for(const options of [{offer:'I can read the assessment or inspect the next proof.'},{offer:'I can read the V1 assessment and deploy the repair.'},{offer:'I can read the assessment and inspect the next proof.'},{stale:true},{truncated:true},{queued:true},{user:'Tell me about both MK and Video analyzer V1.'}]) {
+  for(const options of [{offer:'I can read the assessment or inspect the next proof.'},{offer:'I can read the V1 assessment and deploy the repair.'},{offer:'I can read the V1 assessment and purchase an upgrade.'},{offer:'I can read the assessment and inspect the next proof.'},{stale:true},{truncated:true},{queued:true},{user:'Tell me about both MK and Video analyzer V1.'}]) {
     const f=await setup(options);await assert.rejects(()=>f.service.capture('Yes, agreed.'),e=>e.code==='ambiguous_scope');assert.equal(f.calls,0);
   }
 });
