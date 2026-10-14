@@ -23,7 +23,8 @@ test('My Work page is the mobile Command Center with read-only sources and guard
   assert.match(page,/data-action="reject"/i);
   assert.match(page,/\/api\/control\/items\//);
   assert.match(page,/No approval is waiting right now/);
-  assert.match(page,/Talk this through/);
+  assert.doesNotMatch(page,/data-prompt|promptButton|Talk this through/);
+  assert.match(page,/class="chat-toggle"/);
   assert.match(page,/id="attention-status"/);
   assert.match(page,/attentionStatus\.textContent=data\.message/);
 });
@@ -66,8 +67,9 @@ test('primary Command Center copy translates backend state before exposing techn
 
 test('chat preserves safe structured failures instead of replacing every response with a generic message',()=>{
   assert.match(page,/function chatFailure/);
-  assert.match(page,/data\.error/);
   assert.match(page,/prior_state_ambiguous_scope/);
+  assert.match(page,/I misunderstood your question as a request to change something/);
+  assert.doesNotMatch(page,/Routing selected a write target outside the resolved workstream/);
   assert.match(page,/Nothing was recorded as successful/);
 });
 
