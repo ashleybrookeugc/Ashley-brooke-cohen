@@ -649,3 +649,14 @@ See [the verified deployment and logging incident](test-receipts/2026-10-14-clou
 **Repair:** Remove every per-card chat button and all automatic prompt injection. Keep the single full-width, fixed bottom Talk to Mary Kate control as the only chat entry point; the text box begins without a system-generated message. Preserve Approve/Reject only for real queued proposals. Translate known safe routing failures into ordinary language—Mary Kate misunderstood the question and changed nothing—while retaining the status/code only under Technical details.
 
 **Regression contract:** The page must contain no `data-prompt`, prompt helper, or “Talk this through” task control; the fixed chat toggle remains. A routing-contract failure must not expose “write target,” “resolved workstream,” or the raw service message as primary copy. Do not treat removal of jargon as proof that broad natural conversation now works.
+
+
+## 2026-10-14 — Conversation fixture deployment is not live conversation enforcement
+
+**Observed:** PR #25 froze seven actual chat incidents as fixtures and GitHub Actions run 38628740946 passed 126/126 tests, including three new fixture-integrity assertions. PR #25 merged into main at 61c761e59bc77f391360aeb12d98e613a5250824. These tests check fixture contents and historical labels; they do not invoke the Workers AI model or verify real tool effects. The separate Project Truth PR #13 could not merge due to a concurrent registry change; the result was reconciled directly to current registry main at fbc73344c9315c197a9346889c621502566a0f6c.
+
+**First remaining blocker:** The deployed /api/control/interactions route requires an authenticated admin session, and real inference can create history or approval queue entries. This chat has no authenticated Cloudflare session or isolated production-equivalent AI test binding. An unauthenticated public request cannot safely establish live behavior. A local outbound request to the website also failed DNS resolution in the execution environment; this is not evidence that the public website is down. No actual authenticated live replay occurred.
+
+**Verified versus unverified:** GitHub commit and fixture CI are verified. GitHub-to-Cloudflare auto-deploy was proven previously for the browser test, but this merge has no verified live Cloudflare deployment receipt. Live multi-turn interpretation, contextual rule selection, approval side effects, and automatic failure writeback remain unverified. Do not promote fixture tests to those outcomes.
+
+**Next safe proof:** Use an authenticated, non-production Worker/AI surface with isolated state and no production GitHub writes, run unchanged multi-turn cases, capture exact response/tool/state receipts, and independently grade. Do not add an unauthenticated inference endpoint or send fake passes. Preserve the original failures as historical even if later repaired.
