@@ -39,7 +39,7 @@ The test record retains the initial WASM failure, a broader incompatibility hypo
 
 No production integration was justified. The branch adds only an isolated experiment, deterministic comparisons, build-history fixtures/tests, this report, and a machine-readable receipt. Existing Node enforcement remains authoritative.
 
-Published branches: product `test/mk-promptfoo-opa-20261014` at `c448a609d68624513c869e8566862b580ba0f438`; Project Truth branch of the same name at `57e107eef7610cf9c241189499552b0e389bf0c6`. Neither was merged or deployed.
+Published branch history: product `test/mk-promptfoo-opa-20261014` has evaluation commit `c448a609d68624513c869e8566862b580ba0f438` and lineage reconciliation `807e11ba42bdf968ced73bf59486c954e18dce2f`; the Project Truth branch of the same name has evaluation commit `57e107eef7610cf9c241189499552b0e389bf0c6` and lineage reconciliation `e950e59ededa772462bdf0ca860828fd3287bdb3`. Neither branch was merged or deployed.
 
 ## 7. Regression results
 

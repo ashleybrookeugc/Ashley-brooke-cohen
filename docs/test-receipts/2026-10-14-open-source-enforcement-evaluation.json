@@ -12,8 +12,10 @@
     "ashleybrookeugc/research-vault": "3163bdcf93c49ff44073b6502bb51cfba66aaf5f",
     "ashleybrookeugc/Ashley-brooke-cohen": "2ec645dcb5a36b35e7db712be49ad849e1efdf77",
     "ashleybrookeugc/ugc-creator-app": "db8324d51e478ee1b9499ea8476e28ff39254a68",
-    "product_experiment_branch": "c448a609d68624513c869e8566862b580ba0f438",
-    "project_truth_experiment_branch": "57e107eef7610cf9c241189499552b0e389bf0c6"
+    "product_evaluation_commit": "c448a609d68624513c869e8566862b580ba0f438",
+    "product_lineage_reconciliation_commit": "807e11ba42bdf968ced73bf59486c954e18dce2f",
+    "project_truth_evaluation_commit": "57e107eef7610cf9c241189499552b0e389bf0c6",
+    "project_truth_lineage_reconciliation_commit": "e950e59ededa772462bdf0ca860828fd3287bdb3"
   },
   "baseline": {
     "command": "node --test test/control-conversation-context.test.js test/conversation-regression-runner.test.js test/control-ambiguity-gate.test.js test/control-canonical-write.test.js test/control-routing-diagnostics.test.js test/control-workers-ai-routing.test.js",
@@ -98,6 +100,10 @@
     "opa": "reject dependency for current demonstrated policy boundary",
     "combined": "not justified",
     "implementation": "retain existing Node enforcement; preserve isolated reproducible experiment and receipts only"
+  },
+  "remote_branches": {
+    "product": "test/mk-promptfoo-opa-20261014",
+    "project_truth": "test/mk-promptfoo-opa-20261014"
   },
   "open": [
     "Cases A-D still lack live inference evidence; E's known live failure has not been successfully rerun.",
