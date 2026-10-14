@@ -153,6 +153,56 @@
       "billable infrastructure creation",
       "private video upload to third-party provider",
       "original deletion"
-    ]
+    ],
+    "status_matrix": {
+      "iphone_or_computer_upload": {
+        "state": "PARTIALLY VERIFIED",
+        "evidence": "real MP4 through gateway on Work; prior Chromium mobile-viewport synthetic upload; physical iPhone not tested"
+      },
+      "durable_original_and_identity": {
+        "state": "PARTIALLY VERIFIED",
+        "evidence": "SHA-256 matched 5,510,872 uploaded bytes and source retained across worker restart in temporary Work filesystem; no remote durable readback"
+      },
+      "decode_and_source_timestamps": {
+        "state": "PARTIALLY VERIFIED",
+        "evidence": "full ffmpeg decode and 13 source-time sampled frames on 60.095011-second public MP4; sampling is not continuous semantic inspection"
+      },
+      "speech_and_word_uncertainty": {
+        "state": "VERIFIED FAILING",
+        "evidence": "ASR lane ran with word confidence/timestamps; unchanged 17/18 analyzer suite fails frozen fair\u2192there wording fixture"
+      },
+      "semantic_visual_understanding": {
+        "state": "NOT TESTED",
+        "evidence": "sampled pixel/state evidence only; no semantic vision provider"
+      },
+      "ocr_audio_separation": {
+        "state": "PARTIALLY VERIFIED",
+        "evidence": "real OCR and ASR lanes separately persisted; caption classification is heuristic at sampling cadence"
+      },
+      "source_linked_timeline": {
+        "state": "PARTIALLY VERIFIED",
+        "evidence": "verified package with exact source SHA, sampled source times and extracted frame availability; no exhaustive footage understanding"
+      },
+      "semantic_claim_verification": {
+        "state": "NOT TESTED",
+        "evidence": "no enforced semantic checker/release gate"
+      },
+      "user_review_and_correction": {
+        "state": "PARTIALLY VERIFIED",
+        "evidence": "prior real Chromium synthetic UI acceptance; real-media source-bound correction via gateway, no iPhone creator acceptance"
+      },
+      "correction_persistence": {
+        "state": "PARTIALLY VERIFIED",
+        "evidence": "correction read back after Node worker restart on same transient filesystem, not remote durable storage"
+      },
+      "cloudflare_connectivity": {
+        "state": "BLOCKED",
+        "evidence": "undeployed branch, no authenticated Cloudflare connection, testing bindings or persistent HTTPS analyzer/store"
+      },
+      "truthful_progress_and_failure": {
+        "state": "PARTIALLY VERIFIED",
+        "evidence": "invalid media becomes failed; corrupt package completion contradiction reproduced/fixed; no live hosted job progress acceptance"
+      }
+    }
   }
 }
