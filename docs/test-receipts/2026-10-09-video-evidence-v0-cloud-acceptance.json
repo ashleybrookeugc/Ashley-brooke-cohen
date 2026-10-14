@@ -1,0 +1,70 @@
+{
+  "schema_version": "mary-kate.video-evidence-v0.cloud-acceptance.v1",
+  "observed_at": "2026-10-09T22:23:25-04:00",
+  "environment": {
+    "kind": "cloud_and_github_actions",
+    "mac_available": false,
+    "private_media_available": false
+  },
+  "repository": "ashleybrookeugc/Ashley-brooke-cohen",
+  "pull_request": 5,
+  "base_commit": "be17a176943261c165d0f160f472aa16ddc3a21b",
+  "implementation_commit": "26140bf1fe24e50368a7aa227d99b6bfe252a8b4",
+  "project_truth_commit_at_preflight": "bfb5349a459af7814e996a174c7383a7d7e22031",
+  "verified": {
+    "canonical_catalog_count": 6,
+    "canonical_statuses": {
+      "F-003": "PASS",
+      "F-004": "PASS",
+      "F-005": "PASS",
+      "F-006": "PASS",
+      "P-001": "PASS",
+      "P-002": "PASS"
+    },
+    "p001_baseline_ocr_calls": [6, 21, 2, 8],
+    "p002_output_equivalent": [true, true, true, true],
+    "f006_selected_events": [
+      {
+        "observation_id": "visual-000001",
+        "source_timestamp_seconds": 0,
+        "ocr_observation_ids": ["ocr-000001"],
+        "preview": "PNG signature verified; 10277 bytes"
+      },
+      {
+        "observation_id": "visual-000004",
+        "source_timestamp_seconds": 1.5,
+        "ocr_observation_ids": ["ocr-000004"],
+        "preview": "PNG signature verified; 13035 bytes"
+      }
+    ],
+    "unavailable_states": {
+      "private_source_playback": "explicitly unavailable",
+      "timestamp_level_ocr_text_boxes_confidence": "explicitly unavailable",
+      "f006_timestamped_asr": "explicitly unavailable"
+    },
+    "creator_review": "No creator acceptance recorded for every displayed run",
+    "unauthenticated_browser": {
+      "requested": "branch preview /control/",
+      "observed": "browser redirected to /admin/login",
+      "result": "PASS"
+    }
+  },
+  "defect_and_fix": {
+    "before": "P-001 stores calls as ocr.frame_invocation_count; the V0 normalizer recognized only the P-002 field and exposed null OCR call counts.",
+    "after": "The bounded normalizer recognizes both canonical field names, and the interface displays OCR observations, calls, cache hits, output equivalence, source time, and OCR observation references.",
+    "analyzer_changed": false,
+    "frozen_receipts_changed": false
+  },
+  "tests": {
+    "local_cloud_node": {"command": "npm test", "passed": 96, "failed": 0},
+    "local_cloud_worker_bundle": {"command": "wrangler deploy --dry-run", "result": "PASS", "upload_kib": 157.98, "gzip_kib": 42.15},
+    "github_actions": {"run": 38016765575, "passed": 96, "failed": 0, "worker_dry_run": "PASS"},
+    "cloudflare_preview_build": {"build": "1c898dfb-2595-40c4-985f-aa8fb96c3001", "result": "PASS"}
+  },
+  "blocked": {
+    "authenticated_browser_preview": "No signed admin session or admin credential is available in this cloud session. The real GitHub App reader behind the authenticated preview could not be exercised through the browser without fabricating access.",
+    "mac_dependent_tests": "Ashley's Mac and private footage are offline and were not accessed or substituted."
+  },
+  "boundary": "This verifies the pinned receipt transformation, evidence assets, truthful unavailable states, access denial, tests, and preview build. It does not verify a signed-in browser rendering, private-media playback, creative acceptance, production deployment, or arbitrary-video understanding.",
+  "merge_readiness": "BLOCKED_PENDING_ONE_AUTHENTICATED_PREVIEW"
+}

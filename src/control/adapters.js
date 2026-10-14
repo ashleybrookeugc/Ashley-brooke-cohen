@@ -25,6 +25,12 @@ export function createGitHubAdapter({fetchImpl=fetch, tokenProvider}) {
       const data = await request('/repos/'+repo+'/contents/'+path+'?ref='+encodeURIComponent(ref),{},'read');
       return {content:decodeURIComponent(escape(atob(data.content.replace(/\s/g,'')))),sha:data.sha};
     },
+    async readFileBytes(repo,path,ref='main') {
+      if (!READ_REPOS.has(repo)) throw new Error('Repository is not readable');
+      const data = await request('/repos/'+repo+'/contents/'+path+'?ref='+encodeURIComponent(ref),{},'read');
+      const raw=atob(data.content.replace(/\s/g,''));
+      return {bytes:Uint8Array.from(raw,c=>c.charCodeAt(0)),sha:data.sha};
+    },
     async writeFile(repo,path,content,sha,message) {
       if (repo !== WRITE_REPO) throw new Error('Writes are restricted to research-vault');
       const data = await request('/repos/'+repo+'/contents/'+path,{method:'PUT',body:JSON.stringify({message,content:btoa(unescape(encodeURIComponent(content))),sha,branch:'main'}),headers:{'content-type':'application/json'}},'write');
