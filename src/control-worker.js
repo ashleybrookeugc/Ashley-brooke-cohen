@@ -1,6 +1,7 @@
 import app,{isAdmin} from './auth-worker.js';
 import controlPage from '../public/control/index.html';
 import myWorkPage from '../public/control/my-work/index.html';
+import acceptanceCaseEPage from '../public/control/acceptance-case-e.html';
 import videoBrowserTestPage from '../public/control/video-test/index.html';
 import {createGitHubAdapter,createGitHubAppTokenProvider,createPolicyRoutingAdapter,createWorkersAiRoutingAdapter} from './control/adapters.js';
 import {controlErrorResponse,createControlService,createD1Store} from './control/service.js';
@@ -52,6 +53,7 @@ async function control(request,env) {
   const core=service(env);
   if(path==='/control') return new Response(controlPage,{headers:{'content-type':'text/html;charset=UTF-8','cache-control':'no-store'}});
   if(path==='/control/my-work') return new Response(myWorkPage,{headers:{'content-type':'text/html;charset=UTF-8','cache-control':'no-store'}});
+  if(path==='/control/acceptance-case-e'&&request.method==='GET') return new Response(acceptanceCaseEPage,{headers:{'content-type':'text/html;charset=UTF-8','cache-control':'no-store'}});
   if(path==='/control/video-test' && request.method==='GET') return new Response(videoBrowserTestPage,{headers:{'content-type':'text/html;charset=UTF-8','cache-control':'no-store','x-content-type-options':'nosniff','referrer-policy':'no-referrer','content-security-policy':"default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src blob: data:; media-src blob:; connect-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'"}});
   if(path==='/api/control/my-work'&&request.method==='GET') return json(await core.myWork());
   if(path==='/api/control/workers'&&request.method==='GET') return json(env.CONTROL_WORKER_TELEMETRY_SECRET?await createWorkerTelemetryStore(env.DB).read():{version:'mary-kate.worker-telemetry.v1',enabled:false,read_only:true,observed_at:new Date().toISOString(),connection:{state:'disconnected',fresh:false,last_received_at:null},workers:[]});
