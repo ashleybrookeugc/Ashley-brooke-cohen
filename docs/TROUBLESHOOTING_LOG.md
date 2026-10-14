@@ -548,6 +548,18 @@ The next attempted runner invocation also reached no server or worker because du
 
 **Prevention rule:** Do not count a parsed UI or a service double as a live conversational acceptance. For each reported production prompt, freeze the exact input and the browser response branch. Treat source-fetch freshness and field-semantic freshness as separate facts; only a reconciled current-priority record may receive the `Current verified next step` label.
 
+## 2026-10-14 — Command Center V1 status answer depended on model route formatting
+
+**Symptom:** Ashley’s authenticated iPhone retest at 12:24 PM proved the repaired page was deployed and the obsolete next step was no longer primary, but `Are you close to v1?` returned HTTP 422 `routing_contract_invalid` instead of an answer.
+
+**Failed/looping attempt:** The first live repair added the correct Command Center workstream context and preserved the server’s safe explanation. Its test used a valid controlled router output, so it did not prove that the deployed Workers AI model would emit the required tool-call schema. The model returned an invalid route in the real request.
+
+**Root cause:** A read-only answer already determined by the indexed Project Truth V1 completion authority still depended on an unconstrained model producing a valid control-plane routing object.
+
+**Verified development fix:** The exact Command Center V1-status class now refreshes `ACTIVE_WORK.md`, retrieves the completion authority through `PROJECT_INDEX.md`, parses its canonical count/decision record, and returns a validated read-only `temporary_context` answer without calling Workers AI. The exact phone wording returns the evidence-backed 22-row result (0 verified, 16 partial, 5 implemented but unverified, 1 not implemented), creates one ordinary read-only history row with retrieval provenance, and creates no queue item or canonical write. Explicit other projects, ambiguous actions, and broader conversation retain the existing routing and safety gates. Full suite **115/115 PASS**; requirement map **14/14 present**; Herdr acceptance scripts parse.
+
+**Prevention rule:** When a read-only question has a canonical deterministic answer, do not make user-visible availability depend on a language model reproducing an internal routing schema. Freeze the exact production wording and an invalid-model-output control; require zero model calls, zero approvals, and zero writes for that bounded path. Keep broader conversational quality as a separate acceptance claim.
+
 
 ## 2026-10-14 — Cloudflare browser-test deployment and blocked log write
 

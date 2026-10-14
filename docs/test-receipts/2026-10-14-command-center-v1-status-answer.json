@@ -1,0 +1,33 @@
+{
+  "version": "mary-kate.command-center-v1-status-answer.receipt.v1",
+  "date": "2026-10-14",
+  "branch": "codex/command-center-v1-status-answer-20261014",
+  "production_observation": {
+    "surface": "authenticated iPhone Command Center",
+    "input": "Are you close to v1?",
+    "result": "HTTP 422 routing_contract_invalid",
+    "stale_next_step_repair": "observed working"
+  },
+  "frozen_acceptance": {
+    "authority": "PROJECT_INDEX.md -> indexed Mary Kate V1 completion matrix",
+    "answer": "22 requirements: 0 verified, 16 partial, 5 implemented but unverified, 1 not implemented",
+    "model_calls": 0,
+    "queue_items": 0,
+    "canonical_writes": 0,
+    "history": "one read-only row with retrieval provenance",
+    "freshness": "Command Center request forces a fresh ACTIVE_WORK.md read"
+  },
+  "local_verification": {
+    "npm_test": {"passed": 115, "failed": 0},
+    "my_work_requirement_map": {"requirements": 14, "result": "PASS"},
+    "herdr_acceptance_script_parse": "PASS",
+    "diff_check": "PASS"
+  },
+  "not_yet_claimed": [
+    "GitHub Actions Worker packaging for this change",
+    "Cloudflare deployment of this change",
+    "successful authenticated iPhone answer",
+    "broader conversational acceptance",
+    "Mary Kate V1 acceptance"
+  ]
+}
