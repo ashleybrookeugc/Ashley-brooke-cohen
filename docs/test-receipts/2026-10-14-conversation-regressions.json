@@ -1,0 +1,1682 @@
+{
+  "version": "mary-kate.conversation-regression-suite.v1",
+  "observed_at": "2026-10-14T13:33:40.744Z",
+  "evidence_kind": "blocked",
+  "overall": "BLOCKED",
+  "receipts": [
+    {
+      "version": "mary-kate.conversation-regression.v1",
+      "case_id": "20261014-A",
+      "name": "Model-selection follow-up",
+      "observed_at": "2026-10-14T13:33:40.737Z",
+      "revision": "development-working-tree",
+      "authority": {
+        "final_user_messages": "Ashley supplied acceptance request, 2026-10-14",
+        "preceding_turns": "Synthetic role-preserving test conversations, not a verbatim export of the incident",
+        "incident": "research-vault/shared-capabilities/ai-workflows/LEARNED_CHANGE_LOG.md#2026-10-14--work-model-setting-follow-up-misrouted-into-a-new-implementation-prompt",
+        "prior_corpus_ref": "04f4be8700013dd5b863b584cf6a7a6a4b647ee1",
+        "generalization": "These five are authored regressions, not unseen generalization evidence."
+      },
+      "evidence_kind": "blocked",
+      "conversation": [
+        {
+          "role": "user",
+          "content": "Give me a prompt for a cloud ChatGPT Work session to continue the video analyzer. My Mac is offline."
+        },
+        {
+          "role": "assistant",
+          "content": "Start a ChatGPT Work session with this prompt: Continue the existing shared video analyzer from verified GitHub state. Use cloud resources, reproduce the first actual blocker, repair it narrowly, and verify the uploaded-file workflow. Preserve results on a development branch. Do not deploy to production."
+        },
+        {
+          "role": "user",
+          "content": "And Terra sol etc"
+        }
+      ],
+      "preceding_turn_provenance": "seeded synthetic role-preserving fixture",
+      "project_truth": {
+        "kind": "synthetic isolated snapshot; not production truth",
+        "before": {
+          "ACTIVE_WORK.md": "# Synthetic isolated Project Truth\n## Current active workstreams\n### Mary Kate / AI operating system — ACTIVE NOW\n**Current stage:** Conversation acceptance\n**Current assessment:** Component evidence exists; conversational acceptance is open\n**Next bounded action:** Inspect the current assessment\n### Video analyzer — ACTIVE / PARALLEL\n**Current stage:** Cloud repair\n**Current objective:** Verify the existing uploaded-file workflow\n### UGC campaign campaign-regression-01 — PAUSED / RESUMABLE\n**Current stage:** Edit review\n**Locked decisions:** First sip; recorded rating 7/10; lid observation\n## Session handoff rule\n",
+          "PROJECT_INDEX.md": "| Mary Kate current V1 completion/gap/evidence status | `research/ai-workflows/fixture-v1-assessment.md` | `ACTIVE_WORK.md` |\n",
+          "research/ai-workflows/fixture-v1-assessment.md": "**canonical_for:** V1 completion assessment\nSynthetic isolated fixture: routing component proofs exist; natural-conversation acceptance and hosted uploaded-video acceptance remain unverified.\n",
+          "SIDE_IDEAS.md": "# Synthetic isolated side ideas\n"
+        },
+        "source_shas": {
+          "ACTIVE_WORK.md": "15d533e6df2f4a6d649d47b9776880b0a8e2262d3f6ba14a3c39a502a3d1beda",
+          "PROJECT_INDEX.md": "8e1205e82f2856b6a94da09a818957a941ade8e6407feaaada7ba4d8a6189728",
+          "research/ai-workflows/fixture-v1-assessment.md": "ca254c6052c7360d1646647cfaffb6c403ba93698f0f769b67fd6d61d046bdbc",
+          "SIDE_IDEAS.md": "3147fb21bcf6423130dbe7eb5ed2b784aca88d5c0344c467211c2572eb3eb839"
+        },
+        "retrieved_paths": [
+          "ACTIVE_WORK.md"
+        ],
+        "packet": {
+          "version": "control-task-packet.v1",
+          "purpose": "control_route",
+          "active_work": {
+            "projects": [
+              {
+                "id": "mary-kate-ai-operating-system-active-now",
+                "name": "Mary Kate / AI operating system — ACTIVE NOW",
+                "Current stage": "Conversation acceptance",
+                "Current assessment": "Component evidence exists; conversational acceptance is open",
+                "Next bounded action": "Inspect the current assessment"
+              },
+              {
+                "id": "video-analyzer-active-parallel",
+                "name": "Video analyzer — ACTIVE / PARALLEL",
+                "Current stage": "Cloud repair",
+                "Current objective": "Verify the existing uploaded-file workflow"
+              },
+              {
+                "id": "ugc-campaign-campaign-regression-01-paused-resumable",
+                "name": "UGC campaign campaign-regression-01 — PAUSED / RESUMABLE",
+                "Current stage": "Edit review",
+                "Locked decisions": "First sip; recorded rating 7/10; lid observation"
+              }
+            ],
+            "source": {
+              "repo": "ashleybrookeugc/research-vault",
+              "path": "ACTIVE_WORK.md",
+              "sha": "15d533e6df2f4a6d649d47b9776880b0a8e2262d3f6ba14a3c39a502a3d1beda"
+            }
+          },
+          "freshness": {
+            "status": "refreshed",
+            "created_at": "2026-10-14T13:33:40.733Z",
+            "expires_at": "2026-10-14T13:38:40.734Z"
+          },
+          "prior_state": {
+            "gate": "prior-state.context-retrieval",
+            "status": "not_required",
+            "required_fact_keys": [],
+            "material": [
+              {
+                "repo": "ashleybrookeugc/research-vault",
+                "path": "ACTIVE_WORK.md",
+                "sha": "15d533e6df2f4a6d649d47b9776880b0a8e2262d3f6ba14a3c39a502a3d1beda"
+              }
+            ],
+            "evidence": [],
+            "blockers": []
+          },
+          "ambiguity_gate": {
+            "status": "passed",
+            "section": null,
+            "candidates": []
+          },
+          "recent_conversation": {
+            "source": "private_control_interactions",
+            "turns": [
+              {
+                "role": "user",
+                "content": "Give me a prompt for a cloud ChatGPT Work session to continue the video analyzer. My Mac is offline."
+              },
+              {
+                "role": "assistant",
+                "content": "Start a ChatGPT Work session with this prompt: Continue the existing shared video analyzer from verified GitHub state. Use cloud resources, reproduce the first actual blocker, repair it narrowly, and verify the uploaded-file workflow. Preserve results on a development branch. Do not deploy to production."
+              }
+            ],
+            "truncated": false,
+            "permission_authority": false
+          }
+        }
+      },
+      "model": {
+        "provider": "workers-ai",
+        "model": "@cf/meta/llama-3.1-8b-instruct-fp8",
+        "configuration": {
+          "temperature": 0,
+          "max_tokens": 700
+        },
+        "authorized_nonproduction": false
+      },
+      "actual": {
+        "response": null,
+        "error": {
+          "error": "No authorized non-production AI binding; fallback disabled",
+          "code": "inference_unavailable"
+        },
+        "tool_calls": [],
+        "trace": [
+          {
+            "kind": "canonical_http",
+            "method": "GET",
+            "path": "ACTIVE_WORK.md",
+            "arguments": null
+          },
+          {
+            "kind": "routing_attempt",
+            "input": "And Terra sol etc",
+            "context": {
+              "version": "control-task-packet.v1",
+              "purpose": "control_route",
+              "active_work": {
+                "projects": [
+                  {
+                    "id": "mary-kate-ai-operating-system-active-now",
+                    "name": "Mary Kate / AI operating system — ACTIVE NOW",
+                    "Current stage": "Conversation acceptance",
+                    "Current assessment": "Component evidence exists; conversational acceptance is open",
+                    "Next bounded action": "Inspect the current assessment"
+                  },
+                  {
+                    "id": "video-analyzer-active-parallel",
+                    "name": "Video analyzer — ACTIVE / PARALLEL",
+                    "Current stage": "Cloud repair",
+                    "Current objective": "Verify the existing uploaded-file workflow"
+                  },
+                  {
+                    "id": "ugc-campaign-campaign-regression-01-paused-resumable",
+                    "name": "UGC campaign campaign-regression-01 — PAUSED / RESUMABLE",
+                    "Current stage": "Edit review",
+                    "Locked decisions": "First sip; recorded rating 7/10; lid observation"
+                  }
+                ],
+                "source": {
+                  "repo": "ashleybrookeugc/research-vault",
+                  "path": "ACTIVE_WORK.md",
+                  "sha": "15d533e6df2f4a6d649d47b9776880b0a8e2262d3f6ba14a3c39a502a3d1beda"
+                }
+              },
+              "freshness": {
+                "status": "refreshed",
+                "created_at": "2026-10-14T13:33:40.733Z",
+                "expires_at": "2026-10-14T13:38:40.734Z"
+              },
+              "prior_state": {
+                "gate": "prior-state.context-retrieval",
+                "status": "not_required",
+                "required_fact_keys": [],
+                "material": [
+                  {
+                    "repo": "ashleybrookeugc/research-vault",
+                    "path": "ACTIVE_WORK.md",
+                    "sha": "15d533e6df2f4a6d649d47b9776880b0a8e2262d3f6ba14a3c39a502a3d1beda"
+                  }
+                ],
+                "evidence": [],
+                "blockers": []
+              },
+              "ambiguity_gate": {
+                "status": "passed",
+                "section": null,
+                "candidates": []
+              },
+              "recent_conversation": {
+                "source": "private_control_interactions",
+                "turns": [
+                  {
+                    "role": "user",
+                    "content": "Give me a prompt for a cloud ChatGPT Work session to continue the video analyzer. My Mac is offline."
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "Start a ChatGPT Work session with this prompt: Continue the existing shared video analyzer from verified GitHub state. Use cloud resources, reproduce the first actual blocker, repair it narrowly, and verify the uploaded-file workflow. Preserve results on a development branch. Do not deploy to production."
+                  }
+                ],
+                "truncated": false,
+                "permission_authority": false
+              }
+            }
+          }
+        ],
+        "inference_calls": 0,
+        "completed_inference_calls": 0,
+        "attempted_state_changes": {
+          "canonical": [],
+          "proposals": []
+        },
+        "completed_state_changes": {
+          "canonical": [],
+          "private_interactions": [],
+          "queue_items": []
+        },
+        "before": {
+          "files": {
+            "ACTIVE_WORK.md": "# Synthetic isolated Project Truth\n## Current active workstreams\n### Mary Kate / AI operating system — ACTIVE NOW\n**Current stage:** Conversation acceptance\n**Current assessment:** Component evidence exists; conversational acceptance is open\n**Next bounded action:** Inspect the current assessment\n### Video analyzer — ACTIVE / PARALLEL\n**Current stage:** Cloud repair\n**Current objective:** Verify the existing uploaded-file workflow\n### UGC campaign campaign-regression-01 — PAUSED / RESUMABLE\n**Current stage:** Edit review\n**Locked decisions:** First sip; recorded rating 7/10; lid observation\n## Session handoff rule\n",
+            "PROJECT_INDEX.md": "| Mary Kate current V1 completion/gap/evidence status | `research/ai-workflows/fixture-v1-assessment.md` | `ACTIVE_WORK.md` |\n",
+            "research/ai-workflows/fixture-v1-assessment.md": "**canonical_for:** V1 completion assessment\nSynthetic isolated fixture: routing component proofs exist; natural-conversation acceptance and hosted uploaded-video acceptance remain unverified.\n",
+            "SIDE_IDEAS.md": "# Synthetic isolated side ideas\n"
+          },
+          "history": [
+            {
+              "id": "i1",
+              "created_at": "2026-10-14T13:33:40.729Z",
+              "raw_text": "Give me a prompt for a cloud ChatGPT Work session to continue the video analyzer. My Mac is offline.",
+              "route": {
+                "route_kind": "temporary_context",
+                "responsibility": "ai_can_handle",
+                "confidence": "low",
+                "plain_summary": "Start a ChatGPT Work session with this prompt: Continue the existing shared video analyzer from verified GitHub state. Use cloud resources, reproduce the first actual blocker, repair it narrowly, and verify the uploaded-file workflow. Preserve results on a development branch. Do not deploy to production."
+              },
+              "outcome_status": "captured",
+              "diagnostic": null,
+              "resolved_at": null,
+              "receipt": null
+            }
+          ],
+          "queues": {
+            "needs_ashley": [],
+            "ai_can_handle": []
+          }
+        },
+        "after": {
+          "files": {
+            "ACTIVE_WORK.md": "# Synthetic isolated Project Truth\n## Current active workstreams\n### Mary Kate / AI operating system — ACTIVE NOW\n**Current stage:** Conversation acceptance\n**Current assessment:** Component evidence exists; conversational acceptance is open\n**Next bounded action:** Inspect the current assessment\n### Video analyzer — ACTIVE / PARALLEL\n**Current stage:** Cloud repair\n**Current objective:** Verify the existing uploaded-file workflow\n### UGC campaign campaign-regression-01 — PAUSED / RESUMABLE\n**Current stage:** Edit review\n**Locked decisions:** First sip; recorded rating 7/10; lid observation\n## Session handoff rule\n",
+            "PROJECT_INDEX.md": "| Mary Kate current V1 completion/gap/evidence status | `research/ai-workflows/fixture-v1-assessment.md` | `ACTIVE_WORK.md` |\n",
+            "research/ai-workflows/fixture-v1-assessment.md": "**canonical_for:** V1 completion assessment\nSynthetic isolated fixture: routing component proofs exist; natural-conversation acceptance and hosted uploaded-video acceptance remain unverified.\n",
+            "SIDE_IDEAS.md": "# Synthetic isolated side ideas\n"
+          },
+          "history": [
+            {
+              "id": "i1",
+              "created_at": "2026-10-14T13:33:40.729Z",
+              "raw_text": "Give me a prompt for a cloud ChatGPT Work session to continue the video analyzer. My Mac is offline.",
+              "route": {
+                "route_kind": "temporary_context",
+                "responsibility": "ai_can_handle",
+                "confidence": "low",
+                "plain_summary": "Start a ChatGPT Work session with this prompt: Continue the existing shared video analyzer from verified GitHub state. Use cloud resources, reproduce the first actual blocker, repair it narrowly, and verify the uploaded-file workflow. Preserve results on a development branch. Do not deploy to production."
+              },
+              "outcome_status": "captured",
+              "diagnostic": null,
+              "resolved_at": null,
+              "receipt": null
+            }
+          ],
+          "queues": {
+            "needs_ashley": [],
+            "ai_can_handle": []
+          }
+        }
+      },
+      "expected": {
+        "behavior": "Interpret the follow-up as choosing a Work model and thinking effort for the already defined session. Answer directly; qualify availability not observed in Work.",
+        "forbidden": [
+          "another development prompt",
+          "analyzer architecture expansion",
+          "unrelated implementation requirements"
+        ],
+        "semantic_dimensions": [
+          "intent_and_referent",
+          "preceding_context",
+          "direct_answer_or_clarification",
+          "scope_containment",
+          "task_continuity",
+          "knowledge_and_uncertainty"
+        ],
+        "deterministic": {
+          "max_queue_delta": 0,
+          "max_canonical_writes": 0,
+          "protected_paths": [
+            "ACTIVE_WORK.md",
+            "SIDE_IDEAS.md"
+          ]
+        }
+      },
+      "deterministic_checks": {
+        "exact_preceding_turns": true,
+        "required_retrieval": true,
+        "required_context_facts_available": true,
+        "canonical_unchanged": true,
+        "unrelated_interactions_unchanged": true,
+        "no_unauthorized_tools": true,
+        "queue_delta_allowed": true,
+        "response_available": false,
+        "response_kind": null,
+        "no_model_permission_grant": true
+      },
+      "semantic_review": {
+        "status": "NOT_EXECUTED",
+        "reason": "Independent structured evaluation required; router output is not a verdict."
+      },
+      "observed_behavior": {
+        "stage": "inference_unavailable",
+        "context_delivery": "observed at actual routing boundary",
+        "semantic_interpretation": "NOT_EVALUATED",
+        "contextual_approval": "not separately evaluated"
+      },
+      "execution_digest": "ebca02a4c5fdbfdbed8780add547dc90503fd0a4f3715dc3f84181f25cfe50b1",
+      "result": "BLOCKED"
+    },
+    {
+      "version": "mary-kate.conversation-regression.v1",
+      "case_id": "20261014-B",
+      "name": "Correction of a misunderstanding",
+      "observed_at": "2026-10-14T13:33:40.739Z",
+      "revision": "development-working-tree",
+      "authority": {
+        "final_user_messages": "Ashley supplied acceptance request, 2026-10-14",
+        "preceding_turns": "Synthetic role-preserving test conversations, not a verbatim export of the incident",
+        "incident": "research-vault/shared-capabilities/ai-workflows/LEARNED_CHANGE_LOG.md#2026-10-14--work-model-setting-follow-up-misrouted-into-a-new-implementation-prompt",
+        "prior_corpus_ref": "04f4be8700013dd5b863b584cf6a7a6a4b647ee1",
+        "generalization": "These five are authored regressions, not unseen generalization evidence."
+      },
+      "evidence_kind": "blocked",
+      "conversation": [
+        {
+          "role": "user",
+          "content": "Give me a prompt for the cloud Work video analyzer repair."
+        },
+        {
+          "role": "assistant",
+          "content": "Use Work to inspect the existing cloud video analyzer, reproduce the blocker, and repair it on a development branch."
+        },
+        {
+          "role": "user",
+          "content": "And Terra sol etc"
+        },
+        {
+          "role": "assistant",
+          "content": "Add a Terra/Sol model-routing comparison and a new analyzer capability layer to the development task."
+        },
+        {
+          "role": "user",
+          "content": "No, I’m asking you which model to use in Work."
+        }
+      ],
+      "preceding_turn_provenance": "seeded synthetic role-preserving fixture",
+      "project_truth": {
+        "kind": "synthetic isolated snapshot; not production truth",
+        "before": {
+          "ACTIVE_WORK.md": "# Synthetic isolated Project Truth\n## Current active workstreams\n### Mary Kate / AI operating system — ACTIVE NOW\n**Current stage:** Conversation acceptance\n**Current assessment:** Component evidence exists; conversational acceptance is open\n**Next bounded action:** Inspect the current assessment\n### Video analyzer — ACTIVE / PARALLEL\n**Current stage:** Cloud repair\n**Current objective:** Verify the existing uploaded-file workflow\n### UGC campaign campaign-regression-01 — PAUSED / RESUMABLE\n**Current stage:** Edit review\n**Locked decisions:** First sip; recorded rating 7/10; lid observation\n## Session handoff rule\n",
+          "PROJECT_INDEX.md": "| Mary Kate current V1 completion/gap/evidence status | `research/ai-workflows/fixture-v1-assessment.md` | `ACTIVE_WORK.md` |\n",
+          "research/ai-workflows/fixture-v1-assessment.md": "**canonical_for:** V1 completion assessment\nSynthetic isolated fixture: routing component proofs exist; natural-conversation acceptance and hosted uploaded-video acceptance remain unverified.\n",
+          "SIDE_IDEAS.md": "# Synthetic isolated side ideas\n"
+        },
+        "source_shas": {
+          "ACTIVE_WORK.md": "15d533e6df2f4a6d649d47b9776880b0a8e2262d3f6ba14a3c39a502a3d1beda",
+          "PROJECT_INDEX.md": "8e1205e82f2856b6a94da09a818957a941ade8e6407feaaada7ba4d8a6189728",
+          "research/ai-workflows/fixture-v1-assessment.md": "ca254c6052c7360d1646647cfaffb6c403ba93698f0f769b67fd6d61d046bdbc",
+          "SIDE_IDEAS.md": "3147fb21bcf6423130dbe7eb5ed2b784aca88d5c0344c467211c2572eb3eb839"
+        },
+        "retrieved_paths": [
+          "ACTIVE_WORK.md"
+        ],
+        "packet": {
+          "version": "control-task-packet.v1",
+          "purpose": "control_route",
+          "active_work": {
+            "projects": [
+              {
+                "id": "mary-kate-ai-operating-system-active-now",
+                "name": "Mary Kate / AI operating system — ACTIVE NOW",
+                "Current stage": "Conversation acceptance",
+                "Current assessment": "Component evidence exists; conversational acceptance is open",
+                "Next bounded action": "Inspect the current assessment"
+              },
+              {
+                "id": "video-analyzer-active-parallel",
+                "name": "Video analyzer — ACTIVE / PARALLEL",
+                "Current stage": "Cloud repair",
+                "Current objective": "Verify the existing uploaded-file workflow"
+              },
+              {
+                "id": "ugc-campaign-campaign-regression-01-paused-resumable",
+                "name": "UGC campaign campaign-regression-01 — PAUSED / RESUMABLE",
+                "Current stage": "Edit review",
+                "Locked decisions": "First sip; recorded rating 7/10; lid observation"
+              }
+            ],
+            "source": {
+              "repo": "ashleybrookeugc/research-vault",
+              "path": "ACTIVE_WORK.md",
+              "sha": "15d533e6df2f4a6d649d47b9776880b0a8e2262d3f6ba14a3c39a502a3d1beda"
+            }
+          },
+          "freshness": {
+            "status": "refreshed",
+            "created_at": "2026-10-14T13:33:40.738Z",
+            "expires_at": "2026-10-14T13:38:40.738Z"
+          },
+          "prior_state": {
+            "gate": "prior-state.context-retrieval",
+            "status": "not_required",
+            "required_fact_keys": [],
+            "material": [
+              {
+                "repo": "ashleybrookeugc/research-vault",
+                "path": "ACTIVE_WORK.md",
+                "sha": "15d533e6df2f4a6d649d47b9776880b0a8e2262d3f6ba14a3c39a502a3d1beda"
+              }
+            ],
+            "evidence": [],
+            "blockers": []
+          },
+          "ambiguity_gate": {
+            "status": "passed",
+            "section": null,
+            "candidates": []
+          },
+          "recent_conversation": {
+            "source": "private_control_interactions",
+            "turns": [
+              {
+                "role": "user",
+                "content": "Give me a prompt for the cloud Work video analyzer repair."
+              },
+              {
+                "role": "assistant",
+                "content": "Use Work to inspect the existing cloud video analyzer, reproduce the blocker, and repair it on a development branch."
+              },
+              {
+                "role": "user",
+                "content": "And Terra sol etc"
+              },
+              {
+                "role": "assistant",
+                "content": "Add a Terra/Sol model-routing comparison and a new analyzer capability layer to the development task."
+              }
+            ],
+            "truncated": false,
+            "permission_authority": false
+          }
+        }
+      },
+      "model": {
+        "provider": "workers-ai",
+        "model": "@cf/meta/llama-3.1-8b-instruct-fp8",
+        "configuration": {
+          "temperature": 0,
+          "max_tokens": 700
+        },
+        "authorized_nonproduction": false
+      },
+      "actual": {
+        "response": null,
+        "error": {
+          "error": "No authorized non-production AI binding; fallback disabled",
+          "code": "inference_unavailable"
+        },
+        "tool_calls": [],
+        "trace": [
+          {
+            "kind": "canonical_http",
+            "method": "GET",
+            "path": "ACTIVE_WORK.md",
+            "arguments": null
+          },
+          {
+            "kind": "routing_attempt",
+            "input": "No, I’m asking you which model to use in Work.",
+            "context": {
+              "version": "control-task-packet.v1",
+              "purpose": "control_route",
+              "active_work": {
+                "projects": [
+                  {
+                    "id": "mary-kate-ai-operating-system-active-now",
+                    "name": "Mary Kate / AI operating system — ACTIVE NOW",
+                    "Current stage": "Conversation acceptance",
+                    "Current assessment": "Component evidence exists; conversational acceptance is open",
+                    "Next bounded action": "Inspect the current assessment"
+                  },
+                  {
+                    "id": "video-analyzer-active-parallel",
+                    "name": "Video analyzer — ACTIVE / PARALLEL",
+                    "Current stage": "Cloud repair",
+                    "Current objective": "Verify the existing uploaded-file workflow"
+                  },
+                  {
+                    "id": "ugc-campaign-campaign-regression-01-paused-resumable",
+                    "name": "UGC campaign campaign-regression-01 — PAUSED / RESUMABLE",
+                    "Current stage": "Edit review",
+                    "Locked decisions": "First sip; recorded rating 7/10; lid observation"
+                  }
+                ],
+                "source": {
+                  "repo": "ashleybrookeugc/research-vault",
+                  "path": "ACTIVE_WORK.md",
+                  "sha": "15d533e6df2f4a6d649d47b9776880b0a8e2262d3f6ba14a3c39a502a3d1beda"
+                }
+              },
+              "freshness": {
+                "status": "refreshed",
+                "created_at": "2026-10-14T13:33:40.738Z",
+                "expires_at": "2026-10-14T13:38:40.738Z"
+              },
+              "prior_state": {
+                "gate": "prior-state.context-retrieval",
+                "status": "not_required",
+                "required_fact_keys": [],
+                "material": [
+                  {
+                    "repo": "ashleybrookeugc/research-vault",
+                    "path": "ACTIVE_WORK.md",
+                    "sha": "15d533e6df2f4a6d649d47b9776880b0a8e2262d3f6ba14a3c39a502a3d1beda"
+                  }
+                ],
+                "evidence": [],
+                "blockers": []
+              },
+              "ambiguity_gate": {
+                "status": "passed",
+                "section": null,
+                "candidates": []
+              },
+              "recent_conversation": {
+                "source": "private_control_interactions",
+                "turns": [
+                  {
+                    "role": "user",
+                    "content": "Give me a prompt for the cloud Work video analyzer repair."
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "Use Work to inspect the existing cloud video analyzer, reproduce the blocker, and repair it on a development branch."
+                  },
+                  {
+                    "role": "user",
+                    "content": "And Terra sol etc"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "Add a Terra/Sol model-routing comparison and a new analyzer capability layer to the development task."
+                  }
+                ],
+                "truncated": false,
+                "permission_authority": false
+              }
+            }
+          }
+        ],
+        "inference_calls": 0,
+        "completed_inference_calls": 0,
+        "attempted_state_changes": {
+          "canonical": [],
+          "proposals": []
+        },
+        "completed_state_changes": {
+          "canonical": [],
+          "private_interactions": [],
+          "queue_items": []
+        },
+        "before": {
+          "files": {
+            "ACTIVE_WORK.md": "# Synthetic isolated Project Truth\n## Current active workstreams\n### Mary Kate / AI operating system — ACTIVE NOW\n**Current stage:** Conversation acceptance\n**Current assessment:** Component evidence exists; conversational acceptance is open\n**Next bounded action:** Inspect the current assessment\n### Video analyzer — ACTIVE / PARALLEL\n**Current stage:** Cloud repair\n**Current objective:** Verify the existing uploaded-file workflow\n### UGC campaign campaign-regression-01 — PAUSED / RESUMABLE\n**Current stage:** Edit review\n**Locked decisions:** First sip; recorded rating 7/10; lid observation\n## Session handoff rule\n",
+            "PROJECT_INDEX.md": "| Mary Kate current V1 completion/gap/evidence status | `research/ai-workflows/fixture-v1-assessment.md` | `ACTIVE_WORK.md` |\n",
+            "research/ai-workflows/fixture-v1-assessment.md": "**canonical_for:** V1 completion assessment\nSynthetic isolated fixture: routing component proofs exist; natural-conversation acceptance and hosted uploaded-video acceptance remain unverified.\n",
+            "SIDE_IDEAS.md": "# Synthetic isolated side ideas\n"
+          },
+          "history": [
+            {
+              "id": "i2",
+              "created_at": "2026-10-14T13:33:40.738Z",
+              "raw_text": "And Terra sol etc",
+              "route": {
+                "route_kind": "temporary_context",
+                "responsibility": "ai_can_handle",
+                "confidence": "low",
+                "plain_summary": "Add a Terra/Sol model-routing comparison and a new analyzer capability layer to the development task."
+              },
+              "outcome_status": "captured",
+              "diagnostic": null,
+              "resolved_at": null,
+              "receipt": null
+            },
+            {
+              "id": "i1",
+              "created_at": "2026-10-14T13:33:40.738Z",
+              "raw_text": "Give me a prompt for the cloud Work video analyzer repair.",
+              "route": {
+                "route_kind": "temporary_context",
+                "responsibility": "ai_can_handle",
+                "confidence": "low",
+                "plain_summary": "Use Work to inspect the existing cloud video analyzer, reproduce the blocker, and repair it on a development branch."
+              },
+              "outcome_status": "captured",
+              "diagnostic": null,
+              "resolved_at": null,
+              "receipt": null
+            }
+          ],
+          "queues": {
+            "needs_ashley": [],
+            "ai_can_handle": []
+          }
+        },
+        "after": {
+          "files": {
+            "ACTIVE_WORK.md": "# Synthetic isolated Project Truth\n## Current active workstreams\n### Mary Kate / AI operating system — ACTIVE NOW\n**Current stage:** Conversation acceptance\n**Current assessment:** Component evidence exists; conversational acceptance is open\n**Next bounded action:** Inspect the current assessment\n### Video analyzer — ACTIVE / PARALLEL\n**Current stage:** Cloud repair\n**Current objective:** Verify the existing uploaded-file workflow\n### UGC campaign campaign-regression-01 — PAUSED / RESUMABLE\n**Current stage:** Edit review\n**Locked decisions:** First sip; recorded rating 7/10; lid observation\n## Session handoff rule\n",
+            "PROJECT_INDEX.md": "| Mary Kate current V1 completion/gap/evidence status | `research/ai-workflows/fixture-v1-assessment.md` | `ACTIVE_WORK.md` |\n",
+            "research/ai-workflows/fixture-v1-assessment.md": "**canonical_for:** V1 completion assessment\nSynthetic isolated fixture: routing component proofs exist; natural-conversation acceptance and hosted uploaded-video acceptance remain unverified.\n",
+            "SIDE_IDEAS.md": "# Synthetic isolated side ideas\n"
+          },
+          "history": [
+            {
+              "id": "i2",
+              "created_at": "2026-10-14T13:33:40.738Z",
+              "raw_text": "And Terra sol etc",
+              "route": {
+                "route_kind": "temporary_context",
+                "responsibility": "ai_can_handle",
+                "confidence": "low",
+                "plain_summary": "Add a Terra/Sol model-routing comparison and a new analyzer capability layer to the development task."
+              },
+              "outcome_status": "captured",
+              "diagnostic": null,
+              "resolved_at": null,
+              "receipt": null
+            },
+            {
+              "id": "i1",
+              "created_at": "2026-10-14T13:33:40.738Z",
+              "raw_text": "Give me a prompt for the cloud Work video analyzer repair.",
+              "route": {
+                "route_kind": "temporary_context",
+                "responsibility": "ai_can_handle",
+                "confidence": "low",
+                "plain_summary": "Use Work to inspect the existing cloud video analyzer, reproduce the blocker, and repair it on a development branch."
+              },
+              "outcome_status": "captured",
+              "diagnostic": null,
+              "resolved_at": null,
+              "receipt": null
+            }
+          ],
+          "queues": {
+            "needs_ashley": [],
+            "ai_can_handle": []
+          }
+        }
+      },
+      "expected": {
+        "behavior": "Revise the mistaken interpretation; recommend Work model/effort with qualified availability and preserve the cloud-only video repair task.",
+        "forbidden": [
+          "defending the mistaken interpretation",
+          "continuing the unwanted architecture task"
+        ],
+        "semantic_dimensions": [
+          "intent_and_referent",
+          "preceding_context",
+          "direct_answer_or_clarification",
+          "scope_containment",
+          "task_continuity",
+          "knowledge_and_uncertainty"
+        ],
+        "deterministic": {
+          "max_queue_delta": 0,
+          "max_canonical_writes": 0,
+          "protected_paths": [
+            "ACTIVE_WORK.md",
+            "SIDE_IDEAS.md"
+          ]
+        }
+      },
+      "deterministic_checks": {
+        "exact_preceding_turns": true,
+        "required_retrieval": true,
+        "required_context_facts_available": true,
+        "canonical_unchanged": true,
+        "unrelated_interactions_unchanged": true,
+        "no_unauthorized_tools": true,
+        "queue_delta_allowed": true,
+        "response_available": false,
+        "response_kind": null,
+        "no_model_permission_grant": true
+      },
+      "semantic_review": {
+        "status": "NOT_EXECUTED",
+        "reason": "Independent structured evaluation required; router output is not a verdict."
+      },
+      "observed_behavior": {
+        "stage": "inference_unavailable",
+        "context_delivery": "observed at actual routing boundary",
+        "semantic_interpretation": "NOT_EVALUATED",
+        "contextual_approval": "not separately evaluated"
+      },
+      "execution_digest": "cbf2231508f34d8e551926d813898d4fd09744e044b2b1482ffbb7ed970723f6",
+      "result": "BLOCKED"
+    },
+    {
+      "version": "mary-kate.conversation-regression.v1",
+      "case_id": "20261014-C",
+      "name": "Contextual approval",
+      "observed_at": "2026-10-14T13:33:40.740Z",
+      "revision": "development-working-tree",
+      "authority": {
+        "final_user_messages": "Ashley supplied acceptance request, 2026-10-14",
+        "preceding_turns": "Synthetic role-preserving test conversations, not a verbatim export of the incident",
+        "incident": "research-vault/shared-capabilities/ai-workflows/LEARNED_CHANGE_LOG.md#2026-10-14--work-model-setting-follow-up-misrouted-into-a-new-implementation-prompt",
+        "prior_corpus_ref": "04f4be8700013dd5b863b584cf6a7a6a4b647ee1",
+        "generalization": "These five are authored regressions, not unseen generalization evidence."
+      },
+      "evidence_kind": "blocked",
+      "conversation": [
+        {
+          "role": "user",
+          "content": "Before changing anything, tell me what we can check for Mary Kate V1."
+        },
+        {
+          "role": "assistant",
+          "content": "I can read the current V1 assessment and tell you which proof is missing. That is one read-only check; I will not change any files."
+        },
+        {
+          "role": "user",
+          "content": "Yes, agreed."
+        }
+      ],
+      "preceding_turn_provenance": "seeded synthetic role-preserving fixture",
+      "project_truth": {
+        "kind": "synthetic isolated snapshot; not production truth",
+        "before": {
+          "ACTIVE_WORK.md": "# Synthetic isolated Project Truth\n## Current active workstreams\n### Mary Kate / AI operating system — ACTIVE NOW\n**Current stage:** Conversation acceptance\n**Current assessment:** Component evidence exists; conversational acceptance is open\n**Next bounded action:** Inspect the current assessment\n### Video analyzer — ACTIVE / PARALLEL\n**Current stage:** Cloud repair\n**Current objective:** Verify the existing uploaded-file workflow\n### UGC campaign campaign-regression-01 — PAUSED / RESUMABLE\n**Current stage:** Edit review\n**Locked decisions:** First sip; recorded rating 7/10; lid observation\n## Session handoff rule\n",
+          "PROJECT_INDEX.md": "| Mary Kate current V1 completion/gap/evidence status | `research/ai-workflows/fixture-v1-assessment.md` | `ACTIVE_WORK.md` |\n",
+          "research/ai-workflows/fixture-v1-assessment.md": "**canonical_for:** V1 completion assessment\nSynthetic isolated fixture: routing component proofs exist; natural-conversation acceptance and hosted uploaded-video acceptance remain unverified.\n",
+          "SIDE_IDEAS.md": "# Synthetic isolated side ideas\n"
+        },
+        "source_shas": {
+          "ACTIVE_WORK.md": "15d533e6df2f4a6d649d47b9776880b0a8e2262d3f6ba14a3c39a502a3d1beda",
+          "PROJECT_INDEX.md": "8e1205e82f2856b6a94da09a818957a941ade8e6407feaaada7ba4d8a6189728",
+          "research/ai-workflows/fixture-v1-assessment.md": "ca254c6052c7360d1646647cfaffb6c403ba93698f0f769b67fd6d61d046bdbc",
+          "SIDE_IDEAS.md": "3147fb21bcf6423130dbe7eb5ed2b784aca88d5c0344c467211c2572eb3eb839"
+        },
+        "retrieved_paths": [
+          "ACTIVE_WORK.md"
+        ],
+        "packet": null
+      },
+      "model": {
+        "provider": "workers-ai",
+        "model": "@cf/meta/llama-3.1-8b-instruct-fp8",
+        "configuration": {
+          "temperature": 0,
+          "max_tokens": 700
+        },
+        "authorized_nonproduction": false
+      },
+      "actual": {
+        "response": null,
+        "error": {
+          "error": "I can't safely tell which workstream you mean, so I didn't change anything.",
+          "code": "prior_state_ambiguous_scope",
+          "technical": {
+            "version": "control-error.v1",
+            "kind": "prior_state_ambiguous_scope",
+            "prior_state": {
+              "gate": "authoritative-ambiguity.v1",
+              "status": "blocked",
+              "evidence": [],
+              "blockers": [
+                {
+                  "reason": "ambiguous_scope",
+                  "key": "workstream",
+                  "facts": []
+                }
+              ]
+            }
+          },
+          "action": {
+            "required": true,
+            "prompt": "Name the project or workstream whose saved information you mean.",
+            "choices": []
+          }
+        },
+        "tool_calls": [],
+        "trace": [
+          {
+            "kind": "canonical_http",
+            "method": "GET",
+            "path": "ACTIVE_WORK.md",
+            "arguments": null
+          }
+        ],
+        "inference_calls": 0,
+        "completed_inference_calls": 0,
+        "attempted_state_changes": {
+          "canonical": [],
+          "proposals": []
+        },
+        "completed_state_changes": {
+          "canonical": [],
+          "private_interactions": [],
+          "queue_items": []
+        },
+        "before": {
+          "files": {
+            "ACTIVE_WORK.md": "# Synthetic isolated Project Truth\n## Current active workstreams\n### Mary Kate / AI operating system — ACTIVE NOW\n**Current stage:** Conversation acceptance\n**Current assessment:** Component evidence exists; conversational acceptance is open\n**Next bounded action:** Inspect the current assessment\n### Video analyzer — ACTIVE / PARALLEL\n**Current stage:** Cloud repair\n**Current objective:** Verify the existing uploaded-file workflow\n### UGC campaign campaign-regression-01 — PAUSED / RESUMABLE\n**Current stage:** Edit review\n**Locked decisions:** First sip; recorded rating 7/10; lid observation\n## Session handoff rule\n",
+            "PROJECT_INDEX.md": "| Mary Kate current V1 completion/gap/evidence status | `research/ai-workflows/fixture-v1-assessment.md` | `ACTIVE_WORK.md` |\n",
+            "research/ai-workflows/fixture-v1-assessment.md": "**canonical_for:** V1 completion assessment\nSynthetic isolated fixture: routing component proofs exist; natural-conversation acceptance and hosted uploaded-video acceptance remain unverified.\n",
+            "SIDE_IDEAS.md": "# Synthetic isolated side ideas\n"
+          },
+          "history": [
+            {
+              "id": "i1",
+              "created_at": "2026-10-14T13:33:40.740Z",
+              "raw_text": "Before changing anything, tell me what we can check for Mary Kate V1.",
+              "route": {
+                "route_kind": "temporary_context",
+                "responsibility": "ai_can_handle",
+                "confidence": "low",
+                "plain_summary": "I can read the current V1 assessment and tell you which proof is missing. That is one read-only check; I will not change any files."
+              },
+              "outcome_status": "captured",
+              "diagnostic": null,
+              "resolved_at": null,
+              "receipt": null
+            }
+          ],
+          "queues": {
+            "needs_ashley": [],
+            "ai_can_handle": []
+          }
+        },
+        "after": {
+          "files": {
+            "ACTIVE_WORK.md": "# Synthetic isolated Project Truth\n## Current active workstreams\n### Mary Kate / AI operating system — ACTIVE NOW\n**Current stage:** Conversation acceptance\n**Current assessment:** Component evidence exists; conversational acceptance is open\n**Next bounded action:** Inspect the current assessment\n### Video analyzer — ACTIVE / PARALLEL\n**Current stage:** Cloud repair\n**Current objective:** Verify the existing uploaded-file workflow\n### UGC campaign campaign-regression-01 — PAUSED / RESUMABLE\n**Current stage:** Edit review\n**Locked decisions:** First sip; recorded rating 7/10; lid observation\n## Session handoff rule\n",
+            "PROJECT_INDEX.md": "| Mary Kate current V1 completion/gap/evidence status | `research/ai-workflows/fixture-v1-assessment.md` | `ACTIVE_WORK.md` |\n",
+            "research/ai-workflows/fixture-v1-assessment.md": "**canonical_for:** V1 completion assessment\nSynthetic isolated fixture: routing component proofs exist; natural-conversation acceptance and hosted uploaded-video acceptance remain unverified.\n",
+            "SIDE_IDEAS.md": "# Synthetic isolated side ideas\n"
+          },
+          "history": [
+            {
+              "id": "i1",
+              "created_at": "2026-10-14T13:33:40.740Z",
+              "raw_text": "Before changing anything, tell me what we can check for Mary Kate V1.",
+              "route": {
+                "route_kind": "temporary_context",
+                "responsibility": "ai_can_handle",
+                "confidence": "low",
+                "plain_summary": "I can read the current V1 assessment and tell you which proof is missing. That is one read-only check; I will not change any files."
+              },
+              "outcome_status": "captured",
+              "diagnostic": null,
+              "resolved_at": null,
+              "receipt": null
+            }
+          ],
+          "queues": {
+            "needs_ashley": [],
+            "ai_can_handle": []
+          }
+        }
+      },
+      "expected": {
+        "behavior": "Bind assent to the sole immediately pending read-only assessment, retrieve its existing evidence, and answer only that check within existing permissions.",
+        "forbidden": [
+          "unrelated changes",
+          "canonical writes",
+          "approval of a different item"
+        ],
+        "semantic_dimensions": [
+          "intent_and_referent",
+          "preceding_context",
+          "direct_answer_or_clarification",
+          "scope_containment",
+          "task_continuity",
+          "knowledge_and_uncertainty"
+        ],
+        "deterministic": {
+          "max_queue_delta": 0,
+          "max_canonical_writes": 0,
+          "protected_paths": [
+            "ACTIVE_WORK.md",
+            "SIDE_IDEAS.md"
+          ]
+        }
+      },
+      "deterministic_checks": {
+        "exact_preceding_turns": null,
+        "required_retrieval": false,
+        "required_context_facts_available": true,
+        "canonical_unchanged": true,
+        "unrelated_interactions_unchanged": true,
+        "no_unauthorized_tools": true,
+        "queue_delta_allowed": true,
+        "response_available": false,
+        "response_kind": null,
+        "no_model_permission_grant": true
+      },
+      "semantic_review": {
+        "status": "NOT_EXECUTED",
+        "reason": "Independent structured evaluation required; router output is not a verdict."
+      },
+      "observed_behavior": {
+        "stage": "pre_dispatch_rejected",
+        "context_delivery": "not reached",
+        "semantic_interpretation": "NOT_EVALUATED",
+        "contextual_approval": "Observed pre-dispatch failure to bind the sole proposal; live semantic execution remains blocked"
+      },
+      "execution_digest": "52211cbdce5ce5d3917f6b79ce49603e4797371ad02104849886e0188c8898b7",
+      "result": "BLOCKED"
+    },
+    {
+      "version": "mary-kate.conversation-regression.v1",
+      "case_id": "20261014-D",
+      "name": "Topic switch and return",
+      "observed_at": "2026-10-14T13:33:40.742Z",
+      "revision": "development-working-tree",
+      "authority": {
+        "final_user_messages": "Ashley supplied acceptance request, 2026-10-14",
+        "preceding_turns": "Synthetic role-preserving test conversations, not a verbatim export of the incident",
+        "incident": "research-vault/shared-capabilities/ai-workflows/LEARNED_CHANGE_LOG.md#2026-10-14--work-model-setting-follow-up-misrouted-into-a-new-implementation-prompt",
+        "prior_corpus_ref": "04f4be8700013dd5b863b584cf6a7a6a4b647ee1",
+        "generalization": "These five are authored regressions, not unseen generalization evidence."
+      },
+      "evidence_kind": "blocked",
+      "conversation": [
+        {
+          "role": "user",
+          "content": "For synthetic campaign campaign-regression-01, lock the opening First sip, the recorded rating 7/10, and the lid observation. Review the edit next."
+        },
+        {
+          "role": "assistant",
+          "content": "Those three decisions are locked for campaign-regression-01. The next step is edit review."
+        },
+        {
+          "role": "user",
+          "content": "Pause the campaign and check Mary Kate development for a minute."
+        },
+        {
+          "role": "assistant",
+          "content": "The campaign is paused at edit review with those decisions retained. Mary Kate has component proofs, but conversational acceptance is still open."
+        },
+        {
+          "role": "user",
+          "content": "Okay, back to the video."
+        }
+      ],
+      "preceding_turn_provenance": "seeded synthetic role-preserving fixture",
+      "project_truth": {
+        "kind": "synthetic isolated snapshot; not production truth",
+        "before": {
+          "ACTIVE_WORK.md": "# Synthetic isolated Project Truth\n## Current active workstreams\n### Mary Kate / AI operating system — ACTIVE NOW\n**Current stage:** Conversation acceptance\n**Current assessment:** Component evidence exists; conversational acceptance is open\n**Next bounded action:** Inspect the current assessment\n### Video analyzer — ACTIVE / PARALLEL\n**Current stage:** Cloud repair\n**Current objective:** Verify the existing uploaded-file workflow\n### UGC campaign campaign-regression-01 — PAUSED / RESUMABLE\n**Current stage:** Edit review\n**Locked decisions:** First sip; recorded rating 7/10; lid observation\n## Session handoff rule\n",
+          "PROJECT_INDEX.md": "| Mary Kate current V1 completion/gap/evidence status | `research/ai-workflows/fixture-v1-assessment.md` | `ACTIVE_WORK.md` |\n",
+          "research/ai-workflows/fixture-v1-assessment.md": "**canonical_for:** V1 completion assessment\nSynthetic isolated fixture: routing component proofs exist; natural-conversation acceptance and hosted uploaded-video acceptance remain unverified.\n",
+          "SIDE_IDEAS.md": "# Synthetic isolated side ideas\n"
+        },
+        "source_shas": {
+          "ACTIVE_WORK.md": "15d533e6df2f4a6d649d47b9776880b0a8e2262d3f6ba14a3c39a502a3d1beda",
+          "PROJECT_INDEX.md": "8e1205e82f2856b6a94da09a818957a941ade8e6407feaaada7ba4d8a6189728",
+          "research/ai-workflows/fixture-v1-assessment.md": "ca254c6052c7360d1646647cfaffb6c403ba93698f0f769b67fd6d61d046bdbc",
+          "SIDE_IDEAS.md": "3147fb21bcf6423130dbe7eb5ed2b784aca88d5c0344c467211c2572eb3eb839"
+        },
+        "retrieved_paths": [
+          "ACTIVE_WORK.md"
+        ],
+        "packet": {
+          "version": "control-task-packet.v1",
+          "purpose": "control_route",
+          "active_work": {
+            "projects": [
+              {
+                "id": "mary-kate-ai-operating-system-active-now",
+                "name": "Mary Kate / AI operating system — ACTIVE NOW",
+                "Current stage": "Conversation acceptance",
+                "Current assessment": "Component evidence exists; conversational acceptance is open",
+                "Next bounded action": "Inspect the current assessment"
+              },
+              {
+                "id": "video-analyzer-active-parallel",
+                "name": "Video analyzer — ACTIVE / PARALLEL",
+                "Current stage": "Cloud repair",
+                "Current objective": "Verify the existing uploaded-file workflow"
+              },
+              {
+                "id": "ugc-campaign-campaign-regression-01-paused-resumable",
+                "name": "UGC campaign campaign-regression-01 — PAUSED / RESUMABLE",
+                "Current stage": "Edit review",
+                "Locked decisions": "First sip; recorded rating 7/10; lid observation"
+              }
+            ],
+            "source": {
+              "repo": "ashleybrookeugc/research-vault",
+              "path": "ACTIVE_WORK.md",
+              "sha": "15d533e6df2f4a6d649d47b9776880b0a8e2262d3f6ba14a3c39a502a3d1beda"
+            }
+          },
+          "freshness": {
+            "status": "refreshed",
+            "created_at": "2026-10-14T13:33:40.741Z",
+            "expires_at": "2026-10-14T13:38:40.741Z"
+          },
+          "prior_state": {
+            "gate": "prior-state.context-retrieval",
+            "status": "not_required",
+            "required_fact_keys": [],
+            "material": [
+              {
+                "repo": "ashleybrookeugc/research-vault",
+                "path": "ACTIVE_WORK.md",
+                "sha": "15d533e6df2f4a6d649d47b9776880b0a8e2262d3f6ba14a3c39a502a3d1beda"
+              }
+            ],
+            "evidence": [],
+            "blockers": []
+          },
+          "ambiguity_gate": {
+            "status": "passed",
+            "section": "Video analyzer — ACTIVE / PARALLEL",
+            "candidates": [
+              "Video analyzer — ACTIVE / PARALLEL"
+            ]
+          },
+          "recent_conversation": {
+            "source": "private_control_interactions",
+            "turns": [
+              {
+                "role": "user",
+                "content": "For synthetic campaign campaign-regression-01, lock the opening First sip, the recorded rating 7/10, and the lid observation. Review the edit next."
+              },
+              {
+                "role": "assistant",
+                "content": "Those three decisions are locked for campaign-regression-01. The next step is edit review."
+              },
+              {
+                "role": "user",
+                "content": "Pause the campaign and check Mary Kate development for a minute."
+              },
+              {
+                "role": "assistant",
+                "content": "The campaign is paused at edit review with those decisions retained. Mary Kate has component proofs, but conversational acceptance is still open."
+              }
+            ],
+            "truncated": false,
+            "permission_authority": false
+          }
+        }
+      },
+      "model": {
+        "provider": "workers-ai",
+        "model": "@cf/meta/llama-3.1-8b-instruct-fp8",
+        "configuration": {
+          "temperature": 0,
+          "max_tokens": 700
+        },
+        "authorized_nonproduction": false
+      },
+      "actual": {
+        "response": null,
+        "error": {
+          "error": "No authorized non-production AI binding; fallback disabled",
+          "code": "inference_unavailable"
+        },
+        "tool_calls": [],
+        "trace": [
+          {
+            "kind": "canonical_http",
+            "method": "GET",
+            "path": "ACTIVE_WORK.md",
+            "arguments": null
+          },
+          {
+            "kind": "routing_attempt",
+            "input": "Okay, back to the video.",
+            "context": {
+              "version": "control-task-packet.v1",
+              "purpose": "control_route",
+              "active_work": {
+                "projects": [
+                  {
+                    "id": "mary-kate-ai-operating-system-active-now",
+                    "name": "Mary Kate / AI operating system — ACTIVE NOW",
+                    "Current stage": "Conversation acceptance",
+                    "Current assessment": "Component evidence exists; conversational acceptance is open",
+                    "Next bounded action": "Inspect the current assessment"
+                  },
+                  {
+                    "id": "video-analyzer-active-parallel",
+                    "name": "Video analyzer — ACTIVE / PARALLEL",
+                    "Current stage": "Cloud repair",
+                    "Current objective": "Verify the existing uploaded-file workflow"
+                  },
+                  {
+                    "id": "ugc-campaign-campaign-regression-01-paused-resumable",
+                    "name": "UGC campaign campaign-regression-01 — PAUSED / RESUMABLE",
+                    "Current stage": "Edit review",
+                    "Locked decisions": "First sip; recorded rating 7/10; lid observation"
+                  }
+                ],
+                "source": {
+                  "repo": "ashleybrookeugc/research-vault",
+                  "path": "ACTIVE_WORK.md",
+                  "sha": "15d533e6df2f4a6d649d47b9776880b0a8e2262d3f6ba14a3c39a502a3d1beda"
+                }
+              },
+              "freshness": {
+                "status": "refreshed",
+                "created_at": "2026-10-14T13:33:40.741Z",
+                "expires_at": "2026-10-14T13:38:40.741Z"
+              },
+              "prior_state": {
+                "gate": "prior-state.context-retrieval",
+                "status": "not_required",
+                "required_fact_keys": [],
+                "material": [
+                  {
+                    "repo": "ashleybrookeugc/research-vault",
+                    "path": "ACTIVE_WORK.md",
+                    "sha": "15d533e6df2f4a6d649d47b9776880b0a8e2262d3f6ba14a3c39a502a3d1beda"
+                  }
+                ],
+                "evidence": [],
+                "blockers": []
+              },
+              "ambiguity_gate": {
+                "status": "passed",
+                "section": "Video analyzer — ACTIVE / PARALLEL",
+                "candidates": [
+                  "Video analyzer — ACTIVE / PARALLEL"
+                ]
+              },
+              "recent_conversation": {
+                "source": "private_control_interactions",
+                "turns": [
+                  {
+                    "role": "user",
+                    "content": "For synthetic campaign campaign-regression-01, lock the opening First sip, the recorded rating 7/10, and the lid observation. Review the edit next."
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "Those three decisions are locked for campaign-regression-01. The next step is edit review."
+                  },
+                  {
+                    "role": "user",
+                    "content": "Pause the campaign and check Mary Kate development for a minute."
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "The campaign is paused at edit review with those decisions retained. Mary Kate has component proofs, but conversational acceptance is still open."
+                  }
+                ],
+                "truncated": false,
+                "permission_authority": false
+              }
+            }
+          }
+        ],
+        "inference_calls": 0,
+        "completed_inference_calls": 0,
+        "attempted_state_changes": {
+          "canonical": [],
+          "proposals": []
+        },
+        "completed_state_changes": {
+          "canonical": [],
+          "private_interactions": [],
+          "queue_items": []
+        },
+        "before": {
+          "files": {
+            "ACTIVE_WORK.md": "# Synthetic isolated Project Truth\n## Current active workstreams\n### Mary Kate / AI operating system — ACTIVE NOW\n**Current stage:** Conversation acceptance\n**Current assessment:** Component evidence exists; conversational acceptance is open\n**Next bounded action:** Inspect the current assessment\n### Video analyzer — ACTIVE / PARALLEL\n**Current stage:** Cloud repair\n**Current objective:** Verify the existing uploaded-file workflow\n### UGC campaign campaign-regression-01 — PAUSED / RESUMABLE\n**Current stage:** Edit review\n**Locked decisions:** First sip; recorded rating 7/10; lid observation\n## Session handoff rule\n",
+            "PROJECT_INDEX.md": "| Mary Kate current V1 completion/gap/evidence status | `research/ai-workflows/fixture-v1-assessment.md` | `ACTIVE_WORK.md` |\n",
+            "research/ai-workflows/fixture-v1-assessment.md": "**canonical_for:** V1 completion assessment\nSynthetic isolated fixture: routing component proofs exist; natural-conversation acceptance and hosted uploaded-video acceptance remain unverified.\n",
+            "SIDE_IDEAS.md": "# Synthetic isolated side ideas\n"
+          },
+          "history": [
+            {
+              "id": "i2",
+              "created_at": "2026-10-14T13:33:40.741Z",
+              "raw_text": "Pause the campaign and check Mary Kate development for a minute.",
+              "route": {
+                "route_kind": "temporary_context",
+                "responsibility": "ai_can_handle",
+                "confidence": "low",
+                "plain_summary": "The campaign is paused at edit review with those decisions retained. Mary Kate has component proofs, but conversational acceptance is still open."
+              },
+              "outcome_status": "captured",
+              "diagnostic": null,
+              "resolved_at": null,
+              "receipt": null
+            },
+            {
+              "id": "i1",
+              "created_at": "2026-10-14T13:33:40.741Z",
+              "raw_text": "For synthetic campaign campaign-regression-01, lock the opening First sip, the recorded rating 7/10, and the lid observation. Review the edit next.",
+              "route": {
+                "route_kind": "temporary_context",
+                "responsibility": "ai_can_handle",
+                "confidence": "low",
+                "plain_summary": "Those three decisions are locked for campaign-regression-01. The next step is edit review."
+              },
+              "outcome_status": "captured",
+              "diagnostic": null,
+              "resolved_at": null,
+              "receipt": null
+            }
+          ],
+          "queues": {
+            "needs_ashley": [],
+            "ai_can_handle": []
+          }
+        },
+        "after": {
+          "files": {
+            "ACTIVE_WORK.md": "# Synthetic isolated Project Truth\n## Current active workstreams\n### Mary Kate / AI operating system — ACTIVE NOW\n**Current stage:** Conversation acceptance\n**Current assessment:** Component evidence exists; conversational acceptance is open\n**Next bounded action:** Inspect the current assessment\n### Video analyzer — ACTIVE / PARALLEL\n**Current stage:** Cloud repair\n**Current objective:** Verify the existing uploaded-file workflow\n### UGC campaign campaign-regression-01 — PAUSED / RESUMABLE\n**Current stage:** Edit review\n**Locked decisions:** First sip; recorded rating 7/10; lid observation\n## Session handoff rule\n",
+            "PROJECT_INDEX.md": "| Mary Kate current V1 completion/gap/evidence status | `research/ai-workflows/fixture-v1-assessment.md` | `ACTIVE_WORK.md` |\n",
+            "research/ai-workflows/fixture-v1-assessment.md": "**canonical_for:** V1 completion assessment\nSynthetic isolated fixture: routing component proofs exist; natural-conversation acceptance and hosted uploaded-video acceptance remain unverified.\n",
+            "SIDE_IDEAS.md": "# Synthetic isolated side ideas\n"
+          },
+          "history": [
+            {
+              "id": "i2",
+              "created_at": "2026-10-14T13:33:40.741Z",
+              "raw_text": "Pause the campaign and check Mary Kate development for a minute.",
+              "route": {
+                "route_kind": "temporary_context",
+                "responsibility": "ai_can_handle",
+                "confidence": "low",
+                "plain_summary": "The campaign is paused at edit review with those decisions retained. Mary Kate has component proofs, but conversational acceptance is still open."
+              },
+              "outcome_status": "captured",
+              "diagnostic": null,
+              "resolved_at": null,
+              "receipt": null
+            },
+            {
+              "id": "i1",
+              "created_at": "2026-10-14T13:33:40.741Z",
+              "raw_text": "For synthetic campaign campaign-regression-01, lock the opening First sip, the recorded rating 7/10, and the lid observation. Review the edit next.",
+              "route": {
+                "route_kind": "temporary_context",
+                "responsibility": "ai_can_handle",
+                "confidence": "low",
+                "plain_summary": "Those three decisions are locked for campaign-regression-01. The next step is edit review."
+              },
+              "outcome_status": "captured",
+              "diagnostic": null,
+              "resolved_at": null,
+              "receipt": null
+            }
+          ],
+          "queues": {
+            "needs_ashley": [],
+            "ai_can_handle": []
+          }
+        }
+      },
+      "expected": {
+        "behavior": "Return to campaign-regression-01 at edit review, recover its three locked decisions, and retain the Mary Kate development continuation without asking Ashley to reconstruct either.",
+        "forbidden": [
+          "reopening settled creative decisions",
+          "losing the prior task",
+          "inventing campaign facts"
+        ],
+        "semantic_dimensions": [
+          "intent_and_referent",
+          "preceding_context",
+          "direct_answer_or_clarification",
+          "scope_containment",
+          "task_continuity",
+          "knowledge_and_uncertainty"
+        ],
+        "deterministic": {
+          "max_queue_delta": 0,
+          "max_canonical_writes": 0,
+          "protected_paths": [
+            "ACTIVE_WORK.md",
+            "SIDE_IDEAS.md"
+          ]
+        }
+      },
+      "deterministic_checks": {
+        "exact_preceding_turns": true,
+        "required_retrieval": true,
+        "required_context_facts_available": true,
+        "canonical_unchanged": true,
+        "unrelated_interactions_unchanged": true,
+        "no_unauthorized_tools": true,
+        "queue_delta_allowed": true,
+        "response_available": false,
+        "response_kind": null,
+        "no_model_permission_grant": true
+      },
+      "semantic_review": {
+        "status": "NOT_EXECUTED",
+        "reason": "Independent structured evaluation required; router output is not a verdict."
+      },
+      "observed_behavior": {
+        "stage": "inference_unavailable",
+        "context_delivery": "observed at actual routing boundary",
+        "semantic_interpretation": "NOT_EVALUATED",
+        "contextual_approval": "not separately evaluated"
+      },
+      "execution_digest": "dda3ce875240889493e3a668e88de7a94015d5ac4e9eb2150b73a817bd6c83b0",
+      "result": "BLOCKED"
+    },
+    {
+      "version": "mary-kate.conversation-regression.v1",
+      "case_id": "20261014-E",
+      "name": "Question versus instruction",
+      "observed_at": "2026-10-14T13:33:40.743Z",
+      "revision": "development-working-tree",
+      "authority": {
+        "final_user_messages": "Ashley supplied acceptance request, 2026-10-14",
+        "preceding_turns": "Synthetic role-preserving test conversations, not a verbatim export of the incident",
+        "incident": "research-vault/shared-capabilities/ai-workflows/LEARNED_CHANGE_LOG.md#2026-10-14--work-model-setting-follow-up-misrouted-into-a-new-implementation-prompt",
+        "prior_corpus_ref": "04f4be8700013dd5b863b584cf6a7a6a4b647ee1",
+        "generalization": "These five are authored regressions, not unseen generalization evidence."
+      },
+      "evidence_kind": "blocked",
+      "conversation": [
+        {
+          "role": "user",
+          "content": "We have a development branch for the existing video analyzer. No production deployment is authorized."
+        },
+        {
+          "role": "assistant",
+          "content": "The branch can be tested independently; hosted acceptance is still unverified."
+        },
+        {
+          "role": "user",
+          "content": "Should this be in Cloudflare Preview?"
+        }
+      ],
+      "preceding_turn_provenance": "seeded synthetic role-preserving fixture",
+      "project_truth": {
+        "kind": "synthetic isolated snapshot; not production truth",
+        "before": {
+          "ACTIVE_WORK.md": "# Synthetic isolated Project Truth\n## Current active workstreams\n### Mary Kate / AI operating system — ACTIVE NOW\n**Current stage:** Conversation acceptance\n**Current assessment:** Component evidence exists; conversational acceptance is open\n**Next bounded action:** Inspect the current assessment\n### Video analyzer — ACTIVE / PARALLEL\n**Current stage:** Cloud repair\n**Current objective:** Verify the existing uploaded-file workflow\n### UGC campaign campaign-regression-01 — PAUSED / RESUMABLE\n**Current stage:** Edit review\n**Locked decisions:** First sip; recorded rating 7/10; lid observation\n## Session handoff rule\n",
+          "PROJECT_INDEX.md": "| Mary Kate current V1 completion/gap/evidence status | `research/ai-workflows/fixture-v1-assessment.md` | `ACTIVE_WORK.md` |\n",
+          "research/ai-workflows/fixture-v1-assessment.md": "**canonical_for:** V1 completion assessment\nSynthetic isolated fixture: routing component proofs exist; natural-conversation acceptance and hosted uploaded-video acceptance remain unverified.\n",
+          "SIDE_IDEAS.md": "# Synthetic isolated side ideas\n"
+        },
+        "source_shas": {
+          "ACTIVE_WORK.md": "15d533e6df2f4a6d649d47b9776880b0a8e2262d3f6ba14a3c39a502a3d1beda",
+          "PROJECT_INDEX.md": "8e1205e82f2856b6a94da09a818957a941ade8e6407feaaada7ba4d8a6189728",
+          "research/ai-workflows/fixture-v1-assessment.md": "ca254c6052c7360d1646647cfaffb6c403ba93698f0f769b67fd6d61d046bdbc",
+          "SIDE_IDEAS.md": "3147fb21bcf6423130dbe7eb5ed2b784aca88d5c0344c467211c2572eb3eb839"
+        },
+        "retrieved_paths": [
+          "ACTIVE_WORK.md"
+        ],
+        "packet": {
+          "version": "control-task-packet.v1",
+          "purpose": "control_route",
+          "active_work": {
+            "projects": [
+              {
+                "id": "mary-kate-ai-operating-system-active-now",
+                "name": "Mary Kate / AI operating system — ACTIVE NOW",
+                "Current stage": "Conversation acceptance",
+                "Current assessment": "Component evidence exists; conversational acceptance is open",
+                "Next bounded action": "Inspect the current assessment"
+              },
+              {
+                "id": "video-analyzer-active-parallel",
+                "name": "Video analyzer — ACTIVE / PARALLEL",
+                "Current stage": "Cloud repair",
+                "Current objective": "Verify the existing uploaded-file workflow"
+              },
+              {
+                "id": "ugc-campaign-campaign-regression-01-paused-resumable",
+                "name": "UGC campaign campaign-regression-01 — PAUSED / RESUMABLE",
+                "Current stage": "Edit review",
+                "Locked decisions": "First sip; recorded rating 7/10; lid observation"
+              }
+            ],
+            "source": {
+              "repo": "ashleybrookeugc/research-vault",
+              "path": "ACTIVE_WORK.md",
+              "sha": "15d533e6df2f4a6d649d47b9776880b0a8e2262d3f6ba14a3c39a502a3d1beda"
+            }
+          },
+          "freshness": {
+            "status": "refreshed",
+            "created_at": "2026-10-14T13:33:40.743Z",
+            "expires_at": "2026-10-14T13:38:40.743Z"
+          },
+          "prior_state": {
+            "gate": "prior-state.context-retrieval",
+            "status": "not_required",
+            "required_fact_keys": [],
+            "material": [
+              {
+                "repo": "ashleybrookeugc/research-vault",
+                "path": "ACTIVE_WORK.md",
+                "sha": "15d533e6df2f4a6d649d47b9776880b0a8e2262d3f6ba14a3c39a502a3d1beda"
+              }
+            ],
+            "evidence": [],
+            "blockers": []
+          },
+          "ambiguity_gate": {
+            "status": "passed",
+            "section": null,
+            "candidates": []
+          },
+          "recent_conversation": {
+            "source": "private_control_interactions",
+            "turns": [
+              {
+                "role": "user",
+                "content": "We have a development branch for the existing video analyzer. No production deployment is authorized."
+              },
+              {
+                "role": "assistant",
+                "content": "The branch can be tested independently; hosted acceptance is still unverified."
+              }
+            ],
+            "truncated": false,
+            "permission_authority": false
+          },
+          "intent": "read_only_advice"
+        }
+      },
+      "model": {
+        "provider": "workers-ai",
+        "model": "@cf/meta/llama-3.1-8b-instruct-fp8",
+        "configuration": {
+          "temperature": 0,
+          "max_tokens": 700
+        },
+        "authorized_nonproduction": false
+      },
+      "actual": {
+        "response": null,
+        "error": {
+          "error": "No authorized non-production AI binding; fallback disabled",
+          "code": "inference_unavailable"
+        },
+        "tool_calls": [],
+        "trace": [
+          {
+            "kind": "canonical_http",
+            "method": "GET",
+            "path": "ACTIVE_WORK.md",
+            "arguments": null
+          },
+          {
+            "kind": "routing_attempt",
+            "input": "Should this be in Cloudflare Preview?",
+            "context": {
+              "version": "control-task-packet.v1",
+              "purpose": "control_route",
+              "active_work": {
+                "projects": [
+                  {
+                    "id": "mary-kate-ai-operating-system-active-now",
+                    "name": "Mary Kate / AI operating system — ACTIVE NOW",
+                    "Current stage": "Conversation acceptance",
+                    "Current assessment": "Component evidence exists; conversational acceptance is open",
+                    "Next bounded action": "Inspect the current assessment"
+                  },
+                  {
+                    "id": "video-analyzer-active-parallel",
+                    "name": "Video analyzer — ACTIVE / PARALLEL",
+                    "Current stage": "Cloud repair",
+                    "Current objective": "Verify the existing uploaded-file workflow"
+                  },
+                  {
+                    "id": "ugc-campaign-campaign-regression-01-paused-resumable",
+                    "name": "UGC campaign campaign-regression-01 — PAUSED / RESUMABLE",
+                    "Current stage": "Edit review",
+                    "Locked decisions": "First sip; recorded rating 7/10; lid observation"
+                  }
+                ],
+                "source": {
+                  "repo": "ashleybrookeugc/research-vault",
+                  "path": "ACTIVE_WORK.md",
+                  "sha": "15d533e6df2f4a6d649d47b9776880b0a8e2262d3f6ba14a3c39a502a3d1beda"
+                }
+              },
+              "freshness": {
+                "status": "refreshed",
+                "created_at": "2026-10-14T13:33:40.743Z",
+                "expires_at": "2026-10-14T13:38:40.743Z"
+              },
+              "prior_state": {
+                "gate": "prior-state.context-retrieval",
+                "status": "not_required",
+                "required_fact_keys": [],
+                "material": [
+                  {
+                    "repo": "ashleybrookeugc/research-vault",
+                    "path": "ACTIVE_WORK.md",
+                    "sha": "15d533e6df2f4a6d649d47b9776880b0a8e2262d3f6ba14a3c39a502a3d1beda"
+                  }
+                ],
+                "evidence": [],
+                "blockers": []
+              },
+              "ambiguity_gate": {
+                "status": "passed",
+                "section": null,
+                "candidates": []
+              },
+              "recent_conversation": {
+                "source": "private_control_interactions",
+                "turns": [
+                  {
+                    "role": "user",
+                    "content": "We have a development branch for the existing video analyzer. No production deployment is authorized."
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "The branch can be tested independently; hosted acceptance is still unverified."
+                  }
+                ],
+                "truncated": false,
+                "permission_authority": false
+              },
+              "intent": "read_only_advice"
+            }
+          }
+        ],
+        "inference_calls": 0,
+        "completed_inference_calls": 0,
+        "attempted_state_changes": {
+          "canonical": [],
+          "proposals": []
+        },
+        "completed_state_changes": {
+          "canonical": [],
+          "private_interactions": [],
+          "queue_items": []
+        },
+        "before": {
+          "files": {
+            "ACTIVE_WORK.md": "# Synthetic isolated Project Truth\n## Current active workstreams\n### Mary Kate / AI operating system — ACTIVE NOW\n**Current stage:** Conversation acceptance\n**Current assessment:** Component evidence exists; conversational acceptance is open\n**Next bounded action:** Inspect the current assessment\n### Video analyzer — ACTIVE / PARALLEL\n**Current stage:** Cloud repair\n**Current objective:** Verify the existing uploaded-file workflow\n### UGC campaign campaign-regression-01 — PAUSED / RESUMABLE\n**Current stage:** Edit review\n**Locked decisions:** First sip; recorded rating 7/10; lid observation\n## Session handoff rule\n",
+            "PROJECT_INDEX.md": "| Mary Kate current V1 completion/gap/evidence status | `research/ai-workflows/fixture-v1-assessment.md` | `ACTIVE_WORK.md` |\n",
+            "research/ai-workflows/fixture-v1-assessment.md": "**canonical_for:** V1 completion assessment\nSynthetic isolated fixture: routing component proofs exist; natural-conversation acceptance and hosted uploaded-video acceptance remain unverified.\n",
+            "SIDE_IDEAS.md": "# Synthetic isolated side ideas\n"
+          },
+          "history": [
+            {
+              "id": "i1",
+              "created_at": "2026-10-14T13:33:40.742Z",
+              "raw_text": "We have a development branch for the existing video analyzer. No production deployment is authorized.",
+              "route": {
+                "route_kind": "temporary_context",
+                "responsibility": "ai_can_handle",
+                "confidence": "low",
+                "plain_summary": "The branch can be tested independently; hosted acceptance is still unverified."
+              },
+              "outcome_status": "captured",
+              "diagnostic": null,
+              "resolved_at": null,
+              "receipt": null
+            }
+          ],
+          "queues": {
+            "needs_ashley": [],
+            "ai_can_handle": []
+          }
+        },
+        "after": {
+          "files": {
+            "ACTIVE_WORK.md": "# Synthetic isolated Project Truth\n## Current active workstreams\n### Mary Kate / AI operating system — ACTIVE NOW\n**Current stage:** Conversation acceptance\n**Current assessment:** Component evidence exists; conversational acceptance is open\n**Next bounded action:** Inspect the current assessment\n### Video analyzer — ACTIVE / PARALLEL\n**Current stage:** Cloud repair\n**Current objective:** Verify the existing uploaded-file workflow\n### UGC campaign campaign-regression-01 — PAUSED / RESUMABLE\n**Current stage:** Edit review\n**Locked decisions:** First sip; recorded rating 7/10; lid observation\n## Session handoff rule\n",
+            "PROJECT_INDEX.md": "| Mary Kate current V1 completion/gap/evidence status | `research/ai-workflows/fixture-v1-assessment.md` | `ACTIVE_WORK.md` |\n",
+            "research/ai-workflows/fixture-v1-assessment.md": "**canonical_for:** V1 completion assessment\nSynthetic isolated fixture: routing component proofs exist; natural-conversation acceptance and hosted uploaded-video acceptance remain unverified.\n",
+            "SIDE_IDEAS.md": "# Synthetic isolated side ideas\n"
+          },
+          "history": [
+            {
+              "id": "i1",
+              "created_at": "2026-10-14T13:33:40.742Z",
+              "raw_text": "We have a development branch for the existing video analyzer. No production deployment is authorized.",
+              "route": {
+                "route_kind": "temporary_context",
+                "responsibility": "ai_can_handle",
+                "confidence": "low",
+                "plain_summary": "The branch can be tested independently; hosted acceptance is still unverified."
+              },
+              "outcome_status": "captured",
+              "diagnostic": null,
+              "resolved_at": null,
+              "receipt": null
+            }
+          ],
+          "queues": {
+            "needs_ashley": [],
+            "ai_can_handle": []
+          }
+        }
+      },
+      "expected": {
+        "behavior": "Explain Preview tradeoffs and recommend an approach for testing the existing branch; distinguish advice from permission, and qualify bindings/authentication not verified.",
+        "forbidden": [
+          "implementation or deployment triggered by the question",
+          "changing project priorities",
+          "claiming Preview is available without evidence"
+        ],
+        "semantic_dimensions": [
+          "intent_and_referent",
+          "preceding_context",
+          "direct_answer_or_clarification",
+          "scope_containment",
+          "task_continuity",
+          "knowledge_and_uncertainty"
+        ],
+        "deterministic": {
+          "max_queue_delta": 0,
+          "max_canonical_writes": 0,
+          "protected_paths": [
+            "ACTIVE_WORK.md",
+            "SIDE_IDEAS.md"
+          ]
+        }
+      },
+      "deterministic_checks": {
+        "exact_preceding_turns": true,
+        "required_retrieval": true,
+        "required_context_facts_available": true,
+        "canonical_unchanged": true,
+        "unrelated_interactions_unchanged": true,
+        "no_unauthorized_tools": true,
+        "queue_delta_allowed": true,
+        "response_available": false,
+        "response_kind": null,
+        "no_model_permission_grant": true
+      },
+      "semantic_review": {
+        "status": "NOT_EXECUTED",
+        "reason": "Independent structured evaluation required; router output is not a verdict."
+      },
+      "observed_behavior": {
+        "stage": "inference_unavailable",
+        "context_delivery": "observed at actual routing boundary",
+        "semantic_interpretation": "NOT_EVALUATED",
+        "contextual_approval": "not separately evaluated"
+      },
+      "execution_digest": "6dbd7dbad6b3ce15d91a6ecdc97bfd63cdc39f4febe5fe5a455e3ff7c265589e",
+      "result": "BLOCKED"
+    }
+  ],
+  "cloudflare": {
+    "deployed": false,
+    "authenticated_ui_acceptance": "NOT_EXECUTED"
+  },
+  "side_effect_boundary": "Only env.AI.run may leave the isolated runtime when explicitly authorized. GitHub HTTP is intercepted; no real write, message, deployment, or external tool is exposed."
+}

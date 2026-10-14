@@ -7,6 +7,8 @@
     "dev": "npx wrangler dev",
     "deploy": "npx wrangler deploy",
     "test": "node --test",
+    "check:conversation-regressions": "node --check scripts/acceptance/conversation-regressions.js && node --check scripts/acceptance/conversation-regressions.mjs",
+    "acceptance:conversation": "node scripts/acceptance/conversation-regressions.mjs",
     "check:my-work-requirements": "node scripts/check-my-work-requirements.mjs",
     "check:herdr-acceptance": "node --check scripts/acceptance/herdr-worker-adapter-live.mjs && node --check scripts/acceptance/herdr-worker-interface-live.mjs && node --check scripts/acceptance/herdr-worker-cloudflare-live.mjs",
     "check:worker": "wrangler deploy --dry-run --outdir /tmp/control-worker-build"
@@ -15,3 +17,4 @@
     "wrangler": "^4.0.0"
   }
 }
+

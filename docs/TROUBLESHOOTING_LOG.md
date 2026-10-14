@@ -535,3 +535,19 @@ The next attempted runner invocation also reached no server or worker because du
 **Verified fix:** Preserve repositories/evidence, remove only disposable package/dependency caches, require a successful bounded write before launch, and use a short isolated root (`/private/tmp/mk-hui-*` with short `c`, `s`, `r`, and `w` subdirectories). The corrected run started its own server and passed the complete UI lifecycle. The runner syntax is checked before execution.
 
 **Prevention:** Before a disposable Herdr acceptance, verify writable disk headroom and keep the complete XDG runtime/socket path comfortably below the platform limit. Stop before worker launch on either failure; do not treat repeated server startup as worker evidence, attach to an unrelated session, delete project evidence, or weaken isolation to make the test green.
+
+## 2026-10-14 — Conversational context omission and unpromoted safety repairs
+
+**Symptom:** Short follow-ups cannot reliably retain the active Work setting-selection frame; the task packet drops the stored preceding conversation. Current main also lacks the previously verified private-input/reviewed-SHA repairs present on the conversation branch.
+
+**Observed reproduction:** Existing 39 relevant safety tests pass. The unchanged new context test fails at the actual Workers AI request with undefined recent conversation. Existing controlled workflow suite on main returns 6/3/6. No live inference was available, so the original October 14 semantic failure is not reproduced here.
+
+**Narrow correction:** Pass bounded chronological exact pairs from existing memory/D1 private storage; guard standalone advice questions against action proposals; restore existing conversation-branch private capture and reviewed-version approval guards. No new framework or phrase-specific model-name rule.
+
+**Verification:** Relevant suite 74/74; original context regression passes unchanged; controlled workflow returns 8/3/4, preserving all eight previously passing boundaries. New live A–E all BLOCKED, zero inference/effects. C reveals pre-dispatch contextual-assent failure. Full execution/source fingerprints: `docs/test-receipts/2026-10-14-conversation-verification.json`. The separate D1 persistence test needed its newly introduced private-context method supplied by the same memory stub; assertions were retained.
+
+**Prevention/status:** Assertions enforce exact role/order, no hidden expected answers, no test side effects, no recorded-response semantic PASS, and separate digest-bound review. October 14 remains OPEN, NOT PREVENTED. CI source/fixture tests run through existing node:test; live acceptance must stay distinct. Authenticated Cloudflare UI and live model inference are untested; no deployment.
+
+**Authority:** Existing registry/learned/failure records in research-vault; see the product test registry's October 14 section. Use development branch `mary-kate/conversation-regressions-20261014`, not historical receipt counts as current/live proof.
+
+
