@@ -1,7 +1,7 @@
 {
   "version": "mary-kate.command-center.live-actions.v1",
   "observed_date": "2026-10-14",
-  "status": "development_verified_publication_pending",
+  "status": "merged_ci_passed_live_phone_pending",
   "reported_failure": {
     "environment": "authenticated iPhone Safari",
     "observed": [
@@ -14,7 +14,12 @@
   },
   "implementation": {
     "today_source": "newest non-historical Current execution priority checkpoint only",
-    "next_action_labels": ["Do next", "Saved resume point", "Needs reconciliation", "Next step missing"],
+    "next_action_labels": [
+      "Do next",
+      "Saved resume point",
+      "Needs reconciliation",
+      "Next step missing"
+    ],
     "approval_path": "/api/control/items/:id/approve|reject",
     "blocker_path": "prefilled existing Mary Kate interaction drawer",
     "new_database": false,
@@ -34,14 +39,22 @@
     "v1_requirement_gate": "14/14 requirements mapped",
     "herdr_acceptance_scripts": "syntax PASS",
     "worker_packaging": "PASS",
-    "github_actions": "pending publication"
+    "github_actions": "run 88 PASS",
+    "github_actions_url": "https://github.com/ashleybrookeugc/Ashley-brooke-cohen/actions/runs/38609171607"
   },
   "acceptance_boundary": {
-    "code_committed": false,
-    "ci_passed": false,
-    "merged_to_main": false,
-    "cloudflare_deployment": "not_started",
+    "code_committed": true,
+    "ci_passed": true,
+    "merged_to_main": true,
+    "cloudflare_deployment": "normal GitHub main path triggered; authenticated deployed bytes unverified",
     "authenticated_iphone_rendered": false,
     "ashley_accepted": false
+  },
+  "publication": {
+    "pull_request": "https://github.com/ashleybrookeugc/Ashley-brooke-cohen/pull/22",
+    "merged_main": "5dcc18979d30dea1c0080733db27e2e83251a4f6",
+    "project_truth_pull_request": "https://github.com/ashleybrookeugc/research-vault/pull/10",
+    "project_truth_main": "d7d831ee6ab8246bb4da8d03eeff81de35dd41af",
+    "protected_route_check": "HTTP 303 to existing /admin/login via Cloudflare; authenticated new bytes not observable in this session"
   }
 }
