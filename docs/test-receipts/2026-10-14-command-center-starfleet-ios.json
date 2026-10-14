@@ -39,13 +39,22 @@
     },
     {
       "method": "authorized GitHub connector branch and pull request",
-      "result": "in_progress"
+      "result": "completed",
+      "evidence": {
+        "pull_request": "https://github.com/ashleybrookeugc/Ashley-brooke-cohen/pull/20",
+        "merged_main": "7326c7d5fe9a155b93f44227e6dc5ed1e3ee09b6",
+        "github_actions_run": "https://github.com/ashleybrookeugc/Ashley-brooke-cohen/actions/runs/38605496794",
+        "github_actions_result": "PASS"
+      }
     }
   ],
   "acceptance_boundary": {
-    "deployed": false,
+    "code_committed": true,
+    "ci_passed": true,
+    "merged_to_main": true,
+    "cloudflare_deployment": "triggered_unverified",
     "authenticated_iphone_rendered": false,
     "ashley_accepted": false,
-    "next_evidence": "Deploy through the existing GitHub main to Cloudflare path, then inspect the real authenticated page on Ashley's iPhone."
+    "next_evidence": "Refresh the existing authenticated production page on Ashley's iPhone, inspect the full layout and chat sheet, then preserve the observed result."
   }
 }
