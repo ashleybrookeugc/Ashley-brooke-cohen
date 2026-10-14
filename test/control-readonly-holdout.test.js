@@ -77,17 +77,24 @@ test('read-only assessments retrieve indexed completion authority and never queu
   }
 });
 
-test('Command Center context binds an unqualified V1 question to Mary Kate without creating a write',async()=>{
-  const run=setup(answer);
-  const result=await run.service.capture('Are we close to a full v1?',{contextWorkstream:'mary-kate-command-center'});
-  assert.equal(run.calls,1);
-  assert.equal(run.packet.intent,'read_only_assessment');
-  assert.equal(run.packet.ambiguity_gate.section,mk);
-  assert.equal(run.packet.completion_authority.source.path,'research/ai-workflows/current-completion.md');
-  assert.equal(result.plain_summary,answer.plain_summary);
+test('Command Center answers the exact phone V1 question from indexed evidence without a model routing contract',async()=>{
+  const run=setup({route_kind:'state_update',responsibility:'needs_ashley',confidence:'low'});
+  await run.service.state();
+  const readsBefore=run.reads.filter(path=>path==='ACTIVE_WORK.md').length;
+  const result=await run.service.capture('Are you close to v1?',{contextWorkstream:'mary-kate-command-center',refreshContext:true});
+  assert.equal(run.calls,0);
+  assert.equal(run.reads.filter(path=>path==='ACTIVE_WORK.md').length,readsBefore+1);
+  assert.match(result.plain_summary,/Not yet/i);
+  assert.match(result.plain_summary,/22 requirements/i);
+  assert.match(result.plain_summary,/16 (?:are )?partial/i);
+  assert.match(result.plain_summary,/5 (?:are )?implemented but unverified/i);
+  assert.match(result.plain_summary,/1 (?:is )?not implemented/i);
   assert.equal(result.queue_item,null);
   assert.equal(run.writes,0);
   assert.deepEqual(await run.store.listQueues(),{needs_ashley:[],ai_can_handle:[]});
+  const history=await run.store.listHistory(20);
+  assert.equal(history.length,1);
+  assert.equal(history[0].route.retrieval_authority.source.path,'research/ai-workflows/current-completion.md');
 });
 
 test('Command Center context never overrides an explicit other project or an unqualified action',async()=>{
