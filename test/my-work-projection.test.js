@@ -27,7 +27,7 @@ test('My Work converts source records into plain-English current project cards',
   const result=buildMyWorkProjection({activeWork:active,activeSha:'a'.repeat(40)});
   const maryKate=result.work[0];
   assert.equal(result.read_only,true);
-  assert.equal(result.version,'mary-kate.my-work.v2');
+  assert.equal(result.version,'mary-kate.command-center.v1');
   assert.match(maryKate.what,/private system/i);
   assert.match(maryKate.works,/does not prove/i);
   assert.match(maryKate.blocked_or_unverified,/unverified/i);
@@ -37,6 +37,8 @@ test('My Work converts source records into plain-English current project cards',
   assert.match(result.work[1].what,/video/i);
   assert.doesNotMatch(result.work[1].next,/abcdef|96\/96/i);
   assert.equal(result.work[2].blocked_or_unverified,'Missing source media.');
+  assert.equal(result.work[2].next,'The latest next step needs verification.');
+  assert.equal(result.work[2].technical.recorded_next,'Review the media.');
   assert.deepEqual(result.approved_deferred.map(item=>item.label),['provider failover','private draft rendering']);
 });
 

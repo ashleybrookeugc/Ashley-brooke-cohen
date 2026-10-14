@@ -16,6 +16,10 @@ test('control dashboard explicitly binds every startup DOM dependency', () => {
   }
 });
 
+test('existing control plane links back to the unified Command Center',()=>{
+  assert.match(page,/href="\/control\/my-work">Command Center/);
+});
+
 test('existing control page presents truthful read-only worker telemetry on mobile', () => {
   assert.match(page,/Worker activity/);
   assert.match(page,/Read-only status for Mary Kate-managed M4 workers/);

@@ -1,0 +1,14 @@
+{
+  "version": "conversation-test.candidate.v1",
+  "source_pr": 10,
+  "previous_head": "c8fbcd3ea282ee487c5cce7e4810f584e164edb1",
+  "integrated_main": "0733499ebc711385053909094f6bbfb774ed60e7",
+  "source_sha256": {
+    "src/control/service.js": "0d857e91711ea62b31a0bedd4a4640781da7c2720ffa3bdda0d5f079dc742bc7",
+    "src/control/adapters.js": "5c31dc1a2535e29780fe9385741bee4a53ce686b6af2eeea0c1268971777f545",
+    "scripts/acceptance/conversation-regressions.js": "9448744f22715d8478306acc33c5319a9d65581bbb4da44ca3f24a1644a2a88e",
+    "scripts/acceptance/conversation-holdouts.json": "08d1d3128dd4331794683e26466610c568f8d46774965c541abd8e93bec2703c",
+    "src/control/conversation-test-surface.js": "8a46e3b689fdad0a4e52d58ac11e884455e8ac1383992cc26cecc3210cc8a2d0"
+  },
+  "boundary": "These source hashes identify a candidate, not deployed production lineage or live conversational acceptance."
+}

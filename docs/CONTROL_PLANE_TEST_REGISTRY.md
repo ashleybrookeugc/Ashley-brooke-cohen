@@ -126,4 +126,17 @@ All five have **zero provider calls, zero canonical writes and zero queued actio
 
 Project Truth reconciliation: same development branch `mary-kate/conversation-regressions-20261014` in `research-vault`; existing registry, October 14 calibration/learned entry, failure record and active work updated there. UGC Creator App checked: **NO_CHANGE** to analyzer, playbook, locks or roadmap. Development evidence is not merged canonical main or deployed production.
 
+## 2026-10-14 — Existing Worker conversation-test surface prepared
+
+**Status: IMPLEMENTED / LIVE AI AND AUTHENTICATED HTTPS ACCEPTANCE NOT EXECUTED.** Production deployment access is not the live-inference prerequisite: PR #12 proved the existing GitHub → Cloudflare delivery path. This continuation reconciles PR #10 with current main `0733499ebc711385053909094f6bbfb774ed60e7`, preserving the deployed Command Center context/error/freshness repairs and authenticated browser-video page.
+
+The existing October 14 runner and unchanged frozen A–E are now callable at `/control/conversation-test/` → `/api/control/conversation-test`, behind the unchanged admin authentication. The fixed test surface returns before production D1 initialization and normal GitHub/approval service construction. Only the existing AI binding is passed to the existing fixture runner. Synthetic temporary state is allocated per request. No production history, queues, canonical files, new token, binding, infrastructure, paid-provider fallback or arbitrary prompt endpoint is exposed. Requests require same-origin JSON, at most 256 bytes and exactly one allowlisted case ID; one model call at most. Listing cases/loading the page performs no inference. Each explicit Run returns exact model/context/tools/effect receipt and source fingerprints. Provider errors are sanitized. The page displays the actual answer or block, with copy/download receipt and independent-review status; it never auto-grades semantic understanding.
+
+Actual local execution: **139/139** full node:test checks PASS after source reconciliation, including nine new HTTP/auth/isolation/invalid-input/error/role/source checks; My Work original requirement map 14/14 and syntax checks PASS. Local provider responses remain clearly controlled transport probes, never conversational PASS. The original fourteen corpus cases and five supplementary contracts are unchanged. Existing current Command Center behavior, video page and original safety tests remain intact. Exact [source/test receipt](test-receipts/2026-10-14-conversation-test-surface.json).
+
+C still stops before model dispatch at the existing unbound-assent gate; this is a visible failure, not a successful safe-refusal answer. A/B/D/E real model understanding, actual current Project Truth retrieval, meaningful-change reconciliation, worker handoff and iPhone acceptance remain unverified. No production merge/deployment or browser credential attempt in this continuation. Frozen fixtures are synthetic; their live model success would not prove general reliability or complete production retrieval/preservation.
+
+**Next action after preview build:** Ashley opens the exact-commit preview's authenticated conversation-test page and runs A once. Use the returned actual receipt for independent evaluation; do not promote PR #10 before real acceptance and required authorization. Existing signed-in production login is not assumed transferable to another preview hostname. Do not ask a worker to extract/share Ashley's admin password or restart Cloudflare dashboard sign-in loops.
+
+
 

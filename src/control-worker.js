@@ -1,11 +1,17 @@
 import app,{isAdmin} from './auth-worker.js';
 import controlPage from '../public/control/index.html';
 import myWorkPage from '../public/control/my-work/index.html';
+import videoBrowserTestPage from '../public/control/video-test/index.html';
+import conversationTestPage from '../public/control/conversation-test/index.html';
+import conversationCorpus from '../scripts/acceptance/conversation-holdouts.json';
+import conversationRevision from './control/conversation-test-revision.json';
+import {createConversationTestSurface} from './control/conversation-test-surface.js';
 import {createGitHubAdapter,createGitHubAppTokenProvider,createPolicyRoutingAdapter} from './control/adapters.js';
 import {controlErrorResponse,createControlService,createD1Store} from './control/service.js';
 import {createWorkerTelemetryStore,verifyWorkerTelemetrySignature,WORKER_TELEMETRY_SCHEMA} from './control/worker-telemetry.js';
 
 let schemaReady;
+const conversationTest=createConversationTestSurface({corpus:conversationCorpus,page:conversationTestPage,revision:conversationRevision,authorize:isAdmin});
 function ensureSchema(env){return schemaReady ||= env.DB.exec("CREATE TABLE IF NOT EXISTS control_interactions (id TEXT PRIMARY KEY,raw_text TEXT NOT NULL,route_json TEXT NOT NULL,plain_summary TEXT NOT NULL,project_id TEXT,route_kind TEXT NOT NULL CHECK(route_kind IN ('state_update','decision','side_idea','temporary_context')),responsibility TEXT NOT NULL CHECK(responsibility IN ('needs_ashley','ai_can_handle')),confidence TEXT NOT NULL CHECK(confidence IN ('high','medium','low')),created_at TEXT NOT NULL);CREATE INDEX IF NOT EXISTS idx_control_interactions_created ON control_interactions(created_at DESC);CREATE TABLE IF NOT EXISTS control_queue_items (id TEXT PRIMARY KEY,interaction_id TEXT NOT NULL REFERENCES control_interactions(id),responsibility TEXT NOT NULL CHECK(responsibility IN ('needs_ashley','ai_can_handle')),status TEXT NOT NULL CHECK(status IN ('pending','approved','rejected','failed')),plain_summary TEXT NOT NULL,why TEXT,proposal_json TEXT NOT NULL,resolution_note TEXT,technical_receipt_json TEXT,created_at TEXT NOT NULL,resolved_at TEXT);CREATE INDEX IF NOT EXISTS idx_control_queue_pending ON control_queue_items(status,responsibility,created_at DESC);CREATE TABLE IF NOT EXISTS control_context_packets (packet_key TEXT PRIMARY KEY,payload_json TEXT NOT NULL,created_at TEXT NOT NULL,expires_at TEXT NOT NULL,invalidated_at TEXT);"+WORKER_TELEMETRY_SCHEMA)}
 const json=(body,status=200)=>new Response(JSON.stringify(body),{status,headers:{'content-type':'application/json','cache-control':'no-store'}});
 function service(env) {
@@ -27,6 +33,10 @@ async function workerTelemetry(request,env) {
 }
 async function control(request,env) {
   const path=new URL(request.url).pathname.replace(/\/+$/,'')||'/';
+  // Test requests authenticate, then execute entirely outside production D1
+  // initialization and the normal GitHub/approval service.
+  const testResponse=await conversationTest(request,env);
+  if(testResponse) return testResponse;
   if(path==='/api/control/workers/telemetry'){
     if(request.method!=='POST') return json({error:'Method not allowed',code:'read_only'},405);
     await ensureSchema(env);return workerTelemetry(request,env);
@@ -36,10 +46,11 @@ async function control(request,env) {
   const core=service(env);
   if(path==='/control') return new Response(controlPage,{headers:{'content-type':'text/html;charset=UTF-8','cache-control':'no-store'}});
   if(path==='/control/my-work') return new Response(myWorkPage,{headers:{'content-type':'text/html;charset=UTF-8','cache-control':'no-store'}});
+  if(path==='/control/video-test' && request.method==='GET') return new Response(videoBrowserTestPage,{headers:{'content-type':'text/html;charset=UTF-8','cache-control':'no-store','x-content-type-options':'nosniff','referrer-policy':'no-referrer','content-security-policy':"default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src blob: data:; media-src blob:; connect-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'"}});
   if(path==='/api/control/my-work'&&request.method==='GET') return json(await core.myWork());
   if(path==='/api/control/workers'&&request.method==='GET') return json(env.CONTROL_WORKER_TELEMETRY_SECRET?await createWorkerTelemetryStore(env.DB).read():{version:'mary-kate.worker-telemetry.v1',enabled:false,read_only:true,observed_at:new Date().toISOString(),connection:{state:'disconnected',fresh:false,last_received_at:null},workers:[]});
   if(path==='/api/control/state'&&request.method==='GET') return json(await core.state({refresh:new URL(request.url).searchParams.get('refresh')==='1'}));
-  if(path==='/api/control/interactions'&&request.method==='POST'){try{const data=await body(request);return json(await core.capture(data.text,{requiredFactKeys:data.required_fact_keys||[]}),201)}catch(error){const response=controlErrorResponse(error);return json(response,error.status||400)}}
+  if(path==='/api/control/interactions'&&request.method==='POST'){try{const data=await body(request);return json(await core.capture(data.text,{requiredFactKeys:data.required_fact_keys||[],contextWorkstream:data.context_workstream||null}),201)}catch(error){const response=controlErrorResponse(error);return json(response,error.status||400)}}
   const match=path.match(/^\/api\/control\/items\/([\w-]+)\/(approve|reject)$/);
   if(match&&request.method==='POST'){try{const data=await body(request);return json(match[2]==='approve'?await core.approve(match[1],data.note):await core.reject(match[1],data.note));}catch(error){return json({error:error?.message||'Mary Kate could not verify the approved change. Nothing was recorded as successful.',code:error?.code||'control_write_failed'},error?.status||400)}}
   return json({error:'Not found'},404);
@@ -48,3 +59,4 @@ export default {
   async fetch(request,env,ctx){const path=new URL(request.url).pathname;if(path==='/control'||path.startsWith('/control/')||path.startsWith('/api/control/')){try{return await control(request,env)}catch(error){console.error('Control request failed',error?.message||error);return json({error:error?.message||'Control request failed'},400)}}return app.fetch(request,env,ctx);},
   async scheduled(controller,env,ctx){if(typeof app.scheduled==='function')return app.scheduled(controller,env,ctx);}
 };
+

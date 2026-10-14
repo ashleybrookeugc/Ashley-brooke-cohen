@@ -536,6 +536,24 @@ The next attempted runner invocation also reached no server or worker because du
 
 **Prevention:** Before a disposable Herdr acceptance, verify writable disk headroom and keep the complete XDG runtime/socket path comfortably below the platform limit. Stop before worker launch on either failure; do not treat repeated server startup as worker evidence, attach to an unrelated session, delete project evidence, or weaken isolation to make the test green.
 
+## 2026-10-14 — Command Center hid safe chat failures and promoted stale resume points
+
+**Symptom:** In the authenticated iPhone interface, `Are we close to a full v1?` produced only a generic failure even when the control API returned a safe structured explanation. A retained project also displayed an obsolete Mac/Cloudflare resume point under `Current verified next step`.
+
+**Failed/looping attempt:** The earlier 109-test result was treated as evidence for the experience even though it covered source parsing, static UI contracts, and service behavior—not this exact Command Center prompt or the production response-rendering branch. A fresh GitHub source read was also incorrectly treated as proof that every field inside the source was current.
+
+**Root cause:** The browser discarded every non-2xx response body. The persistent chat supplied no safe page context for an otherwise unqualified read-only Mary Kate question. The project projection promoted a direct workstream resume field whenever no newer matching priority action existed, without evidence that the direct field had been reconciled.
+
+**Verified development fix:** The Command Center now supplies a narrowly scoped `mary-kate-command-center` hint. The service applies it only to read-only assessment language with no explicit or ambiguous project; explicit other projects and action requests keep the existing gates. The browser displays only allowlisted safe control errors, with code/status under expandable technical details. A project-level resume point remains available under Technical details but is not labeled current unless a current priority record reconciles it. The exact screenshot prompt, explicit-other-project control, ambiguous-action control, safe-error rendering, and stale-next-action case are frozen in tests. After rebasing onto current `main` (including the isolated authenticated browser video test), the local full suite is **115/115 PASS**; V1 requirement map: **14/14 present**; Herdr acceptance scripts parse. Production build, authenticated answer quality, and Ashley acceptance remain separate until verified after deployment.
+
+**Prevention rule:** Do not count a parsed UI or a service double as a live conversational acceptance. For each reported production prompt, freeze the exact input and the browser response branch. Treat source-fetch freshness and field-semantic freshness as separate facts; only a reconciled current-priority record may receive the `Current verified next step` label.
+
+
+## 2026-10-14 — Cloudflare browser-test deployment and blocked log write
+
+See [the verified deployment and logging incident](test-receipts/2026-10-14-cloudflare-browser-test-lesson.md). Deployment and frame correctness are separate acceptance gates. A previous attempt to write this log was blocked by tool safety checks; this entry is the recovery route.
+
+
 ## 2026-10-14 — Conversational context omission and unpromoted safety repairs
 
 **Symptom:** Short follow-ups cannot reliably retain the active Work setting-selection frame; the task packet drops the stored preceding conversation. Current main also lacks the previously verified private-input/reviewed-SHA repairs present on the conversation branch.
@@ -549,5 +567,14 @@ The next attempted runner invocation also reached no server or worker because du
 **Prevention/status:** Assertions enforce exact role/order, no hidden expected answers, no test side effects, no recorded-response semantic PASS, and separate digest-bound review. October 14 remains OPEN, NOT PREVENTED. CI source/fixture tests run through existing node:test; live acceptance must stay distinct. Authenticated Cloudflare UI and live model inference are untested; no deployment.
 
 **Authority:** Existing registry/learned/failure records in research-vault; see the product test registry's October 14 section. Use development branch `mary-kate/conversation-regressions-20261014`, not historical receipt counts as current/live proof.
+
+## 2026-10-14 — Deployment/login boundary corrected for conversational testing
+
+The Cloudflare dashboard-login loop did not prove deployment was unavailable. Verified merged PR #12 and existing GitHub → Cloudflare workflow demonstrate delivery. PR #10's actual missing capability was an authenticated hosted entry into its isolated acceptance runner. This continuation prepares that fixed-case test route/page on the existing development branch and reconciles current production source rather than bypassing safeguards, creating infrastructure or deploying unaccepted production conversation behavior.
+
+Nine actual local HTTP boundary checks and complete suite 139/139 pass; original requirement map 14/14 and syntax checks pass. Local model outputs are transport doubles, not live acceptance. Fixture schema/context/safety checks never certify understanding. A new source fingerprint manifest binds receipts to the actual rebased source; the original frozen tests are unchanged. Test requests authenticate and return before production D1/schema/GitHub initialization; no arbitrary inputs, cross-site requests or provider fallback. Initial wrapper syntax error was caught and corrected before publication.
+
+Live preview requests/model answers, contextual assent, current Project Truth retrieval, meaningful preservation and iPhone acceptance remain unverified. No merge/deployment or new credential/Cloudflare-binding action. Exact evidence: `docs/test-receipts/2026-10-14-conversation-test-surface.json`; registry continuation links boundary/provenance.
+
 
 
