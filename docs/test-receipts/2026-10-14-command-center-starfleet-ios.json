@@ -1,0 +1,51 @@
+{
+  "version": "mary-kate.command-center.ios-visual-repair.v1",
+  "observed_date": "2026-10-14",
+  "status": "development_verified_live_phone_pending",
+  "reported_failure": {
+    "environment": "authenticated iPhone Safari",
+    "observed": "Command Center buttons and section controls appeared shrunken and visually malformed on iOS.",
+    "expected": "A readable, deliberate mobile command interface with full-size touch controls and no horizontal page overflow."
+  },
+  "scope": {
+    "changed": [
+      "public/control/my-work/index.html visual system",
+      "iPhone safe-area and dynamic-viewport layout",
+      "non-shrinking 44px-or-larger controls",
+      "mobile chat bottom sheet",
+      "plain-language worker-unavailable copy",
+      "executable mobile UI contracts"
+    ],
+    "preserved": [
+      "existing /control/ authentication",
+      "read-only Command Center projection",
+      "Project Truth and GitHub-backed source behavior",
+      "existing interaction approval safeguards",
+      "separate project, priority, worker, schedule, attention, and verification dimensions"
+    ]
+  },
+  "verification": {
+    "npm_test": "121/121 PASS",
+    "v1_requirement_gate": "14/14 mapped",
+    "herdr_acceptance_scripts": "syntax PASS",
+    "worker_packaging": "PASS",
+    "git_diff_check": "PASS"
+  },
+  "publication_attempts": [
+    {
+      "method": "local git push from cloud checkout",
+      "result": "failed",
+      "reason": "The isolated cloud checkout had no GitHub HTTPS username available. No remote state changed."
+    },
+    {
+      "method": "authorized GitHub connector branch and pull request",
+      "result": "in_progress"
+    }
+  ],
+  "acceptance_boundary": {
+    "deployed": false,
+    "authenticated_iphone_rendered": false,
+    "ashley_accepted": false,
+    "next_evidence": "Deploy through the existing GitHub main to Cloudflare path, then inspect the real authenticated page on Ashley's iPhone."
+  }
+}

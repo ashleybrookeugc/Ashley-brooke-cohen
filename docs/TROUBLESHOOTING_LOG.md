@@ -572,6 +572,18 @@ The next attempted runner invocation also reached no server or worker because du
 
 **Prevention rule:** A correct backend label is not a valid primary explanation. For every user-facing status answer, require: an ordinary-language conclusion, what works, what remains, and one concrete next step; ban internal system names/status labels from the primary answer; retain exact evidence under expandable technical details; and test that source-status changes alter the visible explanation automatically.
 
+## 2026-10-14 — Command Center controls compressed on iPhone
+
+**Symptom:** Ashley’s authenticated iPhone view showed the Command Center section controls compressed into narrow, partially overlapping pills. The floating chat panel also retained desktop-style sizing, making the product look and behave unlike a deliberate mobile command interface.
+
+**Failed/insufficient state:** The prior mobile check asserted that a `max-width:640px` media query and single-column cards existed. It did not require a minimum touch target, prevent flex shrinking, account for iPhone safe areas and dynamic viewport height, or freeze the open-chat mobile layout. Passing source and API tests therefore did not prove readable controls on iOS.
+
+**Root cause:** Shared pill styling allowed navigation links to compete for horizontal space without an explicit no-shrink/touch contract. The chat surface was positioned as a small desktop drawer rather than a phone bottom sheet. The page also lacked `viewport-fit=cover`, explicit iOS text-size control, and safe-area spacing.
+
+**Verified development fix:** The existing authenticated read-only page now uses an LCARS-inspired command-deck visual system without changing its APIs, data authority, approval boundary, or project model. All buttons and navigation links are non-shrinking and at least 44px tall with 16px control text; horizontal navigation scrolls with touch; the page uses iPhone safe-area insets; and chat becomes a full-width bottom sheet bounded by `100dvh`. The exact CSS/DOM contracts are executable in `test/my-work-ui.test.js`. Local **121/121**, the **14-requirement gate**, Herdr script syntax, and Worker packaging pass. Actual iPhone rendering and Ashley’s visual acceptance remain pending deployment and retest.
+
+**Prevention rule:** A mobile media query alone is not mobile acceptance. Require minimum touch targets, no-shrink navigation, 16px form controls, safe-area padding, dynamic viewport bounds, no page-level horizontal overflow, and a frozen open-overlay state. Keep device rendering and founder acceptance separate from static contract tests.
+
 
 ## 2026-10-14 — Cloudflare browser-test deployment and blocked log write
 

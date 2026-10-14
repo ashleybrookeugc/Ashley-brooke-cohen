@@ -1,18 +1,160 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <title>Command Center · Mary Kate</title>
   <style>
-    :root{font-family:Inter,system-ui,sans-serif;color:#211d1d;background:#f7f3ef;scroll-behavior:smooth}*{box-sizing:border-box;min-width:0}body{margin:0}.shell{max-width:1080px;margin:auto;padding:22px 22px 110px}header,.source-line,.card-top,.section-head{display:flex;justify-content:space-between;gap:14px;align-items:center}h1{margin:.25rem 0}h2{margin:1.6rem 0 .3rem}.eyebrow{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:#805d53}.muted{color:#746b67;font-size:.9rem}.summary{max-width:720px}.toolbar,.meta{display:flex;gap:9px;align-items:center;flex-wrap:wrap}button{font:inherit;border:0;border-radius:999px;padding:10px 15px;background:#2e2927;color:white;cursor:pointer}button:disabled{opacity:.55;cursor:wait}a{color:#5f4036}.nav{position:sticky;top:0;z-index:5;display:flex;gap:7px;overflow-x:auto;padding:10px 0;background:#f7f3efee;backdrop-filter:blur(8px)}.nav a{background:#eee5e0;color:#332b28;border-radius:999px;padding:8px 12px;text-decoration:none;white-space:nowrap}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:13px}.card,.notice,.empty{background:white;border:1px solid #e1d7d1;border-radius:16px;padding:16px;box-shadow:0 3px 14px #5b41320d;overflow-wrap:anywhere}.notice,.empty{box-shadow:none}.card h3{margin:.35rem 0}.badge{border-radius:999px;padding:.26rem .55rem;font-size:.72rem;font-weight:700;background:#eee5e0}.badge-today,.worker-running{background:#dff4e7;color:#185b35}.worker-blocked{background:#f9dddd;color:#7b2323}.worker-completed{background:#e2ebf8;color:#264c7b}.worker-disconnected,.worker-unknown{background:#ece9e7;color:#625b57}.fact{border-top:1px solid #eee2dc;padding-top:10px;margin-top:10px}.fact strong{display:block;font-size:.78rem;text-transform:uppercase;letter-spacing:.05em;color:#805d53}.priority-number{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#2e2927;color:#fff;font-weight:700}.source{overflow-wrap:anywhere}.loading{opacity:.65}details{margin-top:12px}summary{cursor:pointer;font-weight:600}.chat-toggle{position:fixed;right:18px;bottom:18px;z-index:20;box-shadow:0 8px 30px #2e292744}.chat-drawer{position:fixed;right:18px;bottom:72px;z-index:19;width:min(430px,calc(100vw - 30px));max-height:70vh;overflow:auto;background:white;border:1px solid #d8cbc4;border-radius:18px;padding:16px;box-shadow:0 18px 60px #2e292744}.chat-drawer[hidden]{display:none}.chat-drawer textarea{font:inherit;width:100%;min-height:100px;padding:12px;border:1px solid #cbbdb6;border-radius:12px;resize:vertical}.chat-actions{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:10px}.chat-result{background:#f5ede7;border-radius:12px;padding:12px;margin-top:12px}.chat-answer{white-space:pre-line}.chat-result[hidden]{display:none}@media(max-width:640px){.shell{padding:15px 15px 105px}header,.source-line,.section-head{align-items:flex-start;flex-direction:column}.toolbar{width:100%;justify-content:space-between}.grid{grid-template-columns:1fr}.nav{margin:0 -15px;padding:10px 15px}.chat-toggle{right:15px;bottom:14px}.chat-drawer{right:15px;bottom:66px;max-height:76vh}}
+    :root{
+      color-scheme:dark;
+      font-family:-apple-system,BlinkMacSystemFont,"Avenir Next",Inter,system-ui,sans-serif;
+      color:#eef8ff;
+      background:#030711;
+      scroll-behavior:smooth;
+      --space:#030711;
+      --panel:#0b1423;
+      --panel-2:#111e31;
+      --line:#293e58;
+      --ink:#eef8ff;
+      --muted:#9eb1c3;
+      --amber:#f4a261;
+      --apricot:#ffc857;
+      --violet:#b79cff;
+      --cyan:#6ee7f2;
+      --coral:#ff7b72;
+      --green:#68e0a4;
+    }
+    html{-webkit-text-size-adjust:100%;text-size-adjust:100%;background:var(--space);max-width:100%;overflow-x:hidden}
+    *{box-sizing:border-box;min-width:0}
+    body{margin:0;min-height:100dvh;max-width:100%;overflow-x:hidden;background:radial-gradient(circle at 80% 0,#142645 0,transparent 36%),linear-gradient(180deg,#050a16 0,#030711 60%);color:var(--ink)}
+    body::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.22;background-image:linear-gradient(#6ee7f20a 1px,transparent 1px),linear-gradient(90deg,#6ee7f20a 1px,transparent 1px);background-size:28px 28px;mask-image:linear-gradient(to bottom,black,transparent 70%)}
+    .shell{position:relative;max-width:1180px;margin:auto;padding:24px 24px 118px}
+    .lcars-rail{height:18px;display:grid;grid-template-columns:minmax(105px,1.3fr) minmax(54px,.45fr) minmax(72px,.7fr) minmax(44px,.3fr);gap:7px;margin-bottom:20px}
+    .lcars-rail span{display:block;background:var(--amber)}
+    .lcars-rail span:first-child{border-radius:999px 0 0 999px}
+    .lcars-rail span:nth-child(2){background:var(--violet)}
+    .lcars-rail span:nth-child(3){background:var(--cyan)}
+    .lcars-rail span:last-child{border-radius:0 999px 999px 0;background:var(--coral)}
+    header,.source-line,.card-top,.section-head{display:flex;justify-content:space-between;gap:16px;align-items:center}
+    header{border-left:11px solid var(--amber);border-radius:20px 0 0 20px;padding:18px 0 18px 22px;margin-bottom:8px}
+    h1{margin:.18rem 0 .35rem;font-size:clamp(2.25rem,7vw,4.8rem);line-height:.92;letter-spacing:-.055em;text-transform:uppercase}
+    h2{margin:0;font-size:clamp(1.45rem,3vw,2rem);line-height:1.05;letter-spacing:-.025em}
+    h3{line-height:1.15}
+    p{line-height:1.5}
+    .eyebrow{font-size:.73rem;letter-spacing:.18em;text-transform:uppercase;color:var(--cyan);font-weight:800}
+    .muted{color:var(--muted);font-size:.92rem}
+    .summary{max-width:720px;margin-bottom:0}
+    .system-strip{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}
+    .system-strip span{border:1px solid #38516d;border-radius:4px;padding:5px 8px;color:#c8d9e8;background:#08111f;font:700 .66rem/1.1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.08em;text-transform:uppercase}
+    .toolbar,.meta{display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+    button,.toolbar a,.nav a{
+      -webkit-appearance:none;
+      appearance:none;
+      display:inline-flex;
+      flex:0 0 auto;
+      min-height:44px;
+      align-items:center;
+      justify-content:center;
+      border:0;
+      border-radius:6px 18px 6px 18px;
+      padding:11px 16px;
+      font:800 16px/1.1 -apple-system,BlinkMacSystemFont,"Avenir Next",Inter,system-ui,sans-serif;
+      letter-spacing:.01em;
+      white-space:nowrap;
+      text-decoration:none;
+      touch-action:manipulation;
+      cursor:pointer;
+    }
+    button{background:var(--amber);color:#160d05}
+    button:hover,.toolbar a:hover,.nav a:hover{filter:brightness(1.12)}
+    button:focus-visible,.toolbar a:focus-visible,.nav a:focus-visible,summary:focus-visible,textarea:focus-visible{outline:3px solid var(--cyan);outline-offset:3px}
+    button:disabled{opacity:.55;cursor:wait}
+    .toolbar{max-width:390px;justify-content:flex-end}
+    .toolbar a{background:#263b57;color:var(--ink)}
+    .toolbar a:last-child{background:var(--violet);color:#130b25}
+    a{color:var(--cyan)}
+    .source-line{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:11px 0;margin:14px 0}
+    .nav{position:sticky;top:0;z-index:10;display:flex;gap:8px;max-width:100%;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;padding:12px 0;background:#030711ed;backdrop-filter:blur(14px);scrollbar-width:none}
+    .nav::-webkit-scrollbar{display:none}
+    .nav a{scroll-snap-align:start;background:#18273a;color:var(--ink);border:1px solid #2e4764;border-radius:4px 16px 4px 16px;padding-inline:15px}
+    .nav a:nth-child(3n+1){border-bottom:4px solid var(--amber)}
+    .nav a:nth-child(3n+2){border-bottom:4px solid var(--violet)}
+    .nav a:nth-child(3n){border-bottom:4px solid var(--cyan)}
+    section[id]{scroll-margin-top:76px;margin-top:30px}
+    .section-head{align-items:flex-end;border-bottom:1px solid var(--line);padding:0 0 12px;margin-bottom:14px}
+    .section-head>div{border-left:6px solid var(--violet);padding-left:12px}
+    section:nth-of-type(3n+2) .section-head>div{border-left-color:var(--amber)}
+    section:nth-of-type(3n) .section-head>div{border-left-color:var(--cyan)}
+    .section-head p{margin:.35rem 0 0}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+    .card,.notice,.empty{position:relative;background:linear-gradient(145deg,#111e31,#09121f 72%);border:1px solid var(--line);border-radius:4px 20px 4px 20px;padding:18px;box-shadow:0 15px 40px #0006;overflow-wrap:anywhere}
+    .card::before{content:"";position:absolute;top:0;left:0;width:64px;height:5px;background:var(--cyan)}
+    .card:nth-child(3n+2)::before{background:var(--amber)}
+    .card:nth-child(3n)::before{background:var(--violet)}
+    .notice,.empty{box-shadow:none;background:#0a1423}
+    .notice:empty{display:none}
+    .card h3{margin:.45rem 0;font-size:1.18rem}
+    .badge{display:inline-flex;align-items:center;min-height:30px;border-radius:4px 13px 4px 13px;padding:.34rem .65rem;font-size:.72rem;font-weight:800;background:#263b57;color:#dcecff;text-transform:uppercase;letter-spacing:.06em}
+    .badge-today,.worker-running{background:var(--green);color:#042216}
+    .worker-blocked{background:var(--coral);color:#310906}
+    .worker-completed{background:var(--cyan);color:#05262b}
+    .worker-disconnected,.worker-unknown{background:#526274;color:#fff}
+    .fact{border-top:1px solid #263c54;padding-top:11px;margin-top:11px}
+    .fact strong{display:block;margin-bottom:4px;font-size:.73rem;text-transform:uppercase;letter-spacing:.09em;color:var(--amber)}
+    .priority-number{display:grid;place-items:center;width:38px;height:38px;border-radius:4px 14px 4px 14px;background:var(--violet);color:#130b25;font-weight:900;font-size:1.05rem}
+    .source{overflow-wrap:anywhere}
+    .loading{cursor:progress}
+    .loading .card,.loading .notice{opacity:.62}
+    details{margin-top:13px;border-top:1px solid #263c54;padding-top:10px}
+    summary{min-height:34px;display:flex;align-items:center;cursor:pointer;font-weight:750;color:#b9ccdc}
+    .chat-toggle{position:fixed;right:18px;bottom:max(18px,env(safe-area-inset-bottom));z-index:30;min-height:54px;padding-inline:22px;background:var(--apricot);box-shadow:0 0 0 4px #07101d,0 12px 36px #000b}
+    .chat-toggle::before{content:"◆";font-size:.72rem;margin-right:9px}
+    .chat-drawer{position:fixed;right:18px;bottom:84px;z-index:29;width:min(470px,calc(100vw - 36px));max-height:min(760px,calc(100dvh - 116px));overflow:auto;overscroll-behavior:contain;background:linear-gradient(155deg,#13223a,#08111f 70%);border:1px solid #496786;border-top:8px solid var(--violet);border-radius:6px 24px 6px 24px;padding:20px;box-shadow:0 22px 90px #000d}
+    .chat-drawer[hidden]{display:none}
+    .chat-drawer h2{margin-top:.3rem}
+    .chat-drawer textarea{display:block;width:100%;min-height:132px;margin-top:8px;padding:14px;border:1px solid #4a6582;border-radius:4px 16px 4px 16px;background:#050b15;color:var(--ink);font:500 16px/1.45 -apple-system,BlinkMacSystemFont,"Avenir Next",Inter,system-ui,sans-serif;resize:vertical}
+    .chat-drawer textarea::placeholder{color:#7f93a8}
+    .chat-actions{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:12px}
+    .chat-actions .muted{max-width:260px}
+    .chat-result{background:#07101d;border:1px solid #334c68;border-left:6px solid var(--cyan);border-radius:4px 16px 4px 16px;padding:14px;margin-top:14px}
+    .chat-answer{white-space:pre-line;font-size:1.03rem;line-height:1.55}
+    .chat-result[hidden]{display:none}
+    @media(max-width:640px){
+      .shell{width:100%;padding:14px max(14px,env(safe-area-inset-right)) calc(104px + env(safe-area-inset-bottom)) max(14px,env(safe-area-inset-left))}
+      .lcars-rail{height:14px;margin-bottom:14px;grid-template-columns:1.4fr .45fr .7fr .32fr}
+      header,.source-line,.section-head{align-items:stretch;flex-direction:column}
+      header{border-left-width:8px;padding:12px 0 12px 15px;border-radius:16px 0 0 16px}
+      h1{font-size:clamp(2.5rem,15vw,4.1rem)}
+      .summary{font-size:1rem}
+      .toolbar{display:grid;grid-template-columns:1fr 1fr;width:100%;max-width:none;gap:8px;margin-top:8px}
+      .toolbar button,.toolbar a{width:100%;min-height:48px;padding-inline:10px}
+      #refresh{grid-column:1/-1}
+      .source-line{gap:5px}
+      .nav{width:calc(100% + 28px);max-width:none;margin:0 -14px;padding:10px 14px}
+      .nav a{min-height:48px}
+      section[id]{scroll-margin-top:72px;margin-top:26px}
+      .grid{grid-template-columns:minmax(0,1fr)}
+      .card,.notice,.empty{padding:17px}
+      .card-top{align-items:flex-start}
+      .chat-toggle{left:12px;right:12px;bottom:calc(10px + env(safe-area-inset-bottom));width:calc(100% - 24px);min-height:58px}
+      .chat-drawer{inset:auto 0 0 0;width:100%;max-height:calc(100dvh - 10px);border-radius:24px 24px 0 0;border-left:1px solid #496786;border-right:1px solid #496786;border-bottom:0;padding:20px max(18px,env(safe-area-inset-right)) calc(22px + env(safe-area-inset-bottom)) max(18px,env(safe-area-inset-left))}
+      .chat-drawer .card-top{align-items:center}
+      .chat-drawer .card-top button{min-width:86px}
+      .chat-actions{align-items:stretch;flex-direction:column}
+      .chat-actions .muted{max-width:none}
+      #chat-send{width:100%;min-height:50px}
+      .chat-open{overflow:hidden}
+      .chat-open .chat-toggle{display:none}
+    }
+    @media(prefers-reduced-motion:reduce){:root{scroll-behavior:auto}}
   </style>
 </head>
 <body>
 <main class="shell">
-  <header><div><div class="eyebrow">Private Command Center</div><h1>Mary Kate</h1><p class="muted summary">Today’s priorities, every retained project, real worker activity, scheduled work, and the specific things that need you.</p></div><div class="toolbar"><button id="refresh" type="button">Refresh</button><a href="/control/">Full control view</a><a href="/admin/logout">Sign out</a></div></header>
+  <div class="lcars-rail" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+  <header><div><div class="eyebrow">Private Command Center</div><h1>Mary Kate</h1><p class="muted summary">Today’s priorities, every retained project, real worker activity, scheduled work, and the specific things that need you.</p><div class="system-strip" aria-label="Command Center safeguards"><span>Private</span><span>Read-only view</span><span>Approval safeguards active</span></div></div><div class="toolbar"><button id="refresh" type="button">Refresh systems</button><a href="/control/">Full control view</a><a href="/admin/logout">Sign out</a></div></header>
   <p class="muted source-line"><span id="freshness" aria-live="polite">Checking the latest saved information…</span><span>You can look through project information here. Changes still require approval.</span></p>
   <p id="acceptance" class="notice muted" aria-live="polite"></p>
-  <nav class="nav" aria-label="Command Center sections"><a href="#today">Today</a><a href="#attention">Needs your attention</a><a href="#projects">All projects</a><a href="#workers">Live AI workers</a><a href="#schedule">Scheduled tasks</a><a href="#verified">Verified results</a></nav>
+  <nav class="nav" aria-label="Command Center sections"><a href="#today">01 · Today</a><a href="#attention">02 · Needs your attention</a><a href="#projects">03 · All projects</a><a href="#workers">04 · Live AI workers</a><a href="#schedule">05 · Scheduled tasks</a><a href="#verified">06 · Verified results</a></nav>
 
   <section id="today"><div class="section-head"><div><h2>Today</h2><p class="muted">These are today’s priorities—not every project that remains open.</p></div></div><div class="grid" id="today-list" aria-live="polite"></div><div id="ai-queue"></div></section>
   <section id="attention"><div class="section-head"><div><h2>Needs your attention</h2><p class="muted">Specific approvals, decisions, and genuine blockers. A whole project is not relabeled because one item needs you.</p></div></div><div class="grid" id="attention-list" aria-live="polite"></div></section>
@@ -46,8 +188,8 @@ function verifiedCard(item){return '<article class="card"><div class="eyebrow">'
 function workerCard(worker){const state=worker.state||'unknown';const label={running:'Running',idle:'Idle',completed:'Completed',blocked:'Blocked',disconnected:'Disconnected',unknown:'Unknown'}[state]||'Unknown';const result=worker.outcome_verified===true?'Result independently verified.':'Result not independently verified.';return '<article class="card"><div class="card-top"><div class="eyebrow">'+esc(worker.identity?.agent_name||'AI worker')+'</div><span class="badge worker-'+css(state)+'">'+esc(label)+'</span></div><h3>'+esc(worker.task?.summary||'Task unavailable')+'</h3><p>'+esc(state==='disconnected'?'This worker is not currently active.':worker.progress_events?.at(-1)?.message||'Current progress detail is unavailable.')+'</p><p class="fact"><strong>Verification</strong>'+esc(result)+'</p><details><summary>Technical details</summary><p class="muted source">Worker '+esc(worker.id||'Unavailable')+' · observed '+esc(worker.last_observed_at||'Unavailable')+'</p></details></article>'}
 function showAcceptance(data){acceptance.textContent=data.acceptance?.completion_claim_allowed?'Ashley’s acceptance is recorded.':'Mary Kate is not ready to call Command Center V1 complete. Your phone testing is still finding real problems.'}
 async function load(){refresh.disabled=true;document.body.classList.add('loading');try{const response=await fetch('/api/control/my-work',{headers:{accept:'application/json'}});let data={};try{data=await response.json()}catch{}if(!response.ok)throw Error();showAcceptance(data);if(data.source_status==='unavailable'){freshness.textContent=data.message||'The latest saved project information is unavailable.';todayList.innerHTML=empty('The latest next step needs verification.');projectList.innerHTML=empty('All-project information is unavailable.');attentionList.innerHTML=empty('Attention items are unavailable.');scheduleList.innerHTML=empty(data.schedule?.message||'Scheduled work is unavailable.');return}todayList.innerHTML=(data.today||[]).map(priorityCard).join('')||empty('No verified priority is available. The latest next step needs verification.');projectList.innerHTML=(data.projects||[]).map(projectCard).join('')||empty('No saved projects are available right now.');attentionList.innerHTML=(data.needs_attention||[]).map(attentionCard).join('')||empty('Nothing currently needs your attention.');aiQueue.innerHTML=(data.ai_queue||[]).length?'<h3>AI can handle next</h3><div class="grid">'+data.ai_queue.map(item=>'<article class="card"><h3>'+esc(item.label)+'</h3><p class="muted">'+esc(item.why)+'</p></article>').join('')+'</div>':'';const schedule=data.schedule||{status:'unavailable',message:'Scheduled work is unavailable.',items:[]};scheduleList.innerHTML=schedule.items?.length?'<div class="grid">'+schedule.items.map(item=>'<article class="card"><div class="eyebrow">'+esc(item.project)+'</div><h3>'+esc(item.label)+'</h3></article>').join('')+'</div>':empty(schedule.message);verifiedList.innerHTML=(data.verified_completion||[]).map(verifiedCard).join('')||empty('No saved changes have passed the full check yet.');freshness.textContent='Latest saved project information checked '+new Date(data.generated_at).toLocaleString();}catch{freshness.textContent='Command Center could not be loaded right now.';acceptance.textContent='V1 status is unavailable.';todayList.innerHTML=empty('Current priorities could not be loaded. The latest next step needs verification.');projectList.innerHTML=empty('All-project information is unavailable.');attentionList.innerHTML=empty('Attention items are unavailable.');scheduleList.innerHTML=empty('Scheduled work is unavailable.')}finally{refresh.disabled=false;document.body.classList.remove('loading')}}
-async function loadWorkers(){try{const response=await fetch('/api/control/workers',{headers:{accept:'application/json'}});let data={};try{data=await response.json()}catch{}if(response.status===404||data.enabled===false){workersStatus.textContent='Worker connection not configured';workerList.innerHTML=empty('Worker activity is unavailable. The Herdr connection is not configured.');return}if(!response.ok)throw Error();const connected=data.connection?.state==='connected'&&data.connection?.fresh===true;workersStatus.textContent=connected?'Connected · current telemetry':'Disconnected · last-known telemetry only';workerList.innerHTML=(data.workers||[]).map(workerCard).join('')||empty(connected?'No Herdr-managed worker is currently registered.':'Worker activity is unavailable. No fresh heartbeat is present.');}catch{workersStatus.textContent='Worker activity unavailable';workerList.innerHTML=empty('Worker activity is unavailable right now. No live state is being inferred.')}}
-function toggleChat(open){chatDrawer.hidden=!open;chatToggle.setAttribute('aria-expanded',String(open));if(open)chatInput.focus()}
+async function loadWorkers(){try{const response=await fetch('/api/control/workers',{headers:{accept:'application/json'}});let data={};try{data=await response.json()}catch{}if(response.status===404||data.enabled===false){workersStatus.textContent='Worker connection not configured';workerList.innerHTML=empty('Worker activity is unavailable because the private worker connection is not configured.');return}if(!response.ok)throw Error();const connected=data.connection?.state==='connected'&&data.connection?.fresh===true;workersStatus.textContent=connected?'Connected · current activity':'Disconnected · last-known activity only';workerList.innerHTML=(data.workers||[]).map(workerCard).join('')||empty(connected?'No Mary Kate-managed worker is currently registered.':'Worker activity is unavailable. No recent check-in is present.');}catch{workersStatus.textContent='Worker activity unavailable';workerList.innerHTML=empty('Worker activity is unavailable right now. No live state is being inferred.')}}
+function toggleChat(open){chatDrawer.hidden=!open;chatToggle.setAttribute('aria-expanded',String(open));document.body.classList.toggle('chat-open',open);if(open)chatInput.focus()}
 function chatFailure(data,status){const allowed=new Set(['prior_state_ambiguous_scope','prior_state_conflict','prior_state_missing','read_only_route_violation','routing_contract_invalid']);const message=allowed.has(data?.code)&&typeof data.error==='string'?data.error:'Mary Kate could not complete that request right now. Nothing was recorded as successful.';const detail=data?.code?'<details><summary>Technical details</summary><p class="muted">Request status '+esc(status)+' · '+esc(data.code)+'</p></details>':'';return '<p>'+esc(message)+'</p>'+detail}
 function chatSuccess(data){const answer=data?.plain_summary?'Mary Kate: '+data.plain_summary:'Mary Kate received this, but no plain-English result is available yet.';const detail=data?.technical_summary?'<details><summary>Technical details</summary><p class="muted">'+esc(data.technical_summary)+'</p></details>':'';return '<div class="chat-answer">'+esc(answer)+'</div>'+detail}
 chatToggle.onclick=()=>toggleChat(chatDrawer.hidden);chatClose.onclick=()=>toggleChat(false);
