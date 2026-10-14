@@ -22,6 +22,19 @@ test('My Work page is the mobile Command Center and keeps its projections read-o
   assert.doesNotMatch(page,/data-action="approve"|data-action="reject"/i);
 });
 
+test('iPhone Command Center keeps controls readable, tappable, and inside the viewport',()=>{
+  assert.match(page,/viewport-fit=cover/);
+  assert.match(page,/-webkit-text-size-adjust:100%/);
+  assert.match(page,/button,\.toolbar a,\.nav a\{[\s\S]*?flex:0 0 auto;[\s\S]*?min-height:44px;[\s\S]*?font:800 16px/s);
+  assert.match(page,/touch-action:manipulation/);
+  assert.match(page,/\.nav\{[\s\S]*?overflow-x:auto;[\s\S]*?-webkit-overflow-scrolling:touch/s);
+  assert.match(page,/\.chat-drawer textarea\{[\s\S]*?font:500 16px/s);
+  assert.match(page,/@media\(max-width:640px\)\{[\s\S]*?env\(safe-area-inset-bottom\)[\s\S]*?max-height:calc\(100dvh - 10px\)/s);
+  assert.match(page,/\.chat-open \.chat-toggle\{display:none\}/);
+  assert.match(page,/document\.body\.classList\.toggle\('chat-open',open\)/);
+  assert.match(page,/\.lcars-rail/);
+});
+
 test('Mary Kate chat remains available from anywhere through the existing guarded interaction route',()=>{
   assert.match(page,/id="chat-toggle"/);
   assert.match(page,/id="chat-drawer"/);
@@ -56,6 +69,7 @@ test('worker activity is loaded separately from projects and never fabricates a 
   assert.match(page,/Disconnected/);
   assert.match(page,/Result not independently verified/);
   assert.match(page,/Worker activity is unavailable/);
+  assert.doesNotMatch(page,/Herdr connection is not configured|Herdr-managed worker/);
 });
 
 test('technical source records stay in expandable details and errors stay understandable',()=>{
