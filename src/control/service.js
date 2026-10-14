@@ -202,31 +202,14 @@ async function retrieveCompletionAuthority(github) {
   return {source:{repo:WRITE_REPO,path,sha:source.sha},routing_source:{repo:WRITE_REPO,path:'PROJECT_INDEX.md',sha:index.sha},content:source.content};
 }
 function completionAssessment(authority) {
-  const content=String(authority?.content||'');
-  const match=content.match(/\*\*(\d+) rows:\*\*\s*VERIFIED\s+(\d+);\s*PARTIAL\s+(\d+);\s*IMPLEMENTED\s+—\s+UNVERIFIED\s+(\d+);\s*NOT IMPLEMENTED\s+(\d+)/i);
+  const match=String(authority?.content||'').match(/\*\*(\d+) rows:\*\*\s*VERIFIED\s+(\d+);\s*PARTIAL\s+(\d+);\s*IMPLEMENTED\s+—\s+UNVERIFIED\s+(\d+);\s*NOT IMPLEMENTED\s+(\d+)/i);
   if(!match) return null;
   const [total,verified,partial,implementedUnverified,notImplemented]=match.slice(1).map(Number);
   if([total,verified,partial,implementedUnverified,notImplemented].some(value=>!Number.isSafeInteger(value)||value<0)) return null;
   const unfinished=partial+implementedUnverified+notImplemented;
-  const rows=[...content.matchAll(/^\d+\.\s+\*\*(.+?)\s+—\s+(VERIFIED|PARTIAL|IMPLEMENTED\s+—\s+UNVERIFIED|NOT IMPLEMENTED|BLOCKED|STALE\s+—\s+RECONCILIATION REQUIRED)\.\*\*/gmi)]
-    .filter(row=>row[2].toUpperCase()!=='VERIFIED')
-    .map(row=>row[1]);
-  const has=pattern=>!rows.length||rows.some(title=>pattern.test(title));
-  const gaps=[];
-  if(has(/intent\/workstream|scenario a|clean-room semantic retrieval/i)) gaps.push('understand ordinary questions without making you name projects or technical systems');
-  if(has(/authority map|authoritative retrieval|continuous state|scenario d/i)) gaps.push('keep project information current automatically');
-  if(has(/context compiler|capability selector|gate\/preflight|verification\/completion|safe publishing|scenario b|production route|contextless delegation/i)) gaps.push('give work to the right AI worker and return a clear result that was actually checked');
-  if(has(/scenario c|durable continuation/i)) gaps.push('continue after interruptions without making you carry messages between systems');
-  if(has(/plain-language state|scenario f|mobile-first operation/i)) gaps.push('explain status and next steps clearly on your phone');
-  if(has(/scenario e|bounded media\/video proof/i)) gaps.push('complete one small real video task without risking the original file');
-  if(!gaps.length&&unfinished) gaps.push('finish and prove the remaining V1 abilities from start to finish');
-  const plain_summary=unfinished
-    ? `Not yet. The Command Center opens on your phone and can read the latest saved project information without changing it. But Mary Kate has not yet proved the full experience from start to finish.\n\nStill to prove:\n${gaps.map(gap=>'• '+gap).join('\n')}\n\nNext: run one real task from this phone screen all the way from your request to a clear result that was actually checked. Any confusing, stale, or wrong step means V1 is still not ready.`
-    : 'The latest saved information says the full V1 experience has been proved. Ashley still needs to decide whether the experience is understandable and useful enough to accept.';
-  return {
-    route_kind:'temporary_context',responsibility:'ai_can_handle',confidence:'high',plain_summary,
-    technical_summary:`V1 source status: ${total} total; ${verified} verified complete; ${partial} partial; ${implementedUnverified} implemented but unverified; ${notImplemented} not implemented.`
-  };
+  const lead=unfinished?'Not yet.':'The current indexed V1 matrix has no unfinished requirement rows.';
+  const progress=verified?`${verified} verified, ${partial} partial, ${implementedUnverified} implemented but unverified, and ${notImplemented} not implemented`:`none is verified complete; ${partial} are partial, ${implementedUnverified} are implemented but unverified, and ${notImplemented} is not implemented`;
+  return {route_kind:'temporary_context',responsibility:'ai_can_handle',confidence:'high',plain_summary:`${lead} Project Truth’s current indexed V1 matrix tracks ${total} requirements: ${progress}. Passing automated tests or loading the page does not replace the remaining live and Ashley acceptance evidence. No project change was made.`};
 }
 export function createControlService({github,router,store,now=()=>Date.now(),packetTtlMs=300000}) {
   const state = async ({refresh=false,requiredFacts=[],requiredFactKeys=[]}={}) => {
@@ -288,12 +271,7 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
       let candidate=contextWorkstream==='mary-kate-command-center'&&readOnly&&maryKateSection(ambiguity_gate.section)
         ? completionAssessment(snapshot.completion_authority)
         : null;
-      let technicalSummary=null;
-      if(candidate) {
-        technicalSummary=candidate.technical_summary||null;
-        const {technical_summary,...publicCandidate}=candidate;
-        candidate=validateRoute(publicCandidate);
-      }
+      if(candidate) candidate=validateRoute(candidate);
       else try {
         const output=await router.route(text.trim(),createControlTaskPacket(snapshot));
         try {candidate=validateRoute(output);} catch(error) {
@@ -319,7 +297,7 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
       const interaction=await store.addInteraction({raw_text:text.trim(),route});
       let item=null;
       if(route.proposal) item=await store.addQueueItem({interaction_id:interaction.id,...route});
-      return {interaction_id:interaction.id,plain_summary:route.plain_summary,...(technicalSummary?{technical_summary:technicalSummary}:{}),responsibility:route.responsibility,route_kind:route.route_kind,queue_item:item};
+      return {interaction_id:interaction.id,plain_summary:route.plain_summary,responsibility:route.responsibility,route_kind:route.route_kind,queue_item:item};
     },
     async approve(id,note='') {
       const item=await store.getQueueItem(id);
