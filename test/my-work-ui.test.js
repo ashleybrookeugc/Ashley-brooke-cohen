@@ -49,7 +49,13 @@ test('Mary Kate chat remains available from anywhere through the existing guarde
   assert.match(page,/\/api\/control\/interactions/);
   assert.match(page,/context_workstream:'mary-kate-command-center'/);
   assert.match(page,/refresh_context:true/);
-  assert.match(page,/No project change happens without the existing approval checks/);
+  assert.match(page,/follow up/);
+  assert.match(page,/conversation_history:prior/);
+  assert.match(page,/conversation_id:conversation\.id/);
+  assert.match(page,/sessionStorage/);
+  assert.match(page,/id="chat-thread"/);
+  assert.match(page,/Clear tracked conversation/);
+  assert.match(page,/handoff\?\.status==='tracked'/);
   assert.match(page,/function chatSuccess/);
   assert.match(page,/technical_summary/);
   assert.match(page,/I check the latest saved information before answering/);
@@ -71,6 +77,13 @@ test('chat preserves safe structured failures instead of replacing every respons
   assert.match(page,/I misunderstood your question as a request to change something/);
   assert.doesNotMatch(page,/Routing selected a write target outside the resolved workstream/);
   assert.match(page,/Nothing was recorded as successful/);
+});
+
+test('chat shows a bounded transcript and only offers clearing after tracked handoff',()=>{
+  assert.match(page,/conversation\.messages=conversation\.messages\.slice\(-12\)/);
+  assert.match(page,/chatSessionActions\.hidden=!conversation\.tracked/);
+  assert.match(page,/if\(!conversation\.tracked\)return/);
+  assert.doesNotMatch(page,/chatResult\.innerHTML|chatResult\.textContent/);
 });
 
 test('worker activity is loaded separately from projects and never fabricates a live state',()=>{
