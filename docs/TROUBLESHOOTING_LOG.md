@@ -627,3 +627,13 @@ See [the verified deployment and logging incident](test-receipts/2026-10-14-clou
 **Frozen regressions:** The suite now requires one current priority despite older checkpoint mentions, visible saved resume steps without commit/test-log jargon, guarded Approve/Reject controls for actual queued proposals, prefilled conversation controls for nonapproval blockers, separate empty approval copy, readable mobile action layout, and preserved expandable technical evidence.
 
 **Acceptance boundary:** Passing code tests will not prove that live Project Truth has been reconciled, the Cloudflare version is active, the authenticated page renders correctly, or the actions work for Ashley. Preserve those as separate deployment and phone acceptance gates.
+
+## 2026-10-14 — Per-card chat prompts exposed internal instructions and cluttered every task
+
+**Observed live failure:** Ashley tapped a task-level chat control and the Command Center copied its internal acceptance instruction into the Mary Kate text box: “Today, saved resume points are visible…” The page also repeated an Ask/Talk button under each priority, project, and blocker even though the persistent bottom Talk to Mary Kate control was already available everywhere. A separate ordinary question, “Why is my website taking forever to make,” returned “Routing selected a write target outside the resolved workstream,” which is safe backend language but not a useful human response.
+
+**Root cause:** The preceding action repair added per-card `data-prompt` controls as a shortcut. Those controls treated internal testing/context strings as if they were Ashley’s words. The browser’s allowlisted failure renderer also displayed the service’s raw safe error for `routing_contract_invalid` as primary copy.
+
+**Repair:** Remove every per-card chat button and all automatic prompt injection. Keep the single full-width, fixed bottom Talk to Mary Kate control as the only chat entry point; the text box begins without a system-generated message. Preserve Approve/Reject only for real queued proposals. Translate known safe routing failures into ordinary language—Mary Kate misunderstood the question and changed nothing—while retaining the status/code only under Technical details.
+
+**Regression contract:** The page must contain no `data-prompt`, prompt helper, or “Talk this through” task control; the fixed chat toggle remains. A routing-contract failure must not expose “write target,” “resolved workstream,” or the raw service message as primary copy. Do not treat removal of jargon as proof that broad natural conversation now works.
