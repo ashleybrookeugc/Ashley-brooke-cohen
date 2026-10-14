@@ -13,6 +13,18 @@ Before repeating deployment, Cloudflare, Worker, build, routing, or asset troubl
 5. Do not tell the user to manually deploy or create new infrastructure unless the existing GitHub → Cloudflare path has actually been shown to be broken.
 6. When a new issue is solved, add it here using: **Symptom → Failed/looping attempts → Root cause → Verified fix → Prevention rule**.
 
+## 2026-10-14 — Command Center chat discarded follow-up context
+
+**Symptom:** Ashley’s authenticated iPhone test showed that each Send behaved like a separate routing request. After one answer there was no visible transcript to follow up on; replacing the textarea also discarded the prior turn. Cross-project requests such as prioritizing all project tasks stopped at “I’m not sure which project you mean.”
+
+**Root cause:** The page rendered only one replaceable result and posted only the newest textarea value. The control service had no bounded conversation history, so the ambiguity gate could not inherit a previously named workstream. It also treated a safe Command Center-wide prioritization question like an unbound single-project mutation.
+
+**Verified fix:** The existing Command Center now keeps at most 12 user/assistant messages in session storage, displays them as a transcript, sends the prior turns through the authenticated interaction route, and gives a follow-up the last uniquely named workstream when the new message does not name another one. Explicit cross-project prioritization questions use a read-only all-workstreams scope. A conversation can be cleared as finished only after the backend returns a real tracked queue item. The UI explicitly says that queued AI work is not running until a worker actually checks in. Local full suite 128/128, focused conversation/UI suite 36/36, the 14-requirement gate, Herdr syntax checks, Worker dry-run, embedded-script parsing, and diff checks pass.
+
+**Proof boundary:** Browser session continuity and routing packets are mechanically verified. This does not prove that the live model’s answers are useful, that an AI worker launched, or that a queued proposal reached GitHub. Running-worker state still requires worker telemetry; a GitHub result still requires approval, write, readback, and commit receipt.
+
+**Prevention rule:** Persistent chat means visible turn history plus server-consumed context, not a textarea and one replaceable answer. Never clear a conversation on a claimed handoff; require an actual queue receipt, and never label queued work as running.
+
 ## 2026-10-08 — Unqualified next-action query still reaches the model before the ambiguity stop
 
 **Symptom:** In the current local control-plane implementation, the unqualified request `what is next?` reached the routing adapter even though several workstreams were current. A hostile test router returned a state proposal, but the later resolved-write-target gate stopped it with `ambiguous_scope`; no queue item, interaction history row, or canonical write was created.
