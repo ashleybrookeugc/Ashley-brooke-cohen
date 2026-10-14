@@ -24,6 +24,8 @@ test('My Work page is the mobile Command Center with read-only sources and guard
   assert.match(page,/\/api\/control\/items\//);
   assert.match(page,/No approval is waiting right now/);
   assert.match(page,/Talk this through/);
+  assert.match(page,/id="attention-status"/);
+  assert.match(page,/attentionStatus\.textContent=data\.message/);
 });
 
 test('iPhone Command Center keeps controls readable, tappable, and inside the viewport',()=>{
