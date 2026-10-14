@@ -132,9 +132,9 @@ function attentionFromQueues(queues={}) {
 
 function decisionFor(project) {
   const evidence=`${project.name} ${project.attention||''}`;
-  if (/b-paid/i.test(evidence)) return {label:'Choose one saved video for the next real-world analyzer test.',why:'Mary Kate needs a known Ashley or Russell file that can be opened from connected storage.',prompt:'Help me choose the first saved Ashley or Russell video for the B-Paid analyzer test. Tell me exactly what you need from me.'};
-  if (/portfolio/i.test(evidence)) return {label:'Choose the first portfolio clip to review.',why:'The full source-video review is unfinished, so Mary Kate cannot yet identify the strongest performance evidence.',prompt:'Help me choose the first portfolio clip to review. Explain the choice in plain English and tell me exactly what you need from me.'};
-  return {label:'Talk through the next decision for '+project.name+'.',why:project.blocked_or_unverified,prompt:'What decision do you need from me to move '+project.name+' forward? Explain it in plain English.'};
+  if (/b-paid/i.test(evidence)) return {label:'Choose one saved video for the next real-world analyzer test.',why:'Mary Kate needs a known Ashley or Russell file that can be opened from connected storage.'};
+  if (/portfolio/i.test(evidence)) return {label:'Choose the first portfolio clip to review.',why:'The full source-video review is unfinished, so Mary Kate cannot yet identify the strongest performance evidence.'};
+  return {label:'A decision is needed for '+project.name+'.',why:project.blocked_or_unverified};
 }
 
 function aiQueue(queues={}) {
@@ -177,8 +177,8 @@ export function buildMyWorkProjection({activeWork,activeSha,history=[],queues={}
     const next=plainNext(item,reconciliation,identity.name);
     return {id:item.id,name:identity.name,lifecycle:'retained',focus:priorityMatches.length?'today':'available',project_status:identity.status,what:projectDescription(identity.name),works:whatWorks(item,identity.name),blocked_or_unverified:plainBlocker(item,identity.status,identity.name),attention:attention?sentence(attention):null,next:next.value,next_label:next.label,next_kind:next.kind,freshness:reconciliation.status,source:activeSource,technical:technicalDetails(item,reconciliation)};
   });
-  const today=projects.filter(project=>project.focus==='today').map((project,index)=>({id:`priority-${index+1}`,project_id:project.id,project:project.name,label:project.name,next:project.next,next_label:project.next_label,rank:index+1,prompt:`Help me do the next step for ${project.name}: ${project.next}`,source:activeSource}));
-  const projectAttention=projects.filter(project=>project.attention).map(project=>({id:`project-${project.id}`,type:'blocker_or_decision',...decisionFor(project),project:project.name,action_label:'Talk this through',source:'Project Truth'}));
+  const today=projects.filter(project=>project.focus==='today').map((project,index)=>({id:`priority-${index+1}`,project_id:project.id,project:project.name,label:project.name,next:project.next,next_label:project.next_label,rank:index+1,source:activeSource}));
+  const projectAttention=projects.filter(project=>project.attention).map(project=>({id:`project-${project.id}`,type:'blocker_or_decision',...decisionFor(project),project:project.name,source:'Project Truth'}));
   const acceptance=evaluateAcceptanceGate({requirements:MY_WORK_REQUIREMENTS,evidence:{tests:Object.fromEntries(MY_WORK_REQUIREMENTS.map(requirement=>[requirement.id,'passed'])),current_state_reconciled:true,plain_language_checked:true,handoff_checked:true,independent_acceptance:false}});
   return {version:'mary-kate.command-center.v1',read_only:true,interaction_mode:'approval_gated',generated_at:generatedAt,sources:[activeSource],source_status:'available',today,projects,work:projects,approved_deferred:approvedDeferred(activeWork,activeSource),needs_attention:[...attentionFromQueues(queues),...projectAttention],ai_queue:aiQueue(queues),schedule:scheduleProjection(parsed),verified_completion:verifiedUpdates(history),acceptance};
 }
