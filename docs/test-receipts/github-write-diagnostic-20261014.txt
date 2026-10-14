@@ -1,0 +1,2 @@
+Diagnostic fixture v1
+No production behavior.
