@@ -332,7 +332,7 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
       const interaction=await store.addInteraction({raw_text:text.trim(),route});
       let item=null;
       if(route.proposal) item=await store.addQueueItem({interaction_id:interaction.id,...route});
-      return {interaction_id:interaction.id,plain_summary:route.plain_summary,responsibility:route.responsibility,route_kind:route.route_kind,queue_item:item};
+      return {interaction_id:interaction.id,plain_summary:route.plain_summary,responsibility:route.responsibility,route_kind:route.route_kind,queue_item:item,...(route.model_selection?{model_selection:route.model_selection}:{})};
     },
     async approve(id,note='') {
       const item=await store.getQueueItem(id);
