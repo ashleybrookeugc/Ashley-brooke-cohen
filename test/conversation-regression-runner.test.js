@@ -24,11 +24,12 @@ test('missing inference creates BLOCKED receipts with no invented response or ef
     assert.equal(r.result,'BLOCKED');assert.equal(r.actual.inference_calls,0);assert.equal(r.actual.response,null);
     assert.deepEqual(r.actual.completed_state_changes.canonical,[]);assert.equal(r.deterministic_checks.canonical_unchanged,true);
   }
-  assert.equal(report.receipts[2].actual.error.code,'prior_state_ambiguous_scope');
+  assert.equal(report.receipts[2].actual.error.code,'inference_unavailable');
+  assert.ok(report.receipts[2].project_truth.retrieved_paths.includes('PROJECT_INDEX.md'));
 });
 
 test('actual router receives exact contexts while expected contracts never enter model input',async()=>{
-  for(const entry of cases.filter(x=>x.id!=='20261014-C')) {
+  for(const entry of cases) {
     const r=await executeConversationCase(entry,options);
     assert.equal(r.deterministic_checks.exact_preceding_turns,true);
     if(entry.id==='20261014-A') {assert.equal(r.evidence_kind,'deterministic-clarification');assert.equal(r.actual.inference_calls,0);assert.match(r.actual.response.plain_summary,/What do you mean/);continue;}
@@ -71,4 +72,12 @@ test('clarification supplement preserves original A and independently tests the 
   const clarified=await executeConversationCase(second,options);
   assert.equal(clarified.actual.inference_calls,1);assert.equal(clarified.deterministic_checks.exact_provider_turns,true);
   assert.equal(clarified.result,'BLOCKED'); // controlled text is never live acceptance
+});
+
+
+test('candidate comparison retains exact original turns and expected outcomes',()=>{
+  for(const entry of corpus.supplements.find(x=>x.id==='2026-10-14-qwen-comparison').cases) {
+    const original=corpus.supplements.flatMap(x=>x.cases).find(x=>x.id===entry.original_case_id);
+    for(const field of ['turns','expected','forbidden','semantic_dimensions','deterministic'])assert.deepEqual(entry[field],original[field]);
+  }
 });

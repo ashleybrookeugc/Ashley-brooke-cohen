@@ -61,6 +61,26 @@ const readOnlyFollowup=(text,recent)=>{
   return /^(?:and|or|what about|how about)\b/i.test(value)
     || /^no\b[\s,.:!-]*(?:i(?:'m| am)|that(?:'s| is)|my question)\b/i.test(value);
 };
+const readOnlyReturn=(text,recent)=>Boolean(recent?.turns?.length&&!recent.truncated)
+  && /^(?:(?:ok(?:ay)?|alright)[,\s]+)?(?:back|return) to\b/i.test(text.trim())
+  && !/\b(?:update|set|change|approve|publish|send|delete|spend|pay|deploy|merge|buy|upload|execute|run|save|record|build|edit)\b/i.test(text);
+function readOnlyAssentScope(text,recent,facts,initial,now,ttl) {
+  if(!/^(?:yes[,\s]+)?(?:agreed|yes|yep|sure|okay|ok)[.!\s]*$/i.test(text.trim())||recent?.truncated||recent?.turns?.length<2) return null;
+  const last=initial.history?.[0],age=now-Date.parse(last?.created_at);
+  if(!last||last.route?.route_kind!=='temporary_context'||last.outcome_status==='failed'||!Number.isFinite(age)||age<0||age>ttl) return null;
+  if(Object.values(initial.queues||{}).some(rows=>Array.isArray(rows)&&rows.some(row=>!['rejected','applied','completed','superseded'].includes(row.status)))) return null;
+  const user=recent.turns.at(-2),assistant=recent.turns.at(-1);
+  if(user?.role!=='user'||assistant?.role!=='assistant') return null;
+  const offer=assistant.content;
+  // Only a single offered internal assessment can pass this boundary. This
+  // never approves a write; consequential or alternative offers stay blocked.
+  const unnegated=offer.replace(/\b(?:i|we) (?:will|shall) not (?:change|modify|write|delete|deploy|publish|send)[^.?!]*[.?!]?/gi,'');
+  if(!/\b(?:i|we) can (?:read|inspect|check|review)\b/i.test(unnegated)||!/\b(?:v1|assessment|status|readiness|completion|proof)\b/i.test(unnegated)) return null;
+  if(/\b(?:or|either|alternatively|update|change|modify|write|delete|deploy|publish|send|spend|pay|merge|approve|execute|run|save|record)\b/i.test(unnegated)) return null;
+  if((unnegated.match(/\b(?:can|and|then|also)\s+(?:read|inspect|check|review)\b/gi)||[]).length!==1) return null;
+  const resolution=resolveAuthoritativeWorkstream('What is the V1 assessment? '+user.content,facts);
+  return resolution.status==='resolved'&&maryKateSection(resolution.section)?resolution.section:null;
+}
 const sectionScore=(text,section)=>{
   const heading=section.split(' — ')[0].trim();
   const words=textWords(heading).trim().split(' ').filter(Boolean);
@@ -203,6 +223,7 @@ export function createControlTaskPacket(snapshot) {
     ambiguity_gate:snapshot.ambiguity_gate,
     ...(snapshot.recent_conversation?{recent_conversation:snapshot.recent_conversation}:{}),
     ...(snapshot.intent?{intent:snapshot.intent}:{}),
+    ...(snapshot.read_only_continuation?{read_only_continuation:snapshot.read_only_continuation}:{}),
     ...(snapshot.completion_authority?{completion_authority:snapshot.completion_authority}:{})
   };
 }
@@ -247,6 +268,9 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
       // Scope each requested fact against the actual canonical facts, not the de-duplicated key list.
       const packet=await store.getContextPacket('active-work.v1');
       const facts=packet?.facts||[];
+      const recentConversation=store.listRecentConversation?await store.listRecentConversation():null;
+      const assentScope=readOnlyAssentScope(text,recentConversation,facts,initial,now(),packetTtlMs);
+      const navigation=readOnlyReturn(text,recentConversation);
       const rawResolution=resolveAuthoritativeWorkstream(text,facts);
       // The persistent Command Center chat may supply its page context for an
       // otherwise unqualified read-only assessment. It never overrides an
@@ -254,20 +278,20 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
       const useCommandCenterContext=contextWorkstream==='mary-kate-command-center'
         && readOnlyAssessment(text)
         && rawResolution.status==='unknown';
-      const scopedText=useCommandCenterContext?`${text.trim()} For Mary Kate.`:text;
-      const ambiguity_gate=createAmbiguityGate(scopedText,facts);
+      const scopedText=assentScope?`What is the V1 assessment for ${canonicalSectionName(assentScope)}?`:useCommandCenterContext?`${text.trim()} For Mary Kate.`:text;
+      const ambiguity_gate=navigation?{status:'passed',section:null,candidates:[],reason:'conversation_navigation_read_only'}:createAmbiguityGate(scopedText,facts);
       if(ambiguity_gate.status==='blocked') {
         const detail=ambiguity_gate.reason==='unbound_workstream_request'?'Mary Kate found more than one workstream and could not bind this request to one current workstream, so it changed nothing.':'Mary Kate could not bind this request to one current workstream, so it changed nothing.';
         throw new PriorStateGateError('ambiguous_scope',detail,{gate:'authoritative-ambiguity.v1',status:'blocked',evidence:[],blockers:[{reason:'ambiguous_scope',key:'workstream',facts:ambiguity_gate.candidates.map(section=>({section,label:'workstream'}))}]});
       }
-      const recentConversation=store.listRecentConversation?await store.listRecentConversation():null;
-      const readOnly=readOnlyAssessment(text)||readOnlyAdvice(text)||readOnlyFollowup(text,recentConversation);
+      const readOnly=Boolean(assentScope||navigation)||readOnlyAssessment(text)||readOnlyAdvice(text)||readOnlyFollowup(text,recentConversation);
       if(!Array.isArray(requiredFactKeys)) throw new PriorStateGateError('invalid_request','required_fact_keys must be an array of strings');
       const assessmentKeys=readOnly&&maryKateSection(ambiguity_gate.section)?[...new Set((packet?.facts||[]).filter(fact=>fact.section===ambiguity_gate.section&&['current-stage','current','current-assessment'].includes(fact.key)).map(fact=>fact.key))]:[];
       const scoped=requestedFacts(scopedText,facts,initial.projects,[...requiredFactKeys,...(readOnly&&maryKateSection(ambiguity_gate.section)?assessmentKeys.length?assessmentKeys:['current-stage']:[])]);
       const snapshot=scoped.length?await state({requiredFacts:scoped}):initial;
       snapshot.ambiguity_gate=ambiguity_gate;
-      if(readOnly) snapshot.intent=readOnlyAssessment(text)?'read_only_assessment':'read_only_advice';
+      if(readOnly) snapshot.intent=assentScope||readOnlyAssessment(text)?'read_only_assessment':'read_only_advice';
+      if(assentScope) snapshot.read_only_continuation={source:'single_immediate_private_assessment_offer',section:assentScope,permission_authority:false};
       requirePriorState(snapshot.prior_state);
       if(readOnly&&maryKateSection(ambiguity_gate.section)) snapshot.completion_authority=await retrieveCompletionAuthority(github);
       // Existing private interaction storage is the conversation source. Do

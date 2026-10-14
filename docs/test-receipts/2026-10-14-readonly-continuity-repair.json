@@ -1,0 +1,136 @@
+{
+  "version": "mary-kate.readonly-continuity-repair.v1",
+  "date": "2026-10-14",
+  "base": "140dfaeecac8c5745ac0b8bac03d2a081f760156",
+  "observed_defects": {
+    "C": "Pre-gate scope check before preceding conversation and read-only offer binding",
+    "D": "Topic return misclassified as action; lexical workstream selection overrides conversational campaign referent"
+  },
+  "changes": {
+    "C": "Load existing recent conversation before ambiguity; only fresh untruncated immediately preceding single internal assessment offer with one explicit Mary Kate scope and no pending alternatives/actions can bind exact assent. Read-only intent retrieves current canonical index/assessment; no write authority.",
+    "D": "Bounded topic return with existing recent conversation becomes inert native-chat request; active-work lexical match does not select a canonical write target. Explicit appended commands retain normal gates."
+  },
+  "local_checks": {
+    "tests": 150,
+    "passed": 150,
+    "stdout": "npm warn Unknown env config \"http-proxy\". This will stop working in the next major version of npm.\n\n> ashley-brooke-cohen@1.0.0 test\n> node --test\n\n✔ normal successful admin login opens the private control plane (1.219917ms)\n✔ moderation remains an independently protected direct route (0.21923ms)\n✔ Command Center keeps lifecycle, priority, task attention, and workers as separate dimensions (4.437914ms)\n✔ scheduled work is truthful when no scheduling authority is connected (0.643079ms)\n✔ all retained projects stay visible even when they are not today’s focus (0.402346ms)\n✔ authoritative ambiguity overrides any candidate claim of clear continuation (2.102176ms)\n✔ ambiguous current work stops before model routing or an approval item (4.499458ms)\n✔ an explicit canonical workstream binds the model to that one target (2.581268ms)\n✔ an unbound state proposal cannot create an approval item (1.848154ms)\n✔ independent frozen ambiguity holdout preserves both safety and valid binding (6.044404ms)\n✔ frozen unsafe holdout requests stop before routing, history, or queues (9.71345ms)\n✔ unique explicit workstream binding and ordinary conversation are not over-blocked (5.327785ms)\n✔ same operation and payload recover from GitHub marker without a second mutation (13.171359ms)\n✔ same operation ID with changed payload fails closed before another write (3.373992ms)\n✔ stale GitHub SHA conflict is surfaced without a verified receipt (1.591778ms)\n✔ write without fresh reread cannot become a verified success receipt (2.286564ms)\n✔ an operational receipt alone cannot cause a canonical-success claim (1.9515ms)\n✔ approval cannot overwrite canonical state changed since proposal review (2.325193ms)\n✔ side-idea approvals bind their own target version, not the active-work packet (2.436339ms)\n✔ legacy pending approval without verified review version fails closed (1.736376ms)\n✔ reuses a packet, gives its versioned task packet to routing, refreshes on demand, and invalidates after an approved state write (17.739138ms)\n✔ preceding turns reach the actual Workers AI request in order with original roles (9.676616ms)\n✔ D1 private conversation preserves chronological pairs without exposing raw text in UI history (0.580985ms)\n✔ bounded context discloses dropped whole interactions and keeps corrections intact (0.654586ms)\n✔ advice questions cannot queue an implementation proposal; mixed command keeps action gates (6.647442ms)\n✔ generic questions, elliptical options and corrections are inert; explicit commands retain action gates (3.771501ms)\n✔ read-token request uses the expected JWT claims, installation, repositories and permissions (11.774364ms)\n✔ unknown GitHub response cannot echo private key, JWT, token or Authorization header into errors or logs (4.44794ms)\n✔ non-JSON GitHub response also stays opaque (2.15146ms)\n✔ unknown GitHub wording reveals only fixed safe vocabulary (2.394045ms)\n✔ checked-in Wrangler configuration preserves enabled Workers Observability logs (3.883019ms)\n✔ fresh single read-only offer binds assent and retrieves existing indexed authority (7.21627ms)\n✔ assent with alternative, consequential, stale, truncated or competing offers stays blocked (4.252415ms)\n✔ topic return is an inert conversation request; appended execution never borrows it (1.97203ms)\n✔ explicit Mary Kate aliases bind despite duplicate project projections (7.903714ms)\n✔ independent negative controls retain ambiguity, including ordinary punctuation (2.454036ms)\n✔ read-only assessments retrieve indexed completion authority and never queue writes (13.905995ms)\n✔ Command Center context binds an unqualified V1 question to Mary Kate without creating a write (0.766425ms)\n✔ Command Center context never overrides an explicit other project or an unqualified action (2.255848ms)\n✔ hostile read-only model outputs cannot create any approval or write (3.514114ms)\n✔ missing or contradictory current evidence and missing index authority fail before dispatch (1.89889ms)\n✔ mixed read-and-action requests do not acquire read-only disambiguation (0.347003ms)\n✔ negative holdout questions stop before model, queues, history, or canonical writes (2.414987ms)\n✔ actual Workers AI adapter receives read-only intent and source evidence (1.708163ms)\n✔ frozen expanded language holdout measures unsafe certainty and unnecessary clarification (19.596386ms)\nℹ HOLDOUT_RESULT {\"cases\":23,\"unsafe_certainty\":0,\"unnecessary_clarification\":0,\"observations\":[{\"id\":\"reported-input\",\"expected\":\"assessment\",\"actual\":\"passed\",\"code\":null,\"router_calls\":1,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"ready\",\"expected\":\"assessment\",\"actual\":\"passed\",\"code\":null,\"router_calls\":1,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"remaining\",\"expected\":\"assessment\",\"actual\":\"passed\",\"code\":null,\"router_calls\":1,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"polite-status\",\"expected\":\"assessment\",\"actual\":\"passed\",\"code\":null,\"router_calls\":1,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"outstanding\",\"expected\":\"assessment\",\"actual\":\"passed\",\"code\":null,\"router_calls\":1,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"gaps\",\"expected\":\"assessment\",\"actual\":\"passed\",\"code\":null,\"router_calls\":1,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"readiness-paraphrase\",\"expected\":\"assessment\",\"actual\":\"passed\",\"code\":null,\"router_calls\":1,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"unfinished\",\"expected\":\"assessment\",\"actual\":\"passed\",\"code\":null,\"router_calls\":1,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"first-release\",\"expected\":\"assessment\",\"actual\":\"passed\",\"code\":null,\"router_calls\":1,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"missing-proof\",\"expected\":\"assessment\",\"actual\":\"passed\",\"code\":null,\"router_calls\":1,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"exact-switch\",\"expected\":\"bound\",\"actual\":\"passed\",\"code\":null,\"router_calls\":1,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"exact-continuation\",\"expected\":\"bound\",\"actual\":\"passed\",\"code\":null,\"router_calls\":1,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"unbound-next\",\"expected\":\"blocked\",\"actual\":\"blocked\",\"code\":\"ambiguous_scope\",\"router_calls\":0,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"unbound-assent\",\"expected\":\"blocked\",\"actual\":\"blocked\",\"code\":\"ambiguous_scope\",\"router_calls\":0,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"cross-project\",\"expected\":\"blocked\",\"actual\":\"blocked\",\"code\":\"ambiguous_scope\",\"router_calls\":0,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"conflicting-action\",\"expected\":\"blocked\",\"actual\":\"blocked\",\"code\":\"ambiguous_scope\",\"router_calls\":0,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"mixed-ship\",\"expected\":\"blocked\",\"actual\":\"blocked\",\"code\":\"ambiguous_scope\",\"router_calls\":0,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"mixed-pay\",\"expected\":\"blocked\",\"actual\":\"blocked\",\"code\":\"ambiguous_scope\",\"router_calls\":0,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"mixed-publish\",\"expected\":\"blocked\",\"actual\":\"blocked\",\"code\":\"ambiguous_scope\",\"router_calls\":0,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"ambiguous-delete\",\"expected\":\"blocked\",\"actual\":\"blocked\",\"code\":\"ambiguous_scope\",\"router_calls\":0,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"missing-project\",\"expected\":\"blocked\",\"actual\":\"blocked\",\"code\":\"ambiguous_scope\",\"router_calls\":0,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"conflicting-evidence\",\"expected\":\"blocked\",\"actual\":\"blocked\",\"code\":\"conflict\",\"router_calls\":0,\"queue_rows\":0,\"canonical_writes\":0},{\"id\":\"stale-continuation\",\"expected\":\"blocked\",\"actual\":\"blocked\",\"code\":\"ambiguous_scope\",\"router_calls\":0,\"queue_rows\":0,\"canonical_writes\":0}]}\n✔ malformed route fails closed and sanitized validator evidence survives in history (7.52922ms)\n✔ known credentials and unknown provider payloads never survive categorical evidence (1.40766ms)\n✔ provider parser failure retains shape, not raw prose or secrets (0.55091ms)\n✔ valid routing remains unchanged and produces no failure diagnostic (3.559472ms)\n✔ OpenRouter validation preserves provider and exact rule (0.432332ms)\n✔ D1 failure rows use existing route_json and history marks them failed without receipts (0.411801ms)\n✔ rejected idea target retains original privately without inventing a canonical destination (0.744952ms)\n✔ failed routing preserves original in existing D1 raw_text column, not diagnostic payload (0.603549ms)\n✔ control dashboard explicitly binds every startup DOM dependency (1.442172ms)\n✔ existing control plane links back to the unified Command Center (0.19222ms)\n✔ existing control page presents truthful read-only worker telemetry on mobile (0.714446ms)\n✔ production worker inventory remains behind admin auth while ingest uses its narrow signature gate (11.596406ms)\n✔ embedded control-page JavaScript parses before the Worker serves it (1.089832ms)\n✔ routing status names truthful work stages and keeps technical detail separate (0.153852ms)\n✔ prior-state conflicts explain the stop and Ashley’s next choice before technical evidence (2.090138ms)\n✔ write outcomes explain verification in plain English before technical detail (0.132049ms)\n✔ embedded-script syntax guard rejects a literal escaped newline between statements (1.074859ms)\n✔ Workers AI receives one schema-constrained control-route tool (2.050027ms)\n✔ prose Workers AI output fails closed without a raw JSON parser exception (0.952074ms)\n✔ the actual production field spelling is canonicalized through the finite field allowlist (1.14174ms)\n✔ unknown state fields still fail closed (0.732423ms)\n✔ state proposal cannot escape the workstream resolved by prior-state evidence (4.983817ms)\n✔ state proposal may target the workstream resolved by prior-state evidence (5.372513ms)\n✔ read-only advice uses native turns and text generation without an action tool (0.84999ms)\n✔ read-only text cannot become model-supplied permissions or route proposals (0.631671ms)\n✔ unknown short follow-up asks a focused question without inference; grounded terms still use chat (1.282421ms)\n✔ documented choices response preserves exact answer text and rejects hidden tool calls (0.610399ms)\n✔ five role-preserving regression conversations supplement all fourteen previous frozen cases (2.088105ms)\n✔ missing inference creates BLOCKED receipts with no invented response or effects (31.01794ms)\n✔ actual router receives exact contexts while expected contracts never enter model input (13.687376ms)\n✔ attempted foreign tools and proposed task expansion fail observable checks despite safe isolation (3.408243ms)\n✔ receipt tampering cannot be used as independent semantic proof (3.043569ms)\n✔ wrong preceding message roles are rejected before provider dispatch (0.752283ms)\n✔ clarification supplement preserves original A and independently tests the clarified next turn (4.778657ms)\n✔ candidate comparison retains exact original turns and expected outcomes (0.310888ms)\n✔ test surface authenticates before inspecting any runtime binding (9.118044ms)\n✔ case listing and page rendering have no inference or production storage effects (4.910606ms)\n✔ one frozen case uses actual service/provider adapters and zero production capabilities (30.484655ms)\n✔ custom prompts, models, cross-origin requests and oversized input never dispatch (2.985087ms)\n✔ missing inference stays blocked; provider errors expose no credential strings or fallback (5.600165ms)\n✔ sole read-only assent reaches indexed evidence and provider without granting action authority (6.739782ms)\n✔ Worker routes test surface before D1 initialization while retaining existing auth and video routes (0.740946ms)\n✔ mobile test page parses, requires explicit Run and renders responses as text (0.638712ms)\n✔ published source fingerprints match the actual candidate being tested (2.420025ms)\n✔ fixed comparison case changes only test model; arbitrary body models remain forbidden (7.367537ms)\n✔ converts a GitHub-style PKCS#1 RSA PEM into PKCS#8 that Web Crypto can import and sign with (53.828316ms)\n✔ preserves already-PKCS#8 PEM input (32.406551ms)\n✔ adapter is disabled by default (10.972287ms)\n✔ activation fails closed for missing or changed Codex configuration baseline (4.998519ms)\n✔ configuration drift after activation blocks launch before Herdr is called (4.107907ms)\n✔ authorized worker uses isolated Herdr identity and fixed deny-by-default Codex controls (4.431916ms)\n✔ authorization does not inherit broader execution permissions (3.328133ms)\n✔ authorization must point to canonical Project Truth evidence (4.542201ms)\n✔ activity, completion, and disconnection are sourced from Herdr without a false running state (11.023063ms)\n✔ unknown and blocked Herdr states stay distinct (6.656306ms)\n✔ read-only worker inventory returns managed snapshots without claiming metrics or verification (7.779708ms)\n✔ inventory reports unavailable telemetry as unknown rather than active (2.959457ms)\n✔ local worker endpoint remains disabled by default without touching the adapter (31.17119ms)\n✔ enabled endpoint returns only read-only worker snapshots and has no launch route (12.467908ms)\n✔ interface translates telemetry failures without returning thrown diagnostics (6.593121ms)\n✔ loopback server serves the existing control page and labels canonical state unavailable (17.249221ms)\n✔ My Work requirement contract maps every original requirement to an observable test (11.21372ms)\n✔ a worker cannot turn narrow test results into a completion claim (0.824852ms)\n✔ missing original requirements block release even when other evidence passes (0.840106ms)\n✔ the dashboard exposes acceptance as unaccepted instead of claiming complete (4.438605ms)\n✔ My Work converts source records into plain-English current project cards (5.717472ms)\n✔ contradictory newer state never becomes a confident next action (0.637701ms)\n✔ only mechanically verified canonical receipts appear as verified updates (0.579613ms)\n✔ missing Project Truth fails closed with an understandable message (0.647345ms)\n✔ read-only projection rereads GitHub sources and reflects their new SHAs (1.219697ms)\n✔ My Work page is the mobile Command Center and keeps its projections read-only (1.11516ms)\n✔ Mary Kate chat remains available from anywhere through the existing guarded interaction route (0.244628ms)\n✔ chat preserves safe structured failures instead of replacing every response with a generic message (0.175064ms)\n✔ worker activity is loaded separately from projects and never fabricates a live state (0.111428ms)\n✔ technical source records stay in expandable details and errors stay understandable (0.156435ms)\n✔ My Work embedded JavaScript parses (0.552052ms)\n✔ My Work API and page stay behind existing admin authentication (10.416334ms)\n✔ exact canonical fact survives retrieval without semantic generalization (6.148331ms)\n✔ conflicting canonical facts are surfaced before a worker is called (1.631297ms)\n✔ next-action conflict is translated for Ashley while retaining the structured internal field (1.043902ms)\n✔ missing required fact fails closed instead of being guessed (1.284655ms)\n✔ worker cannot self-certify a passed prior-state gate without service evidence (0.496438ms)\n✔ same field in different workstreams is scoped by the workstream named in the request (0.66426ms)\n✔ same field across unrelated workstreams is ambiguity, not a contradictory fact (0.858834ms)\n✔ A: different projects have different next actions without contradiction, including two Mary Kate headings (1.164635ms)\n✔ the production phrase next bounded action does not also request an obsolete Next field (1.031353ms)\n✔ named workstream missing a field cannot borrow it from another Mary Kate projection (1.07534ms)\n✔ B: two current values in one named workstream stop before routing with clear choices (1.82573ms)\n✔ C: insufficient workstream scope is ambiguity, not contradictory truth (0.548506ms)\n✔ browser test uses existing authenticated control route (0.891683ms)\n✔ browser test has no network upload or paid infrastructure (0.242656ms)\n✔ existing protected routes and deployment configuration preserved (0.163166ms)\n✔ signed heartbeat accepts the exact body and rejects tampering or stale timestamps (6.112527ms)\n✔ telemetry allowlist cannot transmit credentials or claim verified output (1.507291ms)\n✔ fresh D1 telemetry is connected and an expired snapshot becomes disconnected (0.71743ms)\n✔ publisher is disabled by default and sends one bounded signed HTTPS heartbeat when enabled (7.308659ms)\n✔ publisher errors never include a credential or remote response body (1.177804ms)\n✔ dashboard parser keeps active workstreams including Photos to iCloud (1.151434ms)\n✔ route contract fails closed on writes outside research-vault (0.521485ms)\n✔ approved proposal replaces only its named field (0.332951ms)\n✔ GitHub adapter uses read/write scopes and blocks product-repo writes (2.851285ms)\n✔ capture, approve and reject run end to end with doubles (10.68311ms)\n✔ free-first routing uses deterministic capture before providers (0.259451ms)\n✔ free-first routing falls back only after Workers AI quota failure (0.241073ms)\n✔ approved write is marked failed when canonical read-back does not match (3.159729ms)\nℹ tests 150\nℹ suites 0\nℹ pass 150\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 564.478992\n",
+    "requirements": "14/14",
+    "syntax": "PASS",
+    "previous_controlled_workflow": {
+      "counts": {
+        "PASS": 8,
+        "PARTIAL": 3,
+        "FAIL": 4
+      },
+      "metrics": {
+        "unnecessary_clarification": 0,
+        "missing_preservation": 1,
+        "invented_authority": 0,
+        "incorrect_routing": 3,
+        "unsupported_success_claims": 1,
+        "duplicate_preservation": 1,
+        "stale_authority_overwrite": 0
+      },
+      "overall": "FAIL: workflow usefulness, preservation and safety not established together",
+      "cases": [
+        {
+          "id": "A",
+          "status": "PARTIAL",
+          "finding": "An exact test-fixture approval completes conditional write/reread/receipt. Natural understanding and authority selection remain unverified; this is not end-to-end product PASS."
+        },
+        {
+          "id": "B",
+          "status": "PARTIAL",
+          "finding": "Retrieval/wiring executes without unauthorized write; useful natural-language understanding was not exercised by a live provider."
+        },
+        {
+          "id": "C",
+          "status": "FAIL",
+          "finding": "Existing comparison authority is not retrieved; this-system referent and conversational worker context are absent."
+        },
+        {
+          "id": "D-multiple",
+          "status": "PASS",
+          "finding": "Deterministic gate stops before dispatch and effects."
+        },
+        {
+          "id": "D-unique",
+          "status": "PARTIAL",
+          "finding": "Retrieval/wiring executes without unauthorized write; useful natural-language understanding was not exercised by a live provider."
+        },
+        {
+          "id": "E",
+          "status": "FAIL",
+          "finding": "Seeded correction reaches the router, but Save key still has no reconciliation fan-out; no canonical writes despite a saved claim."
+        },
+        {
+          "id": "F",
+          "status": "FAIL",
+          "finding": "Immediately preceding authorized action/history is not passed into the task packet; assessment not retrieved or completed."
+        },
+        {
+          "id": "invalid-target",
+          "status": "PASS",
+          "finding": "Invalid target is rejected without coercion; original input survives privately."
+        },
+        {
+          "id": "duplicate",
+          "status": "FAIL",
+          "finding": "Exact existing idea occurs 2 times after fixture approval; operation idempotency does not deduplicate separate idea captures."
+        },
+        {
+          "id": "stale-approval",
+          "status": "PASS",
+          "finding": "Canonical state changed after proposal capture; new state survived."
+        },
+        {
+          "id": "conflict",
+          "status": "PASS",
+          "finding": "Deterministic gate stops before dispatch and effects."
+        },
+        {
+          "id": "unsupported-claim",
+          "status": "PASS",
+          "finding": "Deterministic note capture does not verify canonical preservation; returned response is checked against actual effects."
+        },
+        {
+          "id": "expired-source",
+          "status": "PASS",
+          "finding": "Expired local context rereads the changed source before routing; this does not prove live worker telemetry."
+        },
+        {
+          "id": "readback-failure",
+          "status": "PASS",
+          "finding": "Unavailable fixture canonical reread prevents verified success and stores failed receipt."
+        },
+        {
+          "id": "consequential-assent",
+          "status": "PASS",
+          "finding": "Deterministic gate stops before dispatch and effects."
+        }
+      ]
+    }
+  },
+  "candidate_comparison": {
+    "model": "@cf/qwen/qwen3-30b-a3b-fp8",
+    "status": "PREPARED_NOT_LIVE_EVALUATED",
+    "cases": [
+      "20261014-C-QWEN",
+      "20261014-G-QWEN"
+    ],
+    "boundary": "Same exact frozen conversations/expectations and700-token cap. Fixed case IDs only; existing AI binding; no production default/binding/model change, extra provider, automatic execution or paid infrastructure.",
+    "response_shape": "Documented choices.message.content accepted; tool_calls still rejected, reasoning_content not exposed as answer.",
+    "quota": "Uses existing Workers AI quota. Cloudflare documents10k neurons/day free allocation; account plan/remaining quota/availability not verified. No upgrade or fallback."
+  },
+  "limits": [
+    "No live repaired C/D answers yet.",
+    "A clarification is deterministic behavior only; original A direct-answer expectation not passed.",
+    "B/G useful model-selection answer untested; general retrieval/handoff/preservation/iPhone/production not proved.",
+    "Assent binder is narrow read-only assessment; other operations remain blocked until supported."
+  ],
+  "next": "Rerun unchanged C baseline on built preview, inspect actual answer; then D and candidate comparisons. Do not mark FIXED/PREVENTED until real usefulness and prior acceptance pass.",
+  "sources": [
+    "https://developers.cloudflare.com/workers-ai/models/qwen3-30b-a3b-fp8/",
+    "https://developers.cloudflare.com/workers-ai/platform/pricing/"
+  ]
+}

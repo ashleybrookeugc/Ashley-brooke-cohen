@@ -143,3 +143,11 @@ test('unknown short follow-up asks a focused question without inference; grounde
   await router.route('And quality',context);assert.equal(calls,1);
   await router.route('Which option would you select?',context);assert.equal(calls,2);
 });
+
+
+test('documented choices response preserves exact answer text and rejects hidden tool calls',async()=>{
+  const router=createWorkersAiRoutingAdapter({AI:{run:async()=>({choices:[{message:{content:'Exact controlled answer.',reasoning_content:'Internal reasoning must not become the answer.'}}]})}});
+  const result=await router.route('Which option?',{intent:'read_only_advice'});assert.equal(result.plain_summary,'Exact controlled answer.');
+  const bad=createWorkersAiRoutingAdapter({AI:{run:async()=>({choices:[{message:{content:'Answer',tool_calls:[{function:{name:'deploy'}}]}}]})}});
+  await assert.rejects(()=>bad.route('Which option?',{intent:'read_only_advice'}),e=>e.code==='read_only_tool_call_rejected');
+});

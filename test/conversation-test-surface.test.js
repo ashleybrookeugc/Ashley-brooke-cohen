@@ -25,7 +25,7 @@ test('test surface authenticates before inspecting any runtime binding',async()=
 });
 test('case listing and page rendering have no inference or production storage effects',async()=>{
   const f=setup();const listed=await f.handle(new Request(origin+'/api/control/conversation-test'),f.env);
-  assert.equal((await listed.json()).cases.length,7);assert.equal(f.calls,0);
+  assert.equal((await listed.json()).cases.length,9);assert.equal(f.calls,0);
   const rendered=await f.handle(new Request(origin+'/control/conversation-test/'),f.env);
   assert.equal(await rendered.text(),page);assert.match(rendered.headers.get('content-security-policy'),/connect-src 'self'/);
   assert.equal(await f.handle(new Request(origin+'/api/control/state'),f.env),null);
@@ -50,9 +50,11 @@ test('missing inference stays blocked; provider errors expose no credential stri
   const failed=setup({throwing:true});const receipt=await (await failed.handle(req(),failed.env)).json();
   assert.equal(failed.calls,1);assert.equal(receipt.result,'BLOCKED');assert.ok(!JSON.stringify(receipt).includes('credential-must-not-leak'));
 });
-test('contextual assent failure stays visible instead of being redefined as a successful refusal',async()=>{
+test('sole read-only assent reaches indexed evidence and provider without granting action authority',async()=>{
   const f=setup();const receipt=await (await f.handle(req({case_id:'20261014-C'}),f.env)).json();
-  assert.equal(f.calls,0);assert.equal(receipt.actual.error.code,'prior_state_ambiguous_scope');assert.equal(receipt.result,'BLOCKED');
+  assert.equal(f.calls,1);assert.equal(receipt.actual.error,null);assert.equal(receipt.result,'BLOCKED_SEMANTIC_REVIEW');
+  assert.deepEqual(receipt.project_truth.retrieved_paths,['ACTIVE_WORK.md','PROJECT_INDEX.md','research/ai-workflows/fixture-v1-assessment.md']);
+  assert.equal(f.request.tools,undefined);assert.equal(receipt.actual.completed_state_changes.queue_items.length,0);
 });
 test('Worker routes test surface before D1 initialization while retaining existing auth and video routes',async()=>{
   const worker=await readFile(new URL('../src/control-worker.js',import.meta.url),'utf8');
@@ -70,4 +72,13 @@ test('published source fingerprints match the actual candidate being tested',asy
   for(const [path,hash]of Object.entries(revision.source_sha256)){
     assert.equal(createHash('sha256').update(await readFile(new URL('../'+path,import.meta.url))).digest('hex'),hash,path);
   }
+});
+
+
+test('fixed comparison case changes only test model; arbitrary body models remain forbidden',async()=>{
+  let selected;
+  const f=setup();const env=new Proxy(f.env,{get(target,key){if(key==='AI')return {run:async(model)=>{selected=model;return {choices:[{message:{content:'Controlled comparison transport probe.'}}]};}};return target[key];}});
+  const receipt=await (await f.handle(req({case_id:'20261014-C-QWEN'}),env)).json();
+  assert.equal(selected,'@cf/qwen/qwen3-30b-a3b-fp8');assert.equal(receipt.model.model,selected);assert.equal(receipt.actual.inference_calls,1);
+  assert.equal(receipt.actual.completed_state_changes.canonical.length,0);
 });
