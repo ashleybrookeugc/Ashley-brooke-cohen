@@ -37,6 +37,8 @@ test('My Work converts source records into plain-English current project cards',
   assert.match(result.work[1].what,/video/i);
   assert.doesNotMatch(result.work[1].next,/abcdef|96\/96/i);
   assert.equal(result.work[2].blocked_or_unverified,'Missing source media.');
+  assert.equal(result.work[2].next,'The latest next step needs verification.');
+  assert.equal(result.work[2].technical.recorded_next,'Review the media.');
   assert.deepEqual(result.approved_deferred.map(item=>item.label),['provider failover','private draft rendering']);
 });
 

@@ -226,12 +226,21 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
         return buildMyWorkProjection({sourceStatus:'unavailable',generatedAt:new Date(now()).toISOString()});
       }
     },
-    async capture(text,{requiredFactKeys=[]}={}) {
+    async capture(text,{requiredFactKeys=[],contextWorkstream=null}={}) {
       if(typeof text!=='string'||!text.trim()||text.length>4000) throw new Error('Message must be 1–4000 characters');
       const initial=await state();
       // Scope each requested fact against the actual canonical facts, not the de-duplicated key list.
       const packet=await store.getContextPacket('active-work.v1');
-      const ambiguity_gate=createAmbiguityGate(text,packet?.facts||[]);
+      const facts=packet?.facts||[];
+      const rawResolution=resolveAuthoritativeWorkstream(text,facts);
+      // The persistent Command Center chat may supply its page context for an
+      // otherwise unqualified read-only assessment. It never overrides an
+      // explicit project, an ambiguous request, or anything action-bearing.
+      const useCommandCenterContext=contextWorkstream==='mary-kate-command-center'
+        && readOnlyAssessment(text)
+        && rawResolution.status==='unknown';
+      const scopedText=useCommandCenterContext?`${text.trim()} For Mary Kate.`:text;
+      const ambiguity_gate=createAmbiguityGate(scopedText,facts);
       if(ambiguity_gate.status==='blocked') {
         const detail=ambiguity_gate.reason==='unbound_workstream_request'?'Mary Kate found more than one workstream and could not bind this request to one current workstream, so it changed nothing.':'Mary Kate could not bind this request to one current workstream, so it changed nothing.';
         throw new PriorStateGateError('ambiguous_scope',detail,{gate:'authoritative-ambiguity.v1',status:'blocked',evidence:[],blockers:[{reason:'ambiguous_scope',key:'workstream',facts:ambiguity_gate.candidates.map(section=>({section,label:'workstream'}))}]});
@@ -239,7 +248,7 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
       const readOnly=readOnlyAssessment(text);
       if(!Array.isArray(requiredFactKeys)) throw new PriorStateGateError('invalid_request','required_fact_keys must be an array of strings');
       const assessmentKeys=readOnly&&maryKateSection(ambiguity_gate.section)?[...new Set((packet?.facts||[]).filter(fact=>fact.section===ambiguity_gate.section&&['current-stage','current','current-assessment'].includes(fact.key)).map(fact=>fact.key))]:[];
-      const scoped=requestedFacts(text,packet?.facts||[],initial.projects,[...requiredFactKeys,...(readOnly&&maryKateSection(ambiguity_gate.section)?assessmentKeys.length?assessmentKeys:['current-stage']:[])]);
+      const scoped=requestedFacts(scopedText,facts,initial.projects,[...requiredFactKeys,...(readOnly&&maryKateSection(ambiguity_gate.section)?assessmentKeys.length?assessmentKeys:['current-stage']:[])]);
       const snapshot=scoped.length?await state({requiredFacts:scoped}):initial;
       snapshot.ambiguity_gate=ambiguity_gate;
       if(readOnly) snapshot.intent='read_only_assessment';

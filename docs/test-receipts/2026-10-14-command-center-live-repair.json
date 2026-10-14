@@ -1,0 +1,28 @@
+{
+  "version": "mary-kate.command-center-live-repair.receipt.v1",
+  "date": "2026-10-14",
+  "branch": "codex/command-center-live-repair-20261014",
+  "reported_production_failures": [
+    "The prompt 'Are we close to a full v1?' returned only a generic failure.",
+    "An obsolete Mac/Cloudflare resume point appeared as a current verified next step."
+  ],
+  "frozen_acceptance": {
+    "exact_prompt": "binds to Mary Kate completion authority, returns a plain-English result, and creates no queue item or canonical write",
+    "explicit_other_project": "is not overridden by Command Center context",
+    "unqualified_action": "retains the ambiguity gate and does not dispatch",
+    "structured_failure": "shows only an allowlisted safe explanation with secondary technical status",
+    "stale_resume_point": "remains technical detail and is not promoted as current"
+  },
+  "local_verification": {
+    "npm_test": {"passed": 115, "failed": 0},
+    "my_work_requirement_map": {"requirements": 14, "result": "PASS"},
+    "herdr_acceptance_script_parse": "PASS",
+    "diff_check": "PASS"
+  },
+  "not_yet_claimed": [
+    "GitHub Actions Worker packaging",
+    "Cloudflare production deployment",
+    "authenticated production chat answer",
+    "Ashley user acceptance"
+  ]
+}
