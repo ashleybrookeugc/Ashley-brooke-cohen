@@ -24,9 +24,10 @@
   "triggers": {
     "crons": ["17 */6 * * *"]
   },
+  "build": { "command": "node scripts/video-testing-build-guard.mjs" },
   "assets": {
     "directory": "./public",
-    "run_worker_first": ["/admin", "/admin/*", "/moderation", "/moderation/*", "/control", "/control/*", "/api/*", "/nyfw-pop-ups/event", "/nyfw-pop-ups/event/*", "/nyfw-pop-ups/event.html"],
+    "run_worker_first": ["/video-test", "/video-test/*", "/admin", "/admin/*", "/moderation", "/moderation/*", "/control", "/control/*", "/api/*", "/nyfw-pop-ups/event", "/nyfw-pop-ups/event/*", "/nyfw-pop-ups/event.html"],
     "html_handling": "auto-trailing-slash",
     "not_found_handling": "404-page"
   }
