@@ -6,18 +6,35 @@ import {Script} from 'node:vm';
 const page=await readFile(new URL('../public/control/my-work/index.html',import.meta.url),'utf8');
 const script=page.match(/<script>([\s\S]*?)<\/script>/)?.[1];
 
-test('My Work page is mobile, automatically refreshed and read-only',()=>{
-  assert.match(page,/Private · read-only/);
-  assert.match(page,/Current work/);
-  assert.match(page,/Approved for later/);
-  assert.match(page,/Verified records/);
+test('My Work page is the mobile Command Center and keeps its projections read-only',()=>{
+  assert.match(page,/Private Command Center/);
+  assert.match(page,/Today/);
+  assert.match(page,/All projects/);
+  assert.match(page,/Live AI workers/);
+  assert.match(page,/Scheduled tasks/);
+  assert.match(page,/Needs your attention/);
   assert.match(page,/What works/);
   assert.match(page,/Still blocked or unverified/);
   assert.match(page,/Current verified next step/);
   assert.match(page,/Technical details/);
   assert.match(page,/@media\(max-width:640px\)/);
   assert.match(page,/setInterval\(load,60000\)/);
-  assert.doesNotMatch(page,/data-action="approve"|data-action="reject"|Route this|<textarea/i);
+  assert.doesNotMatch(page,/data-action="approve"|data-action="reject"/i);
+});
+
+test('Mary Kate chat remains available from anywhere through the existing guarded interaction route',()=>{
+  assert.match(page,/id="chat-toggle"/);
+  assert.match(page,/id="chat-drawer"/);
+  assert.match(page,/<textarea[^>]+id="chat-input"/);
+  assert.match(page,/\/api\/control\/interactions/);
+  assert.match(page,/No project change happens without the existing approval checks/);
+});
+
+test('worker activity is loaded separately from projects and never fabricates a live state',()=>{
+  assert.match(page,/\/api\/control\/workers/);
+  assert.match(page,/Disconnected/);
+  assert.match(page,/Result not independently verified/);
+  assert.match(page,/Worker activity is unavailable/);
 });
 
 test('technical source records stay in expandable details and errors stay understandable',()=>{

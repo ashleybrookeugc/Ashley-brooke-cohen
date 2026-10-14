@@ -6,7 +6,7 @@ const requiredBoolean = (value) => value === true;
  */
 export function evaluateAcceptanceGate({requirements = [], evidence = {}} = {}) {
   const missing = [];
-  if (requirements.length < 7) missing.push('The original V1 requirements are incomplete.');
+  if (requirements.length < 14) missing.push('The original V1 requirements are incomplete.');
   const ids = new Set();
   for (const requirement of requirements) {
     if (!requirement?.id || !requirement?.authority || !requirement?.acceptance_test) {

@@ -216,11 +216,12 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
     state,
     async myWork() {
       try {
-        const [activeWork,history]=await Promise.all([
+        const [activeWork,history,queues]=await Promise.all([
           github.readFile(WRITE_REPO,'ACTIVE_WORK.md'),
-          store.listHistory(50)
+          store.listHistory(50),
+          store.listQueues()
         ]);
-        return buildMyWorkProjection({activeWork:activeWork.content,activeSha:activeWork.sha,history,generatedAt:new Date(now()).toISOString()});
+        return buildMyWorkProjection({activeWork:activeWork.content,activeSha:activeWork.sha,history,queues,generatedAt:new Date(now()).toISOString()});
       } catch {
         return buildMyWorkProjection({sourceStatus:'unavailable',generatedAt:new Date(now()).toISOString()});
       }
