@@ -101,22 +101,33 @@ test('state proposal may target the workstream resolved by prior-state evidence'
 
 
 
-test('read-only advice and assessment offer no action schema; action requests retain canonical tools',async()=>{
+test('read-only advice uses native turns and text generation without an action tool',async()=>{
   const requests=[];
   const router=createWorkersAiRoutingAdapter({AI:{run:async(_model,request)=>{
     requests.push(request);
-    return {tool_calls:[{name:'submit_control_route',arguments:{route_kind:'temporary_context',responsibility:'ai_can_handle',confidence:'medium',plain_summary:'Controlled transport double, not live acceptance.'}}]};
+    return request.tools?{tool_calls:[{name:'submit_control_route',arguments:{route_kind:'temporary_context',responsibility:'ai_can_handle',confidence:'low',plain_summary:'Controlled transport probe.'}}]}:{response:'Controlled text probe; no semantic verdict.'};
   }}});
+  const turns=[{role:'user',content:'We are discussing the video branch.'},{role:'assistant',content:'The preceding response.'}];
   for(const intent of ['read_only_advice','read_only_assessment']) {
-    await router.route('Would staging help?',{...context,intent,recent_conversation:{turns:[{role:'user',content:'We are discussing the video branch.'}]}});
-    const request=requests.at(-1), schema=request.tools[0].parameters;
-    assert.deepEqual(schema.properties.route_kind.enum,['temporary_context']);
-    assert.deepEqual(schema.properties.responsibility.enum,['ai_can_handle']);
-    assert.equal('proposal' in schema.properties,false);
-    assert.equal(schema.additionalProperties,false);
-    assert.match(request.messages[0].content,/Resolve the subject from the recent conversation/);
-    assert.deepEqual(JSON.parse(request.messages[1].content).context.recent_conversation.turns,[{role:'user',content:'We are discussing the video branch.'}]);
+    const route=await router.route('Would staging help?',{...context,intent,recent_conversation:{turns}});
+    const request=requests.at(-1);
+    assert.equal(request.tools,undefined);
+    assert.deepEqual(request.messages.slice(2,-1),turns);
+    assert.deepEqual(request.messages.at(-1),{role:'user',content:'Would staging help?'});
+    assert.equal(JSON.parse(request.messages[1].content).context.recent_conversation,undefined);
+    assert.equal(route.route_kind,'temporary_context');assert.equal(route.proposal,undefined);assert.equal(route.project_id,undefined);
   }
   await router.route('Update the stage',{...context,intent:'state_update'});
   assert.equal(requests.at(-1).tools[0],CONTROL_ROUTE_TOOL);
+});
+
+test('read-only text cannot become model-supplied permissions or route proposals',async()=>{
+  const malicious=JSON.stringify({route_kind:'state_update',proposal:{target_path:'ACTIVE_WORK.md'},project_id:'wrong'});
+  const router=createWorkersAiRoutingAdapter({AI:{run:async()=>({response:malicious})}});
+  const route=await router.route('Should we?',{intent:'read_only_advice'});
+  assert.equal(route.plain_summary,malicious);assert.equal(route.route_kind,'temporary_context');assert.equal(route.proposal,undefined);
+  for(const output of [{response:''},{response:null},{response:'x'.repeat(12001)},{tool_calls:[{name:'deploy',arguments:{}}]}]) {
+    const bad=createWorkersAiRoutingAdapter({AI:{run:async()=>output}});
+    await assert.rejects(()=>bad.route('Advice',{intent:'read_only_advice'}),RoutingContractError);
+  }
 });

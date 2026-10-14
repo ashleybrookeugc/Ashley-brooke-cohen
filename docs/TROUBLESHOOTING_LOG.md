@@ -587,3 +587,12 @@ Ashley supplied case E’s actual Workers AI receipt at 17:00:33Z, execution dig
 The action-capable model schema remained supplied despite read-only intent. Narrow repair restricts offered read-only routes to temporary_context/ai_can_handle with no proposal, clarifies referent/advice/uncertainty, retains all safety validation, and does not coerce or retry model output. This is a candidate, not a proven semantic fix. Local checks 140/140; requirements14/14; frozen fixtures unchanged. Independent review and relevant receipt excerpt: research-vault development branch `research/ai-workflows/2026-10-14-mary-kate-live-case-e.json`. **Next:** unchanged live E rerun on rebuilt PR #10 preview. No merge or production promotion.
 
 Scope: Ashley-brooke-cohen APPLIES; UGC/video hosting architecture NO_CHANGE. October14 OPEN / NOT PREVENTED.
+
+
+## 2026-10-14 — Native read-only chat repair candidate, not live acceptance
+
+Live A delivered exact context but missed read-only intent and produced a state proposal; E’s constrained classifier avoided actions but gave no useful answer. Technical decision: use the existing provider’s documented native conversation/text API for bounded read-only messages instead of further forced-route prompt tuning. No new framework, dependency, provider, binding, secret or memory database. Exact native turns, latest user input and distinct retrieved evidence; generic non-action questions/contextual fragments/corrections receive inert advice mode. No fixture/model phrase hardcoding. Action/ambiguity/approval/write guards retained.
+
+Read-only calls expose no action tools. Provider text remains text; application supplies only an inert temporary route, never parses model text into permission/proposal/project selection. Local full suite142/142 and requirements14/14; original frozen corpus exact bytes unchanged; controlled workflow preserves8 PASS/3 PARTIAL/4 FAIL. Doubles are transport checks, not model understanding. Existing transport tests now match the changed documented provider contract; semantic expected outcomes are unchanged. Runner additionally verifies actual provider turns and corrects misleading stage labels after completed inference.
+
+Exact evidence/stdout: `docs/test-receipts/2026-10-14-native-readonly-repair.json`. New live acceptance NOT_EXECUTED; October14 OPEN / NOT_PREVENTED. General internal-file retrieval, assent C, topic return and founder handoffs remain unverified. Next: unchanged A live once, then E/B/D and relevant prior acceptance if useful behavior passes. No production merge/promotion.

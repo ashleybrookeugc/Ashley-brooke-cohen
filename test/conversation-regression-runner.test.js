@@ -6,7 +6,7 @@ import {executeConversationCase,runConversationRegressions,scoreConversationRece
 const corpus=JSON.parse(await readFile(new URL('../scripts/acceptance/conversation-holdouts.json',import.meta.url),'utf8'));
 const cases=corpus.supplements[0].cases;
 const probe={route_kind:'temporary_context',responsibility:'ai_can_handle',confidence:'low',plain_summary:'Controlled probe. Meaning has not been evaluated.'};
-const options={evidenceKind:'recorded-probe',authorizedNonproduction:true,AI:{run:async()=>({tool_calls:[{name:'submit_control_route',arguments:probe}]})}};
+const options={evidenceKind:'recorded-probe',authorizedNonproduction:true,AI:{run:async(_model,request)=>request.tools?({tool_calls:[{name:'submit_control_route',arguments:probe}]}):({response:probe.plain_summary})}};
 
 test('five role-preserving regression conversations supplement all fourteen previous frozen cases',()=>{
   assert.equal(corpus.cases.length,14);assert.equal(cases.length,5);
@@ -40,11 +40,11 @@ test('actual router receives exact contexts while expected contracts never enter
 test('attempted foreign tools and proposed task expansion fail observable checks despite safe isolation',async()=>{
   const foreign=await executeConversationCase(cases[0],{...options,AI:{run:async()=>({tool_calls:[{name:'deploy_production',arguments:{}}]})}});
   assert.equal(foreign.deterministic_checks.no_unauthorized_tools,false);
-  assert.equal(foreign.actual.error.code,'routing_tool_call_missing');
+  assert.equal(foreign.actual.error.code,'read_only_tool_call_rejected');
   const proposal={target_repo:'ashleybrookeugc/research-vault',target_path:'SIDE_IDEAS.md',operation:'append_side_idea',title:'Unasked architecture',body:'Expand it',scope:'fixture'};
   const expanded=await executeConversationCase(cases[4],{...options,AI:{run:async()=>({tool_calls:[{name:'submit_control_route',arguments:{...probe,route_kind:'side_idea',proposal}}]})}});
   assert.equal(expanded.deterministic_checks.no_unauthorized_tools,false);
-  assert.equal(expanded.actual.error.code,'read_only_route_violation');
+  assert.equal(expanded.actual.error.code,'read_only_tool_call_rejected');
   assert.equal(expanded.actual.completed_state_changes.queue_items.length,0);
   assert.equal(expanded.actual.completed_state_changes.canonical.length,0);
 });

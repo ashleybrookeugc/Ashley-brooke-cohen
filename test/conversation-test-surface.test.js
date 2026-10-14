@@ -12,7 +12,7 @@ const entry=corpus.supplements[0].cases[0];
 const req=(data={case_id:entry.id},headers={})=>new Request(origin+'/api/control/conversation-test',{method:'POST',headers:{origin,'content-type':'application/json',...headers},body:JSON.stringify(data)});
 function setup({authorized=true,missing=false,throwing=false}={}) {
   let calls=0,request;
-  const env=new Proxy({}, {get(_target,key){if(key==='AI')return missing?undefined:{run:async(_model,r)=>{calls++;request=r;if(throwing)throw new Error('Bearer credential-must-not-leak');return {tool_calls:[{name:'submit_control_route',arguments:{route_kind:'temporary_context',responsibility:'ai_can_handle',confidence:'low',plain_summary:'Controlled transport probe; no semantic verdict.'}}]};}};if(key==='CONTROL_WORKERS_AI_MODEL')return undefined;throw new Error('Forbidden production binding accessed: '+String(key));}});
+  const env=new Proxy({}, {get(_target,key){if(key==='AI')return missing?undefined:{run:async(_model,r)=>{calls++;request=r;if(throwing)throw new Error('Bearer credential-must-not-leak');return r.tools?{tool_calls:[{name:'submit_control_route',arguments:{route_kind:'temporary_context',responsibility:'ai_can_handle',confidence:'low',plain_summary:'Controlled transport probe; no semantic verdict.'}}]}:{response:'Controlled transport probe; no semantic verdict.'};}};if(key==='CONTROL_WORKERS_AI_MODEL')return undefined;throw new Error('Forbidden production binding accessed: '+String(key));}});
   const handle=createConversationTestSurface({corpus,page,revision:{kind:'unit transport probe'},authorize:async()=>authorized});
   return {env,handle,get calls(){return calls;},get request(){return request;}};
 }

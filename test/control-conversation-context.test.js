@@ -11,12 +11,14 @@ test('preceding turns reach the actual Workers AI request in order with original
   const turns=[{role:'user',content:'Give me a cloud Work prompt.'},{role:'assistant',content:'Start the existing cloud-only repair in Work.'}];
   await store.addInteraction({raw_text:turns[0].content,route:{...probe,plain_summary:turns[1].content}});
   let request;
-  const router=createWorkersAiRoutingAdapter({AI:{run:async(_model,value)=>{request=value;return {tool_calls:[{name:'submit_control_route',arguments:probe}]};}}});
+  const router=createWorkersAiRoutingAdapter({AI:{run:async(_model,value)=>{request=value;return {response:probe.plain_summary};}}});
   const service=createControlService({github:{readFile:async()=>({content,sha:'fixture'})},router,store});
   await service.capture('And the other settings?');
   const packet=JSON.parse(request.messages[1].content).context;
-  assert.deepEqual(packet.recent_conversation?.turns,turns);
-  assert.equal(packet.recent_conversation?.truncated,false);
+  assert.deepEqual(request.messages.slice(2,-1),turns);
+  assert.equal(packet.intent,'read_only_advice');
+  assert.equal(request.tools,undefined);
+  assert.equal(request.messages.at(-1).content,'And the other settings?');
   assert.equal((await store.listQueues()).needs_ashley.length,0);
 });
 
@@ -49,4 +51,18 @@ test('advice questions cannot queue an implementation proposal; mixed command ke
   const service=createControlService({github:{readFile:async()=>({content,sha:'fixture'})},store,router:{route:async(_text,packet)=>{intent=packet.intent;return probe;}}});
   await service.capture('Should this be in Preview? Run the Video analyzer now.');
   assert.equal(intent,undefined);
+});
+
+
+test('generic questions, elliptical options and corrections are inert; explicit commands retain action gates',async()=>{
+  const observed=[];
+  const store=createMemoryStore();
+  await store.addInteraction({raw_text:'We discussed a tool setting.',route:{...probe,plain_summary:'Several options are available.'}});
+  const service=createControlService({github:{readFile:async()=>({content,sha:'fixture'})},store,router:{route:async(text,packet)=>{observed.push({text,intent:packet.intent});return probe;}}});
+  for(const text of ['Which setting would you recommend?','And the other options','Or a different effort level','No, I am asking which option to select']) {
+    await service.capture(text);assert.equal(observed.at(-1).intent,'read_only_advice');
+  }
+  for(const text of ['And update Video analyzer stage','What setting? Run Video analyzer now.','No, change Video analyzer stage']) {
+    await service.capture(text);assert.equal(observed.at(-1).intent,undefined);
+  }
 });

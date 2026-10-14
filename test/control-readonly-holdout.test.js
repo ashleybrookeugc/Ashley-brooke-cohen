@@ -157,7 +157,7 @@ test('actual Workers AI adapter receives read-only intent and source evidence',a
   let request;
   const router=createWorkersAiRoutingAdapter({AI:{run:async(_model,input)=>{
     request=input;
-    return {tool_calls:[{name:'submit_control_route',arguments:answer}]};
+    return {response:answer.plain_summary};
   }}});
   const store=createMemoryStore();
   const service=createControlService({store,router,github:{readFile:async(_repo,path)=>({sha:'verified-'+path,content:path==='ACTIVE_WORK.md'?document:path==='PROJECT_INDEX.md'?index:completion})}});
@@ -169,3 +169,4 @@ test('actual Workers AI adapter receives read-only intent and source evidence',a
   assert.equal(result.queue_item,null);
   assert.equal((await store.listHistory(20))[0].route.retrieval_authority.source.sha,'verified-research/ai-workflows/current-completion.md');
 });
+

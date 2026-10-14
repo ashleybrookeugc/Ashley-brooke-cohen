@@ -51,6 +51,16 @@ const readOnlyAssessment=text=>{
 // Mixed questions followed by an explicit command retain normal action gates.
 const readOnlyAdvice=text=>/^should\b/i.test(String(text).trim())
   && !/[?!]\s*\S|;|\band\s+(?:then\s+)?(?:deploy|publish|send|delete|approve|update|change|run|execute|merge)\b/i.test(text);
+// A contextual fragment can ask for advice without a question mark. This
+// conservative boundary grants no action authority and never names model options.
+const readOnlyFollowup=(text,recent)=>{
+  const value=normalizedInput(text).trim();
+  if(/\b(?:add|update|set|change|mark|approve|publish|ship|post|send|delete|spend|pay|purchase|transfer|remove|deploy|merge|buy|upload|execute|run|resume|continue|advance|save|capture|record|switch)\b/i.test(value)) return false;
+  if(/^(?:what|which|how|where|when|why|is|are|does|do you|can|could|would)\b/i.test(value)) return true;
+  if(!recent?.turns?.length) return false;
+  return /^(?:and|or|what about|how about)\b/i.test(value)
+    || /^no\b[\s,.:!-]*(?:i(?:'m| am)|that(?:'s| is)|my question)\b/i.test(value);
+};
 const sectionScore=(text,section)=>{
   const heading=section.split(' — ')[0].trim();
   const words=textWords(heading).trim().split(' ').filter(Boolean);
@@ -250,7 +260,8 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
         const detail=ambiguity_gate.reason==='unbound_workstream_request'?'Mary Kate found more than one workstream and could not bind this request to one current workstream, so it changed nothing.':'Mary Kate could not bind this request to one current workstream, so it changed nothing.';
         throw new PriorStateGateError('ambiguous_scope',detail,{gate:'authoritative-ambiguity.v1',status:'blocked',evidence:[],blockers:[{reason:'ambiguous_scope',key:'workstream',facts:ambiguity_gate.candidates.map(section=>({section,label:'workstream'}))}]});
       }
-      const readOnly=readOnlyAssessment(text)||readOnlyAdvice(text);
+      const recentConversation=store.listRecentConversation?await store.listRecentConversation():null;
+      const readOnly=readOnlyAssessment(text)||readOnlyAdvice(text)||readOnlyFollowup(text,recentConversation);
       if(!Array.isArray(requiredFactKeys)) throw new PriorStateGateError('invalid_request','required_fact_keys must be an array of strings');
       const assessmentKeys=readOnly&&maryKateSection(ambiguity_gate.section)?[...new Set((packet?.facts||[]).filter(fact=>fact.section===ambiguity_gate.section&&['current-stage','current','current-assessment'].includes(fact.key)).map(fact=>fact.key))]:[];
       const scoped=requestedFacts(scopedText,facts,initial.projects,[...requiredFactKeys,...(readOnly&&maryKateSection(ambiguity_gate.section)?assessmentKeys.length?assessmentKeys:['current-stage']:[])]);
@@ -261,7 +272,7 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
       if(readOnly&&maryKateSection(ambiguity_gate.section)) snapshot.completion_authority=await retrieveCompletionAuthority(github);
       // Existing private interaction storage is the conversation source. Do
       // not infer permission from these turns or attach unrelated UI history.
-      if(store.listRecentConversation) snapshot.recent_conversation=await store.listRecentConversation();
+      if(recentConversation) snapshot.recent_conversation=recentConversation;
       let candidate;
       try {
         const output=await router.route(text.trim(),createControlTaskPacket(snapshot));

@@ -38,7 +38,6 @@ export async function executeConversationCase(entry,{AI,model='@cf/meta/llama-3.
   const enabled=authorizedNonproduction&&AI&&['workers-ai-live','recorded-probe'].includes(evidenceKind);
   const env={CONTROL_WORKERS_AI_MODEL:model,...(enabled?{AI:{run:async(selected,request)=>{
     if(++calls>1) throw new Error('One provider call per case limit exceeded');
-    packet=JSON.parse(request.messages[1].content).context;
     const event={kind:'inference',provider:'workers-ai',model:selected,request:copy(request),response:null,error:null};trace.push(event);
     try {event.response=copy(await AI.run(selected,request));completedCalls++;return event.response;}
     catch(e){event.error={code:e.code||'provider_error',message:'Authorized inference failed'};throw e;}
@@ -54,7 +53,10 @@ export async function executeConversationCase(entry,{AI,model='@cf/meta/llama-3.
   const attemptedWrites=trace.filter(x=>x.kind==='canonical_http'&&x.method!=='GET');
   const proposals=attemptedTools.filter(x=>x.arguments?.proposal);
   const expectedContext=preceding;
+  const providerRequest=trace.find(x=>x.kind==='inference')?.request;
+  const deliveredTurns=providerRequest?(providerRequest.tools?JSON.parse(providerRequest.messages[1].content).context.recent_conversation?.turns:providerRequest.messages.slice(2,-1)):null;
   const checks={
+    exact_provider_turns:providerRequest?JSON.stringify(deliveredTurns)===JSON.stringify(expectedContext):null,
     exact_preceding_turns:packet?JSON.stringify(packet.recent_conversation?.turns)===JSON.stringify(expectedContext):null,
     required_retrieval:(entry.required_reads||[]).every(path=>reads.includes(path)),
     required_context_facts_available:(entry.required_context_facts||[]).every(value=>packet&&JSON.stringify(packet.active_work?.projects).includes(value)),
@@ -67,7 +69,7 @@ export async function executeConversationCase(entry,{AI,model='@cf/meta/llama-3.
     no_model_permission_grant:!packet||packet.recent_conversation?.permission_authority===false
   };
   const receipt={version:'mary-kate.conversation-regression.v1',case_id:entry.id,name:entry.name,observed_at:new Date().toISOString(),revision,authority,evidence_kind:enabled?evidenceKind:'blocked',conversation:copy(entry.turns),preceding_turn_provenance:'seeded synthetic role-preserving fixture',project_truth:{kind:'synthetic isolated snapshot; not production truth',before:before.files,source_shas:Object.fromEntries(await Promise.all([...files].map(async([p,c])=>[p,await sha(c)]))),retrieved_paths:reads,packet},model:{provider:'workers-ai',model,configuration:{temperature:0,max_tokens:700},authorized_nonproduction:Boolean(enabled)},actual:{response,error,tool_calls:attemptedTools,trace,inference_calls:calls,completed_inference_calls:completedCalls,attempted_state_changes:{canonical:attemptedWrites,proposals},completed_state_changes:{canonical:[],private_interactions:after.history.filter(x=>!before.history.some(b=>b.id===x.id)),queue_items:queueRows(after.queues).filter(x=>!queueRows(before.queues).some(b=>b.id===x.id))},before,after},expected:{behavior:entry.expected,forbidden:entry.forbidden,semantic_dimensions:entry.semantic_dimensions,deterministic:entry.deterministic},deterministic_checks:checks,semantic_review:{status:'NOT_EXECUTED',reason:'Independent structured evaluation required; router output is not a verdict.'}};
-  receipt.observed_behavior={stage:error?.code==='prior_state_ambiguous_scope'?'pre_dispatch_rejected':completedCalls?'provider_returned':calls?'provider_failed':'inference_unavailable',context_delivery:packet?'observed at actual routing boundary':'not reached',semantic_interpretation:'NOT_EVALUATED',contextual_approval:entry.id==='20261014-C'&&error?.code==='prior_state_ambiguous_scope'?'Observed pre-dispatch failure to bind the sole proposal; live semantic execution remains blocked':'not separately evaluated'};
+  receipt.observed_behavior={stage:error?.code==='prior_state_ambiguous_scope'&&!calls?'pre_dispatch_rejected':completedCalls?'provider_returned':calls?'provider_failed':'inference_unavailable',context_delivery:packet?'observed at actual routing boundary':'not reached',semantic_interpretation:'NOT_EVALUATED',contextual_approval:entry.id==='20261014-C'&&error?.code==='prior_state_ambiguous_scope'?'Observed pre-dispatch failure to bind the sole proposal; live semantic execution remains blocked':'not separately evaluated'};
   receipt.execution_digest=await digest(receipt);
   receipt.result=receipt.evidence_kind!=='workers-ai-live'||!completedCalls?'BLOCKED':Object.values(checks).some(x=>x!==true)?'FAIL':'BLOCKED_SEMANTIC_REVIEW';
   return receipt;
