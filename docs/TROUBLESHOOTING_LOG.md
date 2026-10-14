@@ -578,3 +578,12 @@ Live preview requests/model answers, contextual assent, current Project Truth re
 
 
 
+
+
+## 2026-10-14 — First live AI receipt: advice became unauthorized stage proposal
+
+Ashley supplied case E’s actual Workers AI receipt at 17:00:33Z, execution digest `70f088b7d4aa3dbbac2cf2967b206cfa524508c46a03044e1a5e9d9cde88deb4`. One completed inference received exact preceding turns and read_only_advice, but proposed changing Mary Kate’s Current stage to Cloudflare Preview rather than answering about the video branch. Safety blocked all effects; no useful answer. **Live E FAIL; A–D live untested; C remains known blocked.** Current Project Truth retrieval, handoffs, production/iPhone conversational acceptance remain unproved.
+
+The action-capable model schema remained supplied despite read-only intent. Narrow repair restricts offered read-only routes to temporary_context/ai_can_handle with no proposal, clarifies referent/advice/uncertainty, retains all safety validation, and does not coerce or retry model output. This is a candidate, not a proven semantic fix. Local checks 140/140; requirements14/14; frozen fixtures unchanged. Independent review and relevant receipt excerpt: research-vault development branch `research/ai-workflows/2026-10-14-mary-kate-live-case-e.json`. **Next:** unchanged live E rerun on rebuilt PR #10 preview. No merge or production promotion.
+
+Scope: Ashley-brooke-cohen APPLIES; UGC/video hosting architecture NO_CHANGE. October14 OPEN / NOT PREVENTED.

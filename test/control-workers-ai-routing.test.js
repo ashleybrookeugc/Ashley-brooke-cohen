@@ -98,3 +98,25 @@ test('state proposal may target the workstream resolved by prior-state evidence'
   assert.equal(result.queue_item.id,'q1');
   assert.equal(savedRoute.proposal.section,'Mary Kate / AI operating system');
 });
+
+
+
+test('read-only advice and assessment offer no action schema; action requests retain canonical tools',async()=>{
+  const requests=[];
+  const router=createWorkersAiRoutingAdapter({AI:{run:async(_model,request)=>{
+    requests.push(request);
+    return {tool_calls:[{name:'submit_control_route',arguments:{route_kind:'temporary_context',responsibility:'ai_can_handle',confidence:'medium',plain_summary:'Controlled transport double, not live acceptance.'}}]};
+  }}});
+  for(const intent of ['read_only_advice','read_only_assessment']) {
+    await router.route('Would staging help?',{...context,intent,recent_conversation:{turns:[{role:'user',content:'We are discussing the video branch.'}]}});
+    const request=requests.at(-1), schema=request.tools[0].parameters;
+    assert.deepEqual(schema.properties.route_kind.enum,['temporary_context']);
+    assert.deepEqual(schema.properties.responsibility.enum,['ai_can_handle']);
+    assert.equal('proposal' in schema.properties,false);
+    assert.equal(schema.additionalProperties,false);
+    assert.match(request.messages[0].content,/Resolve the subject from the recent conversation/);
+    assert.deepEqual(JSON.parse(request.messages[1].content).context.recent_conversation.turns,[{role:'user',content:'We are discussing the video branch.'}]);
+  }
+  await router.route('Update the stage',{...context,intent:'state_update'});
+  assert.equal(requests.at(-1).tools[0],CONTROL_ROUTE_TOOL);
+});
