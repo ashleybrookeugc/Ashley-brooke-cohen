@@ -660,3 +660,14 @@ See [the verified deployment and logging incident](test-receipts/2026-10-14-clou
 **Verified versus unverified:** GitHub commit and fixture CI are verified. GitHub-to-Cloudflare auto-deploy was proven previously for the browser test, but this merge has no verified live Cloudflare deployment receipt. Live multi-turn interpretation, contextual rule selection, approval side effects, and automatic failure writeback remain unverified. Do not promote fixture tests to those outcomes.
 
 **Next safe proof:** Use an authenticated, non-production Worker/AI surface with isolated state and no production GitHub writes, run unchanged multi-turn cases, capture exact response/tool/state receipts, and independently grade. Do not add an unauthenticated inference endpoint or send fake passes. Preserve the original failures as historical even if later repaired.
+
+
+## 2026-10-14 — Isolated live Mary Kate routing canary: deployed code versus actual model acceptance
+
+**Observed problem:** Seven real conversation failures were frozen and 126/126 GitHub tests passed, but none invoked the live Workers AI model. The existing `/api/control/interactions` endpoint is authenticated and can persist interactions/approval items, so running test fixtures through it would risk production state. A previous registry PR conflicted; the factual receipt was reconciled into current main and the stale PR closed.
+
+**Bounded implementation:** PR #30 added authenticated `/control/acceptance-case-e` and POST `/api/control/acceptance/case-e`. The POST uses only the existing Workers AI routing adapter on the frozen question `Should this be in Cloudflare Preview?` with explicit read-only context. It never creates the control service, GitHub adapter, D1 write, or approval item; it has no paid-model fallback. It reports `ROUTE_SAFE`, `ROUTE_FAIL`, or `BLOCKED`, with the actual route and stated limitations. It does not claim multi-turn semantic understanding. Same-origin, admin authentication and POST-only restrictions apply.
+
+**Verified:** GitHub Actions run 38648245522 passed its tests and Worker packaging; PR #30 merged into website main at `59a656997703e29992d561db59457b9d148651dd`, and the files were reread from main. **Not verified:** Cloudflare live deployment status, authenticated iPhone page execution, actual Workers AI response, and independent semantic grading. An unauthenticated external webpage fetch was unable to access the protected URL, which is not evidence of a deployment failure. User must explicitly run the one-shot test while authenticated to produce a live receipt.
+
+**Failure prevention:** Distinguish fixture integrity, CI packaging, merged code, deployed route, real model inference, semantic answer quality, and tool effects as separate gates. A `ROUTE_SAFE` result is not proof that the model answered the user's intended question. Do not substitute mock inference or bypass authentication to manufacture acceptance.
