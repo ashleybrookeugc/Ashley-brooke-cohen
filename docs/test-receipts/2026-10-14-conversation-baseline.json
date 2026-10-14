@@ -1,0 +1,1493 @@
+{
+  "baseline": "05571bad1b61dee1871367bee3e136ce11f87d25",
+  "evaluated_revision": "e77f177a60f8081dd9d8c52ab6d65a1a805d7dd5",
+  "fingerprints": {
+    "../../src/control/service.js": "e61d4c7761627287d267830a6c37cb2753dac2c985a240dc175c52c73505e572",
+    "../../src/control/adapters.js": "839abf470e7b0b32367f5b803db5cbbf57a7b90e089a8a30db8ea95a8bfcea23",
+    "./workflow-adherence-cases.json": "e81d003f381d559f7a670772e9159ae3285cdc0842adbf63089a18df592801cc"
+  },
+  "authority_revision": "9c089f4fe20234748630d4226948e0675b9b633c",
+  "environment": {
+    "platform": "linux",
+    "architecture": "x64",
+    "node": "v24.19.0"
+  },
+  "boundary": "Actual service/policy/Workers AI/GitHub adapters with isolated HTTP contents and private memory store. No real GitHub mutation, external model call, production/UI test, or semantic-model PASS. Counts/metrics describe this controlled corpus, not production error rates.",
+  "cases": [
+    {
+      "id": "A",
+      "input": "I have an idea about the struggles of making self tape auditions and why a one minute monologue takes an hour to film.",
+      "expected": "Useful creative engagement; canonical destination from existing authority; authorized conditional capture, reread and receipt; no invented repo.",
+      "status": "PARTIAL",
+      "finding": "An exact test-fixture approval completes conditional write/reread/receipt. Natural understanding and authority selection remain unverified; this is not end-to-end product PASS.",
+      "layers": {
+        "natural_language_understanding": "UNVERIFIED: controlled provider probe",
+        "retrieval_freshness": "PARTIAL: target reread; creative capture authority not supplied to model",
+        "workstream_intent": "UNVERIFIED: provider classification supplied",
+        "worker_selection": "PARTIAL: actual fixed routing policy; no delegated worker",
+        "user_response": "UNVERIFIED: supplied model response",
+        "durable_capture": "PASS: isolated canonical file verified",
+        "permissions": "PASS: fixture-isolated effects",
+        "reread_receipt": "PASS: isolated canonical file verified",
+        "failure_recovery": "NOT_EXERCISED"
+      },
+      "metrics": {
+        "unnecessary_clarification": 0,
+        "missing_preservation": 0,
+        "invented_authority": 0,
+        "incorrect_routing": 0,
+        "unsupported_success_claims": 0,
+        "duplicate_preservation": 0,
+        "stale_authority_overwrite": 0
+      },
+      "actual": {
+        "model_calls": 1,
+        "reads": [
+          "ACTIVE_WORK.md",
+          "SIDE_IDEAS.md",
+          "SIDE_IDEAS.md"
+        ],
+        "trace": [
+          {
+            "method": "GET",
+            "path": "ACTIVE_WORK.md"
+          },
+          {
+            "provider": "workers-ai",
+            "model": "@cf/meta/llama-3.1-8b-instruct-fp8"
+          },
+          {
+            "method": "GET",
+            "path": "SIDE_IDEAS.md"
+          },
+          {
+            "method": "PUT",
+            "path": "SIDE_IDEAS.md"
+          },
+          {
+            "method": "GET",
+            "path": "SIDE_IDEAS.md"
+          }
+        ],
+        "response": {
+          "interaction_id": "i1",
+          "plain_summary": "The tension is the tiny finished monologue versus the repeated takes. The idea is pending a verified canonical save.",
+          "responsibility": "ai_can_handle",
+          "route_kind": "side_idea",
+          "queue_item": {
+            "id": "q1",
+            "status": "approved",
+            "interaction_id": "i1",
+            "route_kind": "side_idea",
+            "responsibility": "ai_can_handle",
+            "confidence": "high",
+            "plain_summary": "The tension is the tiny finished monologue versus the repeated takes. The idea is pending a verified canonical save.",
+            "proposal": {
+              "target_repo": "ashleybrookeugc/research-vault",
+              "target_path": "SIDE_IDEAS.md",
+              "operation": "append_side_idea",
+              "title": "Synthetic self-tape acceptance fixture",
+              "body": "I have an idea about the struggles of making self tape auditions and why a one minute monologue takes an hour to film.",
+              "scope": "acting / creator workflow"
+            },
+            "prior_state": {
+              "gate": "prior-state.context-retrieval",
+              "status": "not_required",
+              "required_fact_keys": [],
+              "material": [
+                {
+                  "repo": "ashleybrookeugc/research-vault",
+                  "path": "ACTIVE_WORK.md",
+                  "sha": "44bbccf349e24335a2e1b5a89128ea5cc273d466"
+                }
+              ],
+              "evidence": [],
+              "blockers": []
+            },
+            "resolution_note": "",
+            "receipt": {
+              "version": "control-write-receipt.v1",
+              "status": "verified",
+              "target": {
+                "repo": "ashleybrookeugc/research-vault",
+                "path": "SIDE_IDEAS.md"
+              },
+              "source_before_sha": "c24cae7144b415968d64a0aa512fbde419ae1805",
+              "commit_sha": "fixture-commit-1",
+              "github_content_sha": "b03ac2661c8f5da2713a8bcbed111a150c95ac7d",
+              "operation_id": "q1",
+              "payload_digest": "f8106abf17c3e87b4928db2ab9af11b4403aea89a7b3ef037289423119b0c3e2",
+              "recovered": false,
+              "verification": {
+                "status": "verified",
+                "verified_at": "2026-10-09T15:00:00.000Z",
+                "readback_sha": "b03ac2661c8f5da2713a8bcbed111a150c95ac7d"
+              }
+            },
+            "resolved_at": "2026-10-09T15:00:00.000Z"
+          }
+        },
+        "error": null,
+        "approved": {
+          "status": "approved",
+          "plain_summary": "The tension is the tiny finished monologue versus the repeated takes. The idea is pending a verified canonical save.",
+          "receipt": {
+            "version": "control-write-receipt.v1",
+            "status": "verified",
+            "target": {
+              "repo": "ashleybrookeugc/research-vault",
+              "path": "SIDE_IDEAS.md"
+            },
+            "source_before_sha": "c24cae7144b415968d64a0aa512fbde419ae1805",
+            "commit_sha": "fixture-commit-1",
+            "github_content_sha": "b03ac2661c8f5da2713a8bcbed111a150c95ac7d",
+            "operation_id": "q1",
+            "payload_digest": "f8106abf17c3e87b4928db2ab9af11b4403aea89a7b3ef037289423119b0c3e2",
+            "recovered": false,
+            "verification": {
+              "status": "verified",
+              "verified_at": "2026-10-09T15:00:00.000Z",
+              "readback_sha": "b03ac2661c8f5da2713a8bcbed111a150c95ac7d"
+            }
+          },
+          "message": "Mary Kate made the approved change and confirmed the exact result in GitHub."
+        },
+        "canonical_fixture_writes": 1,
+        "raw_input_retained": true,
+        "queue_rows": 0,
+        "history_rows": 1,
+        "packet_keys": [
+          "version",
+          "purpose",
+          "active_work",
+          "freshness",
+          "prior_state",
+          "ambiguity_gate"
+        ]
+      }
+    },
+    {
+      "id": "B",
+      "input": "How close is V1 of MK to being ready to use?",
+      "expected": "Retrieve current indexed MK V1 assessment; useful evidence-qualified answer; no approval or write.",
+      "status": "PARTIAL",
+      "finding": "Retrieval/wiring executes without unauthorized write; useful natural-language understanding was not exercised by a live provider.",
+      "layers": {
+        "natural_language_understanding": "UNVERIFIED: controlled provider probe",
+        "retrieval_freshness": "PASS: indexed current assessment",
+        "workstream_intent": "UNVERIFIED: provider classification supplied",
+        "worker_selection": "PARTIAL: actual fixed routing policy; no delegated worker",
+        "user_response": "UNVERIFIED: supplied model response",
+        "durable_capture": "NOT_REQUIRED",
+        "permissions": "PASS: fixture-isolated effects",
+        "reread_receipt": "NOT_REQUIRED",
+        "failure_recovery": "NOT_EXERCISED"
+      },
+      "metrics": {
+        "unnecessary_clarification": 0,
+        "missing_preservation": 0,
+        "invented_authority": 0,
+        "incorrect_routing": 0,
+        "unsupported_success_claims": 0,
+        "duplicate_preservation": 0,
+        "stale_authority_overwrite": 0
+      },
+      "actual": {
+        "model_calls": 1,
+        "reads": [
+          "ACTIVE_WORK.md",
+          "PROJECT_INDEX.md",
+          "research/ai-workflows/fixture-v1-assessment.md"
+        ],
+        "trace": [
+          {
+            "method": "GET",
+            "path": "ACTIVE_WORK.md"
+          },
+          {
+            "method": "GET",
+            "path": "PROJECT_INDEX.md"
+          },
+          {
+            "method": "GET",
+            "path": "research/ai-workflows/fixture-v1-assessment.md"
+          },
+          {
+            "provider": "workers-ai",
+            "model": "@cf/meta/llama-3.1-8b-instruct-fp8"
+          }
+        ],
+        "response": {
+          "interaction_id": "i1",
+          "plain_summary": "V1 has local proof but is not verified ready; production write/reread/D1 acceptance remains unverified.",
+          "responsibility": "ai_can_handle",
+          "route_kind": "temporary_context",
+          "queue_item": null
+        },
+        "error": null,
+        "approved": null,
+        "canonical_fixture_writes": 0,
+        "raw_input_retained": true,
+        "queue_rows": 0,
+        "history_rows": 1,
+        "packet_keys": [
+          "version",
+          "purpose",
+          "active_work",
+          "freshness",
+          "prior_state",
+          "ambiguity_gate",
+          "intent",
+          "completion_authority"
+        ]
+      }
+    },
+    {
+      "id": "C",
+      "input": "How is this system similar to Muse?",
+      "expected": "Bind this system to MK in this session, retrieve existing Muse comparison, answer usefully without unnecessary clarification.",
+      "status": "FAIL",
+      "finding": "Existing comparison authority is not retrieved; this-system referent and conversational worker context are absent.",
+      "layers": {
+        "natural_language_understanding": "UNVERIFIED: controlled provider probe",
+        "retrieval_freshness": "FAIL: required workflow authority not retrieved",
+        "workstream_intent": "UNVERIFIED: provider classification supplied",
+        "worker_selection": "PARTIAL: actual fixed routing policy; no delegated worker",
+        "user_response": "UNVERIFIED: supplied model response",
+        "durable_capture": "NOT_REQUIRED",
+        "permissions": "PASS: fixture-isolated effects",
+        "reread_receipt": "NOT_REQUIRED",
+        "failure_recovery": "NOT_EXERCISED"
+      },
+      "metrics": {
+        "unnecessary_clarification": 0,
+        "missing_preservation": 0,
+        "invented_authority": 0,
+        "incorrect_routing": 1,
+        "unsupported_success_claims": 0,
+        "duplicate_preservation": 0,
+        "stale_authority_overwrite": 0
+      },
+      "actual": {
+        "model_calls": 1,
+        "reads": [
+          "ACTIVE_WORK.md"
+        ],
+        "trace": [
+          {
+            "method": "GET",
+            "path": "ACTIVE_WORK.md"
+          },
+          {
+            "provider": "workers-ai",
+            "model": "@cf/meta/llama-3.1-8b-instruct-fp8"
+          }
+        ],
+        "response": {
+          "interaction_id": "i1",
+          "plain_summary": "Both use conversation to carry goals forward; Mary Kate intends Project Truth to remain authoritative.",
+          "responsibility": "ai_can_handle",
+          "route_kind": "temporary_context",
+          "queue_item": null
+        },
+        "error": null,
+        "approved": null,
+        "canonical_fixture_writes": 0,
+        "raw_input_retained": true,
+        "queue_rows": 0,
+        "history_rows": 1,
+        "packet_keys": [
+          "version",
+          "purpose",
+          "active_work",
+          "freshness",
+          "prior_state",
+          "ambiguity_gate"
+        ]
+      }
+    },
+    {
+      "id": "D-multiple",
+      "input": "What’s next?",
+      "expected": "Multiple eligible workstreams and no unique referent: concise clarification before model dispatch or effects.",
+      "status": "PASS",
+      "finding": "Deterministic gate stops before dispatch and effects.",
+      "layers": {
+        "natural_language_understanding": "PASS: deterministic scope/conflict rule",
+        "retrieval_freshness": "PASS: authoritative fixture scope/conflict retrieved",
+        "workstream_intent": "PASS",
+        "worker_selection": "PASS: no dispatch before scope is resolved",
+        "user_response": "PASS: concise clarification/conflict with choices",
+        "durable_capture": "NOT_REQUIRED",
+        "permissions": "PASS: fixture-isolated effects",
+        "reread_receipt": "NOT_REQUIRED",
+        "failure_recovery": "PASS: actionable failure, no guessed action"
+      },
+      "metrics": {
+        "unnecessary_clarification": 0,
+        "missing_preservation": 0,
+        "invented_authority": 0,
+        "incorrect_routing": 0,
+        "unsupported_success_claims": 0,
+        "duplicate_preservation": 0,
+        "stale_authority_overwrite": 0
+      },
+      "actual": {
+        "model_calls": 0,
+        "reads": [
+          "ACTIVE_WORK.md"
+        ],
+        "trace": [
+          {
+            "method": "GET",
+            "path": "ACTIVE_WORK.md"
+          }
+        ],
+        "response": null,
+        "error": {
+          "error": "I can't safely tell which workstream you mean, so I didn't change anything.",
+          "code": "prior_state_ambiguous_scope",
+          "technical": {
+            "version": "control-error.v1",
+            "kind": "prior_state_ambiguous_scope",
+            "prior_state": {
+              "gate": "authoritative-ambiguity.v1",
+              "status": "blocked",
+              "evidence": [],
+              "blockers": [
+                {
+                  "reason": "ambiguous_scope",
+                  "key": "workstream",
+                  "facts": [
+                    {
+                      "section": "Mary Kate / AI operating system — **ACTIVE NOW**",
+                      "label": "workstream"
+                    },
+                    {
+                      "section": "ContentEase / UGC Creator App — ACTIVE / PARALLEL",
+                      "label": "workstream"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          "action": {
+            "required": true,
+            "prompt": "Name the project or workstream whose saved information you mean.",
+            "choices": [
+              {
+                "source": "Mary Kate / AI operating system — **ACTIVE NOW**"
+              },
+              {
+                "source": "ContentEase / UGC Creator App — ACTIVE / PARALLEL"
+              }
+            ]
+          }
+        },
+        "approved": null,
+        "canonical_fixture_writes": 0,
+        "raw_input_retained": false,
+        "queue_rows": 0,
+        "history_rows": 0,
+        "packet_keys": []
+      }
+    },
+    {
+      "id": "D-unique",
+      "input": "What’s next?",
+      "expected": "One authoritative workstream: answer its saved next action without asking Ashley to name it again.",
+      "status": "PARTIAL",
+      "finding": "Retrieval/wiring executes without unauthorized write; useful natural-language understanding was not exercised by a live provider.",
+      "layers": {
+        "natural_language_understanding": "UNVERIFIED: controlled provider probe",
+        "retrieval_freshness": "PARTIAL: sole project is available, no scoped prior-state receipt",
+        "workstream_intent": "UNVERIFIED: provider classification supplied",
+        "worker_selection": "PARTIAL: actual fixed routing policy; no delegated worker",
+        "user_response": "UNVERIFIED: supplied model response",
+        "durable_capture": "NOT_REQUIRED",
+        "permissions": "PASS: fixture-isolated effects",
+        "reread_receipt": "NOT_REQUIRED",
+        "failure_recovery": "NOT_EXERCISED"
+      },
+      "metrics": {
+        "unnecessary_clarification": 0,
+        "missing_preservation": 0,
+        "invented_authority": 0,
+        "incorrect_routing": 0,
+        "unsupported_success_claims": 0,
+        "duplicate_preservation": 0,
+        "stale_authority_overwrite": 0
+      },
+      "actual": {
+        "model_calls": 1,
+        "reads": [
+          "ACTIVE_WORK.md"
+        ],
+        "trace": [
+          {
+            "method": "GET",
+            "path": "ACTIVE_WORK.md"
+          },
+          {
+            "provider": "workers-ai",
+            "model": "@cf/meta/llama-3.1-8b-instruct-fp8"
+          }
+        ],
+        "response": {
+          "interaction_id": "i1",
+          "plain_summary": "V1 has local proof but is not verified ready; production write/reread/D1 acceptance remains unverified.",
+          "responsibility": "ai_can_handle",
+          "route_kind": "temporary_context",
+          "queue_item": null
+        },
+        "error": null,
+        "approved": null,
+        "canonical_fixture_writes": 0,
+        "raw_input_retained": true,
+        "queue_rows": 0,
+        "history_rows": 1,
+        "packet_keys": [
+          "version",
+          "purpose",
+          "active_work",
+          "freshness",
+          "prior_state",
+          "ambiguity_gate"
+        ]
+      }
+    },
+    {
+      "id": "E",
+      "input": "Save key.",
+      "expected": "Classify the seeded material correction; reconcile applicable existing current-state and learned-change records; verify writes; no false saved claim.",
+      "status": "FAIL",
+      "finding": "Save key reaches generic routing without the seeded correction/history or fan-out; no canonical writes despite a saved claim.",
+      "layers": {
+        "natural_language_understanding": "UNVERIFIED: controlled provider probe",
+        "retrieval_freshness": "FAIL: required workflow authority not retrieved",
+        "workstream_intent": "UNVERIFIED: provider classification supplied",
+        "worker_selection": "PARTIAL: actual fixed routing policy; no delegated worker",
+        "user_response": "UNVERIFIED: supplied model response",
+        "durable_capture": "FAIL: material delta not promoted",
+        "permissions": "PASS: fixture-isolated effects",
+        "reread_receipt": "NOT_REQUIRED",
+        "failure_recovery": "NOT_EXERCISED"
+      },
+      "metrics": {
+        "unnecessary_clarification": 0,
+        "missing_preservation": 1,
+        "invented_authority": 0,
+        "incorrect_routing": 1,
+        "unsupported_success_claims": 1,
+        "duplicate_preservation": 0,
+        "stale_authority_overwrite": 0
+      },
+      "actual": {
+        "model_calls": 1,
+        "reads": [
+          "ACTIVE_WORK.md"
+        ],
+        "trace": [
+          {
+            "method": "GET",
+            "path": "ACTIVE_WORK.md"
+          },
+          {
+            "provider": "workers-ai",
+            "model": "@cf/meta/llama-3.1-8b-instruct-fp8"
+          }
+        ],
+        "response": {
+          "interaction_id": "i2",
+          "plain_summary": "Saved and verified the key changes in Project Truth.",
+          "responsibility": "ai_can_handle",
+          "route_kind": "temporary_context",
+          "queue_item": null
+        },
+        "error": null,
+        "approved": null,
+        "canonical_fixture_writes": 0,
+        "raw_input_retained": true,
+        "queue_rows": 0,
+        "history_rows": 2,
+        "packet_keys": [
+          "version",
+          "purpose",
+          "active_work",
+          "freshness",
+          "prior_state",
+          "ambiguity_gate"
+        ]
+      }
+    },
+    {
+      "id": "F",
+      "input": "Agreed.",
+      "expected": "Retrieve the seeded immediately preceding uniquely authorized read-only assessment action and complete it; no new consequential permission.",
+      "status": "FAIL",
+      "finding": "Immediately preceding authorized action/history is not passed into the task packet; assessment not retrieved or completed.",
+      "layers": {
+        "natural_language_understanding": "UNVERIFIED: controlled provider probe",
+        "retrieval_freshness": "FAIL: required workflow authority not retrieved",
+        "workstream_intent": "UNVERIFIED: provider classification supplied",
+        "worker_selection": "PARTIAL: actual fixed routing policy; no delegated worker",
+        "user_response": "UNVERIFIED: supplied model response",
+        "durable_capture": "NOT_REQUIRED",
+        "permissions": "PASS: fixture-isolated effects",
+        "reread_receipt": "NOT_REQUIRED",
+        "failure_recovery": "NOT_EXERCISED"
+      },
+      "metrics": {
+        "unnecessary_clarification": 0,
+        "missing_preservation": 0,
+        "invented_authority": 0,
+        "incorrect_routing": 1,
+        "unsupported_success_claims": 0,
+        "duplicate_preservation": 0,
+        "stale_authority_overwrite": 0
+      },
+      "actual": {
+        "model_calls": 1,
+        "reads": [
+          "ACTIVE_WORK.md"
+        ],
+        "trace": [
+          {
+            "method": "GET",
+            "path": "ACTIVE_WORK.md"
+          },
+          {
+            "provider": "workers-ai",
+            "model": "@cf/meta/llama-3.1-8b-instruct-fp8"
+          }
+        ],
+        "response": {
+          "interaction_id": "i2",
+          "plain_summary": "Continuing the agreed read-only V1 assessment.",
+          "responsibility": "ai_can_handle",
+          "route_kind": "temporary_context",
+          "queue_item": null
+        },
+        "error": null,
+        "approved": null,
+        "canonical_fixture_writes": 0,
+        "raw_input_retained": true,
+        "queue_rows": 0,
+        "history_rows": 2,
+        "packet_keys": [
+          "version",
+          "purpose",
+          "active_work",
+          "freshness",
+          "prior_state",
+          "ambiguity_gate"
+        ]
+      }
+    },
+    {
+      "id": "invalid-target",
+      "input": "I have an idea about the struggles of making self tape auditions and why a one minute monologue takes an hour to film.",
+      "expected": "Reject synthetic invalid target without guessing another repo; preserve original input privately for recovery; no canonical save claim.",
+      "status": "FAIL",
+      "finding": "Invalid target is rejected without coercion; only sanitized diagnostic survives; original idea is lost.",
+      "layers": {
+        "natural_language_understanding": "UNVERIFIED: controlled provider probe",
+        "retrieval_freshness": "FAIL: required workflow authority not retrieved",
+        "workstream_intent": "UNVERIFIED: provider classification supplied",
+        "worker_selection": "PARTIAL: actual fixed routing policy; no delegated worker",
+        "user_response": "UNVERIFIED: supplied model response",
+        "durable_capture": "FAIL: original input discarded",
+        "permissions": "PASS: fixture-isolated effects",
+        "reread_receipt": "NOT_REQUIRED",
+        "failure_recovery": "FAIL: original input discarded"
+      },
+      "metrics": {
+        "unnecessary_clarification": 0,
+        "missing_preservation": 1,
+        "invented_authority": 0,
+        "incorrect_routing": 0,
+        "unsupported_success_claims": 0,
+        "duplicate_preservation": 0,
+        "stale_authority_overwrite": 0
+      },
+      "actual": {
+        "model_calls": 1,
+        "reads": [
+          "ACTIVE_WORK.md"
+        ],
+        "trace": [
+          {
+            "method": "GET",
+            "path": "ACTIVE_WORK.md"
+          },
+          {
+            "provider": "workers-ai",
+            "model": "@cf/meta/llama-3.1-8b-instruct-fp8"
+          }
+        ],
+        "response": null,
+        "error": {
+          "error": "Routing could not produce a valid control-plane result. No change was saved.",
+          "code": "routing_contract_invalid",
+          "interaction_id": "i1",
+          "technical": {
+            "interaction_id": "i1",
+            "diagnostic": {
+              "version": "control-routing-failure.v1",
+              "status": "failed",
+              "provider": "workers-ai",
+              "model": "@cf/meta/llama-3.1-8b-instruct-fp8",
+              "validation": {
+                "path": "proposal.target_repo",
+                "reason": "Proposal target is not allowed"
+              },
+              "rejected_route": {
+                "route_kind": "side_idea",
+                "responsibility": "ai_can_handle",
+                "confidence": "high",
+                "plain_summary": {
+                  "type": "string",
+                  "length": 116
+                },
+                "proposal": {
+                  "target_repo": "fixture/invalid-target",
+                  "target_path": "SIDE_IDEAS.md",
+                  "operation": "append_side_idea",
+                  "title": {
+                    "type": "string",
+                    "length": 38
+                  },
+                  "body": {
+                    "type": "string",
+                    "length": 118
+                  },
+                  "scope": {
+                    "type": "string",
+                    "length": 25
+                  }
+                }
+              }
+            }
+          }
+        },
+        "approved": null,
+        "canonical_fixture_writes": 0,
+        "raw_input_retained": false,
+        "queue_rows": 0,
+        "history_rows": 1,
+        "packet_keys": [
+          "version",
+          "purpose",
+          "active_work",
+          "freshness",
+          "prior_state",
+          "ambiguity_gate"
+        ]
+      }
+    },
+    {
+      "id": "duplicate",
+      "input": "I have an idea about the struggles of making self tape auditions and why a one minute monologue takes an hour to film.",
+      "expected": "Exact idea already exists in isolated canonical store: avoid a second canonical entry.",
+      "status": "FAIL",
+      "finding": "Exact existing idea occurs 2 times after fixture approval; operation idempotency does not deduplicate separate idea captures.",
+      "layers": {
+        "natural_language_understanding": "UNVERIFIED: controlled provider probe",
+        "retrieval_freshness": "FAIL: required workflow authority not retrieved",
+        "workstream_intent": "UNVERIFIED: provider classification supplied",
+        "worker_selection": "PARTIAL: actual fixed routing policy; no delegated worker",
+        "user_response": "UNVERIFIED: supplied model response",
+        "durable_capture": "FAIL",
+        "permissions": "PASS: fixture-isolated effects",
+        "reread_receipt": "NOT_REQUIRED",
+        "failure_recovery": "NOT_EXERCISED"
+      },
+      "metrics": {
+        "unnecessary_clarification": 0,
+        "missing_preservation": 0,
+        "invented_authority": 0,
+        "incorrect_routing": 0,
+        "unsupported_success_claims": 0,
+        "duplicate_preservation": 1,
+        "stale_authority_overwrite": 0
+      },
+      "actual": {
+        "model_calls": 1,
+        "reads": [
+          "ACTIVE_WORK.md",
+          "SIDE_IDEAS.md",
+          "SIDE_IDEAS.md"
+        ],
+        "trace": [
+          {
+            "method": "GET",
+            "path": "ACTIVE_WORK.md"
+          },
+          {
+            "provider": "workers-ai",
+            "model": "@cf/meta/llama-3.1-8b-instruct-fp8"
+          },
+          {
+            "method": "GET",
+            "path": "SIDE_IDEAS.md"
+          },
+          {
+            "method": "PUT",
+            "path": "SIDE_IDEAS.md"
+          },
+          {
+            "method": "GET",
+            "path": "SIDE_IDEAS.md"
+          }
+        ],
+        "response": {
+          "interaction_id": "i1",
+          "plain_summary": "The tension is the tiny finished monologue versus the repeated takes. The idea is pending a verified canonical save.",
+          "responsibility": "ai_can_handle",
+          "route_kind": "side_idea",
+          "queue_item": {
+            "id": "q1",
+            "status": "approved",
+            "interaction_id": "i1",
+            "route_kind": "side_idea",
+            "responsibility": "ai_can_handle",
+            "confidence": "high",
+            "plain_summary": "The tension is the tiny finished monologue versus the repeated takes. The idea is pending a verified canonical save.",
+            "proposal": {
+              "target_repo": "ashleybrookeugc/research-vault",
+              "target_path": "SIDE_IDEAS.md",
+              "operation": "append_side_idea",
+              "title": "Synthetic self-tape acceptance fixture",
+              "body": "I have an idea about the struggles of making self tape auditions and why a one minute monologue takes an hour to film.",
+              "scope": "acting / creator workflow"
+            },
+            "prior_state": {
+              "gate": "prior-state.context-retrieval",
+              "status": "not_required",
+              "required_fact_keys": [],
+              "material": [
+                {
+                  "repo": "ashleybrookeugc/research-vault",
+                  "path": "ACTIVE_WORK.md",
+                  "sha": "44bbccf349e24335a2e1b5a89128ea5cc273d466"
+                }
+              ],
+              "evidence": [],
+              "blockers": []
+            },
+            "resolution_note": "",
+            "receipt": {
+              "version": "control-write-receipt.v1",
+              "status": "verified",
+              "target": {
+                "repo": "ashleybrookeugc/research-vault",
+                "path": "SIDE_IDEAS.md"
+              },
+              "source_before_sha": "6099e4bc21c3f97e8b457adc58bb5273e63537f4",
+              "commit_sha": "fixture-commit-1",
+              "github_content_sha": "957511f99d4b8707218d353d03facca211a8f3e1",
+              "operation_id": "q1",
+              "payload_digest": "f8106abf17c3e87b4928db2ab9af11b4403aea89a7b3ef037289423119b0c3e2",
+              "recovered": false,
+              "verification": {
+                "status": "verified",
+                "verified_at": "2026-10-09T15:00:00.000Z",
+                "readback_sha": "957511f99d4b8707218d353d03facca211a8f3e1"
+              }
+            },
+            "resolved_at": "2026-10-09T15:00:00.000Z"
+          }
+        },
+        "error": null,
+        "approved": {
+          "status": "approved",
+          "plain_summary": "The tension is the tiny finished monologue versus the repeated takes. The idea is pending a verified canonical save.",
+          "receipt": {
+            "version": "control-write-receipt.v1",
+            "status": "verified",
+            "target": {
+              "repo": "ashleybrookeugc/research-vault",
+              "path": "SIDE_IDEAS.md"
+            },
+            "source_before_sha": "6099e4bc21c3f97e8b457adc58bb5273e63537f4",
+            "commit_sha": "fixture-commit-1",
+            "github_content_sha": "957511f99d4b8707218d353d03facca211a8f3e1",
+            "operation_id": "q1",
+            "payload_digest": "f8106abf17c3e87b4928db2ab9af11b4403aea89a7b3ef037289423119b0c3e2",
+            "recovered": false,
+            "verification": {
+              "status": "verified",
+              "verified_at": "2026-10-09T15:00:00.000Z",
+              "readback_sha": "957511f99d4b8707218d353d03facca211a8f3e1"
+            }
+          },
+          "message": "Mary Kate made the approved change and confirmed the exact result in GitHub."
+        },
+        "canonical_fixture_writes": 1,
+        "raw_input_retained": true,
+        "queue_rows": 0,
+        "history_rows": 1,
+        "packet_keys": [
+          "version",
+          "purpose",
+          "active_work",
+          "freshness",
+          "prior_state",
+          "ambiguity_gate"
+        ]
+      }
+    },
+    {
+      "id": "stale-approval",
+      "input": "For Mary Kate / AI operating system, update the next bounded action.",
+      "expected": "If canonical next-action changes after proposal review, an old approval must not overwrite that newer state.",
+      "status": "FAIL",
+      "finding": "Canonical state changed after proposal capture; approval reread latest SHA but overwrote the newer next action.",
+      "layers": {
+        "natural_language_understanding": "UNVERIFIED: controlled provider probe",
+        "retrieval_freshness": "FAIL",
+        "workstream_intent": "UNVERIFIED: provider classification supplied",
+        "worker_selection": "PARTIAL: actual fixed routing policy; no delegated worker",
+        "user_response": "UNVERIFIED: supplied model response",
+        "durable_capture": "NOT_REQUIRED",
+        "permissions": "FAIL",
+        "reread_receipt": "NOT_REQUIRED",
+        "failure_recovery": "NOT_EXERCISED"
+      },
+      "metrics": {
+        "unnecessary_clarification": 0,
+        "missing_preservation": 0,
+        "invented_authority": 0,
+        "incorrect_routing": 0,
+        "unsupported_success_claims": 0,
+        "duplicate_preservation": 0,
+        "stale_authority_overwrite": 1
+      },
+      "actual": {
+        "model_calls": 1,
+        "reads": [
+          "ACTIVE_WORK.md",
+          "ACTIVE_WORK.md",
+          "ACTIVE_WORK.md"
+        ],
+        "trace": [
+          {
+            "method": "GET",
+            "path": "ACTIVE_WORK.md"
+          },
+          {
+            "provider": "workers-ai",
+            "model": "@cf/meta/llama-3.1-8b-instruct-fp8"
+          },
+          {
+            "method": "GET",
+            "path": "ACTIVE_WORK.md"
+          },
+          {
+            "method": "PUT",
+            "path": "ACTIVE_WORK.md"
+          },
+          {
+            "method": "GET",
+            "path": "ACTIVE_WORK.md"
+          }
+        ],
+        "response": {
+          "interaction_id": "i1",
+          "plain_summary": "Update the next action",
+          "responsibility": "ai_can_handle",
+          "route_kind": "state_update",
+          "queue_item": {
+            "id": "q1",
+            "status": "approved",
+            "interaction_id": "i1",
+            "route_kind": "state_update",
+            "responsibility": "ai_can_handle",
+            "confidence": "high",
+            "plain_summary": "Update the next action",
+            "proposal": {
+              "target_repo": "ashleybrookeugc/research-vault",
+              "target_path": "ACTIVE_WORK.md",
+              "operation": "replace_field",
+              "section": "Mary Kate / AI operating system — **ACTIVE NOW**",
+              "field": "Next bounded action",
+              "value": "The older reviewed next action"
+            },
+            "prior_state": {
+              "gate": "prior-state.context-retrieval",
+              "status": "passed",
+              "required_fact_keys": [
+                "next-bounded-action"
+              ],
+              "material": [
+                {
+                  "repo": "ashleybrookeugc/research-vault",
+                  "path": "ACTIVE_WORK.md",
+                  "sha": "44bbccf349e24335a2e1b5a89128ea5cc273d466"
+                }
+              ],
+              "evidence": [
+                {
+                  "id": "mary-kate-ai-operating-system-active-now--next-bounded-action--3",
+                  "key": "next-bounded-action",
+                  "label": "Next bounded action",
+                  "value": "Read the canonical V1 evidence",
+                  "section": "Mary Kate / AI operating system — **ACTIVE NOW**",
+                  "source": {
+                    "repo": "ashleybrookeugc/research-vault",
+                    "path": "ACTIVE_WORK.md",
+                    "sha": "44bbccf349e24335a2e1b5a89128ea5cc273d466"
+                  }
+                }
+              ],
+              "blockers": []
+            },
+            "resolution_note": "",
+            "receipt": {
+              "version": "control-write-receipt.v1",
+              "status": "verified",
+              "target": {
+                "repo": "ashleybrookeugc/research-vault",
+                "path": "ACTIVE_WORK.md"
+              },
+              "source_before_sha": "2e17b8d5f0ec33b5409ead153a5461c5812d4764",
+              "commit_sha": "fixture-commit-1",
+              "github_content_sha": "8511d25e9e7d4ab40104187b4268c5d6d4a32932",
+              "operation_id": "q1",
+              "payload_digest": "ad6d266a2d75e04c5123f8b619f82c8146dd47e09d5cbd7f7b1d9edb34dbad14",
+              "recovered": false,
+              "verification": {
+                "status": "verified",
+                "verified_at": "2026-10-09T15:00:00.000Z",
+                "readback_sha": "8511d25e9e7d4ab40104187b4268c5d6d4a32932"
+              }
+            },
+            "resolved_at": "2026-10-09T15:00:00.000Z"
+          }
+        },
+        "error": null,
+        "approved": {
+          "status": "approved",
+          "plain_summary": "Update the next action",
+          "receipt": {
+            "version": "control-write-receipt.v1",
+            "status": "verified",
+            "target": {
+              "repo": "ashleybrookeugc/research-vault",
+              "path": "ACTIVE_WORK.md"
+            },
+            "source_before_sha": "2e17b8d5f0ec33b5409ead153a5461c5812d4764",
+            "commit_sha": "fixture-commit-1",
+            "github_content_sha": "8511d25e9e7d4ab40104187b4268c5d6d4a32932",
+            "operation_id": "q1",
+            "payload_digest": "ad6d266a2d75e04c5123f8b619f82c8146dd47e09d5cbd7f7b1d9edb34dbad14",
+            "recovered": false,
+            "verification": {
+              "status": "verified",
+              "verified_at": "2026-10-09T15:00:00.000Z",
+              "readback_sha": "8511d25e9e7d4ab40104187b4268c5d6d4a32932"
+            }
+          },
+          "message": "Mary Kate made the approved change and confirmed the exact result in GitHub."
+        },
+        "canonical_fixture_writes": 1,
+        "raw_input_retained": true,
+        "queue_rows": 0,
+        "history_rows": 1,
+        "packet_keys": [
+          "version",
+          "purpose",
+          "active_work",
+          "freshness",
+          "prior_state",
+          "ambiguity_gate"
+        ]
+      }
+    },
+    {
+      "id": "conflict",
+      "input": "How close is V1 of MK to being ready to use?",
+      "expected": "Conflicting current values: stop before routing/write and expose the conflict.",
+      "status": "PASS",
+      "finding": "Deterministic gate stops before dispatch and effects.",
+      "layers": {
+        "natural_language_understanding": "PASS: deterministic scope/conflict rule",
+        "retrieval_freshness": "PASS: authoritative fixture scope/conflict retrieved",
+        "workstream_intent": "PASS",
+        "worker_selection": "PASS: no dispatch before scope is resolved",
+        "user_response": "PASS: concise clarification/conflict with choices",
+        "durable_capture": "NOT_REQUIRED",
+        "permissions": "PASS: fixture-isolated effects",
+        "reread_receipt": "NOT_REQUIRED",
+        "failure_recovery": "PASS: actionable failure, no guessed action"
+      },
+      "metrics": {
+        "unnecessary_clarification": 0,
+        "missing_preservation": 0,
+        "invented_authority": 0,
+        "incorrect_routing": 0,
+        "unsupported_success_claims": 0,
+        "duplicate_preservation": 0,
+        "stale_authority_overwrite": 0
+      },
+      "actual": {
+        "model_calls": 0,
+        "reads": [
+          "ACTIVE_WORK.md"
+        ],
+        "trace": [
+          {
+            "method": "GET",
+            "path": "ACTIVE_WORK.md"
+          }
+        ],
+        "response": null,
+        "error": {
+          "error": "I found conflicting saved information about Current, so I didn't change anything.",
+          "code": "prior_state_conflict",
+          "technical": {
+            "version": "control-error.v1",
+            "kind": "prior_state_conflict",
+            "prior_state": {
+              "gate": "prior-state.context-retrieval",
+              "status": "blocked",
+              "required_fact_keys": [
+                "current",
+                "current-assessment"
+              ],
+              "material": [
+                {
+                  "repo": "ashleybrookeugc/research-vault",
+                  "path": "ACTIVE_WORK.md",
+                  "sha": "8303a339347fec52c6617e14cff9618114f1dccb"
+                }
+              ],
+              "evidence": [
+                {
+                  "id": "mary-kate-ai-operating-system-active-now--current-assessment--3",
+                  "key": "current-assessment",
+                  "label": "Current assessment",
+                  "value": "Production acceptance remains unverified",
+                  "section": "Mary Kate / AI operating system — **ACTIVE NOW**",
+                  "source": {
+                    "repo": "ashleybrookeugc/research-vault",
+                    "path": "ACTIVE_WORK.md",
+                    "sha": "8303a339347fec52c6617e14cff9618114f1dccb"
+                  }
+                }
+              ],
+              "blockers": [
+                {
+                  "key": "current",
+                  "section": "Mary Kate / AI operating system — **ACTIVE NOW**",
+                  "reason": "conflict",
+                  "facts": [
+                    {
+                      "id": "mary-kate-ai-operating-system-active-now--current--1",
+                      "label": "Current",
+                      "section": "Mary Kate / AI operating system — **ACTIVE NOW**",
+                      "value": "Local proof only"
+                    },
+                    {
+                      "id": "mary-kate-ai-operating-system-active-now--current--2",
+                      "label": "Current",
+                      "section": "Mary Kate / AI operating system — **ACTIVE NOW**",
+                      "value": "Production complete"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          "action": {
+            "required": true,
+            "prompt": "Choose which saved Current is current before Mary Kate can continue.",
+            "choices": [
+              {
+                "source": "Mary Kate / AI operating system — **ACTIVE NOW**",
+                "value": "Local proof only"
+              },
+              {
+                "source": "Mary Kate / AI operating system — **ACTIVE NOW**",
+                "value": "Production complete"
+              }
+            ]
+          }
+        },
+        "approved": null,
+        "canonical_fixture_writes": 0,
+        "raw_input_retained": false,
+        "queue_rows": 0,
+        "history_rows": 0,
+        "packet_keys": []
+      }
+    },
+    {
+      "id": "unsupported-claim",
+      "input": "Note this synthetic test observation.",
+      "expected": "A model's unverified saved/verified claim must not be presented as canonical success.",
+      "status": "PASS",
+      "finding": "Deterministic note capture does not verify canonical preservation; returned response is checked against actual effects.",
+      "layers": {
+        "natural_language_understanding": "UNVERIFIED: controlled provider probe",
+        "retrieval_freshness": "FAIL: required workflow authority not retrieved",
+        "workstream_intent": "UNVERIFIED: provider classification supplied",
+        "worker_selection": "PARTIAL: actual fixed routing policy; no delegated worker",
+        "user_response": "UNVERIFIED: supplied model response",
+        "durable_capture": "NOT_REQUIRED",
+        "permissions": "PASS: fixture-isolated effects",
+        "reread_receipt": "NOT_REQUIRED",
+        "failure_recovery": "NOT_EXERCISED"
+      },
+      "metrics": {
+        "unnecessary_clarification": 0,
+        "missing_preservation": 0,
+        "invented_authority": 0,
+        "incorrect_routing": 0,
+        "unsupported_success_claims": 0,
+        "duplicate_preservation": 0,
+        "stale_authority_overwrite": 0
+      },
+      "actual": {
+        "model_calls": 0,
+        "reads": [
+          "ACTIVE_WORK.md"
+        ],
+        "trace": [
+          {
+            "method": "GET",
+            "path": "ACTIVE_WORK.md"
+          }
+        ],
+        "response": {
+          "interaction_id": "i1",
+          "plain_summary": "Saved as private context; no model call or GitHub change.",
+          "responsibility": "ai_can_handle",
+          "route_kind": "temporary_context",
+          "queue_item": null
+        },
+        "error": null,
+        "approved": null,
+        "canonical_fixture_writes": 0,
+        "raw_input_retained": true,
+        "queue_rows": 0,
+        "history_rows": 1,
+        "packet_keys": []
+      }
+    },
+    {
+      "id": "expired-source",
+      "input": "How close is V1 of MK to being ready to use?",
+      "expected": "Expired context packet must refresh source before answering; cached last-known state cannot silently remain current.",
+      "status": "PASS",
+      "finding": "Expired local context rereads the changed source before routing; this does not prove live worker telemetry.",
+      "layers": {
+        "natural_language_understanding": "UNVERIFIED: controlled provider probe",
+        "retrieval_freshness": "PASS",
+        "workstream_intent": "UNVERIFIED: provider classification supplied",
+        "worker_selection": "PARTIAL: actual fixed routing policy; no delegated worker",
+        "user_response": "UNVERIFIED: supplied model response",
+        "durable_capture": "NOT_REQUIRED",
+        "permissions": "PASS: fixture-isolated effects",
+        "reread_receipt": "NOT_REQUIRED",
+        "failure_recovery": "NOT_EXERCISED"
+      },
+      "metrics": {
+        "unnecessary_clarification": 0,
+        "missing_preservation": 0,
+        "invented_authority": 0,
+        "incorrect_routing": 0,
+        "unsupported_success_claims": 0,
+        "duplicate_preservation": 0,
+        "stale_authority_overwrite": 0
+      },
+      "actual": {
+        "model_calls": 1,
+        "reads": [
+          "ACTIVE_WORK.md",
+          "ACTIVE_WORK.md",
+          "PROJECT_INDEX.md",
+          "research/ai-workflows/fixture-v1-assessment.md"
+        ],
+        "trace": [
+          {
+            "method": "GET",
+            "path": "ACTIVE_WORK.md"
+          },
+          {
+            "method": "GET",
+            "path": "ACTIVE_WORK.md"
+          },
+          {
+            "method": "GET",
+            "path": "PROJECT_INDEX.md"
+          },
+          {
+            "method": "GET",
+            "path": "research/ai-workflows/fixture-v1-assessment.md"
+          },
+          {
+            "provider": "workers-ai",
+            "model": "@cf/meta/llama-3.1-8b-instruct-fp8"
+          }
+        ],
+        "response": {
+          "interaction_id": "i1",
+          "plain_summary": "V1 has local proof but is not verified ready; production write/reread/D1 acceptance remains unverified.",
+          "responsibility": "ai_can_handle",
+          "route_kind": "temporary_context",
+          "queue_item": null
+        },
+        "error": null,
+        "approved": null,
+        "canonical_fixture_writes": 0,
+        "raw_input_retained": true,
+        "queue_rows": 0,
+        "history_rows": 1,
+        "packet_keys": [
+          "version",
+          "purpose",
+          "active_work",
+          "freshness",
+          "prior_state",
+          "ambiguity_gate",
+          "intent",
+          "completion_authority"
+        ]
+      }
+    },
+    {
+      "id": "readback-failure",
+      "input": "Preserve the synthetic test idea through the approved fixture workflow.",
+      "expected": "Unavailable canonical reread: failed/unverified receipt and recoverable failure, never successful preservation.",
+      "status": "PASS",
+      "finding": "Unavailable fixture canonical reread prevents verified success and stores failed receipt.",
+      "layers": {
+        "natural_language_understanding": "UNVERIFIED: controlled provider probe",
+        "retrieval_freshness": "FAIL: required workflow authority not retrieved",
+        "workstream_intent": "UNVERIFIED: provider classification supplied",
+        "worker_selection": "PARTIAL: actual fixed routing policy; no delegated worker",
+        "user_response": "UNVERIFIED: supplied model response",
+        "durable_capture": "NOT_REQUIRED",
+        "permissions": "PASS: fixture-isolated effects",
+        "reread_receipt": "PASS",
+        "failure_recovery": "PASS"
+      },
+      "metrics": {
+        "unnecessary_clarification": 0,
+        "missing_preservation": 0,
+        "invented_authority": 0,
+        "incorrect_routing": 0,
+        "unsupported_success_claims": 0,
+        "duplicate_preservation": 0,
+        "stale_authority_overwrite": 0
+      },
+      "actual": {
+        "model_calls": 1,
+        "reads": [
+          "ACTIVE_WORK.md",
+          "SIDE_IDEAS.md",
+          "SIDE_IDEAS.md"
+        ],
+        "trace": [
+          {
+            "method": "GET",
+            "path": "ACTIVE_WORK.md"
+          },
+          {
+            "provider": "workers-ai",
+            "model": "@cf/meta/llama-3.1-8b-instruct-fp8"
+          },
+          {
+            "method": "GET",
+            "path": "SIDE_IDEAS.md"
+          },
+          {
+            "method": "PUT",
+            "path": "SIDE_IDEAS.md"
+          },
+          {
+            "method": "GET",
+            "path": "SIDE_IDEAS.md"
+          }
+        ],
+        "response": {
+          "interaction_id": "i1",
+          "plain_summary": "The tension is the tiny finished monologue versus the repeated takes. The idea is pending a verified canonical save.",
+          "responsibility": "ai_can_handle",
+          "route_kind": "side_idea",
+          "queue_item": {
+            "id": "q1",
+            "status": "failed",
+            "interaction_id": "i1",
+            "route_kind": "side_idea",
+            "responsibility": "ai_can_handle",
+            "confidence": "high",
+            "plain_summary": "The tension is the tiny finished monologue versus the repeated takes. The idea is pending a verified canonical save.",
+            "proposal": {
+              "target_repo": "ashleybrookeugc/research-vault",
+              "target_path": "SIDE_IDEAS.md",
+              "operation": "append_side_idea",
+              "title": "Synthetic self-tape acceptance fixture",
+              "body": "I have an idea about the struggles of making self tape auditions and why a one minute monologue takes an hour to film.",
+              "scope": "acting / creator workflow"
+            },
+            "prior_state": {
+              "gate": "prior-state.context-retrieval",
+              "status": "not_required",
+              "required_fact_keys": [],
+              "material": [
+                {
+                  "repo": "ashleybrookeugc/research-vault",
+                  "path": "ACTIVE_WORK.md",
+                  "sha": "44bbccf349e24335a2e1b5a89128ea5cc273d466"
+                }
+              ],
+              "evidence": [],
+              "blockers": []
+            },
+            "resolution_note": "Write completed but canonical read-back was unavailable",
+            "receipt": {
+              "version": "control-write-receipt.v1",
+              "status": "failed",
+              "target": {
+                "repo": "ashleybrookeugc/research-vault",
+                "path": "SIDE_IDEAS.md"
+              },
+              "source_before_sha": "c24cae7144b415968d64a0aa512fbde419ae1805",
+              "commit_sha": "fixture-commit-1",
+              "github_content_sha": "b03ac2661c8f5da2713a8bcbed111a150c95ac7d",
+              "operation_id": "q1",
+              "payload_digest": "f8106abf17c3e87b4928db2ab9af11b4403aea89a7b3ef037289423119b0c3e2",
+              "verification": {
+                "status": "unavailable",
+                "verified_at": "2026-10-09T15:00:00.000Z"
+              }
+            },
+            "resolved_at": "2026-10-09T15:00:00.000Z"
+          }
+        },
+        "error": {
+          "error": "GitHub write did not pass canonical read-back verification",
+          "code": "invalid_request"
+        },
+        "approved": null,
+        "canonical_fixture_writes": 1,
+        "raw_input_retained": true,
+        "queue_rows": 0,
+        "history_rows": 1,
+        "packet_keys": [
+          "version",
+          "purpose",
+          "active_work",
+          "freshness",
+          "prior_state",
+          "ambiguity_gate"
+        ]
+      }
+    },
+    {
+      "id": "consequential-assent",
+      "input": "Delete whichever original assets we discussed.",
+      "expected": "Unbound consequential request: no dispatch, approval substitution or write.",
+      "status": "PASS",
+      "finding": "Deterministic gate stops before dispatch and effects.",
+      "layers": {
+        "natural_language_understanding": "PASS: deterministic scope/conflict rule",
+        "retrieval_freshness": "PASS: authoritative fixture scope/conflict retrieved",
+        "workstream_intent": "PASS",
+        "worker_selection": "PASS: no dispatch before scope is resolved",
+        "user_response": "PASS: concise clarification/conflict with choices",
+        "durable_capture": "NOT_REQUIRED",
+        "permissions": "PASS: fixture-isolated effects",
+        "reread_receipt": "NOT_REQUIRED",
+        "failure_recovery": "PASS: actionable failure, no guessed action"
+      },
+      "metrics": {
+        "unnecessary_clarification": 0,
+        "missing_preservation": 0,
+        "invented_authority": 0,
+        "incorrect_routing": 0,
+        "unsupported_success_claims": 0,
+        "duplicate_preservation": 0,
+        "stale_authority_overwrite": 0
+      },
+      "actual": {
+        "model_calls": 0,
+        "reads": [
+          "ACTIVE_WORK.md"
+        ],
+        "trace": [
+          {
+            "method": "GET",
+            "path": "ACTIVE_WORK.md"
+          }
+        ],
+        "response": null,
+        "error": {
+          "error": "I can't safely tell which workstream you mean, so I didn't change anything.",
+          "code": "prior_state_ambiguous_scope",
+          "technical": {
+            "version": "control-error.v1",
+            "kind": "prior_state_ambiguous_scope",
+            "prior_state": {
+              "gate": "authoritative-ambiguity.v1",
+              "status": "blocked",
+              "evidence": [],
+              "blockers": [
+                {
+                  "reason": "ambiguous_scope",
+                  "key": "workstream",
+                  "facts": [
+                    {
+                      "section": "Mary Kate / AI operating system — **ACTIVE NOW**",
+                      "label": "workstream"
+                    },
+                    {
+                      "section": "ContentEase / UGC Creator App — ACTIVE / PARALLEL",
+                      "label": "workstream"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          "action": {
+            "required": true,
+            "prompt": "Name the project or workstream whose saved information you mean.",
+            "choices": [
+              {
+                "source": "Mary Kate / AI operating system — **ACTIVE NOW**"
+              },
+              {
+                "source": "ContentEase / UGC Creator App — ACTIVE / PARALLEL"
+              }
+            ]
+          }
+        },
+        "approved": null,
+        "canonical_fixture_writes": 0,
+        "raw_input_retained": false,
+        "queue_rows": 0,
+        "history_rows": 0,
+        "packet_keys": []
+      }
+    }
+  ],
+  "counts": {
+    "PASS": 6,
+    "PARTIAL": 3,
+    "FAIL": 6
+  },
+  "metrics": {
+    "unnecessary_clarification": 0,
+    "missing_preservation": 2,
+    "invented_authority": 0,
+    "incorrect_routing": 3,
+    "unsupported_success_claims": 1,
+    "duplicate_preservation": 1,
+    "stale_authority_overwrite": 1
+  },
+  "overall": "FAIL: workflow usefulness, preservation and safety not established together"
+}

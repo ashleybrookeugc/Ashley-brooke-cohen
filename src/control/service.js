@@ -47,6 +47,10 @@ const readOnlyAssessment=text=>{
     && /\b(?:v1|first version|status|stage|stand|complete|completed|completion|finished|unfinished|ready|readiness|left|remain|remains|remaining|outstanding|gaps?|missing|progress)\b/.test(words)
     && !/\b(?:update|set|change|mark|approve|publish|ship|post|send|delete|spend|pay|purchase|transfer|remove|deploy|merge|buy|upload|execute|run|resume|continue|advance)\b/.test(words);
 };
+// Advice about whether to do something is not the instruction to do it.
+// Mixed questions followed by an explicit command retain normal action gates.
+const readOnlyAdvice=text=>/^should\b/i.test(String(text).trim())
+  && !/[?!]\s*\S|;|\band\s+(?:then\s+)?(?:deploy|publish|send|delete|approve|update|change|run|execute|merge)\b/i.test(text);
 const sectionScore=(text,section)=>{
   const heading=section.split(' — ')[0].trim();
   const words=textWords(heading).trim().split(' ').filter(Boolean);
@@ -177,7 +181,7 @@ export function controlErrorResponse(error) {
       action:{required:true,prompt:workstream?`Confirm the current ${field} for ${workstream} in Project Truth before Mary Kate can continue.`:'Provide or confirm the missing current information before Mary Kate can continue.'}
     };
   }
-  return {error:error?.message||'Control request failed',code:error?.code||'invalid_request',...(error?.interaction_id?{interaction_id:error.interaction_id,technical:{interaction_id:error.interaction_id,diagnostic:error.diagnostic}}:{})};
+  return {error:error?.message||'Control request failed',code:error?.code||'invalid_request',...(error?.capture_status?{capture_status:error.capture_status}:{}),...(error?.interaction_id?{interaction_id:error.interaction_id,technical:{interaction_id:error.interaction_id,diagnostic:error.diagnostic}}:{})};
 }
 export function createControlTaskPacket(snapshot) {
   return {
@@ -187,6 +191,7 @@ export function createControlTaskPacket(snapshot) {
     freshness:snapshot.context,
     prior_state:snapshot.prior_state,
     ambiguity_gate:snapshot.ambiguity_gate,
+    ...(snapshot.recent_conversation?{recent_conversation:snapshot.recent_conversation}:{}),
     ...(snapshot.intent?{intent:snapshot.intent}:{}),
     ...(snapshot.completion_authority?{completion_authority:snapshot.completion_authority}:{})
   };
@@ -235,15 +240,18 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
         const detail=ambiguity_gate.reason==='unbound_workstream_request'?'Mary Kate found more than one workstream and could not bind this request to one current workstream, so it changed nothing.':'Mary Kate could not bind this request to one current workstream, so it changed nothing.';
         throw new PriorStateGateError('ambiguous_scope',detail,{gate:'authoritative-ambiguity.v1',status:'blocked',evidence:[],blockers:[{reason:'ambiguous_scope',key:'workstream',facts:ambiguity_gate.candidates.map(section=>({section,label:'workstream'}))}]});
       }
-      const readOnly=readOnlyAssessment(text);
+      const readOnly=readOnlyAssessment(text)||readOnlyAdvice(text);
       if(!Array.isArray(requiredFactKeys)) throw new PriorStateGateError('invalid_request','required_fact_keys must be an array of strings');
       const assessmentKeys=readOnly&&maryKateSection(ambiguity_gate.section)?[...new Set((packet?.facts||[]).filter(fact=>fact.section===ambiguity_gate.section&&['current-stage','current','current-assessment'].includes(fact.key)).map(fact=>fact.key))]:[];
       const scoped=requestedFacts(text,packet?.facts||[],initial.projects,[...requiredFactKeys,...(readOnly&&maryKateSection(ambiguity_gate.section)?assessmentKeys.length?assessmentKeys:['current-stage']:[])]);
       const snapshot=scoped.length?await state({requiredFacts:scoped}):initial;
       snapshot.ambiguity_gate=ambiguity_gate;
-      if(readOnly) snapshot.intent='read_only_assessment';
+      if(readOnly) snapshot.intent=readOnlyAssessment(text)?'read_only_assessment':'read_only_advice';
       requirePriorState(snapshot.prior_state);
       if(readOnly&&maryKateSection(ambiguity_gate.section)) snapshot.completion_authority=await retrieveCompletionAuthority(github);
+      // Existing private interaction storage is the conversation source. Do
+      // not infer permission from these turns or attach unrelated UI history.
+      if(store.listRecentConversation) snapshot.recent_conversation=await store.listRecentConversation();
       let candidate;
       try {
         const output=await router.route(text.trim(),createControlTaskPacket(snapshot));
@@ -255,8 +263,9 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
         }
       } catch(error) {
         if(error.diagnostic?.version==='control-routing-failure.v1') {
-          const failed=await store.addInteraction({raw_text:'[routing failed; request content omitted]',route:{route_kind:'temporary_context',responsibility:'ai_can_handle',confidence:'low',plain_summary:'Routing failed. No change was saved.',diagnostic:error.diagnostic,outcome_status:'failed'}});
+          const failed=await store.addInteraction({raw_text:text.trim(),route:{route_kind:'temporary_context',responsibility:'ai_can_handle',confidence:'low',plain_summary:'Routing failed. Original retained privately; no canonical change was saved.',diagnostic:error.diagnostic,outcome_status:'failed'}});
           error.interaction_id=failed.id;
+          error.capture_status='retained_private';
         }
         throw error;
       }
@@ -267,6 +276,13 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
         throw error;
       }
       const route=enforceResolvedWriteTarget({...candidate,prior_state:snapshot.prior_state,...(snapshot.completion_authority?{retrieval_authority:{source:snapshot.completion_authority.source,routing_source:snapshot.completion_authority.routing_source}}:{})},snapshot.prior_state,ambiguity_gate);
+      // Restore the existing conversation-acceptance branch's reviewed-version
+      // guard. Model output never supplies this approval authority.
+      if(route.proposal) {
+        const reviewed=route.proposal.target_path==='ACTIVE_WORK.md'?snapshot.source:await github.readFile(route.proposal.target_repo,route.proposal.target_path);
+        if(!reviewed.sha) throw new CanonicalWriteError('canonical_review_missing','Mary Kate could not verify the proposal source version. Nothing was queued.');
+        route.proposal.reviewed_sha=reviewed.sha;
+      }
       const interaction=await store.addInteraction({raw_text:text.trim(),route});
       let item=null;
       if(route.proposal) item=await store.addQueueItem({interaction_id:interaction.id,...route});
@@ -290,6 +306,11 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
         if(!commit_sha) throw new CanonicalWriteError('canonical_provenance_unavailable','Mary Kate found the prior change but could not verify its GitHub provenance. Nothing new was written.',502);
       } else {
         if(item.status==='approved') throw new CanonicalWriteError('canonical_receipt_not_verified','Mary Kate has an operational receipt but GitHub does not verify this change. Nothing new was written.');
+        if(!item.proposal.reviewed_sha) throw new CanonicalWriteError('canonical_review_missing','Mary Kate cannot verify the source version reviewed for this pending approval. Prepare a fresh proposal before approving. Nothing was written.');
+        if(current.sha!==item.proposal.reviewed_sha) {
+          if(target.path==='ACTIVE_WORK.md') await store.invalidateContextPacket('active-work.v1');
+          throw new CanonicalWriteError('canonical_review_stale','Project Truth changed after this proposal was prepared. Review a fresh proposal before approving. Nothing was written.');
+        }
         const canonical=applyProposal(stripMarker(current.content),item.proposal);
         const operation={version:'control-write-operation.v1',operation_id:item.id,payload_digest,expected_prior_sha:current.sha,target_repo:target.repo,target_path:target.path,content_digest:await hash(canonical)};
         updated=canonical.trimEnd()+'\n\n'+markerStart+encodeMarker(operation)+markerEnd+'\n';
@@ -322,9 +343,22 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
     }
   };
 }
+function recentConversation(rows) {
+  const turns=[];let length=0,truncated=rows.length>12;
+  // Keep whole interaction pairs. Never cut the correction out of a turn.
+  for(const row of rows.slice(-12).reverse()) {
+    const user=row.raw_text,assistant=row.plain_summary||row.route?.plain_summary;
+    if(typeof user!=='string'||typeof assistant!=='string') continue;
+    if(length+user.length+assistant.length>24000){truncated=true;break;}
+    length+=user.length+assistant.length;
+    turns.unshift({role:'user',content:user},{role:'assistant',content:assistant});
+  }
+  return {source:'private_control_interactions',turns,truncated,permission_authority:false};
+}
 export function createD1Store(db,{id=()=>crypto.randomUUID(),now=()=>new Date().toISOString()}={}) {
   const parse=row=>row?{...row,proposal:row.proposal_json?JSON.parse(row.proposal_json):null,route:row.route_json?JSON.parse(row.route_json):null,receipt:row.technical_receipt_json?JSON.parse(row.technical_receipt_json):null}:null;
   return {
+    async listRecentConversation(){const rows=(await db.prepare('SELECT rowid AS sequence,raw_text,plain_summary FROM control_interactions ORDER BY rowid DESC LIMIT ?').bind(13).all()).results||[];return recentConversation(rows.reverse());},
     async getContextPacket(key){const row=await db.prepare('SELECT payload_json FROM control_context_packets WHERE packet_key=? AND invalidated_at IS NULL AND expires_at>?').bind(key,now()).first();return row?JSON.parse(row.payload_json):null;},
     async putContextPacket(key,packet){await db.prepare('INSERT INTO control_context_packets (packet_key,payload_json,created_at,expires_at,invalidated_at) VALUES (?,?,?,?,NULL) ON CONFLICT(packet_key) DO UPDATE SET payload_json=excluded.payload_json,created_at=excluded.created_at,expires_at=excluded.expires_at,invalidated_at=NULL').bind(key,JSON.stringify(packet),packet.created_at,packet.expires_at).run();},
     async invalidateContextPacket(key){await db.prepare('UPDATE control_context_packets SET invalidated_at=? WHERE packet_key=?').bind(now(),key).run();},
@@ -339,6 +373,7 @@ export function createD1Store(db,{id=()=>crypto.randomUUID(),now=()=>new Date().
 export function createMemoryStore({now=()=>new Date().toISOString()}={}) {
   const interactions=[],items=[],packets=new Map();
   return {
+    async listRecentConversation(){return recentConversation(interactions.slice(-13));},
     async getContextPacket(key){const packet=packets.get(key);if(!packet||packet.invalidated_at||Date.parse(packet.expires_at)<=Date.parse(now()))return null;return structuredClone(packet);},
     async putContextPacket(key,packet){packets.set(key,structuredClone(packet));},
     async invalidateContextPacket(key){const packet=packets.get(key);if(packet)packet.invalidated_at=now();},
@@ -350,3 +385,4 @@ export function createMemoryStore({now=()=>new Date().toISOString()}={}) {
     async listHistory(limit){return interactions.slice(-limit).reverse().map(row=>{const item=items.find(x=>x.interaction_id===row.id);return {...row,outcome_status:row.route?.outcome_status||item?.status||'captured',diagnostic:row.route?.diagnostic||null,resolved_at:item?.resolved_at||null,receipt:item?.receipt||null};});}
   };
 }
+
