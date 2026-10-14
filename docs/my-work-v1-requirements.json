@@ -1,10 +1,11 @@
 {
-  "version": "my-work-v1.requirements.v1",
+  "version": "mary-kate-command-center-v1.requirements.v1",
   "authority": [
     "research/ai-workflows/2026-10-04-mary-kate-founder-intent-decomposition.md#plain-language-state-projection",
     "research/ai-workflows/2026-10-04-mary-kate-v1-completion-reuse-gap-matrix.md",
     "shared-capabilities/ai-workflows/SECOND_BRAIN_CONTROL_PLANE.md",
-    "shared-capabilities/ai-workflows/failures/2026-10-13-my-work-authority-enforcement-release-failure.md"
+    "shared-capabilities/ai-workflows/failures/2026-10-13-my-work-authority-enforcement-release-failure.md",
+    "shared-capabilities/ai-workflows/LEARNED_CHANGE_LOG.md#2026-10-13-command-center-project-lifecycle-focus-workers-and-persistent-chat"
   ],
   "requirements": [
     {"id":"authority_retrieved","authority":"Project Truth authority map","acceptance_test":"test/my-work-acceptance-gate.test.js"},
@@ -13,6 +14,13 @@
     {"id":"technical_details_secondary","authority":"Second Brain default presentation","acceptance_test":"test/my-work-ui.test.js"},
     {"id":"handoff_preserved","authority":"Second Brain worker handoff verification","acceptance_test":"test/my-work-acceptance-gate.test.js"},
     {"id":"missing_source_safe","authority":"My Work enforcement failure","acceptance_test":"test/my-work-projection.test.js"},
-    {"id":"independent_acceptance_required","authority":"My Work enforcement failure","acceptance_test":"test/my-work-acceptance-gate.test.js"}
+    {"id":"independent_acceptance_required","authority":"My Work enforcement failure","acceptance_test":"test/my-work-acceptance-gate.test.js"},
+    {"id":"command_center_scope","authority":"Original Mary Kate Command Center intent","acceptance_test":"test/command-center-v1.test.js"},
+    {"id":"persistent_chat","authority":"Command Center persistent chat clarification","acceptance_test":"test/my-work-ui.test.js"},
+    {"id":"priorities_separate","authority":"Command Center state-model clarification","acceptance_test":"test/command-center-v1.test.js"},
+    {"id":"all_projects_retained","authority":"Command Center project-lifecycle clarification","acceptance_test":"test/command-center-v1.test.js"},
+    {"id":"workers_separate","authority":"Command Center worker-state clarification","acceptance_test":"test/my-work-ui.test.js"},
+    {"id":"scheduled_tasks_truthful","authority":"Command Center scheduled-work clarification","acceptance_test":"test/command-center-v1.test.js"},
+    {"id":"attention_specific","authority":"Command Center approvals and blocker clarification","acceptance_test":"test/command-center-v1.test.js"}
   ]
 }

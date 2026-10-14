@@ -27,7 +27,7 @@ test('My Work converts source records into plain-English current project cards',
   const result=buildMyWorkProjection({activeWork:active,activeSha:'a'.repeat(40)});
   const maryKate=result.work[0];
   assert.equal(result.read_only,true);
-  assert.equal(result.version,'mary-kate.my-work.v2');
+  assert.equal(result.version,'mary-kate.command-center.v1');
   assert.match(maryKate.what,/private system/i);
   assert.match(maryKate.works,/does not prove/i);
   assert.match(maryKate.blocked_or_unverified,/unverified/i);

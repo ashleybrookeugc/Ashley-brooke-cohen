@@ -9,6 +9,9 @@ test('My Work requirement contract maps every original requirement to an observa
   assert.deepEqual(contract.requirements.map(item=>item.id),MY_WORK_REQUIREMENTS.map(item=>item.id));
   assert.ok(contract.authority.some(path=>path.includes('founder-intent-decomposition')));
   assert.ok(contract.authority.some(path=>path.includes('my-work-authority-enforcement-release-failure')));
+  for(const id of ['command_center_scope','persistent_chat','priorities_separate','all_projects_retained','workers_separate','scheduled_tasks_truthful','attention_specific']) {
+    assert.ok(contract.requirements.some(item=>item.id===id),id);
+  }
 });
 
 test('a worker cannot turn narrow test results into a completion claim',()=>{
