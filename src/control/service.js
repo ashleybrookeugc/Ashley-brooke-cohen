@@ -201,6 +201,16 @@ async function retrieveCompletionAuthority(github) {
   if(!source.sha||!String(source.content||'').includes('V1 completion assessment')) throw new PriorStateGateError('missing','Mary Kate could not retrieve verified completion evidence. No change was saved.');
   return {source:{repo:WRITE_REPO,path,sha:source.sha},routing_source:{repo:WRITE_REPO,path:'PROJECT_INDEX.md',sha:index.sha},content:source.content};
 }
+function completionAssessment(authority) {
+  const match=String(authority?.content||'').match(/\*\*(\d+) rows:\*\*\s*VERIFIED\s+(\d+);\s*PARTIAL\s+(\d+);\s*IMPLEMENTED\s+—\s+UNVERIFIED\s+(\d+);\s*NOT IMPLEMENTED\s+(\d+)/i);
+  if(!match) return null;
+  const [total,verified,partial,implementedUnverified,notImplemented]=match.slice(1).map(Number);
+  if([total,verified,partial,implementedUnverified,notImplemented].some(value=>!Number.isSafeInteger(value)||value<0)) return null;
+  const unfinished=partial+implementedUnverified+notImplemented;
+  const lead=unfinished?'Not yet.':'The current indexed V1 matrix has no unfinished requirement rows.';
+  const progress=verified?`${verified} verified, ${partial} partial, ${implementedUnverified} implemented but unverified, and ${notImplemented} not implemented`:`none is verified complete; ${partial} are partial, ${implementedUnverified} are implemented but unverified, and ${notImplemented} is not implemented`;
+  return {route_kind:'temporary_context',responsibility:'ai_can_handle',confidence:'high',plain_summary:`${lead} Project Truth’s current indexed V1 matrix tracks ${total} requirements: ${progress}. Passing automated tests or loading the page does not replace the remaining live and Ashley acceptance evidence. No project change was made.`};
+}
 export function createControlService({github,router,store,now=()=>Date.now(),packetTtlMs=300000}) {
   const state = async ({refresh=false,requiredFacts=[],requiredFactKeys=[]}={}) => {
     const key='active-work.v1';
@@ -226,9 +236,9 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
         return buildMyWorkProjection({sourceStatus:'unavailable',generatedAt:new Date(now()).toISOString()});
       }
     },
-    async capture(text,{requiredFactKeys=[],contextWorkstream=null}={}) {
+    async capture(text,{requiredFactKeys=[],contextWorkstream=null,refreshContext=false}={}) {
       if(typeof text!=='string'||!text.trim()||text.length>4000) throw new Error('Message must be 1–4000 characters');
-      const initial=await state();
+      const initial=await state({refresh:refreshContext===true});
       // Scope each requested fact against the actual canonical facts, not the de-duplicated key list.
       const packet=await store.getContextPacket('active-work.v1');
       const facts=packet?.facts||[];
@@ -254,8 +264,15 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
       if(readOnly) snapshot.intent='read_only_assessment';
       requirePriorState(snapshot.prior_state);
       if(readOnly&&maryKateSection(ambiguity_gate.section)) snapshot.completion_authority=await retrieveCompletionAuthority(github);
-      let candidate;
-      try {
+      // A Command Center V1-status question has a canonical indexed answer.
+      // Keep this narrow read-only path independent of a model's ability to
+      // emit the control-route schema; all broader conversation still routes
+      // through the existing policy adapter and gates below.
+      let candidate=contextWorkstream==='mary-kate-command-center'&&readOnly&&maryKateSection(ambiguity_gate.section)
+        ? completionAssessment(snapshot.completion_authority)
+        : null;
+      if(candidate) candidate=validateRoute(candidate);
+      else try {
         const output=await router.route(text.trim(),createControlTaskPacket(snapshot));
         try {candidate=validateRoute(output);} catch(error) {
           error.code='routing_contract_invalid';error.status=422;

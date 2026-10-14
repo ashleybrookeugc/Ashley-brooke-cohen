@@ -28,6 +28,7 @@ test('Mary Kate chat remains available from anywhere through the existing guarde
   assert.match(page,/<textarea[^>]+id="chat-input"/);
   assert.match(page,/\/api\/control\/interactions/);
   assert.match(page,/context_workstream:'mary-kate-command-center'/);
+  assert.match(page,/refresh_context:true/);
   assert.match(page,/No project change happens without the existing approval checks/);
 });
 
