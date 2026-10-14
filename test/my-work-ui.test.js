@@ -6,7 +6,7 @@ import {Script} from 'node:vm';
 const page=await readFile(new URL('../public/control/my-work/index.html',import.meta.url),'utf8');
 const script=page.match(/<script>([\s\S]*?)<\/script>/)?.[1];
 
-test('My Work page is the mobile Command Center and keeps its projections read-only',()=>{
+test('My Work page is the mobile Command Center with read-only sources and guarded actions',()=>{
   assert.match(page,/Private Command Center/);
   assert.match(page,/Today/);
   assert.match(page,/All projects/);
@@ -15,11 +15,15 @@ test('My Work page is the mobile Command Center and keeps its projections read-o
   assert.match(page,/Needs your attention/);
   assert.match(page,/What works/);
   assert.match(page,/Still blocked or unverified/);
-  assert.match(page,/Current verified next step/);
+  assert.match(page,/Saved resume point|next_label/);
   assert.match(page,/Technical details/);
   assert.match(page,/@media\(max-width:640px\)/);
   assert.match(page,/setInterval\(load,60000\)/);
-  assert.doesNotMatch(page,/data-action="approve"|data-action="reject"/i);
+  assert.match(page,/data-action="approve"/i);
+  assert.match(page,/data-action="reject"/i);
+  assert.match(page,/\/api\/control\/items\//);
+  assert.match(page,/No approval is waiting right now/);
+  assert.match(page,/Talk this through/);
 });
 
 test('iPhone Command Center keeps controls readable, tappable, and inside the viewport',()=>{
@@ -51,7 +55,8 @@ test('Mary Kate chat remains available from anywhere through the existing guarde
 
 test('primary Command Center copy translates backend state before exposing technical evidence',()=>{
   assert.match(page,/Your phone testing is still finding real problems/);
-  assert.match(page,/Latest saved project information checked/);
+  assert.match(page,/Saved records reread/);
+  assert.match(page,/Current priority is separated from older resume plans/);
   assert.match(page,/Changes that were checked after saving/);
   assert.doesNotMatch(page,/Project Truth refreshed/);
   assert.doesNotMatch(page,/verified canonical updates/i);

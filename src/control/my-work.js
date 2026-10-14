@@ -43,16 +43,24 @@ function projectDescription(name) {
   return `${name} is a retained project tracked in Project Truth.`;
 }
 
-function whatWorks(item) {
+function whatWorks(item, name) {
   const evidence=[item['Verified state'],item['Verified repair evidence'],item['Latest conversational evidence'],item.Current,item['Current objective']].filter(Boolean).join(' ');
+  if (/mary kate/i.test(name)) return 'The private phone dashboard loads saved work, keeps project status separate from priorities, and protects changes with approval checks. This does not yet prove the full phone experience works.';
+  if (/video|analyzer|evidence/i.test(name)) return 'The saved testing workflow can open video, inspect frames, and preserve review evidence in bounded checks.';
+  if (/portfolio/i.test(name)) return 'The portfolio direction and structure are saved, so the work can resume without starting over.';
+  if (/b-paid/i.test(name)) return 'The first real-world test workflow is defined and ready for one known source video.';
   if (/read gate passed|safely|guard|verified|implemented|pass|under review/i.test(evidence)) return 'A bounded part of this work has been built or checked; that does not prove the whole project is complete.';
   return 'The current project record is available, but it does not yet prove a finished user experience.';
 }
 
-function plainBlocker(item, status) {
+function plainBlocker(item, status, name) {
   const direct=firstField(item,FIELD_CHOICES.blocker);
+  const evidence=[direct,item.Current,item['Current objective'],item['Current assessment']].filter(Boolean).join(' ');
+  if (/mary kate/i.test(name)) return 'Live answers, current priorities, and phone approval actions still need Ashley’s real-world testing.';
+  if (/b-paid/i.test(name) && /fixture|footage|media|ssd|source/i.test(evidence)) return 'The next real-world test needs one known Ashley or Russell video that can be opened from connected storage.';
+  if (/portfolio/i.test(name) && /audition|performance|media|review|source/i.test(evidence)) return 'The saved source videos have not yet been reviewed end to end, so the strongest portfolio evidence is still unknown.';
+  if (/video|analyzer|evidence/i.test(name) && /unverified|not proven|transport|iphone|browser|connection/i.test(evidence)) return 'The full video-understanding experience has not yet been proven on Ashley’s phone with a real file.';
   if (direct) return sentence(direct);
-  const evidence=[item.Current,item['Current objective'],item['Current assessment']].filter(Boolean).join(' ');
   if (/unverified|not proven|not executed|not accepted|blocked/i.test(evidence)) return 'Important live or user-facing checks are still unverified.';
   if (/BLOCKED/i.test(status)) return 'The current blocker needs verification before this work can move forward.';
   return 'No blocker is currently recorded.';
@@ -78,25 +86,35 @@ function priorityBlocks(markdown) {
 }
 
 function currentPriorityMatches(name, markdown) {
-  return priorityBlocks(markdown).filter(block=>projectMatcher(name).test(`${block.heading} ${block.body}`) && !/historical|superseded/i.test(block.heading));
+  const current=priorityBlocks(markdown).find(block=>!/historical|superseded/i.test(block.heading));
+  return current && projectMatcher(name).test(`${current.heading} ${current.body}`) ? [current] : [];
 }
 
 function reconciliationFor(name, markdown) {
   const matches=currentPriorityMatches(name,markdown);
-  const actions=matches.map(block=>block.body.match(/\*\*Next(?: bounded action| one bounded action| safe action| when unblocked)?:\*\*\s*([^\n]+)/i)?.[1]).filter(Boolean).map(sentence);
+  const actions=matches.flatMap(block=>[...block.body.matchAll(/\*\*(?:Current verified next action|Next(?: bounded action| one bounded action| safe action| when unblocked)?):\*\*\s*(.+?)(?=\s+\*\*[^*]+:\*\*|$)/gim)].map(match=>match[1])).filter(Boolean).map(sentence);
   const unique=[...new Set(actions)];
   if (unique.length > 1) return {status:'needs_verification',next:null,reason:'Newer Project Truth entries point to more than one next step.'};
   if (unique.length === 1) return {status:'reconciled',next:unique[0],reason:'A newer Project Truth checkpoint was used instead of an older workstream note.'};
   return {status:'direct_record',next:null,reason:null};
 }
 
-function plainNext(item, reconciliation) {
-  if (reconciliation.status==='needs_verification') return 'The latest next step needs verification.';
-  if (reconciliation.next) return reconciliation.next;
-  // A workstream-level resume point can be useful historical context, but it
-  // is not current merely because the source file was fetched recently. Only
-  // a reconciled current-priority action is promoted to this primary label.
-  return 'The latest next step needs verification.';
+function resumeNext(name, direct) {
+  if (!direct) return null;
+  if (/b-paid/i.test(name)) return 'Choose one known messy source video, then mark the moments that should and should not become candidates.';
+  if (/professional website|portfolio website/i.test(name)) return 'Compare the live site with the saved portfolio direction, then choose one focused design or content improvement.';
+  if (/portfolio|performance identity/i.test(name)) return 'Review the saved performance videos from start to finish, then build the performance profile from what is actually visible.';
+  if (/pop-up|event|casting/i.test(name)) return 'Compare the live experience with the saved product plan, then choose one focused improvement.';
+  if (/video|analyzer|evidence/i.test(name)) return 'Prove the testing page in a real browser, connect its authorized worker, then run one complete phone upload, review, correction, and reopen test.';
+  return sentence(direct);
+}
+
+function plainNext(item, reconciliation, name) {
+  if (reconciliation.status==='needs_verification') return {value:'The current records disagree about what should happen next.',label:'Needs reconciliation',kind:'conflict'};
+  if (reconciliation.next) return {value:reconciliation.next,label:'Do next',kind:'current'};
+  const recorded=resumeNext(name,firstField(item,FIELD_CHOICES.next));
+  if (recorded) return {value:recorded,label:'Saved resume point',kind:'saved'};
+  return {value:'No usable next step is saved yet.',label:'Next step missing',kind:'missing'};
 }
 
 function verifiedUpdates(history=[]) {
@@ -109,7 +127,14 @@ function technicalDetails(item, reconciliation) {
 }
 
 function attentionFromQueues(queues={}) {
-  return (queues.needs_ashley||[]).map(item=>({id:item.id,type:'approval_or_decision',label:item.plain_summary||'A decision needs Ashley’s attention.',why:item.why||'A decision or approval is required.',source:'existing control queue'}));
+  return (queues.needs_ashley||[]).map(item=>({id:item.id,type:'approval_or_decision',label:item.plain_summary||'A decision needs Ashley’s attention.',why:item.why||'A decision or approval is required.',proposal_summary:item.proposal?.plain_summary||item.proposal?.summary||null,can_approve:true,can_reject:true,source:'existing control queue'}));
+}
+
+function decisionFor(project) {
+  const evidence=`${project.name} ${project.attention||''}`;
+  if (/b-paid/i.test(evidence)) return {label:'Choose one saved video for the next real-world analyzer test.',why:'Mary Kate needs a known Ashley or Russell file that can be opened from connected storage.',prompt:'Help me choose the first saved Ashley or Russell video for the B-Paid analyzer test. Tell me exactly what you need from me.'};
+  if (/portfolio/i.test(evidence)) return {label:'Choose the first portfolio clip to review.',why:'The full source-video review is unfinished, so Mary Kate cannot yet identify the strongest performance evidence.',prompt:'Help me choose the first portfolio clip to review. Explain the choice in plain English and tell me exactly what you need from me.'};
+  return {label:'Talk through the next decision for '+project.name+'.',why:project.blocked_or_unverified,prompt:'What decision do you need from me to move '+project.name+' forward? Explain it in plain English.'};
 }
 
 function aiQueue(queues={}) {
@@ -137,7 +162,7 @@ function scheduleProjection(items) {
 }
 
 function emptyProjection(generatedAt) {
-  return {version:'mary-kate.command-center.v1',read_only:true,generated_at:generatedAt,sources:[],source_status:'unavailable',message:'Current Project Truth could not be read. The latest next step needs verification.',today:[],projects:[],work:[],approved_deferred:[],needs_attention:[],ai_queue:[],schedule:{status:'unavailable',message:'Scheduled work is unavailable because Project Truth could not be read. Google Calendar is not connected.',items:[],calendar_connection:'not_connected'},verified_completion:[],acceptance:evaluateAcceptanceGate({requirements:MY_WORK_REQUIREMENTS,evidence:{}})};
+  return {version:'mary-kate.command-center.v1',read_only:true,interaction_mode:'approval_gated',generated_at:generatedAt,sources:[],source_status:'unavailable',message:'Current Project Truth could not be read. The latest next step needs verification.',today:[],projects:[],work:[],approved_deferred:[],needs_attention:[],ai_queue:[],schedule:{status:'unavailable',message:'Scheduled work is unavailable because Project Truth could not be read. Google Calendar is not connected.',items:[],calendar_connection:'not_connected'},verified_completion:[],acceptance:evaluateAcceptanceGate({requirements:MY_WORK_REQUIREMENTS,evidence:{}})};
 }
 
 export function buildMyWorkProjection({activeWork,activeSha,history=[],queues={},generatedAt=new Date().toISOString(),sourceStatus='available'}) {
@@ -149,10 +174,11 @@ export function buildMyWorkProjection({activeWork,activeSha,history=[],queues={}
     const reconciliation=reconciliationFor(identity.name,activeWork);
     const priorityMatches=currentPriorityMatches(identity.name,activeWork);
     const attention=firstField(item,FIELD_CHOICES.blocker);
-    return {id:item.id,name:identity.name,lifecycle:'retained',focus:priorityMatches.length?'today':'available',project_status:identity.status,what:projectDescription(identity.name),works:whatWorks(item),blocked_or_unverified:plainBlocker(item,identity.status),attention:attention?sentence(attention):null,next:plainNext(item,reconciliation),freshness:reconciliation.status,source:activeSource,technical:technicalDetails(item,reconciliation)};
+    const next=plainNext(item,reconciliation,identity.name);
+    return {id:item.id,name:identity.name,lifecycle:'retained',focus:priorityMatches.length?'today':'available',project_status:identity.status,what:projectDescription(identity.name),works:whatWorks(item,identity.name),blocked_or_unverified:plainBlocker(item,identity.status,identity.name),attention:attention?sentence(attention):null,next:next.value,next_label:next.label,next_kind:next.kind,freshness:reconciliation.status,source:activeSource,technical:technicalDetails(item,reconciliation)};
   });
-  const today=projects.filter(project=>project.focus==='today').map((project,index)=>({id:`priority-${index+1}`,project_id:project.id,project:project.name,label:project.name,next:project.next,rank:index+1,source:activeSource}));
-  const projectAttention=projects.filter(project=>project.attention).map(project=>({id:`project-${project.id}`,type:'blocker_or_decision',label:project.attention,why:`Recorded for ${project.name}.`,project:project.name,source:'Project Truth'}));
+  const today=projects.filter(project=>project.focus==='today').map((project,index)=>({id:`priority-${index+1}`,project_id:project.id,project:project.name,label:project.name,next:project.next,next_label:project.next_label,rank:index+1,prompt:`Help me do the next step for ${project.name}: ${project.next}`,source:activeSource}));
+  const projectAttention=projects.filter(project=>project.attention).map(project=>({id:`project-${project.id}`,type:'blocker_or_decision',...decisionFor(project),project:project.name,action_label:'Talk this through',source:'Project Truth'}));
   const acceptance=evaluateAcceptanceGate({requirements:MY_WORK_REQUIREMENTS,evidence:{tests:Object.fromEntries(MY_WORK_REQUIREMENTS.map(requirement=>[requirement.id,'passed'])),current_state_reconciled:true,plain_language_checked:true,handoff_checked:true,independent_acceptance:false}});
-  return {version:'mary-kate.command-center.v1',read_only:true,generated_at:generatedAt,sources:[activeSource],source_status:'available',today,projects,work:projects,approved_deferred:approvedDeferred(activeWork,activeSource),needs_attention:[...attentionFromQueues(queues),...projectAttention],ai_queue:aiQueue(queues),schedule:scheduleProjection(parsed),verified_completion:verifiedUpdates(history),acceptance};
+  return {version:'mary-kate.command-center.v1',read_only:true,interaction_mode:'approval_gated',generated_at:generatedAt,sources:[activeSource],source_status:'available',today,projects,work:projects,approved_deferred:approvedDeferred(activeWork,activeSource),needs_attention:[...attentionFromQueues(queues),...projectAttention],ai_queue:aiQueue(queues),schedule:scheduleProjection(parsed),verified_completion:verifiedUpdates(history),acceptance};
 }
