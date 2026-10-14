@@ -188,9 +188,33 @@ export function createControlTaskPacket(snapshot) {
     prior_state:snapshot.prior_state,
     ambiguity_gate:snapshot.ambiguity_gate,
     ...(snapshot.intent?{intent:snapshot.intent}:{}),
-    ...(snapshot.completion_authority?{completion_authority:snapshot.completion_authority}:{})
+    ...(snapshot.completion_authority?{completion_authority:snapshot.completion_authority}:{}),
+    ...(snapshot.conversation_history?.length?{conversation_history:snapshot.conversation_history}:{})
   };
 }
+
+export function normalizeConversationHistory(value) {
+  if(value==null) return [];
+  if(!Array.isArray(value)) throw new PriorStateGateError('invalid_request','conversation_history must be an array');
+  if(value.length>12) throw new PriorStateGateError('invalid_request','A conversation can contain at most 12 recent messages');
+  return value.map(message=>{
+    if(!message||!['user','assistant'].includes(message.role)||typeof message.text!=='string') throw new PriorStateGateError('invalid_request','Conversation messages require a user or assistant role and text');
+    const text=message.text.trim();
+    if(!text||text.length>2000) throw new PriorStateGateError('invalid_request','Conversation messages must be 1–2000 characters');
+    return {role:message.role,text};
+  });
+}
+
+const commandCenterOverviewQuestion=text=>/\b(?:all\s+(?:project\s+)?tasks?|prioriti(?:ze|zed|zation|es)|time management|what should i (?:do|focus on)|today(?:'s)? (?:work|tasks?|priorities)|across (?:my|all) projects?)\b/i.test(normalizedInput(text));
+const conversationWorkstream=(history,facts)=>{
+  for(let index=history.length-1;index>=0;index--) {
+    if(history[index].role!=='user') continue;
+    const resolution=resolveAuthoritativeWorkstream(history[index].text,facts);
+    if(resolution.status==='resolved') return resolution.section;
+    if(resolution.status==='ambiguous') return null;
+  }
+  return null;
+};
 async function retrieveCompletionAuthority(github) {
   // Follow the existing index instead of baking in a dated filename or verdict.
   const index=await github.readFile(WRITE_REPO,'PROJECT_INDEX.md');
@@ -253,31 +277,38 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
         return buildMyWorkProjection({sourceStatus:'unavailable',generatedAt:new Date(now()).toISOString()});
       }
     },
-    async capture(text,{requiredFactKeys=[],contextWorkstream=null,refreshContext=false}={}) {
+    async capture(text,{requiredFactKeys=[],contextWorkstream=null,refreshContext=false,conversationHistory=[],conversationId=null}={}) {
       if(typeof text!=='string'||!text.trim()||text.length>4000) throw new Error('Message must be 1–4000 characters');
+      const history=normalizeConversationHistory(conversationHistory);
+      if(conversationId!=null&&!/^[A-Za-z0-9_-]{8,80}$/.test(conversationId)) throw new PriorStateGateError('invalid_request','conversation_id is invalid');
       const initial=await state({refresh:refreshContext===true});
       // Scope each requested fact against the actual canonical facts, not the de-duplicated key list.
       const packet=await store.getContextPacket('active-work.v1');
       const facts=packet?.facts||[];
       const rawResolution=resolveAuthoritativeWorkstream(text,facts);
+      const priorConversationSection=rawResolution.status==='unknown'?conversationWorkstream(history,facts):null;
+      const commandCenterOverview=contextWorkstream==='mary-kate-command-center'&&!priorConversationSection&&commandCenterOverviewQuestion(text);
       // The persistent Command Center chat may supply its page context for an
       // otherwise unqualified read-only assessment. It never overrides an
       // explicit project, an ambiguous request, or anything action-bearing.
       const useCommandCenterContext=contextWorkstream==='mary-kate-command-center'
         && readOnlyAssessment(text)
         && rawResolution.status==='unknown';
-      const scopedText=useCommandCenterContext?`${text.trim()} For Mary Kate.`:text;
-      const ambiguity_gate=createAmbiguityGate(scopedText,facts);
+      const scopedText=priorConversationSection?`${text.trim()} Continue the conversation about ${canonicalSectionName(priorConversationSection)}.`:useCommandCenterContext?`${text.trim()} For Mary Kate.`:text;
+      const ambiguity_gate=commandCenterOverview&&rawResolution.status==='unknown'
+        ? {status:'passed',section:null,candidates:[],scope:'all_current_workstreams'}
+        : createAmbiguityGate(scopedText,facts);
       if(ambiguity_gate.status==='blocked') {
         const detail=ambiguity_gate.reason==='unbound_workstream_request'?'Mary Kate found more than one workstream and could not bind this request to one current workstream, so it changed nothing.':'Mary Kate could not bind this request to one current workstream, so it changed nothing.';
         throw new PriorStateGateError('ambiguous_scope',detail,{gate:'authoritative-ambiguity.v1',status:'blocked',evidence:[],blockers:[{reason:'ambiguous_scope',key:'workstream',facts:ambiguity_gate.candidates.map(section=>({section,label:'workstream'}))}]});
       }
-      const readOnly=readOnlyAssessment(text);
+      const readOnly=readOnlyAssessment(text)||commandCenterOverview;
       if(!Array.isArray(requiredFactKeys)) throw new PriorStateGateError('invalid_request','required_fact_keys must be an array of strings');
       const assessmentKeys=readOnly&&maryKateSection(ambiguity_gate.section)?[...new Set((packet?.facts||[]).filter(fact=>fact.section===ambiguity_gate.section&&['current-stage','current','current-assessment'].includes(fact.key)).map(fact=>fact.key))]:[];
       const scoped=requestedFacts(scopedText,facts,initial.projects,[...requiredFactKeys,...(readOnly&&maryKateSection(ambiguity_gate.section)?assessmentKeys.length?assessmentKeys:['current-stage']:[])]);
       const snapshot=scoped.length?await state({requiredFacts:scoped}):initial;
       snapshot.ambiguity_gate=ambiguity_gate;
+      snapshot.conversation_history=history;
       if(readOnly) snapshot.intent='read_only_assessment';
       requirePriorState(snapshot.prior_state);
       if(readOnly&&maryKateSection(ambiguity_gate.section)) snapshot.completion_authority=await retrieveCompletionAuthority(github);
@@ -319,7 +350,10 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
       const interaction=await store.addInteraction({raw_text:text.trim(),route});
       let item=null;
       if(route.proposal) item=await store.addQueueItem({interaction_id:interaction.id,...route});
-      return {interaction_id:interaction.id,plain_summary:route.plain_summary,...(technicalSummary?{technical_summary:technicalSummary}:{}),responsibility:route.responsibility,route_kind:route.route_kind,queue_item:item};
+      const handoff=item
+        ? {status:'tracked',can_clear:true,message:route.responsibility==='needs_ashley'?'This is saved in Needs your attention until you approve or reject it.':'This is saved under Today as work AI can handle next. It is not shown as running until a worker actually checks in.'}
+        : {status:'conversation_active',can_clear:false,message:'This is still a conversation. No task or GitHub change has been claimed.'};
+      return {interaction_id:interaction.id,conversation_id:conversationId,plain_summary:route.plain_summary,...(technicalSummary?{technical_summary:technicalSummary}:{}),responsibility:route.responsibility,route_kind:route.route_kind,queue_item:item,handoff};
     },
     async approve(id,note='') {
       const item=await store.getQueueItem(id);
