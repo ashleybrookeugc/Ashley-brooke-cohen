@@ -60,7 +60,7 @@ test('older priority checkpoints never promote unrelated projects into Today',()
   assert.equal(result.work[2].focus,'available');
 });
 
-test('queue approvals remain actionable while project blockers open a conversation',()=>{
+test('queue approvals remain actionable while project blockers stay plain and non-mutating',()=>{
   const queues={needs_ashley:[{id:'approval-1',plain_summary:'Approve the saved wording',why:'Ashley must decide.',proposal:{plain_summary:'Replace one saved status sentence.'}}]};
   const result=buildMyWorkProjection({activeWork:active,activeSha:'a',queues});
   const approval=result.needs_attention.find(item=>item.id==='approval-1');
@@ -68,8 +68,9 @@ test('queue approvals remain actionable while project blockers open a conversati
   assert.equal(approval.can_approve,true);
   assert.equal(approval.can_reject,true);
   assert.equal(approval.proposal_summary,'Replace one saved status sentence.');
-  assert.equal(blocker.action_label,'Talk this through');
-  assert.match(blocker.prompt,/plain English/i);
+  assert.equal(blocker.label,'Choose the first portfolio clip to review.');
+  assert.equal(blocker.prompt,undefined);
+  assert.equal(blocker.can_approve,undefined);
 });
 
 test('only mechanically verified canonical receipts appear as verified updates',()=>{
