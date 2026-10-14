@@ -1,0 +1,47 @@
+{
+  "version": "mary-kate.command-center.live-actions.v1",
+  "observed_date": "2026-10-14",
+  "status": "development_verified_publication_pending",
+  "reported_failure": {
+    "environment": "authenticated iPhone Safari",
+    "observed": [
+      "Older project mentions were promoted into Today.",
+      "Usable saved resume actions were replaced by a generic verification sentence.",
+      "Technical blocker language was primary copy.",
+      "No approval or decision control was available."
+    ],
+    "expected": "One current priority, plain-language project state, visible current or saved next actions, guarded controls for real approvals, and a direct way to discuss nonapproval blockers."
+  },
+  "implementation": {
+    "today_source": "newest non-historical Current execution priority checkpoint only",
+    "next_action_labels": ["Do next", "Saved resume point", "Needs reconciliation", "Next step missing"],
+    "approval_path": "/api/control/items/:id/approve|reject",
+    "blocker_path": "prefilled existing Mary Kate interaction drawer",
+    "new_database": false,
+    "new_host": false,
+    "authentication_preserved": true
+  },
+  "frozen_regressions": [
+    "older checkpoints do not create Today cards",
+    "saved resume points remain visible without being claimed current",
+    "queue approvals expose guarded Approve and Reject controls",
+    "project blockers open a plain-language conversation",
+    "technical evidence remains expandable"
+  ],
+  "verification": {
+    "focused_tests": "19/19 PASS",
+    "npm_test": "123/123 PASS",
+    "v1_requirement_gate": "14/14 requirements mapped",
+    "herdr_acceptance_scripts": "syntax PASS",
+    "worker_packaging": "PASS",
+    "github_actions": "pending publication"
+  },
+  "acceptance_boundary": {
+    "code_committed": false,
+    "ci_passed": false,
+    "merged_to_main": false,
+    "cloudflare_deployment": "not_started",
+    "authenticated_iphone_rendered": false,
+    "ashley_accepted": false
+  }
+}
