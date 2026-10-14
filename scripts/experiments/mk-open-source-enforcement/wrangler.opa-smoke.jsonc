@@ -1,0 +1,5 @@
+{
+  "name": "mk-opa-smoke-do-not-deploy",
+  "main": "opa-worker-smoke.mjs",
+  "compatibility_date": "2026-10-14"
+}

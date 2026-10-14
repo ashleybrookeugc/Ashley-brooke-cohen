@@ -1,0 +1,47 @@
+{
+  "version": "mary-kate.build-history.v1",
+  "task_id": "mk-open-source-enforcement-2026-10-14",
+  "privacy": "No footage, credentials, request payloads, or private repository contents are embedded.",
+  "stages": [
+    {
+      "id": "opa-wasm-first-run",
+      "kind": "observed_result",
+      "status": "failed",
+      "summary": "The first OPA WASM execution failed because the JavaScript SDK could not execute the Rego sprintf %q placeholder.",
+      "evidence": ["receipt:opa-wasm-v1-runtime-error"]
+    },
+    {
+      "id": "opa-wasm-incompatibility-hypothesis",
+      "kind": "hypothesis",
+      "status": "disproven",
+      "summary": "OPA WASM might be generally incompatible with this enforcement path.",
+      "based_on": ["opa-wasm-first-run"],
+      "disproven_by": ["rego-portability-correction", "opa-wasm-regression-pass"],
+      "evidence": ["receipt:opa-wasm-v1-runtime-error", "receipt:opa-wasm-v3"]
+    },
+    {
+      "id": "rego-portability-correction",
+      "kind": "implementation",
+      "status": "corrected",
+      "summary": "Replaced sprintf %q with WASM-safe concat construction and corrected the browser SDK import shape.",
+      "repairs": ["opa-wasm-first-run"],
+      "evidence": ["source:mary_kate_policy.rego", "source:opa-worker-smoke.mjs"]
+    },
+    {
+      "id": "opa-wasm-regression-pass",
+      "kind": "verified_conclusion",
+      "status": "passed",
+      "summary": "Node, OPA CLI, and OPA WASM agreed on all eight required cases plus the malformed-input control; prohibited effects executed zero times.",
+      "verifies": ["rego-portability-correction"],
+      "evidence": ["receipt:opa-comparison-v3", "receipt:opa-wasm-v3", "receipt:wrangler-dry-run-v3"]
+    },
+    {
+      "id": "cloudflare-runtime-smoke-limitation",
+      "kind": "observed_result",
+      "status": "unresolved",
+      "summary": "Wrangler dry-run packaged the Worker, but the local runtime could not start because the cloud host returned uv_interface_addresses error 1; an actual Cloudflare runtime execution remains unverified.",
+      "does_not_invalidate": ["opa-wasm-regression-pass"],
+      "evidence": ["receipt:wrangler-dry-run-v3", "receipt:wrangler-local-runtime-host-error"]
+    }
+  ]
+}

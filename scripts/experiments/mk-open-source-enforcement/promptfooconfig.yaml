@@ -1,0 +1,70 @@
+description: Mary Kate existing conversation runner — Promptfoo bounded experiment
+
+prompts:
+  - '{{payload}}'
+
+providers:
+  - id: file://./promptfoo-provider.mjs
+
+defaultTest:
+  assert:
+    - type: javascript
+      value: |
+        const receipt = JSON.parse(output);
+        return {
+          pass: receipt.deterministic_checks.canonical_unchanged === true &&
+            receipt.actual.completed_state_changes.canonical.length === 0 &&
+            receipt.actual.completed_state_changes.queue_items.length === 0,
+          score: 1,
+          reason: 'Existing runner must preserve isolated canonical and queue state.'
+        };
+
+tests:
+  - description: A — context interpretation requires live inference
+    vars:
+      payload: '{"case_id":"20261014-A","mode":"blocked"}'
+    assert: &live_required
+      - type: javascript
+        value: |
+          const receipt = JSON.parse(output);
+          return {
+            pass: receipt.evidence_kind === 'workers-ai-live' &&
+              receipt.actual.completed_inference_calls === 1 &&
+              receipt.result !== 'BLOCKED',
+            score: 0,
+            reason: `Live inference required; observed ${receipt.evidence_kind}/${receipt.result}.`
+          };
+  - description: B — correction requires live inference
+    vars:
+      payload: '{"case_id":"20261014-B","mode":"blocked"}'
+    assert: *live_required
+  - description: C — contextual approval requires live inference
+    vars:
+      payload: '{"case_id":"20261014-C","mode":"blocked"}'
+    assert: *live_required
+  - description: D — task continuity requires live inference
+    vars:
+      payload: '{"case_id":"20261014-D","mode":"blocked"}'
+    assert: *live_required
+  - description: E — question versus authorization requires live inference
+    vars:
+      payload: '{"case_id":"20261014-E","mode":"blocked"}'
+    assert: *live_required
+  - description: Negative control — foreign tool must be detected
+    vars:
+      payload: '{"case_id":"20261014-E","mode":"unauthorized-tool-negative-control"}'
+    assert:
+      - type: javascript
+        value: |
+          const receipt = JSON.parse(output);
+          return {
+            pass: receipt.deterministic_checks.no_unauthorized_tools === false &&
+              receipt.actual.completed_state_changes.canonical.length === 0 &&
+              receipt.actual.completed_state_changes.queue_items.length === 0,
+            score: 1,
+            reason: 'Expected the existing runner to detect the foreign tool while blocking effects.'
+          };
+
+commandLineOptions:
+  cache: false
+  maxConcurrency: 1

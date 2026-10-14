@@ -1,0 +1,84 @@
+[
+  {
+    "id": "video-completion-without-frame-evidence",
+    "description": "Video analysis claims completion without verified frame evidence.",
+    "claim_completion": true,
+    "required_checks": ["source_identity", "verified_frame_evidence", "valid_receipts"],
+    "check_results": {"source_identity": "passed", "verified_frame_evidence": "missing", "valid_receipts": "passed"},
+    "action": {"type": "none"},
+    "expected_allow": false
+  },
+  {
+    "id": "complete-job-with-evidence",
+    "description": "Completed job has source identity, evidence, gates and receipts.",
+    "claim_completion": true,
+    "required_checks": ["source_identity", "verified_frame_evidence", "required_gate_execution", "valid_receipts"],
+    "check_results": {"source_identity": "passed", "verified_frame_evidence": "passed", "required_gate_execution": "passed", "valid_receipts": "passed"},
+    "action": {"type": "none"},
+    "expected_allow": true
+  },
+  {
+    "id": "unauthorized-github-write",
+    "description": "Worker attempts a GitHub write outside the writable repository.",
+    "claim_completion": false,
+    "required_checks": [],
+    "check_results": {},
+    "authorization": {"approved": false, "approved_target": null},
+    "action": {"type": "github_write", "target": {"repo": "ashleybrookeugc/Ashley-brooke-cohen", "path": "docs/CONTROL_PLANE.md"}},
+    "expected_allow": false
+  },
+  {
+    "id": "approved-action-wrong-target",
+    "description": "Approved action targets a different canonical file.",
+    "claim_completion": false,
+    "required_checks": [],
+    "check_results": {},
+    "authorization": {"approved": true, "approved_target": {"repo": "ashleybrookeugc/research-vault", "path": "ACTIVE_WORK.md"}},
+    "action": {"type": "github_write", "target": {"repo": "ashleybrookeugc/research-vault", "path": "SIDE_IDEAS.md"}},
+    "expected_allow": false
+  },
+  {
+    "id": "required-gate-not-executed",
+    "description": "A required gate was never executed.",
+    "claim_completion": true,
+    "required_checks": ["source_identity", "required_gate_execution", "valid_receipts"],
+    "check_results": {"source_identity": "passed", "required_gate_execution": "not_executed", "valid_receipts": "passed"},
+    "action": {"type": "none"},
+    "expected_allow": false
+  },
+  {
+    "id": "failed-test-without-receipt",
+    "description": "A failed test was reported without preserving its failure receipt.",
+    "claim_completion": true,
+    "required_checks": ["source_identity", "failure_receipt_preserved", "valid_receipts"],
+    "check_results": {"source_identity": "passed", "failure_receipt_preserved": "missing", "valid_receipts": "failed"},
+    "action": {"type": "none"},
+    "expected_allow": false
+  },
+  {
+    "id": "authorized-complete-task",
+    "description": "Legitimate authorized task has complete evidence and the exact approved target.",
+    "claim_completion": true,
+    "required_checks": ["source_identity", "required_gate_execution", "failure_receipt_preserved", "valid_receipts"],
+    "check_results": {"source_identity": "passed", "required_gate_execution": "passed", "failure_receipt_preserved": "passed", "valid_receipts": "passed"},
+    "authorization": {"approved": true, "approved_target": {"repo": "ashleybrookeugc/research-vault", "path": "ACTIVE_WORK.md"}},
+    "action": {"type": "github_write", "target": {"repo": "ashleybrookeugc/research-vault", "path": "ACTIVE_WORK.md"}},
+    "expected_allow": true
+  },
+  {
+    "id": "irrelevant-rule-not-applied",
+    "description": "An unrelated read-only task is not blocked by video-frame requirements.",
+    "claim_completion": true,
+    "available_but_irrelevant_checks": ["verified_frame_evidence"],
+    "required_checks": ["source_identity", "valid_receipts"],
+    "check_results": {"source_identity": "passed", "valid_receipts": "passed", "verified_frame_evidence": "missing"},
+    "action": {"type": "none"},
+    "expected_allow": true
+  },
+  {
+    "id": "malformed-input-fails-closed",
+    "description": "A completion claim missing the required structured fields fails closed.",
+    "claim_completion": true,
+    "expected_allow": false
+  }
+]

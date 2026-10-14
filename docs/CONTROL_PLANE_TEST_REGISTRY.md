@@ -138,6 +138,14 @@ C still stops before model dispatch at the existing unbound-assent gate; this is
 
 **Next action after preview build:** Ashley opens the exact-commit preview's authenticated conversation-test page and runs A once. Use the returned actual receipt for independent evaluation; do not promote PR #10 before real acceptance and required authorization. Existing signed-in production login is not assumed transferable to another preview hostname. Do not ask a worker to extract/share Ashley's admin password or restart Cloudflare dashboard sign-in loops.
 
+## 2026-10-14 — Promptfoo and OPA bounded enforcement evaluation
+
+**Status: VERIFIED EXPERIMENT / NEITHER DEPENDENCY ADOPTED / LIVE AUTOMATIC ENFORCEMENT STILL OPEN.** The unchanged smallest relevant Node baseline passed 37/37. Promptfoo 0.124.1 invoked the actual frozen A–E runner: all five live cases reported BLOCKED because no authorized inference binding existed, while the foreign-tool negative control passed with zero effects. Promptfoo added no detection beyond the runner and required a 1.4 GB isolated install.
+
+OPA 1.21.2 and the existing Node enforcement received the same eight required inputs plus a malformed-input control. Node, OPA CLI and OPA WASM were each 9/9 correct; false passes/blocks were zero and prohibited effects executed zero times. Wrangler packaged the corrected OPA Worker at 272.61 KiB / 88.24 KiB gzip. Actual Worker runtime remained unverified because the cloud host blocked Wrangler local startup with `uv_interface_addresses` error 1. Initial WASM formatting and browser-export integration failures remain preserved.
+
+No production dependency or gate was replaced. Full branch suite 143/143, post-experiment relevant suite 37/37, and current-main decoded-frame suite 3/3 pass. The retrievable five-stage history preservation fixture passes 3/3. Exact report and receipt: [`2026-10-14-open-source-enforcement-report.md`](2026-10-14-open-source-enforcement-report.md) and [`test-receipts/2026-10-14-open-source-enforcement-evaluation.json`](test-receipts/2026-10-14-open-source-enforcement-evaluation.json). Decision: preserve Node alone; do not adopt Promptfoo or OPA on current evidence.
+
 
 
 

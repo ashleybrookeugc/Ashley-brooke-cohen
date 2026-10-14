@@ -1,0 +1,15 @@
+{
+  "version": "mary-kate.build-history-index.v1",
+  "records": [
+    {
+      "task_id": "mk-open-source-enforcement-2026-10-14",
+      "aliases": [
+        "automatic enforcement comparison",
+        "OPA experiment",
+        "Promptfoo experiment",
+        "Mary Kate enforcement test"
+      ],
+      "record": "build-history-record.json"
+    }
+  ]
+}

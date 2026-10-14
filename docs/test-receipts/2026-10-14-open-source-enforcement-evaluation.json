@@ -1,0 +1,99 @@
+{
+  "version": "mary-kate.open-source-enforcement-evaluation.v1",
+  "observed_at": "2026-10-14T17:23:22Z",
+  "scope": "isolated cloud development evaluation; no deployment or production mutation",
+  "source_heads": {
+    "ashleybrookeugc/research-vault": "4b145cd0533a65f368c2f829f26d1597fe1e7b2d",
+    "ashleybrookeugc/Ashley-brooke-cohen": "c7b16f825c22d09800a7bf14e893318b1c5f3025",
+    "ashleybrookeugc/ugc-creator-app": "db8324d51e478ee1b9499ea8476e28ff39254a68",
+    "conversation_fixture_branch": "9e8ec4465d3626937f4d89bfb044f35e5324ece2"
+  },
+  "baseline": {
+    "command": "node --test test/control-conversation-context.test.js test/conversation-regression-runner.test.js test/control-ambiguity-gate.test.js test/control-canonical-write.test.js test/control-routing-diagnostics.test.js test/control-workers-ai-routing.test.js",
+    "result": {"tests": 37, "passed": 37, "failed": 0, "duration_ms": 166},
+    "post_change_rerun": {"tests": 37, "passed": 37, "failed": 0, "duration_ms": 190.688678, "sha256": "5a821ba0de70bff7cbf1ace23c619ce80a1711839d947cbd9922c4ae78822372"}
+  },
+  "promptfoo": {
+    "version": "0.124.1",
+    "isolated_install": {"node_modules_bytes_human": "1.4G", "promptfoo_package_bytes_human": "33M", "top_level_package_directories": 419},
+    "execution": {"tests": 6, "passed": 1, "failed": 5, "errors": 0, "internal_duration_ms": 91, "paid_api_calls": 0, "token_usage": 0},
+    "cases": [
+      {"id": "A", "result": "BLOCKED", "reason": "No authorized non-production live inference binding; canonical and queue state unchanged."},
+      {"id": "B", "result": "BLOCKED", "reason": "No authorized non-production live inference binding; canonical and queue state unchanged."},
+      {"id": "C", "result": "BLOCKED", "reason": "No authorized non-production live inference binding; canonical and queue state unchanged."},
+      {"id": "D", "result": "BLOCKED", "reason": "No authorized non-production live inference binding; canonical and queue state unchanged."},
+      {"id": "E", "result": "BLOCKED", "reason": "No authorized non-production live inference binding; canonical and queue state unchanged."},
+      {"id": "negative-control-foreign-tool", "result": "PASS", "reason": "Existing runner detected the unauthorized tool and executed zero effects."}
+    ],
+    "raw_result_sha256": "79b991b64630e6997ea680afef3ba9a95f18890e5a9dfdde02500d65a7511651",
+    "finding": "Promptfoo added reporting and orchestration only. It detected nothing beyond the existing runner, and live conversational quality remained blocked rather than model-graded or inferred. Do not adopt."
+  },
+  "opa": {
+    "version": "1.21.2",
+    "sdk_version": "1.10.0",
+    "artifacts": {"compiler_binary_bytes": 64181524, "sdk_bytes_human": "1.1M", "policy_wasm_bytes": 139880, "worker_upload_kib": 272.61, "worker_upload_gzip_kib": 88.24},
+    "results": {
+      "cases": 9,
+      "node_correct": 9,
+      "opa_cli_correct": 9,
+      "opa_wasm_correct": 9,
+      "node_opa_agreement": 9,
+      "false_passes": 0,
+      "false_blocks": 0,
+      "denied_effects_executed": 0,
+      "node_total_decision_ms": 1.313089,
+      "opa_cli_suite_ms_including_process": 24.595141,
+      "opa_wasm_load_ms": 2.350363,
+      "opa_wasm_total_decision_ms": 0.881548
+    },
+    "case_ids": [
+      "video-completion-without-frame-evidence",
+      "complete-job-with-evidence",
+      "unauthorized-github-write",
+      "approved-action-wrong-target",
+      "required-gate-not-executed",
+      "failed-test-without-receipt",
+      "authorized-complete-task",
+      "irrelevant-rule-not-applied",
+      "malformed-input-fails-closed"
+    ],
+    "failed_experiments": [
+      {"stage": "opa-wasm-first-run", "status": "failed", "observation": "The JavaScript SDK rejected Rego sprintf %q at runtime."},
+      {"stage": "worker-first-build", "status": "failed", "observation": "The browser ESM SDK exposes a default object, not a named loadPolicy export."},
+      {"stage": "worker-local-runtime", "status": "blocked", "observation": "Wrangler local runtime could not start on the cloud host: uv_interface_addresses error 1."}
+    ],
+    "repairs": ["Use WASM-safe concat rather than sprintf %q.", "Import the browser SDK default object and call opaWasm.loadPolicy."],
+    "hashes": {
+      "cli_comparison": "16344e9c20b2be51debdce905b6145ca5bec6613d7c13a4bc34c8dfc43116288",
+      "wasm_comparison": "9f97e9f42186032445a07d3ca441967adb0c438fe02860e9adab706471bc179a",
+      "policy_wasm": "80025354568183780719a837c56c18390b5094f571b1deb0af7cb470393b46b1"
+    },
+    "finding": "OPA reproduced every existing Node decision and the wrapper blocked every prohibited effect, but it found no new failure. Packaging is compatible in a Wrangler dry-run; actual Cloudflare runtime execution remains unverified. Do not adopt for the demonstrated boundary."
+  },
+  "history_preservation": {
+    "tests": 3,
+    "passed": 3,
+    "failed": 0,
+    "stages_retained": ["failed", "disproven", "corrected", "passed", "unresolved"],
+    "fresh_session_retrieval_without_filename": true,
+    "sensitive_payloads_embedded": false
+  },
+  "regressions": {
+    "full_branch_suite": {"tests": 143, "passed": 143, "failed": 0, "duration_ms": 633.281082, "sha256": "5da2c32a7790368417c7ce0e7f81438b030853ae87cc052dfc2c516a143805ec"},
+    "current_main_video_seek": {"tests": 3, "passed": 3, "failed": 0, "duration_ms": 3236.477574, "sha256": "d0fa7bbe6b6d6cfc91d1c647bac083cf23f749444b293fdafcad55e8d414ace1"},
+    "unrelated_project_writes": 0,
+    "deployments": 0
+  },
+  "decision": {
+    "promptfoo": "reject dependency",
+    "opa": "reject dependency for current demonstrated policy boundary",
+    "combined": "not justified",
+    "implementation": "retain existing Node enforcement; preserve isolated reproducible experiment and receipts only"
+  },
+  "open": [
+    "Cases A-D still lack live inference evidence; E's known live failure has not been successfully rerun.",
+    "Contextual approval case C remains blocked before dispatch.",
+    "Actual OPA Cloudflare runtime execution was not obtained; only Node WASM and Wrangler packaging were verified.",
+    "Automatic enforcement is not complete because the live integrated conversation path is still unproven."
+  ]
+}

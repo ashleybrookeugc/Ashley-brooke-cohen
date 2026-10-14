@@ -587,3 +587,9 @@ Ashley supplied case E’s actual Workers AI receipt at 17:00:33Z, execution dig
 The action-capable model schema remained supplied despite read-only intent. Narrow repair restricts offered read-only routes to temporary_context/ai_can_handle with no proposal, clarifies referent/advice/uncertainty, retains all safety validation, and does not coerce or retry model output. This is a candidate, not a proven semantic fix. Local checks 140/140; requirements14/14; frozen fixtures unchanged. Independent review and relevant receipt excerpt: research-vault development branch `research/ai-workflows/2026-10-14-mary-kate-live-case-e.json`. **Next:** unchanged live E rerun on rebuilt PR #10 preview. No merge or production promotion.
 
 Scope: Ashley-brooke-cohen APPLIES; UGC/video hosting architecture NO_CHANGE. October14 OPEN / NOT PREVENTED.
+
+## 2026-10-14 — OPA WASM portability and cloud-runtime boundary
+
+The first OPA WASM evaluation compiled but failed in the JavaScript SDK because Rego `sprintf("%q")` was unsupported there. Replacing it with `concat` preserved the decision text and passed all nine inputs. The first Wrangler build then failed because the browser ESM package exposes a default object rather than a named `loadPolicy` export; importing the default object corrected the build. Preserve both failures: an OPA CLI pass does not prove WASM portability, and a WASM decision does not prove Worker packaging.
+
+After correction, Node, OPA CLI, and OPA WASM agreed 9/9 and the enforcement wrappers executed zero prohibited effects. Wrangler dry-run packaged 272.61 KiB / 88.24 KiB gzip. The cloud host could not start Wrangler local runtime because `uv_interface_addresses` returned error 1, so actual Cloudflare execution remains unverified. This host limitation does not invalidate the Node WASM decision run, but a dry-run must not be promoted to runtime acceptance. Because OPA found no failure missed by existing Node gates, it was not integrated.
