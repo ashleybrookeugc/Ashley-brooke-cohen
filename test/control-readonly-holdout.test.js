@@ -17,7 +17,16 @@ const document=['# Active Work','## Current execution priority',`### ${priority}
   '### ContentEase / UGC Creator App — ACTIVE / PARALLEL','**Current stage:** Review',
   '## Session handoff rule'].join('\n');
 const index='| Mary Kate current V1 completion/gap/evidence status | `research/ai-workflows/current-completion.md` | `ACTIVE_WORK.md` |';
-const completion='# V1 completion\n**canonical_for:** V1 completion assessment and next-proof selection\n\n## Count and decision\n**22 rows:** VERIFIED 0; PARTIAL 16; IMPLEMENTED — UNVERIFIED 5; NOT IMPLEMENTED 1.\n\nProduction acceptance remains unproven.';
+const completion=['# V1 completion','**canonical_for:** V1 completion assessment and next-proof selection','',
+  '1. **Intent/workstream resolver — PARTIAL.**',
+  '2. **Authoritative retrieval/reconciliation — PARTIAL.**',
+  '3. **Capability selector — NOT IMPLEMENTED.**',
+  '4. **Durable continuation — PARTIAL.**',
+  '5. **Plain-language state projection — IMPLEMENTED — UNVERIFIED.**',
+  '6. **Scenario E, bounded MEDIA — PARTIAL.**','',
+  '## Count and decision','**22 rows:** VERIFIED 0; PARTIAL 16; IMPLEMENTED — UNVERIFIED 5; NOT IMPLEMENTED 1.','',
+  'Production acceptance remains unproven.'
+].join('\n');
 const positive=Object.freeze([
   'Do you think v1 of mk is complete?',
   'Has MK reached V1 readiness?',
@@ -77,24 +86,48 @@ test('read-only assessments retrieve indexed completion authority and never queu
   }
 });
 
-test('Command Center answers the exact phone V1 question from indexed evidence without a model routing contract',async()=>{
+test('Command Center answers the exact phone V1 question in ordinary language without a model routing contract',async()=>{
   const run=setup({route_kind:'state_update',responsibility:'needs_ashley',confidence:'low'});
   await run.service.state();
   const readsBefore=run.reads.filter(path=>path==='ACTIVE_WORK.md').length;
   const result=await run.service.capture('Are you close to v1?',{contextWorkstream:'mary-kate-command-center',refreshContext:true});
   assert.equal(run.calls,0);
   assert.equal(run.reads.filter(path=>path==='ACTIVE_WORK.md').length,readsBefore+1);
+  // Frozen from Ashley's authenticated 12:43 PM phone acceptance failure:
+  // the primary answer must explain the real state rather than repeat the
+  // Project Truth matrix's engineering vocabulary.
   assert.match(result.plain_summary,/Not yet/i);
-  assert.match(result.plain_summary,/22 requirements/i);
-  assert.match(result.plain_summary,/16 (?:are )?partial/i);
-  assert.match(result.plain_summary,/5 (?:are )?implemented but unverified/i);
-  assert.match(result.plain_summary,/1 (?:is )?not implemented/i);
+  assert.match(result.plain_summary,/opens on your phone/i);
+  assert.match(result.plain_summary,/understand ordinary questions/i);
+  assert.match(result.plain_summary,/keep project information current automatically/i);
+  assert.match(result.plain_summary,/right AI worker/i);
+  assert.match(result.plain_summary,/continue after interruptions/i);
+  assert.match(result.plain_summary,/clear result that was actually checked/i);
+  assert.match(result.plain_summary,/one real task/i);
+  assert.doesNotMatch(result.plain_summary,/Project Truth|indexed|matrix|requirements|implemented but unverified|acceptance evidence|canonical|GitHub|repository|commit|SHA|routing/i);
+  assert.match(result.technical_summary,/22 total/i);
+  assert.match(result.technical_summary,/0 verified complete/i);
+  assert.match(result.technical_summary,/16 partial/i);
+  assert.match(result.technical_summary,/5 implemented but unverified/i);
+  assert.match(result.technical_summary,/1 not implemented/i);
   assert.equal(result.queue_item,null);
   assert.equal(run.writes,0);
   assert.deepEqual(await run.store.listQueues(),{needs_ashley:[],ai_can_handle:[]});
   const history=await run.store.listHistory(20);
   assert.equal(history.length,1);
   assert.equal(history[0].route.retrieval_authority.source.path,'research/ai-workflows/current-completion.md');
+});
+
+test('plain V1 gaps automatically follow changed source statuses instead of a manually maintained answer',async()=>{
+  const updated=completion
+    .replace('Intent/workstream resolver — PARTIAL','Intent/workstream resolver — VERIFIED')
+    .replace('VERIFIED 0; PARTIAL 16','VERIFIED 1; PARTIAL 15');
+  const run=setup(answer,{authority:updated});
+  const result=await run.service.capture('Are you close to v1?',{contextWorkstream:'mary-kate-command-center',refreshContext:true});
+  assert.doesNotMatch(result.plain_summary,/understand ordinary questions/i);
+  assert.match(result.plain_summary,/keep project information current automatically/i);
+  assert.match(result.technical_summary,/1 verified complete/i);
+  assert.match(result.technical_summary,/15 partial/i);
 });
 
 test('Command Center context never overrides an explicit other project or an unqualified action',async()=>{
