@@ -36,3 +36,10 @@ Sources checked2026-10-14:
 - https://developers.cloudflare.com/workers-ai/platform/pricing/
 - https://www.librechat.ai/docs/features/agents
 - https://docs.openwebui.com/alternatives/chatgpt/
+
+
+## Founder-supplied second-brain examples and connection checkpoint — 2026-10-14
+
+Full ten-source ledger, bounded source inspection and dispositions are preserved in research-vault `shared-capabilities/ai-workflows/SECOND_BRAIN_CONTROL_PLANE.md` (2026-10-14 examples entry), commit 12e524b4ea1e5823adfbc3b9e5d517eb1ff48d8c. Nine links expose readable content; Facebook is inaccessible, and Substack locked material was not accessed. Existing private Markdown vault remains canonical. Adapt index-first scoped retrieval, source/gap-bearing context packs, reader/writer separation and link/staleness checks; no second repo, new VPS/vector service, Obsidian requirement or runtime dependency selected. Bao formatter's small synthetic depth probe failed its stated direct-child semantics; no full project winner claimed.
+
+OpenAI Developers installation is now confirmed after Ashley reported connected. This running session still lacks its credential-setup capability; do not request reinstall or a pasted key. No runtime key, live provider authentication, Cloudflare secret injection, paid funding or model acceptance has been verified. Continue secure setup from installed state when capabilities become available; plugin installation is not a runtime connection receipt. No code/default/binding change in this documentation projection.
