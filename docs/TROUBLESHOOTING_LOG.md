@@ -560,6 +560,18 @@ The next attempted runner invocation also reached no server or worker because du
 
 **Prevention rule:** When a read-only question has a canonical deterministic answer, do not make user-visible availability depend on a language model reproducing an internal routing schema. Freeze the exact production wording and an invalid-model-output control; require zero model calls, zero approvals, and zero writes for that bounded path. Keep broader conversational quality as a separate acceptance claim.
 
+## 2026-10-14 — Correct V1 answer still exposed backend status language
+
+**Symptom:** Ashley’s authenticated 12:43 PM iPhone retest proved the deterministic V1-status repair was live, but the answer led with “Project Truth,” an “indexed V1 matrix,” row counts, and “implemented but unverified.” It was technically accurate and still failed the original plain-language requirement.
+
+**Failed/looping attempt:** The prior regression required the exact 22/0/16/5/1 count in the primary answer. That protected source accuracy but accidentally made internal evidence labels the user experience. Passing the regression therefore did not prove that Ashley could understand what works, what remains, or what happens next.
+
+**Root cause:** The service treated an internal completion tally as the plain-language result, and the browser rendered that result verbatim. The test prohibited routing failure but did not prohibit backend vocabulary in the primary answer.
+
+**Verified development fix:** The same indexed completion source remains authoritative, but the primary answer now translates unfinished source rows into ordinary capability gaps: understand normal questions, keep project information current, use the right worker and return a checked result, survive interruption, explain status on phone, and complete the bounded video proof when those categories remain unfinished. The raw count is returned separately and shown only under expandable Technical details. The visible Command Center helper text was also rewritten to remove Project Truth, canonical-update, Herdr, and acceptance-test vocabulary from primary copy. A source-change regression proves that when a source category becomes verified, its plain-language gap disappears automatically rather than requiring a manually maintained answer. Full local suite **118/118 PASS**; 14-requirement gate PASS; Herdr acceptance scripts parse; Cloudflare Worker dry-run packages successfully. Production deployment and Ashley acceptance remain separate.
+
+**Prevention rule:** A correct backend label is not a valid primary explanation. For every user-facing status answer, require: an ordinary-language conclusion, what works, what remains, and one concrete next step; ban internal system names/status labels from the primary answer; retain exact evidence under expandable technical details; and test that source-status changes alter the visible explanation automatically.
+
 
 ## 2026-10-14 — Cloudflare browser-test deployment and blocked log write
 
