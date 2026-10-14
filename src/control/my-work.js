@@ -10,7 +10,7 @@ export const MY_WORK_REQUIREMENTS = Object.freeze([
   {id:'missing_source_safe',authority:'My Work enforcement failure',acceptance_test:'test/my-work-projection.test.js'},
   {id:'independent_acceptance_required',authority:'My Work enforcement failure',acceptance_test:'test/my-work-acceptance-gate.test.js'},
   {id:'command_center_scope',authority:'Original Mary Kate Command Center intent',acceptance_test:'test/command-center-v1.test.js'},
-  {id:'persistent_chat',authority:'Command Center persistent chat clarification',acceptance_test:'test/my-work-ui.test.js'},
+  {id:'persistent_chat',authority:'Command Center persistent chat clarification',acceptance_test:'test/control-conversation-session.test.js'},
   {id:'priorities_separate',authority:'Command Center state-model clarification',acceptance_test:'test/command-center-v1.test.js'},
   {id:'all_projects_retained',authority:'Command Center project-lifecycle clarification',acceptance_test:'test/command-center-v1.test.js'},
   {id:'workers_separate',authority:'Command Center worker-state clarification',acceptance_test:'test/my-work-ui.test.js'},
