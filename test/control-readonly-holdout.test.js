@@ -77,6 +77,34 @@ test('read-only assessments retrieve indexed completion authority and never queu
   }
 });
 
+test('Command Center context binds an unqualified V1 question to Mary Kate without creating a write',async()=>{
+  const run=setup(answer);
+  const result=await run.service.capture('Are we close to a full v1?',{contextWorkstream:'mary-kate-command-center'});
+  assert.equal(run.calls,1);
+  assert.equal(run.packet.intent,'read_only_assessment');
+  assert.equal(run.packet.ambiguity_gate.section,mk);
+  assert.equal(run.packet.completion_authority.source.path,'research/ai-workflows/current-completion.md');
+  assert.equal(result.plain_summary,answer.plain_summary);
+  assert.equal(result.queue_item,null);
+  assert.equal(run.writes,0);
+  assert.deepEqual(await run.store.listQueues(),{needs_ashley:[],ai_can_handle:[]});
+});
+
+test('Command Center context never overrides an explicit other project or an unqualified action',async()=>{
+  const other=setup(answer);
+  await other.service.capture('Is ContentEase ready?',{contextWorkstream:'mary-kate-command-center'});
+  assert.equal(other.packet.ambiguity_gate.section,'ContentEase / UGC Creator App — ACTIVE / PARALLEL');
+  assert.equal(other.packet.completion_authority,undefined);
+
+  const action=setup(answer);
+  await assert.rejects(
+    ()=>action.service.capture('Update the current stage',{contextWorkstream:'mary-kate-command-center'}),
+    error=>error.code==='ambiguous_scope'
+  );
+  assert.equal(action.calls,0);
+  assert.equal(action.writes,0);
+});
+
 test('hostile read-only model outputs cannot create any approval or write',async()=>{
   const proposals=[
     {target_repo:'ashleybrookeugc/research-vault',target_path:'ACTIVE_WORK.md',operation:'replace_field',section:mk,field:'Current stage',value:'Complete'},

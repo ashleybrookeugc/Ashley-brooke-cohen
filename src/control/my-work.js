@@ -29,7 +29,6 @@ const firstField = (item, names) => names.map(name => item[name]).find(Boolean) 
 const source = (path, sha) => ({repo:'ashleybrookeugc/research-vault', path, sha});
 const clean = value => String(value || '').replace(/`[^`]+`/g,'').replace(/\b[0-9a-f]{7,40}\b/gi,'').replace(/Ashley's/g,'Ashley’s').replace(/\s+/g,' ').trim();
 const sentence = value => { const text=clean(value).replace(/^\*+|\*+$/g,''); return text ? text.replace(/\s*[.;]+$/,'')+'.' : null; };
-const hasTechnicalPrimary = value => /`|\b[0-9a-f]{7,40}\b|\b(?:branch|commit|sha|test log)\b|\btests?\s+\d+\s*\/\s*\d+\b/i.test(String(value||''));
 
 function stateFromName(name) {
   const match=String(name).match(/^(.*?)\s+—\s+\*\*(.+?)\*\*\s*$/);
@@ -94,9 +93,10 @@ function reconciliationFor(name, markdown) {
 function plainNext(item, reconciliation) {
   if (reconciliation.status==='needs_verification') return 'The latest next step needs verification.';
   if (reconciliation.next) return reconciliation.next;
-  const direct=firstField(item,FIELD_CHOICES.next);
-  if (!direct || /historical|superseded/i.test(direct) || hasTechnicalPrimary(direct)) return 'The latest next step needs verification.';
-  return sentence(direct);
+  // A workstream-level resume point can be useful historical context, but it
+  // is not current merely because the source file was fetched recently. Only
+  // a reconciled current-priority action is promoted to this primary label.
+  return 'The latest next step needs verification.';
 }
 
 function verifiedUpdates(history=[]) {

@@ -27,7 +27,15 @@ test('Mary Kate chat remains available from anywhere through the existing guarde
   assert.match(page,/id="chat-drawer"/);
   assert.match(page,/<textarea[^>]+id="chat-input"/);
   assert.match(page,/\/api\/control\/interactions/);
+  assert.match(page,/context_workstream:'mary-kate-command-center'/);
   assert.match(page,/No project change happens without the existing approval checks/);
+});
+
+test('chat preserves safe structured failures instead of replacing every response with a generic message',()=>{
+  assert.match(page,/function chatFailure/);
+  assert.match(page,/data\.error/);
+  assert.match(page,/prior_state_ambiguous_scope/);
+  assert.match(page,/Nothing was recorded as successful/);
 });
 
 test('worker activity is loaded separately from projects and never fabricates a live state',()=>{
