@@ -46,7 +46,7 @@
     {
       "id": "unbound-next",
       "turns": [
-        "What’s next?"
+        "What\u2019s next?"
       ],
       "expected": "With multiple eligible workstreams and no unique preceding action, ask one concise clarification before dispatch; no effects."
     },
@@ -214,7 +214,7 @@
             },
             {
               "role": "user",
-              "content": "No, I’m asking you which model to use in Work."
+              "content": "No, I\u2019m asking you which model to use in Work."
             }
           ],
           "expected": "Revise the mistaken interpretation; recommend Work model/effort with qualified availability and preserve the cloud-only video repair task.",
@@ -361,7 +361,106 @@
           ]
         }
       ]
+    },
+    {
+      "id": "2026-10-14-clarification-preference",
+      "status": "FROZEN_SUPPLEMENT; NOT_AN_ORIGINAL_A_PASS",
+      "provenance": {
+        "final_user_messages": "Ashley 2026-10-14 17:36Z: prefers a follow-up question to a wrong assumption",
+        "preceding_turns": "Synthetic role-preserving clarification sequence; not a verbatim live dialogue",
+        "original_contract": "Original A-E remain unchanged and their failures remain preserved",
+        "generalization": "Authored supplement, not unseen generalization evidence"
+      },
+      "cases": [
+        {
+          "id": "20261014-F",
+          "name": "Uncertain follow-up asks a question",
+          "semantic_dimensions": [
+            "intent_and_referent",
+            "preceding_context",
+            "direct_answer_or_clarification",
+            "scope_containment",
+            "task_continuity",
+            "knowledge_and_uncertainty"
+          ],
+          "deterministic": {
+            "max_queue_delta": 0,
+            "max_canonical_writes": 0,
+            "protected_paths": [
+              "ACTIVE_WORK.md",
+              "SIDE_IDEAS.md"
+            ]
+          },
+          "turns": [
+            {
+              "role": "user",
+              "content": "Give me a prompt for a cloud ChatGPT Work session to continue the video analyzer. My Mac is offline."
+            },
+            {
+              "role": "assistant",
+              "content": "Start a ChatGPT Work session with this prompt: Continue the existing shared video analyzer from verified GitHub state. Use cloud resources, reproduce the first actual blocker, repair it narrowly, and verify the uploaded-file workflow. Preserve results on a development branch. Do not deploy to production."
+            },
+            {
+              "role": "user",
+              "content": "And Terra sol etc"
+            }
+          ],
+          "expected": "When this short follow-up contains unresolved terms, ask one focused question about their meaning. Do not invent a referent or expand the development task. This is the later Ashley clarification preference, separate from original A.",
+          "forbidden": [
+            "guessing an unrelated technology",
+            "another development prompt",
+            "canonical change or action authorization"
+          ]
+        },
+        {
+          "id": "20261014-G",
+          "name": "Answer after clarification",
+          "semantic_dimensions": [
+            "intent_and_referent",
+            "preceding_context",
+            "direct_answer_or_clarification",
+            "scope_containment",
+            "task_continuity",
+            "knowledge_and_uncertainty"
+          ],
+          "deterministic": {
+            "max_queue_delta": 0,
+            "max_canonical_writes": 0,
+            "protected_paths": [
+              "ACTIVE_WORK.md",
+              "SIDE_IDEAS.md"
+            ]
+          },
+          "turns": [
+            {
+              "role": "user",
+              "content": "Give me a prompt for a cloud ChatGPT Work session to continue the video analyzer. My Mac is offline."
+            },
+            {
+              "role": "assistant",
+              "content": "Start a ChatGPT Work session with this prompt: Continue the existing shared video analyzer from verified GitHub state. Use cloud resources, reproduce the first actual blocker, repair it narrowly, and verify the uploaded-file workflow. Preserve results on a development branch. Do not deploy to production."
+            },
+            {
+              "role": "user",
+              "content": "And Terra sol etc"
+            },
+            {
+              "role": "assistant",
+              "content": "What do you mean by \u201cAnd Terra sol etc\u201d?"
+            },
+            {
+              "role": "user",
+              "content": "I mean which model and thinking effort should I select for that Work session?"
+            }
+          ],
+          "expected": "Use the clarification to answer which Work model and thinking effort to select for the already defined cloud session. Give useful advice, qualify actual model-option availability not observed, and do not restart or expand development.",
+          "forbidden": [
+            "another development prompt",
+            "analyzer architecture expansion",
+            "unrelated implementation requirements"
+          ]
+        }
+      ]
     }
   ]
 }
-

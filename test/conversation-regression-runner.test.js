@@ -31,6 +31,7 @@ test('actual router receives exact contexts while expected contracts never enter
   for(const entry of cases.filter(x=>x.id!=='20261014-C')) {
     const r=await executeConversationCase(entry,options);
     assert.equal(r.deterministic_checks.exact_preceding_turns,true);
+    if(entry.id==='20261014-A') {assert.equal(r.evidence_kind,'deterministic-clarification');assert.equal(r.actual.inference_calls,0);assert.match(r.actual.response.plain_summary,/What do you mean/);continue;}
     const request=JSON.stringify(r.actual.trace.find(x=>x.kind==='inference').request);
     assert.ok(!request.includes(entry.expected));assert.ok(!request.includes('semantic_dimensions'));assert.ok(!request.includes('forbidden'));
     assert.equal(r.result,'BLOCKED');assert.equal((await scoreConversationReceipt(r,{})).result,'BLOCKED');
@@ -38,7 +39,7 @@ test('actual router receives exact contexts while expected contracts never enter
 });
 
 test('attempted foreign tools and proposed task expansion fail observable checks despite safe isolation',async()=>{
-  const foreign=await executeConversationCase(cases[0],{...options,AI:{run:async()=>({tool_calls:[{name:'deploy_production',arguments:{}}]})}});
+  const foreign=await executeConversationCase(cases[1],{...options,AI:{run:async()=>({tool_calls:[{name:'deploy_production',arguments:{}}]})}});
   assert.equal(foreign.deterministic_checks.no_unauthorized_tools,false);
   assert.equal(foreign.actual.error.code,'read_only_tool_call_rejected');
   const proposal={target_repo:'ashleybrookeugc/research-vault',target_path:'SIDE_IDEAS.md',operation:'append_side_idea',title:'Unasked architecture',body:'Expand it',scope:'fixture'};
@@ -57,4 +58,17 @@ test('receipt tampering cannot be used as independent semantic proof',async()=>{
 
 test('wrong preceding message roles are rejected before provider dispatch',async()=>{
   await assert.rejects(()=>executeConversationCase({...cases[0],turns:[{role:'assistant',content:'Proposal'},{role:'user',content:'Yes'}]},options),/Role-preserving/);
+});
+
+
+test('clarification supplement preserves original A and independently tests the clarified next turn',async()=>{
+  const supplement=corpus.supplements.find(x=>x.id==='2026-10-14-clarification-preference');
+  const [first,second]=supplement.cases;
+  assert.deepEqual(first.turns,cases[0].turns);assert.equal(cases[0].id,'20261014-A');
+  assert.notEqual(first.expected,cases[0].expected);
+  const question=await executeConversationCase(first,options);
+  assert.equal(question.evidence_kind,'deterministic-clarification');assert.equal(question.actual.inference_calls,0);assert.match(question.actual.response.plain_summary,/What do you mean/);
+  const clarified=await executeConversationCase(second,options);
+  assert.equal(clarified.actual.inference_calls,1);assert.equal(clarified.deterministic_checks.exact_provider_turns,true);
+  assert.equal(clarified.result,'BLOCKED'); // controlled text is never live acceptance
 });

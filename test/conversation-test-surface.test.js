@@ -8,7 +8,7 @@ import {createConversationTestSurface} from '../src/control/conversation-test-su
 const corpus=JSON.parse(await readFile(new URL('../scripts/acceptance/conversation-holdouts.json',import.meta.url),'utf8'));
 const page=await readFile(new URL('../public/control/conversation-test/index.html',import.meta.url),'utf8');
 const origin='https://fixture.invalid';
-const entry=corpus.supplements[0].cases[0];
+const entry=corpus.supplements[0].cases[1];
 const req=(data={case_id:entry.id},headers={})=>new Request(origin+'/api/control/conversation-test',{method:'POST',headers:{origin,'content-type':'application/json',...headers},body:JSON.stringify(data)});
 function setup({authorized=true,missing=false,throwing=false}={}) {
   let calls=0,request;
@@ -25,7 +25,7 @@ test('test surface authenticates before inspecting any runtime binding',async()=
 });
 test('case listing and page rendering have no inference or production storage effects',async()=>{
   const f=setup();const listed=await f.handle(new Request(origin+'/api/control/conversation-test'),f.env);
-  assert.equal((await listed.json()).cases.length,5);assert.equal(f.calls,0);
+  assert.equal((await listed.json()).cases.length,7);assert.equal(f.calls,0);
   const rendered=await f.handle(new Request(origin+'/control/conversation-test/'),f.env);
   assert.equal(await rendered.text(),page);assert.match(rendered.headers.get('content-security-policy'),/connect-src 'self'/);
   assert.equal(await f.handle(new Request(origin+'/api/control/state'),f.env),null);

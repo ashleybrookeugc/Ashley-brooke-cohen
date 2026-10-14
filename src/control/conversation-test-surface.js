@@ -7,8 +7,8 @@ const response=(body,status=200)=>Response.json(body,{status,headers:{'cache-con
 // Only this fixed fixture surface gets env.AI. No production store, GitHub
 // token, arbitrary input, external tool or approval executor is reachable.
 export function createConversationTestSurface({corpus,page,revision,authorize}) {
-  const supplement=corpus.supplements.find(x=>x.id==='2026-10-14-followup-regressions');
-  const cases=supplement.cases;
+  const supplements=corpus.supplements.filter(x=>['2026-10-14-followup-regressions','2026-10-14-clarification-preference'].includes(x.id));
+  const cases=supplements.flatMap(x=>x.cases);
   return async(request,env)=>{
     const url=new URL(request.url),path=url.pathname.replace(/\/+$/,'');
     if(path!==pagePath&&path!==apiPath) return null;
@@ -29,7 +29,7 @@ export function createConversationTestSurface({corpus,page,revision,authorize}) 
     if(!env.AI?.run) return response({error:'Workers AI binding is unavailable; no inference ran',code:'inference_unavailable'},503);
     const AI={run:async(model,input)=>{try{return await env.AI.run(model,input);}catch{throw Object.assign(new Error('Workers AI inference failed; no verified answer is available'),{code:'inference_failed'});}}};
     try{
-      const receipt=await executeConversationCase(entry,{AI,model:env.CONTROL_WORKERS_AI_MODEL||'@cf/meta/llama-3.1-8b-instruct-fp8',evidenceKind:'workers-ai-live',authorizedNonproduction:true,revision,authority:supplement.provenance});
+      const receipt=await executeConversationCase(entry,{AI,model:env.CONTROL_WORKERS_AI_MODEL||'@cf/meta/llama-3.1-8b-instruct-fp8',evidenceKind:'workers-ai-live',authorizedNonproduction:true,revision,authority:supplements.find(x=>x.cases.some(c=>c.id===entry.id)).provenance});
       return response(receipt);
     }catch{return response({error:'The isolated test could not produce a receipt. No production change was attempted',code:'fixture_execution_failed'},500);}
   };

@@ -131,3 +131,15 @@ test('read-only text cannot become model-supplied permissions or route proposals
     await assert.rejects(()=>bad.route('Advice',{intent:'read_only_advice'}),RoutingContractError);
   }
 });
+
+
+test('unknown short follow-up asks a focused question without inference; grounded terms still use chat',async()=>{
+  let calls=0;
+  const router=createWorkersAiRoutingAdapter({AI:{run:async()=>{calls++;return {response:'Controlled text probe.'};}}});
+  const context={intent:'read_only_advice',recent_conversation:{turns:[{role:'user',content:'We are choosing between speed and quality.'},{role:'assistant',content:'Quality takes more time.'}]}};
+  const result=await router.route('And Nebula options etc',context);
+  assert.equal(calls,0);assert.equal(result.plain_summary,'What do you mean by “And Nebula options etc”?');
+  assert.equal(result.proposal,undefined);assert.equal(result.project_id,undefined);
+  await router.route('And quality',context);assert.equal(calls,1);
+  await router.route('Which option would you select?',context);assert.equal(calls,2);
+});

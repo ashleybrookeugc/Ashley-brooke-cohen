@@ -13,12 +13,12 @@ test('preceding turns reach the actual Workers AI request in order with original
   let request;
   const router=createWorkersAiRoutingAdapter({AI:{run:async(_model,value)=>{request=value;return {response:probe.plain_summary};}}});
   const service=createControlService({github:{readFile:async()=>({content,sha:'fixture'})},router,store});
-  await service.capture('And the other settings?');
+  await service.capture('Which setting should I select?');
   const packet=JSON.parse(request.messages[1].content).context;
   assert.deepEqual(request.messages.slice(2,-1),turns);
   assert.equal(packet.intent,'read_only_advice');
   assert.equal(request.tools,undefined);
-  assert.equal(request.messages.at(-1).content,'And the other settings?');
+  assert.equal(request.messages.at(-1).content,'Which setting should I select?');
   assert.equal((await store.listQueues()).needs_ashley.length,0);
 });
 
