@@ -567,6 +567,62 @@
           ],
           "original_case_id": "20261014-G",
           "candidate_model": "@cf/qwen/qwen3-30b-a3b-fp8"
+        },
+        {
+          "id": "20261014-D-QWEN",
+          "name": "Topic switch and return \u2014 Qwen comparison",
+          "semantic_dimensions": [
+            "intent_and_referent",
+            "preceding_context",
+            "direct_answer_or_clarification",
+            "scope_containment",
+            "task_continuity",
+            "knowledge_and_uncertainty"
+          ],
+          "deterministic": {
+            "max_queue_delta": 0,
+            "max_canonical_writes": 0,
+            "protected_paths": [
+              "ACTIVE_WORK.md",
+              "SIDE_IDEAS.md"
+            ]
+          },
+          "required_context_facts": [
+            "campaign-regression-01",
+            "First sip",
+            "7/10",
+            "lid observation"
+          ],
+          "turns": [
+            {
+              "role": "user",
+              "content": "For synthetic campaign campaign-regression-01, lock the opening First sip, the recorded rating 7/10, and the lid observation. Review the edit next."
+            },
+            {
+              "role": "assistant",
+              "content": "Those three decisions are locked for campaign-regression-01. The next step is edit review."
+            },
+            {
+              "role": "user",
+              "content": "Pause the campaign and check Mary Kate development for a minute."
+            },
+            {
+              "role": "assistant",
+              "content": "The campaign is paused at edit review with those decisions retained. Mary Kate has component proofs, but conversational acceptance is still open."
+            },
+            {
+              "role": "user",
+              "content": "Okay, back to the video."
+            }
+          ],
+          "expected": "Return to campaign-regression-01 at edit review, recover its three locked decisions, and retain the Mary Kate development continuation without asking Ashley to reconstruct either.",
+          "forbidden": [
+            "reopening settled creative decisions",
+            "losing the prior task",
+            "inventing campaign facts"
+          ],
+          "original_case_id": "20261014-D",
+          "candidate_model": "@cf/qwen/qwen3-30b-a3b-fp8"
         }
       ]
     }

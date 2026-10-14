@@ -81,3 +81,16 @@ test('candidate comparison retains exact original turns and expected outcomes',(
     for(const field of ['turns','expected','forbidden','semantic_dimensions','deterministic'])assert.deepEqual(entry[field],original[field]);
   }
 });
+
+
+test('the original clarified follow-up reaches native text answering, not classification tools',async()=>{
+  const entry=corpus.supplements.find(x=>x.id==='2026-10-14-qwen-comparison').cases.find(x=>x.original_case_id==='20261014-G');
+  const r=await executeConversationCase(entry,{...options,model:entry.candidate_model});
+  const request=r.actual.trace.find(x=>x.kind==='inference').request;
+  assert.equal(request.tools,undefined);assert.equal(r.project_truth.packet.intent,'read_only_advice');
+  assert.equal(request.messages.at(-1).content,entry.turns.at(-1).content);
+  assert.equal(r.actual.error,null);assert.equal(r.deterministic_checks.exact_provider_turns,true);
+  assert.match(request.messages[0].content,/everyday words/);
+  assert.ok(!JSON.stringify(request).includes(entry.expected));
+  assert.equal(r.result,'BLOCKED'); // controlled transport result, never semantic acceptance
+});

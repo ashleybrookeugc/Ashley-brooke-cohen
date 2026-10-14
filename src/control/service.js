@@ -56,7 +56,8 @@ const readOnlyAdvice=text=>/^should\b/i.test(String(text).trim())
 const readOnlyFollowup=(text,recent)=>{
   const value=normalizedInput(text).trim();
   if(/\b(?:add|update|set|change|mark|approve|publish|ship|post|send|delete|spend|pay|purchase|transfer|remove|deploy|merge|buy|upload|execute|run|resume|continue|advance|save|capture|record|switch)\b/i.test(value)) return false;
-  if(/^(?:what|which|how|where|when|why|is|are|does|do you|can|could|would)\b/i.test(value)) return true;
+  const question=value.replace(/^(?:i mean|i meant|to clarify|what i mean is|let me clarify|my question is|i'm asking|i am asking)[,:\s]+/i,'');
+  if(/^(?:what|which|how|where|when|why|is|are|does|do you|can|could|would)\b/i.test(question)) return true;
   if(!recent?.turns?.length) return false;
   return /^(?:and|or|what about|how about)\b/i.test(value)
     || /^no\b[\s,.:!-]*(?:i(?:'m| am)|that(?:'s| is)|my question)\b/i.test(value);
@@ -422,7 +423,7 @@ export function createMemoryStore({now=()=>new Date().toISOString()}={}) {
     async getContextPacket(key){const packet=packets.get(key);if(!packet||packet.invalidated_at||Date.parse(packet.expires_at)<=Date.parse(now()))return null;return structuredClone(packet);},
     async putContextPacket(key,packet){packets.set(key,structuredClone(packet));},
     async invalidateContextPacket(key){const packet=packets.get(key);if(packet)packet.invalidated_at=now();},
-    async addInteraction(x){const row={id:'i'+(interactions.length+1),created_at:new Date().toISOString(),...x};interactions.push(row);return row;},
+    async addInteraction(x){const row={id:'i'+(interactions.length+1),created_at:now(),...x};interactions.push(row);return row;},
     async addQueueItem(x){const row={id:'q'+(items.length+1),status:'pending',...x};items.push(row);return row;},
     async getQueueItem(id){return items.find(x=>x.id===id)||null;},
     async resolveQueueItem(id,status,note,receipt){Object.assign(items.find(x=>x.id===id),{status,resolution_note:note,receipt,resolved_at:now()});},

@@ -59,10 +59,10 @@ test('generic questions, elliptical options and corrections are inert; explicit 
   const store=createMemoryStore();
   await store.addInteraction({raw_text:'We discussed a tool setting.',route:{...probe,plain_summary:'Several options are available.'}});
   const service=createControlService({github:{readFile:async()=>({content,sha:'fixture'})},store,router:{route:async(text,packet)=>{observed.push({text,intent:packet.intent});return probe;}}});
-  for(const text of ['Which setting would you recommend?','And the other options','Or a different effort level','No, I am asking which option to select']) {
+  for(const text of ['Which setting would you recommend?','And the other options','Or a different effort level','No, I am asking which option to select','I mean which option should I select?','To clarify, how would you choose?','My question is which setting to use?']) {
     await service.capture(text);assert.equal(observed.at(-1).intent,'read_only_advice');
   }
-  for(const text of ['And update Video analyzer stage','What setting? Run Video analyzer now.','No, change Video analyzer stage']) {
+  for(const text of ['And update Video analyzer stage','What setting? Run Video analyzer now.','No, change Video analyzer stage','I mean update Video analyzer stage','To clarify, run Video analyzer now']) {
     await service.capture(text);assert.equal(observed.at(-1).intent,undefined);
   }
 });

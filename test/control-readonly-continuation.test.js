@@ -5,7 +5,7 @@ const active='## Current active workstreams\n### Mary Kate / AI operating system
 const index='| Mary Kate current V1 completion/gap/evidence status | `research/ai-workflows/assessment.md` | `ACTIVE_WORK.md` |';
 const assessment='V1 completion assessment: hosted acceptance unverified.';
 async function setup({offer='We can inspect the V1 readiness and explain the missing proof. We will not write files.',user='Tell me what we can check for MK V1.',stale=false,truncated=false,queued=false}={}) {
-  let clock=Date.now(),calls=0,packet;
+  let clock=Date.parse('2026-10-14T20:00:00Z'),calls=0,packet;
   const reads=[],store=createMemoryStore({now:()=>new Date(clock).toISOString()});
   await store.addInteraction({raw_text:user,route:{route_kind:'temporary_context',responsibility:'ai_can_handle',confidence:'low',plain_summary:offer}});
   if(stale)clock+=600000;

@@ -25,7 +25,7 @@ test('test surface authenticates before inspecting any runtime binding',async()=
 });
 test('case listing and page rendering have no inference or production storage effects',async()=>{
   const f=setup();const listed=await f.handle(new Request(origin+'/api/control/conversation-test'),f.env);
-  assert.equal((await listed.json()).cases.length,9);assert.equal(f.calls,0);
+  assert.equal((await listed.json()).cases.length,10);assert.equal(f.calls,0);
   const rendered=await f.handle(new Request(origin+'/control/conversation-test/'),f.env);
   assert.equal(await rendered.text(),page);assert.match(rendered.headers.get('content-security-policy'),/connect-src 'self'/);
   assert.equal(await f.handle(new Request(origin+'/api/control/state'),f.env),null);
