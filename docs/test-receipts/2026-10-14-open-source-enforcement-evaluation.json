@@ -2,11 +2,18 @@
   "version": "mary-kate.open-source-enforcement-evaluation.v1",
   "observed_at": "2026-10-14T17:23:22Z",
   "scope": "isolated cloud development evaluation; no deployment or production mutation",
-  "source_heads": {
+  "source_heads_at_start": {
     "ashleybrookeugc/research-vault": "4b145cd0533a65f368c2f829f26d1597fe1e7b2d",
     "ashleybrookeugc/Ashley-brooke-cohen": "c7b16f825c22d09800a7bf14e893318b1c5f3025",
     "ashleybrookeugc/ugc-creator-app": "db8324d51e478ee1b9499ea8476e28ff39254a68",
     "conversation_fixture_branch": "9e8ec4465d3626937f4d89bfb044f35e5324ece2"
+  },
+  "source_heads_at_final_verification": {
+    "ashleybrookeugc/research-vault": "3163bdcf93c49ff44073b6502bb51cfba66aaf5f",
+    "ashleybrookeugc/Ashley-brooke-cohen": "2ec645dcb5a36b35e7db712be49ad849e1efdf77",
+    "ashleybrookeugc/ugc-creator-app": "db8324d51e478ee1b9499ea8476e28ff39254a68",
+    "product_experiment_branch": "c448a609d68624513c869e8566862b580ba0f438",
+    "project_truth_experiment_branch": "57e107eef7610cf9c241189499552b0e389bf0c6"
   },
   "baseline": {
     "command": "node --test test/control-conversation-context.test.js test/conversation-regression-runner.test.js test/control-ambiguity-gate.test.js test/control-canonical-write.test.js test/control-routing-diagnostics.test.js test/control-workers-ai-routing.test.js",
@@ -80,7 +87,9 @@
   },
   "regressions": {
     "full_branch_suite": {"tests": 143, "passed": 143, "failed": 0, "duration_ms": 633.281082, "sha256": "5da2c32a7790368417c7ce0e7f81438b030853ae87cc052dfc2c516a143805ec"},
-    "current_main_video_seek": {"tests": 3, "passed": 3, "failed": 0, "duration_ms": 3236.477574, "sha256": "d0fa7bbe6b6d6cfc91d1c647bac083cf23f749444b293fdafcad55e8d414ace1"},
+    "final_current_main_full": {"head": "2ec645dcb5a36b35e7db712be49ad849e1efdf77", "tests": 121, "passed": 121, "failed": 0, "duration_ms": 3622.709947, "sha256": "9eaacd14a122af37f98c1b0a5f06a3f1bab588acaee90b7a6b3edbc2f0dc7a90"},
+    "final_current_main_relevant": {"tests": 21, "passed": 21, "failed": 0, "duration_ms": 150.868391, "sha256": "47203c1433e8bb7b7d4bfc72c42448debd6dfa37851335e6f1644034f0a53086"},
+    "current_main_video_seek": {"tests": 3, "passed": 3, "failed": 0, "duration_ms": 3216.804495, "sha256": "75a1650de3982a1506db8149694ad290e28bbec441d83ab55f457850456af611"},
     "unrelated_project_writes": 0,
     "deployments": 0
   },

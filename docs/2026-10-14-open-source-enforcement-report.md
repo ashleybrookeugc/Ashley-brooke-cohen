@@ -2,6 +2,8 @@
 
 **Verdict:** keep the existing Node enforcement. Promptfoo and OPA both ran in isolated cloud tests, but neither demonstrated an independent material improvement. No production code, dependency, deployment, credential, binding, or unrelated project was changed.
 
+The experiment branch is based on the existing unmerged conversation-regression head `9e8ec44`, because that is where frozen A–E and the actual runner live. Canonical product main advanced concurrently to `2ec645d`; its final full suite passed 121/121. Project Truth main advanced to `3163bdc`; UGC Creator App remained at `db8324d`.
+
 ## 1. Baseline
 
 The smallest relevant existing suite passed **37/37** before the experiments. It exercised exact multi-turn context delivery, advice-versus-action handling, approval/version boundaries, unauthorized target changes, completion evidence, sanitized failures, and receipt retention. This was the real current harness on the existing conversation-regression branch, not a weakened substitute.
@@ -37,11 +39,13 @@ The test record retains the initial WASM failure, a broader incompatibility hypo
 
 No production integration was justified. The branch adds only an isolated experiment, deterministic comparisons, build-history fixtures/tests, this report, and a machine-readable receipt. Existing Node enforcement remains authoritative.
 
+Published branches: product `test/mk-promptfoo-opa-20261014` at `c448a609d68624513c869e8566862b580ba0f438`; Project Truth branch of the same name at `57e107eef7610cf9c241189499552b0e389bf0c6`. Neither was merged or deployed.
+
 ## 7. Regression results
 
 - Original relevant suite after the experiment: **37/37 pass**.
 - Full development-branch suite: **143/143 pass**.
-- Current-main decoded-frame regression: **3/3 pass**.
+- Final current-main suite at `2ec645d`: **121/121 pass**; relevant subset **21/21**; decoded-frame regression **3/3**.
 - Deliberately malformed policy input: Node, OPA CLI, and OPA WASM all fail closed.
 - Unrelated writes: **0**. Deployments: **0**.
 
