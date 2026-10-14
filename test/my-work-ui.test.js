@@ -30,6 +30,18 @@ test('Mary Kate chat remains available from anywhere through the existing guarde
   assert.match(page,/context_workstream:'mary-kate-command-center'/);
   assert.match(page,/refresh_context:true/);
   assert.match(page,/No project change happens without the existing approval checks/);
+  assert.match(page,/function chatSuccess/);
+  assert.match(page,/technical_summary/);
+  assert.match(page,/I check the latest saved information before answering/);
+  assert.doesNotMatch(page,/Current Project Truth is reread before routing/);
+});
+
+test('primary Command Center copy translates backend state before exposing technical evidence',()=>{
+  assert.match(page,/Your phone testing is still finding real problems/);
+  assert.match(page,/Latest saved project information checked/);
+  assert.match(page,/Changes that were checked after saving/);
+  assert.doesNotMatch(page,/Project Truth refreshed/);
+  assert.doesNotMatch(page,/verified canonical updates/i);
 });
 
 test('chat preserves safe structured failures instead of replacing every response with a generic message',()=>{

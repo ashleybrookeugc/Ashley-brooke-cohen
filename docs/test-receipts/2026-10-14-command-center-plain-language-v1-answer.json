@@ -1,0 +1,48 @@
+{
+  "version": "mary-kate.test-receipt.v1",
+  "date": "2026-10-14",
+  "feature": "Command Center plain-language V1 status answer",
+  "reported_input": "Are you close to v1?",
+  "observed_live_failure": {
+    "environment": "authenticated iPhone production session",
+    "observed_at_local": "2026-10-14T12:43:00-04:00",
+    "result": "fail",
+    "reason": "The primary answer exposed Project Truth matrix terminology and row counts instead of explaining what works, what remains, and what happens next in ordinary language."
+  },
+  "frozen_acceptance": {
+    "primary_answer_requires": [
+      "an ordinary-language not-yet conclusion",
+      "what works now",
+      "unfinished capabilities translated from the current source",
+      "one concrete next proof"
+    ],
+    "primary_answer_forbids": [
+      "Project Truth",
+      "indexed matrix",
+      "requirement row counts",
+      "implemented but unverified",
+      "acceptance evidence",
+      "GitHub, repository, commit, SHA, or routing terminology"
+    ],
+    "technical_detail_requires": "The exact source tally remains available under expandable Technical details.",
+    "freshness_requires": "Changing a source row to VERIFIED removes its corresponding plain-language gap without editing a manual answer list."
+  },
+  "verification": {
+    "focused": "19/19 passed",
+    "full_node_suite": "118/118 passed",
+    "v1_requirement_gate": "14/14 mapped",
+    "herdr_acceptance_scripts": "parsed",
+    "cloudflare_worker_dry_run": "passed",
+    "model_calls_for_bounded_answer": 0,
+    "approval_items_created": 0,
+    "canonical_writes": 0
+  },
+  "status_boundary": {
+    "code": "verified locally",
+    "ci": "pending",
+    "deployed": "not yet verified",
+    "authenticated_phone_rendered": "not yet verified for this repair",
+    "user_tested": "failed wording captured before repair",
+    "accepted": false
+  }
+}
