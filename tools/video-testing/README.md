@@ -1,6 +1,16 @@
 # Private video testing — implementation and activation
 
-Status: implemented development slice; not deployed or accepted on iPhone.
+Status: deployed private testing loop; actual non-private live acceptance PASS on 2026-10-15. Physical iPhone and creator/semantic acceptance remain untested.
+
+## Current activation — 2026-10-15
+
+Website main `72cf11fdbdda82a3b0a4dc928e7f925cf5df8d1c` includes PR #35's ASSETS repair and PR #37's fixed private VPC adapter. The existing `tools/video-testing/server.mjs` runs on the authorized Mac at `127.0.0.1:8789`, importing unchanged analyzer `e5dfe3e4d3967615f23eb064896de1303f86ded9`. A private Cloudflare Tunnel with 404-only public ingress and no published hostname/DNS connects only the VPC Service at that host/port. No network-wide binding, paid service, external AI video service, or footage deletion was added. All three server-side video-test secrets are configured separately from administration.
+
+The real deployed browser selected/uploaded a non-private synthetic clip, displayed the 5.185805-second verified extraction with frames at 0/5 seconds, sought to 5 seconds, saved a speech-observation correction at 0.03 seconds, and retrieved that correction/result after page reload and worker restart. Remote-source playback and exact source hash/range retrieval passed. Live anonymous access, cross-origin writes, and administration access with a testing cookie remain denied. Full website suite 145/145; requirements, packaging, GitHub Actions and normal Workers Builds pass. Exact current receipt: `docs/test-receipts/2026-10-15-video-analyzer-mac-activation.json`; canonical status is also in Project Truth's `research/video-understanding/2026-10-15-mac-video-test-activation.json`.
+
+The full unchanged analyzer is still 17/18: ASR reads `this is fair` as `is is there`. This error is preserved and corrected through feedback, not repaired in the analyzer. Visual/OCR coverage is sampled; semantic vision, enforced semantic claim release, physical iPhone and creator acceptance are not passed.
+
+Keep the Mac and the detached analyzer/connector processes online. Autostart and remote evidence archival are not configured. Worker/connector credentials are kept locally in the existing analyzer's gitignored `.video-analysis-runtime/video-testing-secrets.json` with mode 0600; never print or commit them. Originals, evidence and corrections remain local and retained. Cloudflare Workers VPC is currently free in beta; recheck its pricing before any later transition. The historical checkpoints below preserve earlier stops; this current checkpoint supersedes their not-deployed/access-blocked state.
 
 ## Cloud-only continuation — 2026-10-14
 

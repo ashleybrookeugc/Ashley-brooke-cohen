@@ -1,15 +1,37 @@
 {
-  "observed_at": "2026-10-15T22:05:22.392080+00:00",
-  "overall_status": "BLOCKED_LIVE_ACTIVATION_NOT_COMPLETE",
-  "authorization": "User authorized necessary open-source dependencies, unchanged local analyzer worker, existing approved private route and three existing server-side video-test secrets; no paid services, external AI, public tunnels or footage deletion.",
-  "product_repo": {
-    "url": "https://github.com/ashleybrookeugc/Ashley-brooke-cohen",
-    "branch": "main",
-    "initial_head": "951903e5d77413e49902be6180b3cd73df99e5b4",
-    "verified_fetched_head": "db491177f9f9ee048c0ac534bd544e9c8205d875",
-    "fast_forward_only": true,
-    "source_changes": false,
-    "generated_dependency_lockfile": "package-lock.json (untracked; not committed/deployed)"
+  "metadata": {
+    "status": "active",
+    "date": "2026-10-15",
+    "type": "evidence",
+    "topics": [
+      "video-understanding",
+      "media-management",
+      "deployment"
+    ],
+    "products": [
+      "Ashley-brooke-cohen",
+      "shared"
+    ],
+    "source_scope": "internal-observation",
+    "confidence": "high for observed bounded results"
+  },
+  "observed_at": "2026-10-15T23:04:40.244871+00:00",
+  "overall_status": "PASS_LIVE_TECHNICAL_ACTIVATION_NON_PRIVATE_FIXTURE",
+  "proof_boundary": "Actual deployed upload → unchanged Mac analyzer → timestamped review/playback → source-bound correction → reload and worker-restart retrieval. This is bounded extraction/integration proof; ASR accuracy, general semantic/creative understanding, physical iPhone and creator acceptance are not passed.",
+  "authorization": {
+    "initial": "Existing analyzer, necessary missing open-source dependencies, server-side testing bindings and non-private live test; no paid services, external AI video services, public tunnels or footage deletion.",
+    "clarification": "User confirmed No existing route.",
+    "additional_explicit_approval": "Create the private connection, limited to 127.0.0.1:8789 with no public hostname/DNS route."
+  },
+  "product": {
+    "repository": "ashleybrookeugc/Ashley-brooke-cohen",
+    "initial_clean_main": "951903e5d77413e49902be6180b3cd73df99e5b4",
+    "initial_fetched_main": "db491177f9f9ee048c0ac534bd544e9c8205d875",
+    "verified_implementation_main": "72cf11fdbdda82a3b0a4dc928e7f925cf5df8d1c",
+    "asset_fix_PR": "https://github.com/ashleybrookeugc/Ashley-brooke-cohen/pull/35",
+    "private_transport_PR": "https://github.com/ashleybrookeugc/Ashley-brooke-cohen/pull/37",
+    "promotion": "Existing GitHub main → Cloudflare Workers Builds; no manual code deployment",
+    "active_version_at_final_verification": "d8815f53-995b-4ed3-85b1-eb623789b9e1"
   },
   "analyzer": {
     "branch": "video-analyzer/f003-source-time-fidelity",
@@ -28,30 +50,95 @@
     "wrangler": "4.151.0 from existing package.json ^4.0.0; installed with --ignore-scripts --no-audit --no-fund",
     "cloudflared": "2026.10.0 pre-existing, not run"
   },
-  "worker": {
-    "entrypoint": "tools/video-testing/server.mjs",
-    "bind": "127.0.0.1:8789",
-    "pid": 56458,
-    "authenticated_health": "available",
-    "anonymous_health_http": 401,
-    "token_storage": "mode 0600 private local temporary JSON; token never printed, committed, or sent to browser",
-    "persistence": "local analyzer gitignored .video-analysis/testing; no remote archival claim",
-    "autostart": "not configured; detached local process only"
+  "private_connection": {
+    "tunnel_id": "421e73e9-0364-4775-a0ca-6b27c9c3164b",
+    "tunnel_name": "mk-video-test-private",
+    "service": {
+      "service_id": "01a141ad-d6e8-7ae0-804c-0f98e58320ad",
+      "type": "http",
+      "name": "mk-video-test-loopback",
+      "http_port": 8789,
+      "https_port": null,
+      "host": {
+        "ipv4": "127.0.0.1",
+        "ipv6": null,
+        "hostname": null,
+        "network": {
+          "tunnel_id": "421e73e9-0364-4775-a0ca-6b27c9c3164b"
+        },
+        "resolver_network": null
+      },
+      "created_at": "2026-10-15T22:27:54Z",
+      "updated_at": "2026-10-15T22:27:54Z"
+    },
+    "connector_pid": 59126,
+    "protocol": "QUIC encrypted outbound tunnel",
+    "public_ingress": "Only http_status:404 catch-all; no hostname in tunnel ingress",
+    "public_hostname_or_DNS_created": false,
+    "network_wide_binding_created": false,
+    "TLS_verification_disabled": false,
+    "VPC_binding": "VIDEO_TEST_PRIVATE_SERVICE",
+    "gateway": "Fixed service host/port; configured private connection never falls back to ordinary public fetch",
+    "worker_bind": "127.0.0.1:8789",
+    "worker_pid": 60669,
+    "autostart": "Not configured; detached worker/connector currently running; Mac/process availability required"
   },
-  "local_integration": {
-    "observed_at": "2026-10-15T22:03:08.777Z",
-    "scope": "actual loopback server.mjs worker, unchanged analyzer, synthetic public-safe dialogue fixture",
-    "status": "PASS_LOCAL_ONLY",
-    "live_Cloudflare": "NOT_RUN",
-    "physical_iPhone": "NOT_RUN",
-    "source": {
-      "path": "/Users/russellstoner/Documents/ChatGPT/Mary Kate 2/video-analyzer-existing/.video-analysis/testing-inputs/non-private-dialogue.mp4",
+  "secrets": {
+    "set_by_this_task": [
+      "VIDEO_TEST_ACCESS_TOKEN",
+      "VIDEO_TEST_WORKER_TOKEN",
+      "VIDEO_TEST_WORKER_URL"
+    ],
+    "server_only_worker_token": true,
+    "separate_random_access_and_worker_tokens": true,
+    "values_printed_or_committed": false,
+    "local_storage": "Existing analyzer gitignored .video-analysis-runtime/video-testing-secrets.json, mode 0600; Cloudflare OAuth remains encrypted with key in macOS Keychain",
+    "remote_secret_names_at_verification": [
+      "ADMIN_PASSWORD",
+      "ADMIN_SESSION_SECRET",
+      "CONTROL_GITHUB_APP_PRIVATE_KEY",
+      "CONTROL_WORKER_TELEMETRY_SECRET",
+      "VIDEO_TEST_ACCESS_TOKEN",
+      "VIDEO_TEST_WORKER_TOKEN",
+      "VIDEO_TEST_WORKER_URL"
+    ],
+    "concurrent_observation": "CONTROL_WORKER_TELEMETRY_SECRET appeared during the session; this task did not set it and preserved it. Its writer is not established here.",
+    "browser_auth": "One-use loopback-only handoff directly into browser runtime memory; token cleared from automation variable after successful login; no clipboard access or token output."
+  },
+  "live_gateway_health": {
+    "observed_at": "2026-10-15T22:34:32.188Z",
+    "session_http": 200,
+    "cookie_secure": true,
+    "cookie_httpOnly": true,
+    "cookie_strict": true,
+    "health_http": 200,
+    "health": {
+      "state": "available",
+      "active_job": null,
+      "max_bytes": 67108864,
+      "semantic_understanding": "unavailable",
+      "note": "Existing sampled evidence analyzer; no creative understanding provider."
+    },
+    "secrets_printed": false
+  },
+  "live_flow": {
+    "observed_at": "2026-10-15T22:58:45.601Z",
+    "status": "PASS_LIVE_GATEWAY_AND_RESTART",
+    "job_id": "2ee77206-d5e2-48b3-8a8b-367c381a6294",
+    "job": {
+      "id": "2ee77206-d5e2-48b3-8a8b-367c381a6294",
+      "state": "completed",
+      "name": "non-private-dialogue.mp4",
+      "created_at": "2026-10-15T22:57:12.945Z",
       "bytes": 52236,
+      "started_at": "2026-10-15T22:57:12.946Z",
+      "completed_at": "2026-10-15T22:57:13.818Z"
+    },
+    "source": {
       "sha256": "c48f66d57aff8697302e6e2c4b7ae143ebe738d3a3c82b10de2a2685e0440c6d",
+      "bytes": 52236,
       "duration_seconds": 5.185805
     },
-    "job_id": "b5056c2f-99ba-4800-bfe9-9c28456dce4a",
-    "invalid_job_id": "22b62568-c713-4721-8f4a-60c7e2013cc3",
     "decode": {
       "state": "complete",
       "method": "ffmpeg_full_stream_decode",
@@ -59,63 +146,112 @@
       "decoded_through_seconds": 5.185805,
       "tolerance_seconds": 0.5,
       "ffmpeg_exit_code": 0,
-      "verified_at": "2026-10-15T22:03:07.170Z"
+      "verified_at": "2026-10-15T22:57:13.067Z"
     },
     "readback": {
       "verified": true,
-      "verified_at": "2026-10-15T22:03:07.884Z"
+      "verified_at": "2026-10-15T22:57:13.815Z"
     },
     "frames": [
       {
-        "source_timestamp_seconds": 0,
-        "source_frame_index": 0
+        "timestamp_seconds": 0,
+        "bytes": 9862,
+        "sha256": "6582a27701db5ffd446d51e01b6d1699a6c11185aa92f5560cfee0d72fe61552"
       },
       {
-        "source_timestamp_seconds": 5,
-        "source_frame_index": 60
+        "timestamp_seconds": 5,
+        "bytes": 9864,
+        "sha256": "82d737e9ebf99a6ea64b3135711eed5b665378d037cb4e250eaf89742c04d64d"
       }
     ],
-    "lanes": {
-      "spoken_audio": {
-        "state": "completed",
-        "observations": 2
+    "range_playback": {
+      "http": 206,
+      "bytes": 16,
+      "exact_match": true
+    },
+    "correction": {
+      "id": "d51426bc-45f5-48d7-a91f-724698bb15fb",
+      "observation_id": "speech-000001",
+      "timestamp_seconds": 0.03,
+      "source_sha256": "c48f66d57aff8697302e6e2c4b7ae143ebe738d3a3c82b10de2a2685e0440c6d",
+      "text": "Live non-private fixture correction: the spoken line is “I do not think this is fair because you know the answer.” The ASR output “is is there” is incorrect. This is a technical test, not creator acceptance."
+    },
+    "restart": {
+      "old_worker_pid": 56458,
+      "new_worker_pid": 60669,
+      "offline_health_http": 503,
+      "offline_body": {
+        "state": "offline",
+        "error": "Analyzer worker is unreachable. Your selected video stays on this device. Check recent runs before retrying an interrupted upload."
       },
-      "speaker_turns": {
-        "state": "turn_boundaries_only",
-        "observations": 2
-      },
-      "burned_in_captions": {
-        "state": "heuristically_classified",
-        "observations": 2
-      },
-      "other_on_screen_text": {
-        "state": "completed_at_sampling_cadence",
-        "observations": 2
-      },
-      "visible_actions_subjects_ui_state": {
-        "state": "bounded_screen_state_classifier",
-        "observations": 2
-      },
-      "visual_shot_state_changes": {
-        "state": "completed",
-        "observations": 0
+      "resumed_health_http": 200,
+      "result_reread_http": 200,
+      "feedback_identical": true
+    },
+    "raw_source_retained": true,
+    "analyzer_code": "unchanged e5dfe3e4d3967615f23eb064896de1303f86ded9",
+    "physical_iPhone": "NOT_RUN",
+    "creator_acceptance": "NOT_RUN",
+    "semantic_understanding": "unavailable"
+  },
+  "actual_browser": {
+    "url": "https://ashleybrookecohen.com/video-test/",
+    "environment": "Real Codex in-app browser on this Mac; physical iPhone NOT_RUN",
+    "file_selection": "Retained non-private-dialogue.mp4 selected through actual file chooser; Analyze clicked on deployed page",
+    "job_id": "2ee77206-d5e2-48b3-8a8b-367c381a6294",
+    "review_rendered": true,
+    "coverage_text": "5.19 seconds · 2 sampled frames · 5 second sampling interval. Visual and OCR evidence is sampled, not frame-exhaustive.",
+    "both_images_loaded": true,
+    "timestamp_seek": {
+      "button": "5.000s",
+      "observed_currentTime": 5,
+      "duration": 5.185805,
+      "readyState": 4
+    },
+    "correction_observation": "speech-000001",
+    "correction_time_seconds": 0.03,
+    "saved_readback_text": "Saved and retrieved from analyzer worker.",
+    "reload": {
+      "private_access_form_visible": false,
+      "status": "Analyzer connected. Ready to upload a test video.",
+      "recorded_run": "non-private-dialogue.mp4 · completed"
+    },
+    "after_worker_restart": {
+      "review_and_correction_retrieved": true,
+      "remote_media_src": "/api/video-test/jobs/2ee77206-d5e2-48b3-8a8b-367c381a6294/media",
+      "playback": {
+        "paused": false,
+        "readyState": 4,
+        "observed_currentTime": 0.013071,
+        "duration": 5.185805
       }
     },
-    "correction_id": "1f852510-b3a0-4756-814a-fced6a9ad2ac",
-    "correction_after_worker_restart": "PASS",
-    "worker_pid": 56458,
-    "local_root": "/Users/russellstoner/Documents/ChatGPT/Mary Kate 2/video-analyzer-existing/.video-analysis/testing",
-    "raw_source_retained": true,
-    "semantic_understanding": "unavailable",
-    "creative_acceptance": "NOT_RUN"
+    "file_chooser_tool_wall_seconds": 1171.2845,
+    "latency_boundary": "The file-chooser tool blocked for that interval before upload. This is not analyzer processing time. Server receipts show upload accepted at 22:57:12.945Z, analysis started 22:57:12.946Z and completed 22:57:13.818Z."
+  },
+  "security_checks": {
+    "observed_at": "2026-10-15T23:01:59.027Z",
+    "anonymous_jobs_http": 401,
+    "cross_origin_post_http": 403,
+    "testing_cookie_admin_api_http": 401,
+    "secrets_printed": false
   },
   "tests": {
-    "video_flow": {
-      "pass": 13,
+    "website_full": {
+      "pass": 145,
       "fail": 0,
       "skip": 0,
-      "commands": "VIDEO_ANALYZER_MODULE=<verified existing core> node --test test/video-testing.test.js test/video-testing-ui.test.js test/video-browser-route.test.js test/video-browser-seek.test.js"
+      "duration_ms": 3398.161833,
+      "actual_analyzer_module_configured": true
     },
+    "private_gateway_focused": {
+      "pass": 9,
+      "fail": 0,
+      "skip": 0
+    },
+    "requirements": "14 mapped requirements PASS",
+    "worker_packaging": "PASS with ASSETS and fixed VPC Service",
+    "CI": "PR #35, #37 and both merged-main GitHub Actions + Workers Builds all SUCCESS",
     "unchanged_analyzer": {
       "pass": 17,
       "fail": 1,
@@ -125,127 +261,41 @@
       "expected": "i do not think this is fair because you know the answer",
       "actual": "i do not think is is there because you know the answer",
       "status": "FAIL; no expectations changed"
-    },
-    "initial_sandbox_attempt": "Loopback listen/connect EPERM; permission-correct rerun above supersedes network-related failures, not the ASR failure.",
-    "worker_packaging": {
-      "status": "PASS_DRY_RUN_ONLY",
-      "wrangler": "4.151.0",
-      "upload": "NOT_RUN",
-      "declared_bindings": [
-        "DB",
-        "AI",
-        "CONTROL_GITHUB_APP_ID",
-        "CONTROL_GITHUB_INSTALLATION_ID"
-      ],
-      "ASSETS_declared": false
-    },
-    "asset_binding_regression": {
-      "baseline": "503 in current-main local Wrangler runtime",
-      "candidate": "200 unchanged JavaScript and CSS with only ASSETS binding added",
-      "browser_startup": "PASS_LOCAL_CANDIDATE_ONLY",
-      "live": "NOT_REPAIRED"
     }
   },
-  "live": {
-    "url": "https://ashleybrookecohen.com/video-test/",
-    "html_http": 200,
-    "html_date": "Thu, 15 Oct 2026 21:59:54 GMT",
-    "html_ray": "a4b217f858370c76-EWR",
-    "asset": "/video-test/app.js?v=20261015b",
-    "asset_http": 503,
-    "asset_date": "Thu, 15 Oct 2026 22:03:31 GMT",
-    "asset_ray": "a4b21d431f8c3ea9-EWR",
-    "asset_body": "Temporarily unavailable. Please try again.",
-    "session_get": {
-      "configured": false,
-      "authenticated": false
-    },
-    "browser_observation": "Codex in-app browser rendered shell and remained Checking private access…; Analyze disabled. No live upload/analysis/review/correction was possible.",
-    "end_to_end": "NOT_RUN_BLOCKED",
+  "known_limits": {
+    "ASR": "Expected i do not think this is fair because you know the answer; actual i do not think is is there because you know the answer. The error is retained and source-bound correction saved.",
+    "visual": "Two frames at 0 and 5 seconds; not frame-exhaustive; 0.4-second transient coverage is not claimed.",
+    "speaker_identity": "not determined",
+    "semantic_vision": "unavailable",
+    "enforced_semantic_claim_release": "NOT_RUN",
+    "creative_or_creator_acceptance": "NOT_RUN",
     "physical_iPhone": "NOT_RUN",
-    "creator_acceptance": "NOT_RUN"
-  },
-  "Cloudflare": {
-    "whoami": "unauthenticated",
-    "login": "Scoped normal browser OAuth attempted (account:read user:read workers_scripts:write; OS keyring requested); timed out waiting for authorization code. First rejected CLI invocation used unsupported offline_access scope; corrected before OAuth. No successful login or saved OAuth credential claimed.",
-    "native_browser": "Computer Use permissions are not granted; browser account state unavailable",
-    "private_route": "No verified existing approved origin/configuration found locally; .cloudflared directory empty, no relevant env credential names. Account-side route existence UNKNOWN, not asserted absent. User asked to identify existing origin; no replacement route/tunnel/hostname created.",
-    "secret_changes": {
-      "VIDEO_TEST_ACCESS_TOKEN": "NOT_SET_BY_THIS_TASK; live session configured=false",
-      "VIDEO_TEST_WORKER_TOKEN": "NOT_SET_BY_THIS_TASK; remote presence UNKNOWN",
-      "VIDEO_TEST_WORKER_URL": "NOT_SET_BY_THIS_TASK; remote presence UNKNOWN"
-    },
-    "deployment": "No deployment, main push, configuration change, DNS change or secret write"
-  },
-  "asset_diagnostic": {
-    "source": "wrangler.jsonc assets directory has no binding property; src/worker.js falls through to e.ASSETS.fetch and converts errors to the observed 503 text.",
-    "inference": "Missing ASSETS binding is a supported source-level explanation, but effective active Cloudflare binding configuration has not been inspected. Verify it after authenticated access before repair/promotion.",
-    "patch_prepared": "asset-binding.patch; not applied or deployed",
-    "local_baseline_http": 503,
-    "local_baseline_error": "Cannot read properties of undefined (reading 'fetch') in e.ASSETS.fetch",
-    "candidate_change": "Add assets.binding = ASSETS in temporary local config only",
-    "local_candidate": {
-      "app_js_http": 200,
-      "style_css_http": 200,
-      "app_sha256": "37ce35e7f57f398dce6e8e05f73f9742242fc74d88870365cf26a12eff470949",
-      "unchanged_app_bytes": true,
-      "browser_status": "Video testing is not activated yet. Do not enter a token or upload footage: the private access and analyzer connection have not been configured.",
-      "Analyze_disabled": true
-    },
-    "root_cause": "Missing ASSETS binding reproduced in the local current-main Worker; adding exactly that binding serves unchanged JS/CSS and starts the browser module. Actual deployed binding settings remain uninspected, so local verified cause is not yet a live repaired claim.",
-    "patch_validation": "git apply --check PASS; patch remains unapplied/uncommitted/undeployed"
+    "remote_evidence_archival": "Not configured; source/evidence/corrections persist locally and survive worker restart; no safe-deletion claim",
+    "availability": "Requires this Mac and the two detached processes to remain online; no launch-at-login or unattended host guarantee",
+    "VPC_pricing": "Currently free during Cloudflare open beta; no paid plan/service added; current existing Workers quotas apply. Reverify before any future plan/beta transition."
   },
   "constraints": {
-    "paid_services_used": false,
-    "external_AI_video_services_used": false,
-    "public_tunnels_created": false,
-    "user_original_footage_deleted": false,
-    "test_source_and_worker_copies_retained": true,
-    "semantic_vision_provider": "unavailable",
-    "claim_release_and_UGC_creative_gates": "NOT_RUN"
+    "paid_service_or_plan_added": false,
+    "external_AI_video_service_used": false,
+    "public_tunnel_or_hostname_created": false,
+    "original_footage_deleted": false,
+    "non_private_source_and_worker_copy_retained": true
   },
-  "next": "Complete Cloudflare authentication and identify/reuse the approved secure private worker route; verify effective static-asset ASSETS binding and restore live JS if absent; configure only the three existing video-test secrets without logging their values; verify origin reachable from deployed gateway, then run actual live upload → timestamped review → correction → retrieval, keeping ASR failure and physical iPhone acceptance separate.",
-  "continuation": {
-    "observed_at": "2026-10-15T22:17:31.974694+00:00",
-    "authorization": "User said continue and completed scoped Cloudflare OAuth.",
-    "Cloudflare_authentication": "SUCCESS; verified intended existing account b72e8e53b98d00d2439ea4e19f47bec0; encrypted credential file with macOS Keychain key; account:read user:read workers_scripts:write plus automatic offline_access.",
-    "production_version_before": "3598412e-bde5-42b0-9a54-6b1cbb7a1afc",
-    "production_bindings_verified": [
-      "DB",
-      "AI",
-      "CONTROL_GITHUB_APP_ID",
-      "CONTROL_GITHUB_INSTALLATION_ID"
-    ],
-    "production_secrets_before": [
-      "ADMIN_PASSWORD",
-      "ADMIN_SESSION_SECRET",
-      "CONTROL_GITHUB_APP_PRIVATE_KEY"
-    ],
-    "production_ASSETS_binding_before": "ABSENT_CONFIRMED",
-    "existing_tunnels_query": "wrangler tunnel list succeeded: No tunnels found in authenticated account; no local .cloudflared configuration; no already-approved private origin recovered.",
-    "config_fix": "Add only assets.binding = ASSETS in existing wrangler.jsonc; unchanged analyzer.",
-    "regression_before": "New real Wrangler-runtime test fails on the actual HTML-referenced stylesheet with HTTP 503.",
-    "regression_after": {
-      "pass": 1,
-      "fail": 0,
-      "duration_ms": 1505.301417
-    },
-    "full_website_tests": {
-      "pass": 142,
-      "fail": 0,
-      "skip": 0,
-      "duration_ms": 3419.626417,
-      "real_analyzer_integration": "VIDEO_ANALYZER_MODULE points to unchanged e5dfe3e checkout"
-    },
-    "requirements_gate": "14 requirements mapped; PASS",
-    "worker_packaging": "PASS_DRY_RUN; env.ASSETS now present",
-    "promotion": "PREPARING_NORMAL_GITHUB_MAIN_PATH",
-    "server_side_video_test_secrets_set": false,
-    "live_end_to_end": "NOT_RUN_NO_PRIVATE_WORKER_ORIGIN",
-    "analyzer_accuracy": "17/18 historical local result remains; ASR failure not repaired",
-    "new_tunnel_created": false,
-    "paid_service_used": false,
-    "external_AI_service_used": false,
-    "original_footage_deleted": false
-  }
+  "failure_history": {
+    "asset_startup": "Live HTML 200 but JS/CSS 503; missing ASSETS binding confirmed remotely and reproduced locally. Real runtime regression fails before and passes after; PR #35 deployed repair.",
+    "initial_auth": "Scoped OAuth initially timed out; subsequent user sign-in succeeded.",
+    "git_identity": "Mac Git push failed under an unrelated account; connected authorized GitHub performed exact reviewed writes, with byte readbacks. No Git credential changes.",
+    "browser_credential_handoff": "Password-field value unavailable through read-only adapter. Automatic approval review rejected a proposed clipboard transfer because it would expand credential exposure. No clipboard action executed; direct in-memory one-use local handoff succeeded."
+  },
+  "history_links": [
+    "https://github.com/ashleybrookeugc/research-vault/commit/5b06f4f4ec6f42ccea106d9d6c25bf07de608cd7",
+    "https://github.com/ashleybrookeugc/research-vault/commit/711b086a873b75d49e1b8727f57869ca767b2039"
+  ],
+  "official_private_transport_sources": [
+    "https://developers.cloudflare.com/workers-vpc/configuration/vpc-services/",
+    "https://developers.cloudflare.com/workers-vpc/api/",
+    "https://developers.cloudflare.com/workers-vpc/platform/pricing/"
+  ],
+  "next": "Bounded activation is complete. Keep the Mac/worker/connector online for testing. Physical iPhone and creator evaluation are separate; analyzer engineering continues under the unchanged shared plan and preserved ASR counterexample. Do not claim arbitrary-video semantics or safe deletion."
 }
