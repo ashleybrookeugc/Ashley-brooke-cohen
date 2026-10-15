@@ -73,8 +73,8 @@ function priorityAdviceSummary(projects=[]) {
     return /unverified|not proven|blocked|pending|open/i.test(evidence)
       ? `${project.name}: an important check is still unverified.` : null;
   }).filter(Boolean);
-  const priorityText=priorities.join(' ');
-  const blockerText=blockers.length?` Current blockers or open checks: ${blockers.join(' ')}`:' I do not see a separate blocker recorded for these projects.';
+  const priorityText=priorities.map(value=>value.replace(/[.;]+$/,'')+'.').join(' ');
+  const blockerText=blockers.length?` Open checks or blockers: ${blockers.map(value=>value.replace(/[.;]+$/,'')+'.').join(' ')}`:' I do not see a separate blocker recorded for these projects.';
   return `Based on the current saved work, your priorities are: ${priorityText}${blockerText}`;
 }
 // A contextual fragment can ask for advice without a question mark. This

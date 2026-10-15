@@ -4,7 +4,7 @@
   "previous_head": "eefabaa835478a5de41a0b6504c24aaa2765cfec",
   "integrated_main": "0733499ebc711385053909094f6bbfb774ed60e7",
   "source_sha256": {
-    "src/control/service.js": "53deff0180c2e0247d22ffdf8da5f2307087194f0b6ada0b9f541bdf18cab4e3",
+    "src/control/service.js": "7d4d8007ba700faae4bfc7b8a0fee6feb770c88c407c010daede8464144fc127",
     "src/control/adapters.js": "88bc6436778f3c76a26ee07ca451ec1710e75a7c1e1e01b8ba07b7a9b3314a83",
     "scripts/acceptance/conversation-regressions.js": "2daccdf5ab7dee88b19a1bc82b7f6ef38d190e4d13c6cf02857a19c186643e8f",
     "scripts/acceptance/conversation-holdouts.json": "1aeacae3ff95fdec3798388e18deb57bb3acc675ed62b135521049556f2066a0",
