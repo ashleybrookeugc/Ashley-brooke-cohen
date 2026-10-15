@@ -16,6 +16,7 @@ const CODEX_HARDENING_ARGS=[
   '--no-alt-screen',
   '--strict-config',
   '-c','shell_environment_policy.inherit="none"',
+  '-c','notify=[]',
   '-c','mcp_servers={}',
   '-c','apps={}',
   '-c','plugins={}',

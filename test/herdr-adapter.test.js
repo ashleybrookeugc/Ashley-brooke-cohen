@@ -11,7 +11,7 @@ const allowed={authorized:true,test_only:true,task_id:'worker-test',authority,fi
 async function fixture(overrides={}) {
   const root=await mkdtemp(path.join(os.tmpdir(),'mk-herdr-adapter-test-'));
   const cwd=path.join(root,'worker');await mkdir(cwd);
-  const config=path.join(root,'config.toml');await writeFile(config,'approval_policy = "never"\n');
+  const config=path.join(root,'config.toml');await writeFile(config,'approval_policy = "never"\nnotify = ["/fixture/host-notification-command"]\n');
   const hash=await sha256File(config);
   const calls=[];
   const states=[
@@ -67,6 +67,7 @@ test('authorized worker uses isolated Herdr identity and fixed deny-by-default C
   assert.ok(start.args.includes('mcp_servers={}'));
   assert.ok(start.args.includes('apps={}'));
   assert.ok(start.args.includes('plugins={}'));
+  assert.ok(start.args.includes('notify=[]'),'owned workers must disable host notification commands even when the trusted host config enables one');
   assert.equal(start.options.env.GITHUB_TOKEN,undefined);
   assert.equal(start.options.env.CLOUDFLARE_API_TOKEN,undefined);
   assert.equal(start.options.env.OPENAI_API_KEY,undefined);
