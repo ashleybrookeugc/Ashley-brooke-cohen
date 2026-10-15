@@ -1,3 +1,4 @@
+import {isReadQuestion,isPriorityQuestion,authorityKind,retrieveIndexedEvidence} from './retrieval.js';
 import {routingDiagnostic} from './diagnostics.js';
 import {applyProposal,normalizeFactKey,parseActiveWork,parseCanonicalFacts,RouteValidationError,validateRoute,WRITE_REPO} from './contracts.js';
 import {buildMyWorkProjection} from './my-work.js';
@@ -53,11 +54,17 @@ const sectionScore=(text,section)=>{
   const input=textWords(text);
   if(input.includes(' '+words.join(' ')+' ')) return words.length+100;
   // A partial project name is useful only when it identifies one section.
-  const distinctive=words.filter(word=>word.length>2&&!['active','now','parallel','blocked','resumable','paused','waiting','ashley','current','project','work','system','operating','reconciliation','truth'].includes(word));
+  const distinctive=words.filter(word=>word.length>2&&!(isReadQuestion(text)?['and','the','for','with','app']:[]).includes(word)&&!['active','now','parallel','blocked','resumable','paused','waiting','ashley','current','project','work','system','operating','reconciliation','truth'].includes(word));
   return distinctive.filter(word=>input.includes(' '+word+' ')).length;
 };
 export function resolveAuthoritativeWorkstream(text, facts) {
-  const sections=[...new Set(facts.map(f=>f.section))].filter(section=>section!=='document');
+  const sections=[...new Set(facts.map(f=>f.section))].filter(section=>section!=='document'&&!/^\d{4}-\d{2}-\d{2}/.test(section)&&! /^(?:current execution priority|current active workstreams|session handoff rule|rules)$/i.test(section));
+  const ugcApp=/\b(?:ugc app|ugc creator app|contentease)\b/i.test(text);
+  if(ugcApp&&!namesMaryKate(text)&&! /\bb-paid\b/i.test(text)) {
+    const matches=sections.filter(section=>/^ContentEase\s*\//i.test(section));
+    const others=sections.filter(section=>!/^ContentEase\s*\/|^UGC\s*\//i.test(section)&&sectionScore(text,section)>0);
+    if(matches.length===1&&!others.length)return {status:'resolved',section:matches[0],candidates:matches};
+  }
   const aliasInput=maryKateInput(text);
   const input=namesMaryKate(text)?(/\bmary kate\b/.test(aliasInput)?aliasInput:aliasInput.replace(/\bai operating system\b/g,'mary kate')):text;
   const scores=sections.map(section=>({section,score:sectionScore(input,section)}));
@@ -146,7 +153,7 @@ function requirePriorState(receipt) {
 // This is intentionally a translation boundary: policy and internal evidence stay
 // structured, while the UI receives a decision-ready explanation rather than a
 // schema key it would have to decipher.
-export function controlErrorResponse(error) {
+function translateControlError(error) {
   if (error instanceof PriorStateGateError) {
     const conflict=error.prior_state?.blockers?.find(blocker=>blocker.reason==='conflict');
     if (conflict) {
@@ -179,6 +186,7 @@ export function controlErrorResponse(error) {
   }
   return {error:error?.message||'Control request failed',code:error?.code||'invalid_request',...(error?.interaction_id?{interaction_id:error.interaction_id,technical:{interaction_id:error.interaction_id,diagnostic:error.diagnostic}}:{})};
 }
+export function controlErrorResponse(error) {return {...translateControlError(error),...(error?.retrieval_trace?{retrieval_trace:error.retrieval_trace}:{})};}
 export function createControlTaskPacket(snapshot) {
   return {
     version:'control-task-packet.v1',
@@ -189,6 +197,7 @@ export function createControlTaskPacket(snapshot) {
     ambiguity_gate:snapshot.ambiguity_gate,
     ...(snapshot.intent?{intent:snapshot.intent}:{}),
     ...(snapshot.completion_authority?{completion_authority:snapshot.completion_authority}:{}),
+    ...(snapshot.retrieval_evidence?{retrieval_evidence:snapshot.retrieval_evidence}:{}),
     ...(snapshot.conversation_history?.length?{conversation_history:snapshot.conversation_history}:{})
   };
 }
@@ -252,14 +261,14 @@ function completionAssessment(authority) {
     technical_summary:`V1 source status: ${total} total; ${verified} verified complete; ${partial} partial; ${implementedUnverified} implemented but unverified; ${notImplemented} not implemented.`
   };
 }
-export function createControlService({github,router,store,now=()=>Date.now(),packetTtlMs=300000}) {
+export function createControlService({github,router,store,now=()=>Date.now(),packetTtlMs=300000,observe=()=>{},deployment=null}) {
   const state = async ({refresh=false,requiredFacts=[],requiredFactKeys=[]}={}) => {
     const key='active-work.v1';
     if(refresh) await store.invalidateContextPacket(key);
     let packet=await store.getContextPacket(key);
     let reused=Boolean(packet);
     if(packet&&!Array.isArray(packet.facts)){packet=null;reused=false;}
-    if(!packet){const source=await github.readFile(WRITE_REPO,'ACTIVE_WORK.md');const created_at=new Date(now()).toISOString();packet={projects:parseActiveWork(source.content),facts:parseCanonicalFacts(source.content),source:{repo:WRITE_REPO,path:'ACTIVE_WORK.md',sha:source.sha},created_at,expires_at:new Date(now()+packetTtlMs).toISOString()};await store.putContextPacket(key,packet);}
+    if(!packet){const source=await github.readFile(WRITE_REPO,'ACTIVE_WORK.md');const created_at=new Date(now()).toISOString();packet={raw_content:source.content,projects:parseActiveWork(source.content),facts:parseCanonicalFacts(source.content),source:{repo:WRITE_REPO,path:'ACTIVE_WORK.md',sha:source.sha},created_at,expires_at:new Date(now()+packetTtlMs).toISOString()};await store.putContextPacket(key,packet);}
     const prior_state=createPriorStateReceipt(packet,requiredFacts.length?requiredFacts:requiredFactKeys);
     return {routing_diagnostics:{version:'control-routing-failure.v1',storage:'control_interactions.route_json'},ambiguity_gate:{version:'authoritative-ambiguity.v1'},projects:packet.projects,source:packet.source,context:{status:reused?'reused':'refreshed',created_at:packet.created_at,expires_at:packet.expires_at},fact_keys:[...new Set(packet.facts.map(f=>f.key))],prior_state,queues:await store.listQueues(),history:await store.listHistory(20)};
   };
@@ -278,16 +287,24 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
       }
     },
     async capture(text,{requiredFactKeys=[],contextWorkstream=null,refreshContext=false,conversationHistory=[],conversationId=null}={}) {
+      const started=now();
+      const trace={version:'control-retrieval-trace.v1',request_id:crypto.randomUUID(),deployment,stages:[]};
+      const mark=(stage,details={})=>{trace.stages.push({stage,elapsed_ms:now()-started,...details});};
+      try {
+      mark('input',{characters:typeof text==='string'?text.length:0});
       if(typeof text!=='string'||!text.trim()||text.length>4000) throw new Error('Message must be 1–4000 characters');
       const history=normalizeConversationHistory(conversationHistory);
       if(conversationId!=null&&!/^[A-Za-z0-9_-]{8,80}$/.test(conversationId)) throw new PriorStateGateError('invalid_request','conversation_id is invalid');
+      mark('conversation',{messages:history.length});
       const initial=await state({refresh:refreshContext===true});
       // Scope each requested fact against the actual canonical facts, not the de-duplicated key list.
       const packet=await store.getContextPacket('active-work.v1');
+      mark('current_work',{source:initial.source,cache:initial.context.status,source_characters:packet?.raw_content?.length||0});
       const facts=packet?.facts||[];
       const rawResolution=resolveAuthoritativeWorkstream(text,facts);
-      const priorConversationSection=rawResolution.status==='unknown'?conversationWorkstream(history,facts):null;
-      const commandCenterOverview=contextWorkstream==='mary-kate-command-center'&&!priorConversationSection&&commandCenterOverviewQuestion(text);
+      const kind=authorityKind(text);
+      const priorConversationSection=rawResolution.status==='unknown'&&kind==='current'?conversationWorkstream(history,facts):null;
+      const commandCenterOverview=!priorConversationSection&&activeWorkstreamSections(facts).length>0&&isPriorityQuestion(text);
       // The persistent Command Center chat may supply its page context for an
       // otherwise unqualified read-only assessment. It never overrides an
       // explicit project, an ambiguous request, or anything action-bearing.
@@ -298,25 +315,40 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
       const ambiguity_gate=commandCenterOverview&&rawResolution.status==='unknown'
         ? {status:'passed',section:null,candidates:[],scope:'all_current_workstreams'}
         : createAmbiguityGate(scopedText,facts);
+      mark('workstream',{...ambiguity_gate});
       if(ambiguity_gate.status==='blocked') {
         const detail=ambiguity_gate.reason==='unbound_workstream_request'?'Mary Kate found more than one workstream and could not bind this request to one current workstream, so it changed nothing.':'Mary Kate could not bind this request to one current workstream, so it changed nothing.';
         throw new PriorStateGateError('ambiguous_scope',detail,{gate:'authoritative-ambiguity.v1',status:'blocked',evidence:[],blockers:[{reason:'ambiguous_scope',key:'workstream',facts:ambiguity_gate.candidates.map(section=>({section,label:'workstream'}))}]});
       }
-      const readOnly=readOnlyAssessment(text)||commandCenterOverview;
+      const readOnly=readOnlyAssessment(text)||isReadQuestion(text);
+      mark('intent',{intent:readOnly?'read_only_assessment':'action_or_unclassified'});
       if(!Array.isArray(requiredFactKeys)) throw new PriorStateGateError('invalid_request','required_fact_keys must be an array of strings');
-      const assessmentKeys=readOnly&&maryKateSection(ambiguity_gate.section)?[...new Set((packet?.facts||[]).filter(fact=>fact.section===ambiguity_gate.section&&['current-stage','current','current-assessment'].includes(fact.key)).map(fact=>fact.key))]:[];
-      const scoped=requestedFacts(scopedText,facts,initial.projects,[...requiredFactKeys,...(readOnly&&maryKateSection(ambiguity_gate.section)?assessmentKeys.length?assessmentKeys:['current-stage']:[])]);
+      const assessmentKeys=readOnlyAssessment(text)&&maryKateSection(ambiguity_gate.section)?[...new Set((packet?.facts||[]).filter(fact=>fact.section===ambiguity_gate.section&&['current-stage','current','current-assessment'].includes(fact.key)).map(fact=>fact.key))]:[];
+      // Inherited or explicitly named workstream titles are scope, not fact
+      // requests (Evidence engine must not demand a missing Evidence field).
+      // Keep genuine requested fields and every caller-specified requirement.
+      let factText=readOnly?text:scopedText;
+      if(readOnly&&ambiguity_gate.section)factText=textWords(factText).replace(textWords(canonicalSectionName(ambiguity_gate.section)),' ');
+      if(readOnly&&isPriorityQuestion(text))factText=factText.replace(/\bnext\b/gi,'');
+      const scoped=requestedFacts(factText,facts,initial.projects,[...requiredFactKeys,...(readOnlyAssessment(text)&&maryKateSection(ambiguity_gate.section)?assessmentKeys.length?assessmentKeys:['current-stage']:[])]).map(request=>({...request,section:request.section||ambiguity_gate.section}));
       const snapshot=scoped.length?await state({requiredFacts:scoped}):initial;
       snapshot.ambiguity_gate=ambiguity_gate;
       snapshot.conversation_history=history;
       if(readOnly) snapshot.intent='read_only_assessment';
+      mark('prior_state',{status:snapshot.prior_state.status,required_fact_keys:snapshot.prior_state.required_fact_keys});
       requirePriorState(snapshot.prior_state);
-      if(readOnly&&maryKateSection(ambiguity_gate.section)) snapshot.completion_authority=await retrieveCompletionAuthority(github);
+      if(readOnlyAssessment(text)&&maryKateSection(ambiguity_gate.section)) snapshot.completion_authority=await retrieveCompletionAuthority(github);
+      if(readOnly&&!snapshot.completion_authority) {
+        snapshot.retrieval_evidence=await retrieveIndexedEvidence(github,text,{activeWork:typeof packet.raw_content==='string'?{content:packet.raw_content,sha:packet.source.sha}:await github.readFile(WRITE_REPO,'ACTIVE_WORK.md'),kind});
+        // The answer packet needs the relevant current paragraphs, not every project's history.
+        snapshot.projects=ambiguity_gate.section?initial.projects.filter(project=>project.name===ambiguity_gate.section):[];
+      }
       // A Command Center V1-status question has a canonical indexed answer.
       // Keep this narrow read-only path independent of a model's ability to
       // emit the control-route schema; all broader conversation still routes
       // through the existing policy adapter and gates below.
-      let candidate=contextWorkstream==='mary-kate-command-center'&&readOnly&&maryKateSection(ambiguity_gate.section)
+      mark('retrieval',{sources:snapshot.retrieval_evidence?.sources.map(x=>({...x.source,selected_characters:x.selected_characters,paragraphs:x.excerpts.map(e=>e.paragraph)}))||[snapshot.completion_authority?.source||initial.source],routing_source:snapshot.retrieval_evidence?.routing_source||snapshot.completion_authority?.routing_source||null,missing:snapshot.retrieval_evidence?.missing||[]});
+      let candidate=contextWorkstream==='mary-kate-command-center'&&readOnlyAssessment(text)&&maryKateSection(ambiguity_gate.section)
         ? completionAssessment(snapshot.completion_authority)
         : null;
       let technicalSummary=null;
@@ -326,7 +358,11 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
         candidate=validateRoute(publicCandidate);
       }
       else try {
-        const output=await router.route(text.trim(),createControlTaskPacket(snapshot));
+        const taskPacket=createControlTaskPacket(snapshot);
+        const characters=JSON.stringify(taskPacket).length;
+        mark('routing_dispatch',{context_characters:characters,estimated_tokens:Math.ceil(characters/4),token_estimate_method:'characters/4; not provider usage'});
+        const output=await router.route(text.trim(),taskPacket,{observeModel:details=>mark('model_metrics',details)});
+        mark('routing_return',{route_kind:output?.route_kind,proposal_present:Boolean(output?.proposal)});
         try {candidate=validateRoute(output);} catch(error) {
           error.code='routing_contract_invalid';error.status=422;
           error.diagnostic=routingDiagnostic(output,{},error);
@@ -347,13 +383,17 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
         throw error;
       }
       const route=enforceResolvedWriteTarget({...candidate,prior_state:snapshot.prior_state,...(snapshot.completion_authority?{retrieval_authority:{source:snapshot.completion_authority.source,routing_source:snapshot.completion_authority.routing_source}}:{})},snapshot.prior_state,ambiguity_gate);
-      const interaction=await store.addInteraction({raw_text:text.trim(),route});
+      mark('safety',{route_kind:route.route_kind,mutation_proposed:Boolean(route.proposal)});
+      const interaction=await store.addInteraction({raw_text:text.trim(),route:{...route,retrieval_trace:trace}});
       let item=null;
       if(route.proposal) item=await store.addQueueItem({interaction_id:interaction.id,...route});
       const handoff=item
         ? {status:'tracked',can_clear:true,message:route.responsibility==='needs_ashley'?'This is saved in Needs your attention until you approve or reject it.':'This is saved under Today as work AI can handle next. It is not shown as running until a worker actually checks in.'}
         : {status:'conversation_active',can_clear:false,message:'This is still a conversation. No task or GitHub change has been claimed.'};
-      return {interaction_id:interaction.id,conversation_id:conversationId,plain_summary:route.plain_summary,...(technicalSummary?{technical_summary:technicalSummary}:{}),responsibility:route.responsibility,route_kind:route.route_kind,queue_item:item,handoff};
+      mark('response',{response_type:route.route_kind,queue_item_created:Boolean(item)});
+      try {observe(trace);} catch { /* Diagnostics must not alter authorization or availability. */ }
+      return {retrieval_trace:trace,interaction_id:interaction.id,conversation_id:conversationId,plain_summary:route.plain_summary,...(technicalSummary?{technical_summary:technicalSummary}:{}),responsibility:route.responsibility,route_kind:route.route_kind,queue_item:item,handoff};
+      } catch(error) {mark('failure',{code:error?.code||'invalid_request',first_failed_stage:trace.stages.at(-1)?.stage});error.retrieval_trace=trace;try {observe(trace);} catch {} throw error;}
     },
     async approve(id,note='') {
       const item=await store.getQueueItem(id);
