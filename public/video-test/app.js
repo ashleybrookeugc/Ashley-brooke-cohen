@@ -37,7 +37,7 @@ function showRuns(jobs=[]){
 }
 function decodeName(name){try{return decodeURIComponent(name)}catch{return name||'Video'}}
 async function refresh(){
-  connected=false;try{const session=await api('/session');authenticated=session.authenticated;ui.access.hidden=authenticated;if(!authenticated){message('Connect with your private testing token. Local video selection remains available.');showRuns();return;}
+  connected=false;try{const session=await api('/session');if(!session.configured){authenticated=false;ui.access.hidden=true;message('Video testing is not activated yet. Do not enter a token or upload footage: the private access and analyzer connection have not been configured.');showRuns();return;}authenticated=session.authenticated;ui.access.hidden=authenticated;if(!authenticated){message('This device needs the private testing link or token. Local video selection remains available; analysis is locked.');showRuns();return;}
     const health=await api('/health');connected=health.state==='available';message(connected?'Analyzer connected. Ready to upload a test video.':'Analyzer unavailable. No analysis will run; local playback and cached review remain available.');
     showRuns((await api('/jobs')).jobs);if(current)await syncFeedback(current);
   }catch(error){message(error.message+' Cached evidence and corrections remain on this browser.');showRuns();}finally{updateAnalyze();}
@@ -101,5 +101,5 @@ ui.correction.onsubmit=async event=>{
   if(!feedback.text||feedback.timestamp_seconds<0||feedback.timestamp_seconds>run.result.manifest.duration_seconds)return;
   run.feedback.push(feedback);try{await persist(run);ui.text.value='';ui['feedback-status'].textContent='Correction saved on this browser.';renderFeedback(run);await syncFeedback(run);}catch(error){run.feedback=run.feedback.filter(x=>x.id!==feedback.id);ui['feedback-status'].textContent=error.message;}
 };
-try{db=await storage();const request=db.transaction('reviews').objectStore('reviews').getAll();await new Promise((resolve,reject)=>{request.onsuccess=()=>{request.result.forEach(r=>cache.set(r.id,r));resolve()};request.onerror=()=>reject(request.error)});ui.storage.textContent='Cached evidence and pending corrections are stored in this browser. Clearing website data removes that cache; worker-saved feedback remains retrievable.';}catch{ui.storage.textContent='Browser storage unavailable. Offline correction saving is unavailable.';}
+void (async()=>{try{db=await storage();const request=db.transaction('reviews').objectStore('reviews').getAll();await new Promise((resolve,reject)=>{request.onsuccess=()=>{request.result.forEach(r=>cache.set(r.id,r));resolve()};request.onerror=()=>reject(request.error)});ui.storage.textContent='Cached evidence and pending corrections are stored in this browser. Clearing website data removes that cache; worker-saved feedback remains retrievable.';}catch{ui.storage.textContent='Browser storage unavailable. Offline correction saving is unavailable.';}})();
 await refresh();
