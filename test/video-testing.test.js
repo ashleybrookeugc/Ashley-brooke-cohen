@@ -33,6 +33,32 @@ test('gateway offline, path allowlist, upload cap, credential separation and red
  assert.equal(response.status,502);
  assert.equal((await handleVideoTesting(call('/health'),env,{fetchImpl:async()=>{throw Error('offline')}})).status,503);
 });
+test('private service pins the transport while preserving the fixed path, bearer separation and range',async()=>{
+ const cookie=await session();let calls=0;
+ const privateEnv={...env,VIDEO_TEST_PRIVATE_SERVICE:{async fetch(target,options){
+  calls++;assert.equal(this,privateEnv.VIDEO_TEST_PRIVATE_SERVICE);
+  assert.equal(target,'http://authorized-worker.example/video-worker/health');
+  assert.equal(options.headers.get('authorization'),'Bearer '+env.VIDEO_TEST_WORKER_TOKEN);
+  assert.equal(options.headers.get('cookie'),null);assert.equal(options.headers.get('range'),'bytes=0-15');
+  assert.equal(options.redirect,'manual');return new Response(JSON.stringify({state:'available'}));
+ }}};
+ const response=await handleVideoTesting(request('/health',{headers:{cookie,range:'bytes=0-15'}}),privateEnv,{fetchImpl(){throw Error('Public fallback forbidden')}});
+ assert.equal(response.status,200);assert.equal(calls,1);
+});
+test('private failure, invalid binding and redirect fail closed without public fallback',async()=>{
+ const cookie=await session();let publicCalls=0;
+ for(const binding of [{fetch(){throw Error('Tunnel down')}},{fetch(){return new Response(null,{status:302})}},{}]){
+  const response=await handleVideoTesting(request('/health',{headers:{cookie}}),{...env,VIDEO_TEST_PRIVATE_SERVICE:binding},{fetchImpl(){publicCalls++;return new Response('Unexpected')}});
+  assert.ok([502,503].includes(response.status));
+ }
+ assert.equal(publicCalls,0);
+});
+test('ordinary HTTPS transport remains fixed and rejects insecure configured origins',async()=>{
+ const cookie=await session();
+ const response=await handleVideoTesting(request('/health?url=https://untrusted.example',{headers:{cookie}}),env,{fetchImpl(target){assert.equal(target,'https://authorized-worker.example/video-worker/health');return new Response('ok')}});
+ assert.equal(response.status,200);
+ assert.equal((await handleVideoTesting(request('/health',{headers:{cookie}}),{...env,VIDEO_TEST_WORKER_URL:'http://untrusted.example'})).status,503);
+});
 async function listen(server){await new Promise(r=>server.listen(0,'127.0.0.1',r));return 'http://127.0.0.1:'+server.address().port;}
 async function close(server){await new Promise(r=>server.close(r));}
 test('actual synthetic upload: unchanged analyzer, frames, source times, range playback, feedback restart and invalid-video failure',{skip:!existsSync(analyzerModule)?'Existing analyzer checkout required; no substitute analyzer':false},async t=>{
