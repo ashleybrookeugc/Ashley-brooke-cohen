@@ -42,7 +42,15 @@ export async function handleVideoTesting(request,env,{fetchImpl=fetch,now=Date.n
   if(Number(headers.get('content-length'))>LIMIT)return json({error:'Maximum testing upload is 64 MiB'},413);
   try{
     // Fixed server-configured target, no redirects and no caller-controlled URLs.
-    const response=await fetchImpl(worker.origin+'/video-worker'+tail,{method:request.method,headers,body:request.method==='POST'?request.body:undefined,duplex:'half',redirect:'manual',signal:AbortSignal.timeout(tail==='/jobs'&&request.method==='POST'?120000:15000)});
+    // A VPC Service pins routing to the registered loopback host/port. Cloudflare
+    // encrypts traffic to cloudflared; only the local loopback hop uses HTTP.
+    const privateService=env.VIDEO_TEST_PRIVATE_SERVICE;
+    if(privateService&&typeof privateService.fetch!=='function')return json({state:'offline',error:'Private worker connection is not configured.'},503);
+    const target=new URL(worker.origin+'/video-worker'+tail);
+    if(privateService)target.protocol='http:';
+    const forward=privateService?privateService.fetch.bind(privateService):fetchImpl;
+    // A configured private service never falls back to public fetch on failure.
+    const response=await forward(target.href,{method:request.method,headers,body:request.method==='POST'?request.body:undefined,duplex:'half',redirect:'manual',signal:AbortSignal.timeout(tail==='/jobs'&&request.method==='POST'?120000:15000)});
     if(response.status>=300&&response.status<400)return json({state:'offline',error:'Worker redirect refused.'},502);
     const outputHeaders=new Headers(securityHeaders);
     for(const name of ['content-type','content-length','content-range','accept-ranges'])if(response.headers.has(name))outputHeaders.set(name,response.headers.get(name));

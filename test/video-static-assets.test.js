@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {readFile, mkdtemp} from 'node:fs/promises';
+import {readFile, writeFile, mkdtemp} from 'node:fs/promises';
 import {spawn} from 'node:child_process';
 import {once} from 'node:events';
 import {tmpdir} from 'node:os';
@@ -10,8 +10,17 @@ import {fileURLToPath} from 'node:url';
 test('actual Worker serves the video page assets and starts the private-access check', {timeout:45000}, async t => {
   const repo = fileURLToPath(new URL('..', import.meta.url));
   const persistence = await mkdtemp(join(tmpdir(), 'mk-video-assets-'));
+  const config = JSON.parse(await readFile(join(repo,'wrangler.jsonc'),'utf8'));
+  // This test exercises static routing without a live private-network connection.
+  // Keep the real asset bindings/configuration; VPC transport is tested separately.
+  delete config.vpc_services;
+  config.main = join(repo,config.main);
+  config.assets.directory = join(repo,config.assets.directory);
+  for (const db of config.d1_databases || []) db.migrations_dir = join(repo,db.migrations_dir);
+  const configPath = join(persistence,'static-config.json');
+  await writeFile(configPath,JSON.stringify(config));
   const child = spawn(process.execPath, [
-    join(repo, 'node_modules/wrangler/bin/wrangler.js'), 'dev', '--local',
+    join(repo, 'node_modules/wrangler/bin/wrangler.js'), 'dev', '--config', configPath, '--local',
     '--ip', '127.0.0.1', '--port', '0', '--inspector-port', '0',
     '--persist-to', persistence
   ], {cwd:repo, env:{...process.env, WRANGLER_SEND_METRICS:'false'}, stdio:['ignore','pipe','pipe']});

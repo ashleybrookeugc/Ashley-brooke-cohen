@@ -11,6 +11,10 @@
     { "type": "Text", "globs": ["**/*.html"], "fallthrough": true }
   ],
   "ai": { "binding": "AI" },
+  "vpc_services": [{
+    "binding": "VIDEO_TEST_PRIVATE_SERVICE",
+    "service_id": "01a141ad-d6e8-7ae0-804c-0f98e58320ad"
+  }],
   "observability": {
     "enabled": true,
     "logs": { "invocation_logs": true }
