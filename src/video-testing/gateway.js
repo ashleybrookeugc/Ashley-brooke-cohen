@@ -23,7 +23,7 @@ export async function handleVideoTesting(request,env,{fetchImpl=fetch,now=Date.n
   if(!['GET','POST'].includes(request.method))return json({error:'Method not allowed'},405);
   if(request.method==='POST'&&request.headers.get('origin')!==url.origin)return json({error:'Same-origin request required'},403);
   if(path==='/api/video-test/session'){
-    if(request.method==='GET')return json({authenticated:await authorized(request,env,now)});
+    if(request.method==='GET'){const configured=Boolean(env.VIDEO_TEST_ACCESS_TOKEN&&env.VIDEO_TEST_ACCESS_TOKEN.length>=32);return json({configured,authenticated:configured&&await authorized(request,env,now)});}
     if(!env.VIDEO_TEST_ACCESS_TOKEN||env.VIDEO_TEST_ACCESS_TOKEN.length<32)return json({error:'Private testing access has not been configured.'},503);
     const raw=await request.text();if(raw.length>2048)return json({error:'Request too large'},413);
     let body;try{body=JSON.parse(raw)}catch{return json({error:'Invalid request'},400)}
