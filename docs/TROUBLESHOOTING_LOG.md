@@ -1,5 +1,19 @@
 # Ashley Brooke Cohen Website — Troubleshooting & Recovery Log
 
+## 2026-10-15 — Video-test shell loads but its JavaScript returns 503
+
+**Symptom:** Live `/video-test/` returns 200, but `/video-test/app.js?v=20261015b` returns 503 `Temporarily unavailable. Please try again.` The browser remains at `Checking private access…` with Analyze disabled. Separately, `/api/video-test/session` reports `configured:false`; fixing assets alone cannot activate the analyzer.
+
+**Failed/looping approach avoided:** Do not repeat cache busts or treat the HTML 200, packaging success, or local analyzer success as proof of a working live page.
+
+**Confirmed local cause:** Clean website main `db491177f9f9ee048c0ac534bd544e9c8205d875` has no `assets.binding` in Wrangler configuration, while the existing fallback calls `e.ASSETS.fetch`. Wrangler packaging succeeds without an ASSETS binding. Actual local Wrangler execution reproduces the same 503; adding only `assets.binding = "ASSETS"` in a temporary configuration changes the unchanged JS and CSS to 200 and lets the browser display the correct inactive-testing message. Effective deployed binding settings are still uninspected because authentication is unavailable.
+
+**Verified fix and continuation:** The missing `assets.binding = "ASSETS"` is now repaired in the existing configuration. A new real Wrangler-runtime regression fails with the original 503 before the change and passes afterward against the actual HTML-referenced JS/CSS bytes. All 142 website tests pass with the unchanged analyzer integration enabled; the 14-requirement gate and Worker packaging pass. On continuation Cloudflare OAuth succeeded, stored encrypted with its key in macOS Keychain. Active production version `3598412e-bde5-42b0-9a54-6b1cbb7a1afc` was inspected and independently confirms no ASSETS binding; other runtime bindings and existing secret names match the checked-in configuration. Promotion uses the normal GitHub main → Cloudflare path; final deployed repair still needs readback.
+
+**Remaining independent blocker:** The authenticated Cloudflare account reports no existing tunnels, and no approved private worker origin was recovered locally or from the existing records. None of the three video-test secrets exists in production; none was set during this check. Do not invent an origin or create a public tunnel to complete the test. Local server.mjs upload/evidence/correction/restart proof passes, with the unchanged analyzer still 17/18 due to ASR. Exact dated receipt: `docs/test-receipts/2026-10-15-video-analyzer-mac-activation.json`. Live upload → analysis → review → correction acceptance remains blocked until an approved private connection is established.
+
+**Prevention:** For Worker-first static paths, test the actual JS/CSS responses and module startup using the same effective asset bindings as deployment. After authenticated configuration through the existing path, verify the deployed bytes, private worker reachability, and actual upload → timestamped review → correction retrieval before claiming activation.
+
 This is the durable record for recurring failures, loops, misleading symptoms, and verified fixes in the `ashleybrookeugc/Ashley-brooke-cohen` website project.
 
 ## How to use this file

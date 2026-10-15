@@ -1,0 +1,251 @@
+{
+  "observed_at": "2026-10-15T22:05:22.392080+00:00",
+  "overall_status": "BLOCKED_LIVE_ACTIVATION_NOT_COMPLETE",
+  "authorization": "User authorized necessary open-source dependencies, unchanged local analyzer worker, existing approved private route and three existing server-side video-test secrets; no paid services, external AI, public tunnels or footage deletion.",
+  "product_repo": {
+    "url": "https://github.com/ashleybrookeugc/Ashley-brooke-cohen",
+    "branch": "main",
+    "initial_head": "951903e5d77413e49902be6180b3cd73df99e5b4",
+    "verified_fetched_head": "db491177f9f9ee048c0ac534bd544e9c8205d875",
+    "fast_forward_only": true,
+    "source_changes": false,
+    "generated_dependency_lockfile": "package-lock.json (untracked; not committed/deployed)"
+  },
+  "analyzer": {
+    "branch": "video-analyzer/f003-source-time-fidelity",
+    "head": "e5dfe3e4d3967615f23eb064896de1303f86ded9",
+    "clean": true,
+    "code_unchanged": true,
+    "core_sha256": "1b2f52b6804c3a28927bee84c8450edd95b647a34433887d5dcb5bf079be00a7",
+    "understanding_sha256": "389463b526930caaf0bd9763e5e093ef218a96350bfb119a65fbc34828a89177"
+  },
+  "dependencies": {
+    "node": "26.10.0 pre-existing; not reinstalled",
+    "npm": "11.19.1 pre-existing; not upgraded",
+    "ffmpeg": "9.0.2 Homebrew bottle 9.0.2_1 installed only after absence verified; includes ffprobe",
+    "tesseract": "5.5.3 installed after absence verified",
+    "PocketSphinx": "5.0.4 installed in analyzer ignored venv using existing Python 3.11; existing pinned requirements sounddevice 0.5.6, cffi 2.1.1, pycparser 3.0",
+    "wrangler": "4.151.0 from existing package.json ^4.0.0; installed with --ignore-scripts --no-audit --no-fund",
+    "cloudflared": "2026.10.0 pre-existing, not run"
+  },
+  "worker": {
+    "entrypoint": "tools/video-testing/server.mjs",
+    "bind": "127.0.0.1:8789",
+    "pid": 56458,
+    "authenticated_health": "available",
+    "anonymous_health_http": 401,
+    "token_storage": "mode 0600 private local temporary JSON; token never printed, committed, or sent to browser",
+    "persistence": "local analyzer gitignored .video-analysis/testing; no remote archival claim",
+    "autostart": "not configured; detached local process only"
+  },
+  "local_integration": {
+    "observed_at": "2026-10-15T22:03:08.777Z",
+    "scope": "actual loopback server.mjs worker, unchanged analyzer, synthetic public-safe dialogue fixture",
+    "status": "PASS_LOCAL_ONLY",
+    "live_Cloudflare": "NOT_RUN",
+    "physical_iPhone": "NOT_RUN",
+    "source": {
+      "path": "/Users/russellstoner/Documents/ChatGPT/Mary Kate 2/video-analyzer-existing/.video-analysis/testing-inputs/non-private-dialogue.mp4",
+      "bytes": 52236,
+      "sha256": "c48f66d57aff8697302e6e2c4b7ae143ebe738d3a3c82b10de2a2685e0440c6d",
+      "duration_seconds": 5.185805
+    },
+    "job_id": "b5056c2f-99ba-4800-bfe9-9c28456dce4a",
+    "invalid_job_id": "22b62568-c713-4721-8f4a-60c7e2013cc3",
+    "decode": {
+      "state": "complete",
+      "method": "ffmpeg_full_stream_decode",
+      "duration_seconds": 5.185805,
+      "decoded_through_seconds": 5.185805,
+      "tolerance_seconds": 0.5,
+      "ffmpeg_exit_code": 0,
+      "verified_at": "2026-10-15T22:03:07.170Z"
+    },
+    "readback": {
+      "verified": true,
+      "verified_at": "2026-10-15T22:03:07.884Z"
+    },
+    "frames": [
+      {
+        "source_timestamp_seconds": 0,
+        "source_frame_index": 0
+      },
+      {
+        "source_timestamp_seconds": 5,
+        "source_frame_index": 60
+      }
+    ],
+    "lanes": {
+      "spoken_audio": {
+        "state": "completed",
+        "observations": 2
+      },
+      "speaker_turns": {
+        "state": "turn_boundaries_only",
+        "observations": 2
+      },
+      "burned_in_captions": {
+        "state": "heuristically_classified",
+        "observations": 2
+      },
+      "other_on_screen_text": {
+        "state": "completed_at_sampling_cadence",
+        "observations": 2
+      },
+      "visible_actions_subjects_ui_state": {
+        "state": "bounded_screen_state_classifier",
+        "observations": 2
+      },
+      "visual_shot_state_changes": {
+        "state": "completed",
+        "observations": 0
+      }
+    },
+    "correction_id": "1f852510-b3a0-4756-814a-fced6a9ad2ac",
+    "correction_after_worker_restart": "PASS",
+    "worker_pid": 56458,
+    "local_root": "/Users/russellstoner/Documents/ChatGPT/Mary Kate 2/video-analyzer-existing/.video-analysis/testing",
+    "raw_source_retained": true,
+    "semantic_understanding": "unavailable",
+    "creative_acceptance": "NOT_RUN"
+  },
+  "tests": {
+    "video_flow": {
+      "pass": 13,
+      "fail": 0,
+      "skip": 0,
+      "commands": "VIDEO_ANALYZER_MODULE=<verified existing core> node --test test/video-testing.test.js test/video-testing-ui.test.js test/video-browser-route.test.js test/video-browser-seek.test.js"
+    },
+    "unchanged_analyzer": {
+      "pass": 17,
+      "fail": 1,
+      "skip": 0,
+      "duration_ms": 9571.02675,
+      "failure": "ASR preserves tested connector words and negation with versioned word timestamps",
+      "expected": "i do not think this is fair because you know the answer",
+      "actual": "i do not think is is there because you know the answer",
+      "status": "FAIL; no expectations changed"
+    },
+    "initial_sandbox_attempt": "Loopback listen/connect EPERM; permission-correct rerun above supersedes network-related failures, not the ASR failure.",
+    "worker_packaging": {
+      "status": "PASS_DRY_RUN_ONLY",
+      "wrangler": "4.151.0",
+      "upload": "NOT_RUN",
+      "declared_bindings": [
+        "DB",
+        "AI",
+        "CONTROL_GITHUB_APP_ID",
+        "CONTROL_GITHUB_INSTALLATION_ID"
+      ],
+      "ASSETS_declared": false
+    },
+    "asset_binding_regression": {
+      "baseline": "503 in current-main local Wrangler runtime",
+      "candidate": "200 unchanged JavaScript and CSS with only ASSETS binding added",
+      "browser_startup": "PASS_LOCAL_CANDIDATE_ONLY",
+      "live": "NOT_REPAIRED"
+    }
+  },
+  "live": {
+    "url": "https://ashleybrookecohen.com/video-test/",
+    "html_http": 200,
+    "html_date": "Thu, 15 Oct 2026 21:59:54 GMT",
+    "html_ray": "a4b217f858370c76-EWR",
+    "asset": "/video-test/app.js?v=20261015b",
+    "asset_http": 503,
+    "asset_date": "Thu, 15 Oct 2026 22:03:31 GMT",
+    "asset_ray": "a4b21d431f8c3ea9-EWR",
+    "asset_body": "Temporarily unavailable. Please try again.",
+    "session_get": {
+      "configured": false,
+      "authenticated": false
+    },
+    "browser_observation": "Codex in-app browser rendered shell and remained Checking private access…; Analyze disabled. No live upload/analysis/review/correction was possible.",
+    "end_to_end": "NOT_RUN_BLOCKED",
+    "physical_iPhone": "NOT_RUN",
+    "creator_acceptance": "NOT_RUN"
+  },
+  "Cloudflare": {
+    "whoami": "unauthenticated",
+    "login": "Scoped normal browser OAuth attempted (account:read user:read workers_scripts:write; OS keyring requested); timed out waiting for authorization code. First rejected CLI invocation used unsupported offline_access scope; corrected before OAuth. No successful login or saved OAuth credential claimed.",
+    "native_browser": "Computer Use permissions are not granted; browser account state unavailable",
+    "private_route": "No verified existing approved origin/configuration found locally; .cloudflared directory empty, no relevant env credential names. Account-side route existence UNKNOWN, not asserted absent. User asked to identify existing origin; no replacement route/tunnel/hostname created.",
+    "secret_changes": {
+      "VIDEO_TEST_ACCESS_TOKEN": "NOT_SET_BY_THIS_TASK; live session configured=false",
+      "VIDEO_TEST_WORKER_TOKEN": "NOT_SET_BY_THIS_TASK; remote presence UNKNOWN",
+      "VIDEO_TEST_WORKER_URL": "NOT_SET_BY_THIS_TASK; remote presence UNKNOWN"
+    },
+    "deployment": "No deployment, main push, configuration change, DNS change or secret write"
+  },
+  "asset_diagnostic": {
+    "source": "wrangler.jsonc assets directory has no binding property; src/worker.js falls through to e.ASSETS.fetch and converts errors to the observed 503 text.",
+    "inference": "Missing ASSETS binding is a supported source-level explanation, but effective active Cloudflare binding configuration has not been inspected. Verify it after authenticated access before repair/promotion.",
+    "patch_prepared": "asset-binding.patch; not applied or deployed",
+    "local_baseline_http": 503,
+    "local_baseline_error": "Cannot read properties of undefined (reading 'fetch') in e.ASSETS.fetch",
+    "candidate_change": "Add assets.binding = ASSETS in temporary local config only",
+    "local_candidate": {
+      "app_js_http": 200,
+      "style_css_http": 200,
+      "app_sha256": "37ce35e7f57f398dce6e8e05f73f9742242fc74d88870365cf26a12eff470949",
+      "unchanged_app_bytes": true,
+      "browser_status": "Video testing is not activated yet. Do not enter a token or upload footage: the private access and analyzer connection have not been configured.",
+      "Analyze_disabled": true
+    },
+    "root_cause": "Missing ASSETS binding reproduced in the local current-main Worker; adding exactly that binding serves unchanged JS/CSS and starts the browser module. Actual deployed binding settings remain uninspected, so local verified cause is not yet a live repaired claim.",
+    "patch_validation": "git apply --check PASS; patch remains unapplied/uncommitted/undeployed"
+  },
+  "constraints": {
+    "paid_services_used": false,
+    "external_AI_video_services_used": false,
+    "public_tunnels_created": false,
+    "user_original_footage_deleted": false,
+    "test_source_and_worker_copies_retained": true,
+    "semantic_vision_provider": "unavailable",
+    "claim_release_and_UGC_creative_gates": "NOT_RUN"
+  },
+  "next": "Complete Cloudflare authentication and identify/reuse the approved secure private worker route; verify effective static-asset ASSETS binding and restore live JS if absent; configure only the three existing video-test secrets without logging their values; verify origin reachable from deployed gateway, then run actual live upload → timestamped review → correction → retrieval, keeping ASR failure and physical iPhone acceptance separate.",
+  "continuation": {
+    "observed_at": "2026-10-15T22:17:31.974694+00:00",
+    "authorization": "User said continue and completed scoped Cloudflare OAuth.",
+    "Cloudflare_authentication": "SUCCESS; verified intended existing account b72e8e53b98d00d2439ea4e19f47bec0; encrypted credential file with macOS Keychain key; account:read user:read workers_scripts:write plus automatic offline_access.",
+    "production_version_before": "3598412e-bde5-42b0-9a54-6b1cbb7a1afc",
+    "production_bindings_verified": [
+      "DB",
+      "AI",
+      "CONTROL_GITHUB_APP_ID",
+      "CONTROL_GITHUB_INSTALLATION_ID"
+    ],
+    "production_secrets_before": [
+      "ADMIN_PASSWORD",
+      "ADMIN_SESSION_SECRET",
+      "CONTROL_GITHUB_APP_PRIVATE_KEY"
+    ],
+    "production_ASSETS_binding_before": "ABSENT_CONFIRMED",
+    "existing_tunnels_query": "wrangler tunnel list succeeded: No tunnels found in authenticated account; no local .cloudflared configuration; no already-approved private origin recovered.",
+    "config_fix": "Add only assets.binding = ASSETS in existing wrangler.jsonc; unchanged analyzer.",
+    "regression_before": "New real Wrangler-runtime test fails on the actual HTML-referenced stylesheet with HTTP 503.",
+    "regression_after": {
+      "pass": 1,
+      "fail": 0,
+      "duration_ms": 1505.301417
+    },
+    "full_website_tests": {
+      "pass": 142,
+      "fail": 0,
+      "skip": 0,
+      "duration_ms": 3419.626417,
+      "real_analyzer_integration": "VIDEO_ANALYZER_MODULE points to unchanged e5dfe3e checkout"
+    },
+    "requirements_gate": "14 requirements mapped; PASS",
+    "worker_packaging": "PASS_DRY_RUN; env.ASSETS now present",
+    "promotion": "PREPARING_NORMAL_GITHUB_MAIN_PATH",
+    "server_side_video_test_secrets_set": false,
+    "live_end_to_end": "NOT_RUN_NO_PRIVATE_WORKER_ORIGIN",
+    "analyzer_accuracy": "17/18 historical local result remains; ASR failure not repaired",
+    "new_tunnel_created": false,
+    "paid_service_used": false,
+    "external_AI_service_used": false,
+    "original_footage_deleted": false
+  }
+}
