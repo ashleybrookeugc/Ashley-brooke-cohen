@@ -1,5 +1,5 @@
 const $=id=>document.getElementById(id);
-const ui=Object.fromEntries(['access','login','token','status','file','video','selected','analyze','progress','refresh','runs','storage','review','boundary','coverage','frames','lanes','raw','correction','observation','time','text','feedback-status','feedback'].map(id=>[id,$(id)]));
+const ui=Object.fromEntries(['access','status','file','video','selected','analyze','progress','refresh','runs','storage','review','boundary','coverage','frames','lanes','raw','correction','observation','time','text','feedback-status','feedback'].map(id=>[id,$(id)]));
 let selected=null,objectURL=null,current=null,connected=false,authenticated=false,busy=false,poll=0,db=null;
 const cache=new Map();
 function message(text){ui.status.textContent=text;}
@@ -29,7 +29,6 @@ ui.file.onchange=async()=>{
   }
   selected=file;clearTimeout(poll);current=null;ui.review.hidden=true;playback(selected);ui.selected.textContent=selected.name+' · '+(selected.size/1048576).toFixed(1)+' MiB · local preview';updateAnalyze();
 };
-ui.login.onsubmit=async event=>{event.preventDefault();try{await api('/session',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({token:ui.token.value})});ui.token.value='';await refresh();}catch(error){message(error.message)}};
 function showRuns(jobs=[]){
   ui.runs.replaceChildren();const all=new Map([...cache.values()].map(r=>[r.id,r.job]));for(const job of jobs)all.set(job.id,job);
   for(const job of all.values()){const b=element('button',decodeName(job.name)+' · '+job.state);b.onclick=()=>openRun(job);ui.runs.append(b);}
@@ -37,7 +36,7 @@ function showRuns(jobs=[]){
 }
 function decodeName(name){try{return decodeURIComponent(name)}catch{return name||'Video'}}
 async function refresh(){
-  connected=false;try{const session=await api('/session');if(!session.configured){authenticated=false;ui.access.hidden=true;message('Video testing is not activated yet. Do not enter a token or upload footage: the private access and analyzer connection have not been configured.');showRuns();return;}authenticated=session.authenticated;ui.access.hidden=authenticated;if(!authenticated){message('This device needs the private testing link or token. Local video selection remains available; analysis is locked.');showRuns();return;}
+  connected=false;try{const session=await api('/session');if(!session.configured){authenticated=false;ui.access.hidden=true;message('Mary Kate sign-in is not configured. Analysis is unavailable.');showRuns();return;}authenticated=session.authenticated;ui.access.hidden=authenticated;if(!authenticated){message('Sign in to Mary Kate to analyze videos. Your selected video stays on this device.');showRuns();return;}
     const health=await api('/health');connected=health.state==='available';message(connected?'Analyzer connected. Ready to upload a test video.':'Analyzer unavailable. No analysis will run; local playback and cached review remain available.');
     showRuns((await api('/jobs')).jobs);if(current)await syncFeedback(current);
   }catch(error){message(error.message+' Cached evidence and corrections remain on this browser.');showRuns();}finally{updateAnalyze();}

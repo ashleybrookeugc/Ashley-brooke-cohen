@@ -1,42 +1,10 @@
 import app from './worker.js';
+import {isAdmin} from './admin-session.js';
+export {isAdmin} from './admin-session.js';
 
 const enc = new TextEncoder();
 const b64 = bytes => btoa(String.fromCharCode(...new Uint8Array(bytes)))
   .replaceAll('+', '-').replaceAll('/', '_').replaceAll('=', '');
-
-async function sign(value, secret) {
-  const key = await crypto.subtle.importKey(
-    'raw', enc.encode(secret), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']
-  );
-  return b64(await crypto.subtle.sign('HMAC', key, enc.encode(value)));
-}
-
-function equal(a, b) {
-  if (a.length !== b.length) return false;
-  let diff = 0;
-  for (let i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
-  return diff === 0;
-}
-
-function unb(value) {
-  const normalized = value.replaceAll('-', '+').replaceAll('_', '/');
-  return Uint8Array.from(
-    atob(normalized + '='.repeat((4 - normalized.length % 4) % 4)),
-    c => c.charCodeAt(0)
-  );
-}
-
-export async function isAdmin(request, env) {
-  const cookie = request.headers.get('Cookie')?.match(/(?:^|; )abc_admin=([^;]+)/)?.[1];
-  if (!cookie || !env.ADMIN_SESSION_SECRET) return false;
-  const [payload, signature] = cookie.split('.');
-  if (!payload || !signature || !equal(await sign(payload, env.ADMIN_SESSION_SECRET), signature)) return false;
-  try {
-    return JSON.parse(new TextDecoder().decode(unb(payload))).exp > Date.now();
-  } catch {
-    return false;
-  }
-}
 
 function json(body, status = 200) {
   return new Response(JSON.stringify(body), {

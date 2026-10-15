@@ -1,4 +1,4 @@
-const enc = new TextEncoder();
+import {isAdmin} from '../admin-session.js';
 export const LIMIT = 64 * 1024 * 1024;
 export const securityHeaders = {
   'cache-control':'no-store', 'x-content-type-options':'nosniff',
@@ -6,32 +6,17 @@ export const securityHeaders = {
   'content-security-policy':"default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' blob:; media-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'"
 };
 export const json = (body,status=200,extra={}) => new Response(JSON.stringify(body),{status,headers:{...securityHeaders,'content-type':'application/json',...extra}});
-const hex = bytes => [...new Uint8Array(bytes)].map(x=>x.toString(16).padStart(2,'0')).join('');
-async function digest(text){return hex(await crypto.subtle.digest('SHA-256',enc.encode(text)));}
-async function equal(a,b){return await digest(a)===await digest(b);}
-async function sign(secret,value){const key=await crypto.subtle.importKey('raw',enc.encode(secret),{name:'HMAC',hash:'SHA-256'},false,['sign']);return hex(await crypto.subtle.sign('HMAC',key,enc.encode(value)));}
-const cookieName='__Host-video_test';
-export async function authorized(request,env,now=Date.now()){
-  if(!env.VIDEO_TEST_ACCESS_TOKEN || env.VIDEO_TEST_ACCESS_TOKEN.length<32)return false;
-  const cookie=(request.headers.get('cookie')||'').split(';').map(s=>s.trim()).find(s=>s.startsWith(cookieName+'='))?.slice(cookieName.length+1)||'';
-  const [expires,signature]=cookie.split('.');
-  return /^\d+$/.test(expires)&&Number(expires)>now&&Number(expires)<=now+31*86400000&&signature===await sign(env.VIDEO_TEST_ACCESS_TOKEN,'video-test:'+expires);
-}
+export const authorized = isAdmin;
 export async function handleVideoTesting(request,env,{fetchImpl=fetch,now=Date.now()}={}){
   const url=new URL(request.url), path=url.pathname.replace(/\/+$/,'');
   if(!path.startsWith('/api/video-test/'))return null;
   if(!['GET','POST'].includes(request.method))return json({error:'Method not allowed'},405);
   if(request.method==='POST'&&request.headers.get('origin')!==url.origin)return json({error:'Same-origin request required'},403);
   if(path==='/api/video-test/session'){
-    if(request.method==='GET'){const configured=Boolean(env.VIDEO_TEST_ACCESS_TOKEN&&env.VIDEO_TEST_ACCESS_TOKEN.length>=32);return json({configured,authenticated:configured&&await authorized(request,env,now)});}
-    if(!env.VIDEO_TEST_ACCESS_TOKEN||env.VIDEO_TEST_ACCESS_TOKEN.length<32)return json({error:'Private testing access has not been configured.'},503);
-    const raw=await request.text();if(raw.length>2048)return json({error:'Request too large'},413);
-    let body;try{body=JSON.parse(raw)}catch{return json({error:'Invalid request'},400)}
-    if(typeof body.token!=='string'||!await equal(body.token,env.VIDEO_TEST_ACCESS_TOKEN))return json({error:'Invalid testing token'},401);
-    const expires=String(now+30*86400000), signature=await sign(env.VIDEO_TEST_ACCESS_TOKEN,'video-test:'+expires);
-    return json({authenticated:true},200,{'set-cookie':`${cookieName}=${expires}.${signature}; Path=/; Secure; HttpOnly; SameSite=Strict; Max-Age=2592000`});
+    if(request.method!=='GET')return json({error:'Sign in through Mary Kate.'},405,{allow:'GET'});
+    return json({configured:Boolean(env.ADMIN_SESSION_SECRET),authenticated:await authorized(request,env,now)});
   }
-  if(!await authorized(request,env,now))return json({error:'Testing access required'},401);
+  if(!await authorized(request,env,now))return json({error:'Sign in to Mary Kate to analyze videos.'},401);
   const tail=path.slice('/api/video-test'.length);
   const allowed=(request.method==='GET'&&(/^\/(health|jobs)$/.test(tail)||/^\/jobs\/[a-f0-9-]{36}(\/(result|media|feedback|frames\/\d+))?$/.test(tail))) || (request.method==='POST'&&(tail==='/jobs'||/^\/jobs\/[a-f0-9-]{36}\/feedback$/.test(tail)));
   if(!allowed)return json({error:'Not found'},404);
