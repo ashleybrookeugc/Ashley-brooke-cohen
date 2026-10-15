@@ -90,6 +90,35 @@ test('Command Center context binds an unqualified V1 question to Mary Kate witho
   assert.deepEqual(await run.store.listQueues(),{needs_ashley:[],ai_can_handle:[]});
 });
 
+test('broad daily-priority advice reads current work without routing or mutation',async()=>{
+  const questions=['what should i do today','What should I focus on today?','What are my priorities?','What is currently blocked?','What needs my attention?'];
+  for(const text of questions) {
+    const run=setup({answer});
+    run.service.capture;
+    // A provider call would be unnecessary for this bounded projection. Make
+    // that boundary observable by replacing the router with a hard failure.
+    const blockedRouter={route:async()=>{throw new Error('priority advice must not dispatch');}};
+    const service=createControlService({github:{readFile:async(_repo,path)=>({sha:'sha-'+path,content:path==='ACTIVE_WORK.md'?document:path==='PROJECT_INDEX.md'?index:completion})},store:run.store,router:blockedRouter});
+    const result=await service.capture(text);
+    assert.equal(result.route_kind,'temporary_context',text);
+    assert.equal(result.queue_item,null,text);
+    assert.equal(result.model_selection.calls,0,text);
+    assert.match(result.plain_summary,/priorities|blockers|unverified/i,text);
+    assert.deepEqual(await run.store.listQueues(),{needs_ashley:[],ai_can_handle:[]},text);
+  }
+});
+
+test('a natural priority follow-up remains read-only and uses the current packet',async()=>{
+  const run=setup({answer});
+  await run.store.addInteraction({raw_text:'We are sorting out the current projects.',route:{...answer,plain_summary:'We are sorting out the current projects.'}});
+  const service=createControlService({github:{readFile:async(_repo,path)=>({sha:'sha-'+path,content:path==='ACTIVE_WORK.md'?document:path==='PROJECT_INDEX.md'?index:completion})},store:run.store,router:{route:async()=>{throw new Error('follow-up priority advice must not dispatch');}}});
+  const result=await service.capture('And what should I focus on today?');
+  assert.equal(result.route_kind,'temporary_context');
+  assert.equal(result.model_selection.task,'priority_advice');
+  assert.match(result.plain_summary,/priorities/i);
+  assert.deepEqual(await run.store.listQueues(),{needs_ashley:[],ai_can_handle:[]});
+});
+
 test('Command Center context never overrides an explicit other project or an unqualified action',async()=>{
   const other=setup(answer);
   await other.service.capture('Is ContentEase ready?',{contextWorkstream:'mary-kate-command-center'});

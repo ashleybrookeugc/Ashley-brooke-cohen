@@ -227,6 +227,18 @@ For Cloudflare build failures:
 
 Never respond to a cascading build failure by repeatedly changing unrelated configuration.
 
+## 2026-10-15 — Broad daily-priority advice was rejected as a read-only route violation
+
+**Symptom:** Asking Mary Kate `what should i do today` returned HTTP 422 `read_only_route_violation`. The request had read-only intent, but the routing result still contained a state-change proposal. The safety gate correctly prevented an approval item or write, but Ashley received no useful answer.
+
+**Confirmed root cause:** The shared read-only detector recognized the question too indirectly through the generic follow-up path. Broad prioritization language was not an explicit advice category, so provider output could still arrive in the proposal-shaped route contract. The downstream write-safety gate then rejected it instead of producing a current-work answer.
+
+**Verified fix:** Added a shared prioritization classifier for daily focus, priorities, blockers, and attention questions. These requests now answer directly from the freshly retrieved Project Truth work packet, identify current next steps and recorded open checks, store only a private temporary-context interaction, and report zero model calls. No proposal, queue item, approval, or canonical write is possible on this path.
+
+**Regression coverage:** Equivalent questions (`what should i do today`, `what should I focus on today?`, `What are my priorities?`, `What is currently blocked?`, and `What needs my attention?`) and a natural follow-up (`And what should I focus on today?`) all pass with no router dispatch, no queue rows, and no writes. The full local suite passed 164/164 after the repair; the source-fingerprint receipt was updated for the candidate.
+
+**Prevention rule:** Treat broad “what should I do / focus on / what is blocked” requests as a first-class read-only prioritization operation. Retrieve current work before answering, answer from recorded facts, and preserve the write-safety gate as an independent backstop rather than making Ashley pay for a rejected proposal.
+
 ---
 
 ## 2026-09 — Admin page / login 404 and secret-variable loop
@@ -625,12 +637,3 @@ C-QWEN20:06Z now binds assent and retrieves indexed assessment, but main answer 
 Narrow G repair unwraps generic clarification preambles before interrogative detection; action-word veto unchanged. No frozen phrase/model names hardcoded. Read-only answer instruction clarifies plain-language/practical meaning, short response, evidence versus whole-system operation, and unverified versus untested. Source checks prove instructions/wiring, not readability. D remains semantically unresolved; D-QWEN exact original case comparison added rather than inventing a successful answer. Production model unchanged.
 
 151/151 local checks;14/14 mapping/syntax; old controlled workflow8 PASS/3 PARTIAL/4 FAIL retained. Clock-sensitive test revealed memory-store interaction timestamp ignored injected clock; corrected to now(), while stale/future safety remains intact. Frozen expected outcomes retained. Evidence `docs/test-receipts/2026-10-14-clarified-question-presentation.json`. New live G/C readability and D-QWEN NOT_EXECUTED; October14 OPEN / NOT_PREVENTED and PR10 NOT_READY/unmerged. Next: unchanged G-QWEN actual useful plain-English response once on rebuilt preview, then same-case D/C comparisons and prior acceptance. No framework/credentials/bindings/resources/production changes.
-
-
-## 2026-10-14 — Reopened automatic model selection requirement
-
-Observed: Ashley reported repeating the already agreed automatic, cost-conscious model selection architecture while earlier responses continued explaining provider options. Her latest instruction authorizes frontend/backend infrastructure. Exact earlier approval date/wording not reconstructed; do not fabricate it. Canonical founder decomposition now preserves the reconfirmed standing requirement and semantic index doorway.
-
-Development repair: existing router/provider interfaces extended with opt-in task selection and one-call/zero-call paths, task-specific qualification, atomic quota/USD reservations and a prepared read-only OpenAI Responses connection; existing chat surfaces expose status and choice. Defaults leave original runtime unchanged.163/163 local tests,14/14 requirement mapping, frontend parsing and Worker dry-run PASS. This proves infrastructure behavior under controlled inputs, not useful model answers. Prior Llama/Qwen failures remain FAIL; no connected model accepted by default, no paid/live OpenAI call, no merge/deployment. See docs/AUTOMATIC_MODELS.md and docs/test-receipts/2026-10-14-automatic-models.json.
-
-Prevention: retrieve the indexed founder authority before reopening architecture; Ashley should not choose models for each task. Qualify providers empirically, keep spending authorization separate, and never relabel a transport/policy pass as conversation acceptance.

@@ -49,8 +49,34 @@ const readOnlyAssessment=text=>{
 };
 // Advice about whether to do something is not the instruction to do it.
 // Mixed questions followed by an explicit command retain normal action gates.
-const readOnlyAdvice=text=>/^should\b/i.test(String(text).trim())
+// Prioritization questions are deliberately broader than /^should/: Ashley can
+// ask "what should I do today?", "what needs my attention?", or "what is
+// blocked?" without naming one workstream. These ask Mary Kate to read the
+// current work picture; they do not authorize a change.
+const priorityAdviceRequest=text=>/^(?:(?:and|or|so)[,\s]+)?(?:(?:what\s+(?:should\s+(?:i|we)\s+do|do\s+i\s+do|should\s+i\s+focus\s+on|do\s+i\s+focus\s+on|are\s+(?:my|our)\s+priorities|is\s+(?:my|our)\s+priority|needs\s+(?:my|our)\s+attention|is\s+currently\s+blocked|are\s+the\s+current\s+blockers)|what\s+(?:needs|is)\s+(?:my|our)\s+(?:attention|focus)|what(?:'s|\s+is)\s+(?:currently\s+)?blocked)(?:\s+(?:today|right\s+now|at\s+the\s+moment))?[?.!\s]*)$/i.test(String(text||'').trim());
+const readOnlyAdvice=text=>(/^should\b/i.test(String(text).trim())||priorityAdviceRequest(text))
   && !/[?!]\s*\S|;|\band\s+(?:then\s+)?(?:deploy|publish|send|delete|approve|update|change|run|execute|merge)\b/i.test(text);
+
+function priorityAdviceSummary(projects=[]) {
+  const rows=(projects||[]).filter(project=>project?.name);
+  const active=rows.filter(project=>!/(paused|waiting|blocked|inactive|completed|done)/i.test(project.name));
+  const focus=(active.length?active:rows).slice(0,5);
+  if(!focus.length) return 'I could not find any current projects in the saved work record, so there is no verified priority to recommend yet.';
+  const priorities=focus.map(project=>{
+    const next=project['Next bounded action']||project['Next decision']||project['Current objective']||project['Current stage'];
+    return `${project.name}: ${next||'the current next step still needs verification'}`;
+  });
+  const blockers=focus.map(project=>{
+    const direct=project['Current blocker'];
+    if(direct) return `${project.name}: ${direct}`;
+    const evidence=[project['Current assessment'],project['Current objective'],project['Current stage']].filter(Boolean).join(' ');
+    return /unverified|not proven|blocked|pending|open/i.test(evidence)
+      ? `${project.name}: an important check is still unverified.` : null;
+  }).filter(Boolean);
+  const priorityText=priorities.join(' ');
+  const blockerText=blockers.length?` Current blockers or open checks: ${blockers.join(' ')}`:' I do not see a separate blocker recorded for these projects.';
+  return `Based on the current saved work, your priorities are: ${priorityText}${blockerText}`;
+}
 // A contextual fragment can ask for advice without a question mark. This
 // conservative boundary grants no action authority and never names model options.
 const readOnlyFollowup=(text,recent)=>{
@@ -298,6 +324,15 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
       // Existing private interaction storage is the conversation source. Do
       // not infer permission from these turns or attach unrelated UI history.
       if(recentConversation) snapshot.recent_conversation=recentConversation;
+      // Broad prioritization is a read-only projection of the current packet,
+      // not a model-classification task. Answer it from the facts already
+      // retrieved so a provider cannot turn "what should I do today?" into a
+      // state proposal and so a useful answer does not depend on a paid call.
+      if(readOnly&&priorityAdviceRequest(text)) {
+        const route={route_kind:'temporary_context',responsibility:'ai_can_handle',confidence:'high',plain_summary:priorityAdviceSummary(snapshot.projects),why:'Deterministic current-work prioritization; no model call or mutation authority.',model_selection:{provider:'none',calls:0,task:'priority_advice'}};
+        const interaction=await store.addInteraction({raw_text:text.trim(),route});
+        return {interaction_id:interaction.id,plain_summary:route.plain_summary,responsibility:route.responsibility,route_kind:route.route_kind,queue_item:null,model_selection:route.model_selection};
+      }
       let candidate;
       try {
         const output=await router.route(text.trim(),createControlTaskPacket(snapshot));
