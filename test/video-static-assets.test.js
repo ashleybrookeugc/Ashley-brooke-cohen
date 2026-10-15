@@ -14,6 +14,7 @@ test('actual Worker serves the video page assets and starts the private-access c
   // This test exercises static routing without a live private-network connection.
   // Keep the real asset bindings/configuration; VPC transport is tested separately.
   delete config.vpc_services;
+  config.vars={...config.vars,ADMIN_PASSWORD:"local-auth-fixture-only",ADMIN_SESSION_SECRET:"local-session-fixture-only-0123456789"};
   config.main = join(repo,config.main);
   config.assets.directory = join(repo,config.assets.directory);
   for (const db of config.d1_databases || []) db.migrations_dir = join(repo,db.migrations_dir);
@@ -56,5 +57,20 @@ test('actual Worker serves the video page assets and starts the private-access c
   }
   const session = await fetch(base+'/api/video-test/session');
   assert.equal(session.status,200);
-  assert.equal(typeof (await session.json()).configured,'boolean');
+  assert.deepEqual(await session.json(),{configured:true,authenticated:false});
+  const loginPage=await fetch(base+'/admin/login?returnTo=/video-test/');
+  assert.match(await loginPage.text(),/action="\/admin\/login\?returnTo=\/video-test\/"/);
+  const rejected=await fetch(base+'/admin/login?returnTo=/video-test/',{method:'POST',body:new URLSearchParams({password:'wrong'}),redirect:'manual'});
+  assert.equal(rejected.status,401);assert.equal(rejected.headers.get('set-cookie'),null);
+  const login=await fetch(base+'/admin/login?returnTo=/video-test/',{method:'POST',body:new URLSearchParams({password:config.vars.ADMIN_PASSWORD}),redirect:'manual'});
+  assert.equal(login.status,303);assert.equal(login.headers.get('location'),'/video-test/');
+  const setCookie=login.headers.get('set-cookie');assert.match(setCookie,/HttpOnly; Secure; SameSite=Strict; Max-Age=28800/);
+  const cookie=setCookie.split(';')[0];
+  assert.deepEqual(await (await fetch(base+'/api/video-test/session',{headers:{cookie}})).json(),{configured:true,authenticated:true});
+  // With no analyzer binding this is an authenticated offline response, not 401.
+  assert.equal((await fetch(base+'/api/video-test/health',{headers:{cookie}})).status,503);
+  assert.equal((await fetch(base+'/api/video-test/jobs')).status,401);
+  const logout=await fetch(base+'/admin/logout',{headers:{cookie},redirect:'manual'});
+  assert.match(logout.headers.get('set-cookie'),/Max-Age=0/);
+  assert.deepEqual(await (await fetch(base+'/api/video-test/session',{headers:{cookie:'abc_admin='}})).json(),{configured:true,authenticated:false});
 });
