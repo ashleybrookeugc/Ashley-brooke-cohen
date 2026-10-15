@@ -6,23 +6,36 @@ import {join,resolve} from 'node:path';
 import {randomUUID} from 'node:crypto';
 import {existsSync} from 'node:fs';
 import {execFileSync} from 'node:child_process';
+import {isAdmin} from '../src/admin-session.js';
 import {handleVideoTesting,authorized,LIMIT} from '../src/video-testing/gateway.js';
 import {createVideoWorker} from '../tools/video-testing/server.mjs';
 const analyzerModule=resolve(process.env.VIDEO_ANALYZER_MODULE||'tools/video-analyzer/core.mjs');
 const token='test-only-private-access-0123456789abcdef';
-const env={VIDEO_TEST_ACCESS_TOKEN:token,VIDEO_TEST_WORKER_TOKEN:'different-worker-token-0123456789abcdef',VIDEO_TEST_WORKER_URL:'https://authorized-worker.example'};
+const env={ADMIN_SESSION_SECRET:token,VIDEO_TEST_WORKER_TOKEN:'different-worker-token-0123456789abcdef',VIDEO_TEST_WORKER_URL:'https://authorized-worker.example'};
 const origin='https://test.example';
 const request=(path,options={})=>new Request(origin+'/api/video-test'+path,options);
-async function session(){const result=await handleVideoTesting(request('/session',{method:'POST',headers:{origin,'content-type':'application/json'},body:JSON.stringify({token})}),env);assert.equal(result.status,200);assert.match(result.headers.get('set-cookie'),/Secure; HttpOnly; SameSite=Strict/);return result.headers.get('set-cookie').split(';')[0];}
-test('testing session is signed, expiring, revocable; admin cookies, CSRF and anonymous calls denied',async()=>{
+async function session(expires=Date.now()+28800000){
+ const payload=Buffer.from(JSON.stringify({exp:expires})).toString('base64url');
+ const key=await crypto.subtle.importKey('raw',new TextEncoder().encode(token),{name:'HMAC',hash:'SHA-256'},false,['sign']);
+ const signature=Buffer.from(await crypto.subtle.sign('HMAC',key,new TextEncoder().encode(payload))).toString('base64url');
+ return 'abc_admin='+payload+'.'+signature;
+}
+test('existing Mary Kate session authorizes video without testing secrets; expired, forged and legacy cookies fail',async()=>{
  const cookie=await session();assert.equal(await authorized(request('/health',{headers:{cookie}}),env),true);
- assert.equal(await authorized(request('/health',{headers:{cookie}}),{...env,VIDEO_TEST_ACCESS_TOKEN:token+'rotated'}),false);
- assert.equal(await authorized(request('/health',{headers:{cookie}}),env,Date.now()+32*86400000),false);
- assert.equal(await authorized(request('/health',{headers:{cookie:'admin_session=anything'}}),env),false);
+ assert.equal(await authorized(request('/health',{headers:{cookie}}),{...env,ADMIN_SESSION_SECRET:token+'rotated'}),false);
+ assert.equal(await authorized(request('/health',{headers:{cookie}}),env,Date.now()+28800001),false);
+ for(const bad of [await session(Date.now()-1),cookie+'forged',cookie+'.extra','abc_admin=invalid','__Host-video_test=legacy','admin_session=anything']){
+  assert.equal(await authorized(request('/health',{headers:{cookie:bad}}),env),false);
+  assert.equal((await handleVideoTesting(request('/jobs',{headers:{cookie:bad}}),env)).status,401);
+ }
+ const status=await handleVideoTesting(request('/session',{headers:{cookie}}),env);
+ assert.deepEqual(await status.json(),{configured:true,authenticated:true});assert.equal(status.headers.get('set-cookie'),null);
+ assert.deepEqual(await (await handleVideoTesting(request('/session'),env)).json(),{configured:true,authenticated:false});
  assert.equal((await handleVideoTesting(request('/jobs'),env)).status,401);
  assert.equal((await handleVideoTesting(request('/session',{method:'POST',headers:{origin:'https://evil.example'},body:JSON.stringify({token})}),env)).status,403);
- assert.equal((await handleVideoTesting(request('/session',{method:'POST',headers:{origin},body:JSON.stringify({token:'wrong'})}),env)).status,401);
+ assert.equal((await handleVideoTesting(request('/session',{method:'POST',headers:{origin},body:JSON.stringify({token})}),env)).status,405);
  assert.equal((await handleVideoTesting(request('/jobs',{method:'POST',headers:{cookie},body:'x'}),env)).status,403);
+ assert.equal((await handleVideoTesting(request('/jobs',{method:'POST',headers:{cookie,origin:'https://evil.example'},body:'x'}),env)).status,403);
 });
 test('gateway offline, path allowlist, upload cap, credential separation and redirect refusal',async()=>{
  const cookie=await session(),call=path=>request(path,{headers:{cookie}});
@@ -104,9 +117,9 @@ test('a completed label is revoked when its evidence package fails verification'
  job=await send('/jobs/'+id).then(r=>r.json());assert.equal(job.state,'failed');
  assert.match(job.error,/verification/i);
 });
-test('testing session cannot unlock production administration; CI upload guard stops unapproved builds',async()=>{
- const authSource=(await readFile(new URL('../src/auth-worker.js',import.meta.url),'utf8')).split('function json(')[0].replace(/import app[^;]+;/,'').replace('export async function isAdmin','async function isAdmin');
- const isAdmin=new Function(authSource+'; return isAdmin;')();const cookie=await session();
- assert.equal(await isAdmin(request('/health',{headers:{cookie}}),{ADMIN_SESSION_SECRET:'production-admin-secret'}),false);
+test('legacy testing credentials cannot unlock either administration or video; CI upload guard remains',async()=>{
+ const headers={cookie:'__Host-video_test=legacy-testing-session'};
+ assert.equal(await isAdmin(request('/health',{headers}),env),false);
+ assert.equal(await authorized(request('/health',{headers}),env),false);
  assert.throws(()=>execFileSync(process.execPath,['scripts/video-testing-build-guard.mjs'],{env:{...process.env,CI:'true',VIDEO_TEST_DEPLOY_APPROVED:''},stdio:'pipe'}));
 });

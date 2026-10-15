@@ -3,7 +3,7 @@ import {readFile,mkdtemp} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import {join,resolve} from 'node:path';
 import {pathToFileURL} from 'node:url';
-import {randomBytes} from 'node:crypto';
+import {randomBytes,createHmac} from 'node:crypto';
 import {execFileSync} from 'node:child_process';
 import assert from 'node:assert/strict';
 import {handleVideoTesting,securityHeaders} from '../../src/video-testing/gateway.js';
@@ -16,11 +16,11 @@ if(process.env.TEST_CHROMIUM_PACKAGE){const packaged=(await import(process.env.T
 const root=await mkdtemp(join(tmpdir(),'mk-browser-'));
 const fixture=join(root,'synthetic.mp4');
 execFileSync('ffmpeg',['-v','error','-f','lavfi','-i','color=c=navy:s=160x120:r=12:d=1','-c:v','libx264','-pix_fmt','yuv420p',fixture]);
-const token=randomBytes(32).toString('hex'),workerToken=randomBytes(32).toString('hex');
+const sessionSecret=randomBytes(32).toString('hex'),workerToken=randomBytes(32).toString('hex');
 const worker=await createVideoWorker({root:join(root,'jobs'),modulePath:resolve(process.env.VIDEO_ANALYZER_MODULE||'tools/video-analyzer/core.mjs'),token:workerToken});
 await new Promise(r=>worker.listen(0,'127.0.0.1',r));
 let offline=false;
-const env={VIDEO_TEST_ACCESS_TOKEN:token,VIDEO_TEST_WORKER_TOKEN:workerToken,VIDEO_TEST_WORKER_URL:'https://synthetic-worker.invalid'};
+const env={ADMIN_SESSION_SECRET:sessionSecret,VIDEO_TEST_WORKER_TOKEN:workerToken,VIDEO_TEST_WORKER_URL:'https://synthetic-worker.invalid'};
 const app=createServer(async(req,res)=>{
  try{
   const url=new URL(req.url,'http://localhost:'+app.address().port);
@@ -42,11 +42,16 @@ try{
  const context=await browser.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
  const page=await context.newPage(),errors=[];page.on('pageerror',error=>errors.push(error.message));
  page.on('response',r=>{if(r.url().includes('/api/'))console.log('HTTP',r.status(),new URL(r.url()).pathname)});
+ // Start as a user already signed in to Mary Kate. The actual login/password
+ // handler and return path are exercised by video-static-assets.test.js.
+ const payload=Buffer.from(JSON.stringify({exp:Date.now()+28800000})).toString('base64url');
+ const signature=createHmac('sha256',sessionSecret).update(payload).digest('base64url');
+ await context.addCookies([{name:'abc_admin',value:payload+'.'+signature,url:'http://localhost:'+app.address().port,httpOnly:true,secure:true,sameSite:'Strict'}]);
  await page.goto('http://localhost:'+app.address().port+'/video-test/');
- await page.locator('#token').fill(token);await page.locator('#login button').click();
  try{await page.waitForFunction(()=>document.getElementById('status').textContent.includes('Analyzer connected'),{},{timeout:10000});}catch(error){console.log('Connection diagnostic:',await page.locator('#status').textContent(),errors,(await context.cookies()).map(c=>({name:c.name,secure:c.secure})));throw error;}
- assert.equal((await context.cookies()).some(c=>c.name==='__Host-video_test'&&c.httpOnly&&c.secure),true);
- await page.locator('#file').setInputFiles(fixture);await page.locator('#analyze').click();
+ assert.equal((await context.cookies()).some(c=>c.name==='abc_admin'&&c.httpOnly&&c.secure),true);
+ assert.equal(await page.locator('#token').count(),0);
+ await page.locator('#file').setInputFiles(fixture);assert.equal(await page.locator('#analyze').isEnabled(),true);await page.locator('#analyze').click();
  await page.locator('#review').waitFor({state:'visible',timeout:30000});
  assert.match(await page.locator('#coverage').textContent(),/1.00 seconds/);
  assert.equal(await page.locator('#frames img').count(),1);
