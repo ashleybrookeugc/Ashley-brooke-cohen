@@ -15,6 +15,7 @@
     "binding": "VIDEO_TEST_PRIVATE_SERVICE",
     "service_id": "01a141ad-d6e8-7ae0-804c-0f98e58320ad"
   }],
+  "version_metadata": { "binding": "WORKER_VERSION" },
   "observability": {
     "enabled": true,
     "logs": { "invocation_logs": true }

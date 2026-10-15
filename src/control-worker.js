@@ -12,7 +12,7 @@ function ensureSchema(env){return schemaReady ||= env.DB.exec("CREATE TABLE IF N
 const json=(body,status=200)=>new Response(JSON.stringify(body),{status,headers:{'content-type':'application/json','cache-control':'no-store'}});
 function service(env) {
   const tokens=createGitHubAppTokenProvider(env);
-  return createControlService({github:createGitHubAdapter({tokenProvider:tokens}),router:createPolicyRoutingAdapter(env),store:createD1Store(env.DB)});
+  return createControlService({github:createGitHubAdapter({tokenProvider:tokens}),router:createPolicyRoutingAdapter(env),store:createD1Store(env.DB),deployment:env.WORKER_VERSION||null,observe:trace=>console.info(JSON.stringify(trace))});
 }
 async function body(request){try{return await request.json()}catch{throw new Error('Valid JSON body required')}}
 async function workerTelemetry(request,env) {
