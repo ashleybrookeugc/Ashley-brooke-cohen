@@ -18,7 +18,7 @@ export async function handleVideoTesting(request,env,{fetchImpl=fetch,now=Date.n
   }
   if(!await authorized(request,env,now))return json({error:'Sign in to Mary Kate to analyze videos.'},401);
   const tail=path.slice('/api/video-test'.length);
-  const allowed=(request.method==='GET'&&(/^\/(health|jobs)$/.test(tail)||/^\/jobs\/[a-f0-9-]{36}(\/(result|media|feedback|frames\/\d+))?$/.test(tail))) || (request.method==='POST'&&(tail==='/jobs'||/^\/jobs\/[a-f0-9-]{36}\/feedback$/.test(tail)));
+  const allowed=(request.method==='GET'&&(/^\/(health|jobs)$/.test(tail)||/^\/jobs\/[a-f0-9-]{36}(\/(result|media|feedback|frames\/\d+))?$/.test(tail))) || (request.method==='POST'&&(tail==='/jobs'||/^\/jobs\/[a-f0-9-]{36}\/(feedback|describe)$/.test(tail)));
   if(!allowed)return json({error:'Not found'},404);
   if(!env.VIDEO_TEST_WORKER_URL||!env.VIDEO_TEST_WORKER_TOKEN)return json({state:'offline',error:'Analyzer worker is not connected. No analysis ran.'},503);
   let worker;try{worker=new URL(env.VIDEO_TEST_WORKER_URL);if(worker.protocol!=='https:'||worker.username||worker.password||worker.search||worker.hash)throw Error();}catch{return json({state:'offline',error:'Secure worker connection is not configured.'},503)}

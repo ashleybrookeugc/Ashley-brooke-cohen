@@ -6,6 +6,7 @@ import {fileURLToPath} from 'node:url';
 import {randomUUID,timingSafeEqual,createHash} from 'node:crypto';
 import {spawn,spawnSync} from 'node:child_process';
 import {LIMIT} from '../../src/video-testing/gateway.js';
+import {visionReady,readVisualReview} from './visual-review.mjs';
 const here=dirname(fileURLToPath(import.meta.url));
 const digest=v=>createHash('sha256').update(v).digest();
 const send=(res,status,body)=>{res.writeHead(status,{'content-type':'application/json','cache-control':'no-store','x-content-type-options':'nosniff'});res.end(JSON.stringify(body));};
@@ -19,7 +20,7 @@ export async function createVideoWorker({root,modulePath,token,maxBytes=LIMIT}={
   // A lost process is a failed run, never an invented running/completed state.
   for(const id of await readdir(root))if(/^[a-f0-9-]{36}$/.test(id)){
     const path=join(root,id,'job.json');
-    try{const job=await readJson(path);if(['uploading','running'].includes(job.state)){job.state='failed';job.error='Worker restarted before completion. Source retained; select it to retry.';await save(path,job);}}catch{}
+    try{const job=await readJson(path);if(['uploading','running'].includes(job.state)){job.state='failed';job.error='Worker restarted before completion. Source retained; select it to retry.';await save(path,job);}else if(job.visual_state==='running'){job.visual_state='failed';await save(path,job);}}catch{}
   }
   async function ready(){
     try{await stat(modulePath);}catch{return false;}
@@ -40,6 +41,7 @@ export async function createVideoWorker({root,modulePath,token,maxBytes=LIMIT}={
       throw error;
     }
   }
+  async function visualFor(id,result){const review=await readVisualReview(join(root,id),result);const job=await jobFor(id);return job.visual_state==='running'?{state:'running',notes:[]}:job.visual_state==='failed'&&review.state==='not_run'?{state:'failed',notes:[]}:review;}
   async function streamFile(req,res,path,type){
     const size=(await stat(path)).size;
     let start=0,end=size-1,status=200;
@@ -52,7 +54,7 @@ export async function createVideoWorker({root,modulePath,token,maxBytes=LIMIT}={
     if(!timingSafeEqual(digest(req.headers.authorization||''),digest('Bearer '+token)))return send(res,401,{error:'Unauthorized'});
     const url=new URL(req.url,'http://localhost'),path=url.pathname;
     try{
-      if(path==='/video-worker/health'&&req.method==='GET')return send(res,200,{state:await ready()?'available':'unavailable',active_job:active,max_bytes:maxBytes,semantic_understanding:'unavailable',note:'Existing sampled evidence analyzer; no creative understanding provider.'});
+      if(path==='/video-worker/health'&&req.method==='GET')return send(res,200,{state:await ready()?'available':'unavailable',active_job:active,max_bytes:maxBytes,picture_descriptions:await visionReady()?'available':'unavailable',note:'Sampled evidence with optional local picture descriptions; full creative/workflow analysis unfinished.'});
       if(path==='/video-worker/jobs'&&req.method==='GET'){
         const jobs=[];for(const id of await readdir(root))if(/^[a-f0-9-]{36}$/.test(id))try{jobs.push(await jobFor(id))}catch{}
         return send(res,200,{jobs:jobs.sort((a,b)=>b.created_at.localeCompare(a.created_at)).slice(0,100)});
@@ -75,21 +77,33 @@ export async function createVideoWorker({root,modulePath,token,maxBytes=LIMIT}={
         const finish=async(code)=>{if(settled)return;settled=true;let verified=false;
           if(code===0)try{await verifiedStoredResult(id);verified=true;}catch{}
           job.state=verified?'completed':'failed';job.completed_at=new Date().toISOString();
+          if(verified&&await visionReady()){const review=await readVisualReview(dir,await verifiedStoredResult(id));job.visual_state=review.state==='not_run'?'failed':review.state;}
           if(!verified)job.error=code===0?'Evidence verification failed. Source retained; no completed analysis is claimed.':'Analyzer failed. Source is retained; no completed result is claimed.';
           await save(join(dir,'job.json'),job);active=null;};
         child.on('exit',code=>finish(code).catch(()=>{active=null}));child.on('error',()=>finish(1).catch(()=>{active=null}));
         return send(res,202,job);
       }
-      const match=path.match(/^\/video-worker\/jobs\/([a-f0-9-]{36})(?:\/(result|media|feedback|frames\/\d+))?$/);
+      const match=path.match(/^\/video-worker\/jobs\/([a-f0-9-]{36})(?:\/(result|media|feedback|describe|frames\/\d+))?$/);
       if(!match)return send(res,404,{error:'Not found'});
       const [,id,action]=match,dir=join(root,id),job=await jobFor(id);
       if(!action&&req.method==='GET')return send(res,200,job);
+      if(action==='describe'&&req.method==='POST'){
+        if(job.state!=='completed')return send(res,409,{error:'Basic evidence must complete first.'});
+        if(active)return send(res,409,{error:'Your Mac is already analyzing a video. Try again after it finishes.'});
+        if(!await visionReady())return send(res,503,{error:'Local picture descriptions are unavailable. Basic notes and source are retained.'});
+        if(active)return send(res,409,{error:'An analysis is already active.'});
+        const result=await resultFor(id),prior=await readVisualReview(dir,result);if(prior.state==='available')return send(res,200,job);
+        if(active)return send(res,409,{error:'An analysis is already active.'});active=id;job.visual_state='running';await save(join(dir,'job.json'),job);
+        const child=spawn(process.execPath,[join(here,'describe-child.mjs'),modulePath,dir],{stdio:'ignore'});let settled=false;
+        const finish=async code=>{if(settled)return;settled=true;try{const review=code===0?await readVisualReview(dir,result):{state:'failed'};job.visual_state=review.state==='not_run'?'failed':review.state;await save(join(dir,'job.json'),job);}finally{active=null}};
+        child.on('exit',code=>finish(code).catch(()=>{active=null}));child.on('error',()=>finish(1).catch(()=>{active=null}));return send(res,202,job);
+      }
       if(action==='media'&&req.method==='GET')return await streamFile(req,res,join(dir,'source.bin'),'video/mp4');
       if(action==='result'&&req.method==='GET'){
         const result=await resultFor(id);
         // Local machine paths are not browser API fields.
         const manifest=structuredClone(result.manifest);delete manifest.source.local_path;delete manifest.persistence.local.package_location;
-        return send(res,200,{manifest,evidence:result.evidence,semantic_input:result.semantic_input,readback:result.readback});
+        return send(res,200,{manifest,evidence:result.evidence,semantic_input:result.semantic_input,readback:result.readback,visual_review:await visualFor(id,result)});
       }
       if(action?.startsWith('frames/')&&req.method==='GET'){
         const result=await resultFor(id),frame=result.manifest.coverage.visual_sampling.frames[Number(action.split('/')[1])];

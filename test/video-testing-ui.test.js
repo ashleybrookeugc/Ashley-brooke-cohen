@@ -19,7 +19,7 @@ async function boot(saved,fetchImpl=async()=>new Response(JSON.stringify({error:
 test('actual UI module executes with DOM/storage doubles: offline review, correction, reload retrieval, safe text rendering',async()=>{
  const saved=new Map([['fixture',structuredClone(fixture)]]);let ui=await boot(saved);
  assert.match(ui.get('status').textContent,/offline/);assert.equal(ui.get('analyze').disabled,true);
- await ui.get('runs').children[0].onclick();assert.equal(ui.get('review').hidden,false);assert.match(ui.get('boundary').textContent,/not a creative verdict/);
+ await ui.get('runs').children[0].onclick();assert.equal(ui.get('review').hidden,false);assert.match(ui.get('boundary').textContent,/full review.*unfinished/);
  ui.get('text').value='<img src=x onerror=alert(1)> This observation is wrong.';ui.get('observation').value='visual-1';ui.get('time').value='0';
  await ui.get('correction').onsubmit({preventDefault(){}});assert.equal(saved.get('fixture').feedback.length,1);assert.equal(saved.get('fixture').feedback[0].synced,false);
  ui=await boot(saved);await ui.get('runs').children[0].onclick();assert.equal(ui.get('feedback').children.length,1);assert.match(ui.get('feedback').children[0].children[1].textContent,/<img/);
@@ -67,4 +67,18 @@ test('loading saved runs never replaces a file selected while the connection che
  },elements=>{ui=elements});
  assert.match(ui.get('video').src,/^blob:/);assert.equal(ui.get('analyze').disabled,false);
  assert.equal(ui.get('overview').children.length,0);
+});
+
+test('an older saved review adds source-bound picture descriptions without a second upload',async()=>{
+ let described=false;const calls=[];const ui=await boot(new Map(),async(path,options)=>{
+  calls.push({path,method:options?.method||'GET'});
+  if(path.endsWith('/health'))return Response.json({state:'available',picture_descriptions:'available'});
+  if(path.endsWith('/describe')){described=true;return Response.json({...fixture.job,visual_state:'available'});}
+  if(path.endsWith('/result'))return Response.json({...fixture.result,visual_review:described?{state:'available',source_sha256:'hash',notes:[{observation_id:'visual-1',source_timestamp_seconds:0,description:'A red mug sits beside a monitor.',change:'',release:{decision:'supported',description_supported:true,source_time_image_checks:true}}]}:{state:'not_run'}});
+  return connectedResponse(path,[fixture.job]);
+ });
+ assert.equal(ui.get('describe').disabled,false);await ui.get('describe').onclick();
+ assert.equal(ui.get('describe').hidden,true);assert.equal(ui.get('lanes').children[0].children[0].textContent,'What is shown');
+ assert.match(ui.get('lanes').children[0].children[2].textContent,/red mug/);
+ assert.deepEqual(calls.filter(x=>x.method==='POST'),[{path:'/api/video-test/jobs/fixture/describe',method:'POST'}]);
 });

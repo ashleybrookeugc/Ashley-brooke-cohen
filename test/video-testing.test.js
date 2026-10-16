@@ -14,6 +14,15 @@ const token='test-only-private-access-0123456789abcdef';
 const env={ADMIN_SESSION_SECRET:token,VIDEO_TEST_WORKER_TOKEN:'different-worker-token-0123456789abcdef',VIDEO_TEST_WORKER_URL:'https://authorized-worker.example'};
 const origin='https://test.example';
 const request=(path,options={})=>new Request(origin+'/api/video-test'+path,options);
+test('picture-description requests retain existing authentication, same-origin writes and fixed private transport',async()=>{
+ const path='/jobs/00000000-0000-4000-8000-000000000000/describe';
+ assert.equal((await handleVideoTesting(request(path,{method:'POST',headers:{origin}}),env)).status,401);
+ assert.equal((await handleVideoTesting(request(path,{method:'POST',headers:{origin:'https://other.example'}}),env)).status,403);
+ const cookie=await session();let called=false;
+ const response=await handleVideoTesting(request(path,{method:'POST',headers:{origin,cookie}}),{...env,VIDEO_TEST_PRIVATE_SERVICE:{async fetch(url,options){called=true;assert.equal(url,'http://authorized-worker.example/video-worker'+path);assert.equal(options.headers.get('cookie'),null);assert.equal(options.headers.get('authorization'),'Bearer '+env.VIDEO_TEST_WORKER_TOKEN);return Response.json({visual_state:'running'},{status:202});}}},{fetchImpl:()=>{throw Error('No public fallback')}});
+ assert.equal(called,true);assert.equal(response.status,202);
+ assert.equal((await handleVideoTesting(request(path+'/anything',{method:'POST',headers:{origin,cookie}}),env)).status,404);
+});
 async function session(expires=Date.now()+28800000){
  const payload=Buffer.from(JSON.stringify({exp:expires})).toString('base64url');
  const key=await crypto.subtle.importKey('raw',new TextEncoder().encode(token),{name:'HMAC',hash:'SHA-256'},false,['sign']);
