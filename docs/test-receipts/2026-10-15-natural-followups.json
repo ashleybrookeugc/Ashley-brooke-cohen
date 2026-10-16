@@ -1,6 +1,6 @@
 {
   "recorded_at_utc": "2026-10-16T01:25:59.078Z",
-  "status": "local_routing_PASS; production_acceptance_UNVERIFIED",
+  "status": "SOURCE_REGRESSION_PASS; REAL_CONVERSATION_ACCEPTANCE_FAIL; EVIDENCE_MAIN_MERGE_APPROVAL_REQUIRED",
   "base_commit": "5123021295c9ab838969a11f2d8ed5d7ac82353c",
   "inputs": [
     "how is v1 doing",
@@ -246,6 +246,54 @@
         }
       ],
       "evaluation": "FAIL qualification: unsupported delay/quality rationale and explicit founder blame for alleged over-engineering, unclear requirements and insufficient testing. Larger model rejected, original model restored."
+    },
+    {
+      "head": "8a306bb4dc7dbc3be0ec0ff998845c98d44304da",
+      "version": "c4d399d2-a3c5-47c6-8d62-cf2500041873",
+      "observed_at_utc": "2026-10-16T01:47:32.261Z",
+      "nodes": [
+        {
+          "className": "chat-message chat-message-user",
+          "tag": "DIV",
+          "text": "Youhow is v1 doing"
+        },
+        {
+          "className": "chat-message chat-message-assistant",
+          "tag": "DIV",
+          "text": "Mary KateNot yet. The Command Center opens on your phone and can read the latest saved project information without changing it. But Mary Kate has not yet proved the full experience from start to finish.\n\nStill to prove:\n• understand ordinary questions without making you name projects or technical systems\n• keep project information current automatically\n• give work to the right AI worker and return a clear result that was actually checked\n• continue after interruptions without making you carry messages between systems\n• explain status and next steps clearly on your phone\n• complete one small real video task without risking the original file\n\nNext: run one real task from this phone screen all the way from your request to a clear result that was actually checked. Any confusing, stale, or wrong step means V1 is still not ready.\n\nThis is still a conversation. No task or GitHub change has been claimed.Technical detailsV1 source status: 22 total; 0 verified complete; 16 partial; 5 implemented but unverified; 1 not implemented."
+        },
+        {
+          "className": "chat-message chat-message-user",
+          "tag": "DIV",
+          "text": "Youwhat is my desired outcome"
+        },
+        {
+          "className": "chat-message chat-message-assistant",
+          "tag": "DIV",
+          "text": "Mary KateBased on the retrieved evidence, your desired outcome is to have a working version 1 (V1) of the AI operating system that can continuously support your natural-language work across projects, ensuring continuity, retrieval, compliance, verification, and durable learning without your intervention.\n\nThis is still a conversation. No task or GitHub change has been claimed."
+        },
+        {
+          "className": "chat-message chat-message-user",
+          "tag": "DIV",
+          "text": "Youfor this site. for mk. ad why is it taking days to make when others have whole interactive dashboards in hours"
+        },
+        {
+          "className": "chat-message chat-message-assistant",
+          "tag": "DIV",
+          "text": "Mary KateThe evidence shows that the current version of the AI operating system is still in development and has not yet achieved the desired outcome. The latest failure record indicates that the system is still returning HTTP 422 errors for certain questions, such as \"what should I do today?\" and \"what should I prioritize next?\".\n\nThe evidence also suggests that the system is still relying on a broad prerequisite scan of every current project's historical Current/Next fields, which can block a general read-only answer for unrelated absent or disputed facts. This is a source-level risk that needs to be addressed.\n\nAdditionally, the system is still experiencing issues with retained chat conversations, where the frontend is sending full text as history, which is rejected by the service contract, and the error translator is converting the `invalid_request` to `prior_state_missing`, creating a false impression that saved project facts are absent.\n\nIt's not possible to establish why others have achieved interactive dashboards in hours, as there is no evidence of their development process or timeline.\n\nThis is still a conversation. No task or GitHub change has been claimed."
+        },
+        {
+          "className": "chat-message chat-message-user",
+          "tag": "DIV",
+          "text": "Youwhy cant i figure out a simple chatbot, where am i going wrong"
+        },
+        {
+          "className": "chat-message chat-message-assistant",
+          "tag": "DIV",
+          "text": "Mary KateThe evidence suggests that the current version of the AI operating system is still experiencing issues with read-only advice, priority retrieval, and repeated chat failures. Specifically, it's having trouble with broad daily-priority advice, which is being rejected as read-only, and is also experiencing issues with retrieving the latest saved proof while showing an old blocker/resume point.\n\nIt's not possible to establish why you're having trouble figuring out a simple chatbot, as there is no evidence of your development process or timeline. However, the retrieved evidence suggests that the system is still in development and has not yet achieved the desired outcome.\n\nTo move forward, it would be helpful to know what specific steps you've taken so far in developing the chatbot, and what specific issues you're encountering.\n\nThis is still a conversation. No task or GitHub change has been claimed."
+        }
+      ],
+      "evaluation": "FAIL release acceptance: scope/goal retrieval improved and original422 absent, but historical technical defects presented as current and final reply again asks founder for development steps. No software promotion."
     }
   ],
   "packet_diagnostic": {
@@ -640,6 +688,22 @@
     "speaker_role": "Existing Mary Kate product assistant speaking with founder; not an external development adviser",
     "original_model_restored": true,
     "production_promotion": false,
-    "final_real_replay": "pending"
+    "final_real_replay": "FAILED at8a306bb4 / c4d399d2; full replies preserved"
+  },
+  "stop_condition": {
+    "kind": "explicit_approval_required",
+    "action": "Merge only research-vault PR22 to preserve verified observations in Project Truth main",
+    "basis": "Existing user instruction approved PR18 only; no approval for new merges. Runtime reads main, while newly verified exact failures/solutions are currently on the reviewed evidence branch.",
+    "software": "PR47 remains unmerged and is not accepted. PR36 untouched.",
+    "continuation": "After evidence-only approval, merge/read back PR22, reread the now-current authority and continue isolated conversational diagnosis. Do not promote code until useful grounded answers pass."
+  },
+  "verification_artifacts": {
+    "tests": "docs/test-receipts/2026-10-15-natural-followups-tests.txt",
+    "worker_build": "docs/test-receipts/2026-10-15-natural-followups-worker-build.txt"
+  },
+  "temporary_artifact_reconciliation": {
+    "preview_attempts_2_through_5": "Complete JSON nodes incorporated under preview_attempts; no missing receipt data",
+    "pinned_source_inputs": "Source files already canonical in research-vault; exact ref/blob manifest and diagnostic results preserved, not duplicated as new canonical documents",
+    "local_workspace": "Shared checkout untouched; temporary execution checkout only"
   }
 }
