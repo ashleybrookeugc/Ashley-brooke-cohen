@@ -52,6 +52,7 @@ export function buildReview(result) {
   const pictureReview=result.visual_review;
   const descriptions=new Map(pictureReview?.state==='available'&&pictureReview.source_sha256===manifest.content_sha256?(pictureReview.notes||[]).filter(note=>note.release?.decision==='supported'&&note.release.description_supported===true&&note.release.source_time_image_checks===true).map(note=>[note.observation_id,note]):[]);
   if(descriptions.size)overview.push('I added descriptions of '+descriptions.size+' selected picture'+(descriptions.size===1?'':'s')+'. Other checked pictures remain below for you to inspect. This does not establish every action between pictures.');
+  if(descriptions.size&&pictureReview.coverage?.inspected>descriptions.size)overview.push('Descriptions for '+(pictureReview.coverage.inspected-descriptions.size)+' other selected pictures could not be confirmed and are left out.');
   for (const [name, lane] of Object.entries(lanes)) {
     for (const item of observations(lane)) {
       const note = {id:item.observation_id, time:when(item), title:names[name] || 'Video note', text:describeObservation(name,item), label:observationLabel(name,item), lane:name};
