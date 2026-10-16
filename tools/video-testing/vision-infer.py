@@ -20,10 +20,10 @@ class Vision:
     def __init__(self, model_path):
         self.model, self.processor = load(model_path)
 
-    def ask(self, prompt, images):
+    def ask(self, prompt, images, max_tokens=450):
         formatted = apply_chat_template(self.processor, self.model.config, prompt, num_images=len(images))
         output = generate(self.model, self.processor, formatted, image=images,
-                          max_tokens=450, temperature=0, verbose=False)
+                          max_tokens=max_tokens, temperature=0, verbose=False)
         text = output.text if hasattr(output, "text") else str(output)
         text = text.strip()
         if text.startswith("```json") and text.endswith("```"):

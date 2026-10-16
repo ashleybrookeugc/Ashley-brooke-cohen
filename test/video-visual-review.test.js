@@ -19,7 +19,7 @@ test('released descriptions keep source/time/pair binding through restart; priva
  const {root,result}=await fixture();const review=await describeFrames(result,{inferImpl:async tasks=>supported(tasks)});
  assert.equal(review.notes.length,2);assert.equal(review.notes[1].frame_refs[0].source_timestamp_seconds,0);assert.equal(review.notes[1].source_timestamp_seconds,5);
  await saveVisualReview(root,review);const reread=await readVisualReview(root,result);assert.equal(reread.state,'available');assert.equal(reread.candidates,undefined);
- const report=buildReview({...result,visual_review:reread});assert.equal(report.timeline[1].title,'What is shown');assert.match(report.timeline[1].text,/Compared with the picture at 0:00:.*red mug/);
+ const report=buildReview({...result,visual_review:reread});assert.equal(report.visualDetails[1].title,'What is shown');assert.match(report.visualDetails[1].text,/red mug/);
  for(const change of [r=>r.source_sha256='other',r=>r.notes[0].source_timestamp_seconds=2,r=>r.notes[1].frame_refs.reverse(),r=>r.notes[0].observation_id='unknown',r=>r.notes[0].release.description_supported=false]){const bad=structuredClone(review);change(bad);assert.throws(()=>validateVisualReview(result,bad));}
  const envelope=JSON.parse(await readFile(join(root,'visual-review.json'),'utf8'));envelope.review.notes[0].description='tampered';await writeFile(join(root,'visual-review.json'),JSON.stringify(envelope));assert.equal((await readVisualReview(root,result)).state,'failed');
 });
@@ -28,8 +28,8 @@ test('unsupported, ambiguous or malformed model observations fail closed; no raw
   const review=await describeFrames(result,{inferImpl:async tasks=>supported(tasks).map(x=>({...x,check}))});assert.equal(review.state,'unreliable');assert.equal(review.notes.length,0);
  }
  const review=await describeFrames(result,{inferImpl:async tasks=>supported(tasks).map(x=>({...x,check:{...x.check,change_supported:false}}))});assert.equal(review.notes[1].change,'');
- const wrong={...review,source_sha256:'other'};assert.equal(buildReview({...result,visual_review:wrong}).timeline[0].title,'Picture or screen change');
- const subset={...review,notes:review.notes.slice(1)};const partial=buildReview({...result,visual_review:subset});assert.equal(partial.timeline.length,1);assert.equal(partial.byId.has('visual-0'),true);
+ const wrong={...review,source_sha256:'other'};assert.equal(buildReview({...result,visual_review:wrong}).visualDetails.length,0);
+ const subset={...review,notes:review.notes.slice(1)};const partial=buildReview({...result,visual_review:subset});assert.equal(partial.visualDetails.length,1);assert.equal(partial.byId.has('visual-0'),true);
  const separate=await describeFrames(result,{inferImpl:async tasks=>supported(tasks).map(x=>({...x,check:{description_supported:true,description_unsupported_details:[],change_supported:false,unsupported_details:['Comparison is uncertain']}}))});assert.equal(separate.notes.length,2);assert.equal(separate.notes[1].change,'');
 });
 test('corrupt, cross-file and escaped image artifacts are refused before any inference',async()=>{

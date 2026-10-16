@@ -36,40 +36,31 @@ export function observationLabel(name, item) {
   return title + (Number.isFinite(at) ? ' at ' + timeLabel(at) : '') + excerpt;
 }
 export function buildReview(result) {
-  const manifest = result.manifest || {}, evidence = result.evidence || {}, lanes = evidence.lanes || {};
-  const sampling = manifest.coverage?.visual_sampling || {}, frames = sampling.frames || [];
-  const speech = observations(lanes.spoken_audio), screenText = [...observations(lanes.burned_in_captions), ...observations(lanes.other_on_screen_text)];
-  const uniqueText = [...new Set(screenText.map(x => x.text).filter(x => typeof x === 'string' && x.trim()))];
-  const visuals = observations(lanes.visible_actions_subjects_ui_state);
-  const changes = visuals.filter(x => ['regional_visual_state_change','visual_state_change','major_visual_state_change'].includes(x.state));
-  const overview = [Number.isFinite(manifest.duration_seconds) ? 'Your video is ' + timeLabel(manifest.duration_seconds) + ' long.' : 'The video length could not be confirmed.'];
-  overview.push(unavailable(lanes.spoken_audio) ? 'The speech transcript is unavailable for this run.' : speech.length ? 'I recovered ' + speech.length + ' speech passage' + (speech.length === 1 ? '' : 's') + '. Read them in order below and listen before relying on an exact quote.' : 'No speech wording was recovered. This does not establish that the video is silent.');
-  overview.push(uniqueText.length ? 'I recovered ' + uniqueText.length + ' different piece' + (uniqueText.length === 1 ? '' : 's') + ' of on-screen text in the pictures checked.' : 'No readable on-screen text was recovered in the pictures checked. Text between those pictures may be missing.');
-  if (changes.length) overview.push(changes.length + ' visual change' + (changes.length === 1 ? ' was' : 's were') + ' detected between checked pictures. These are places to inspect, not explanations of the actions.');
-  const coverage = (frames.length ? (frames.length <= 8 ? 'Pictures were checked at ' + frames.map(x => timeLabel(x.source_timestamp_seconds)).join(', ') + '.' : frames.length + ' pictures were checked' + (Number.isFinite(sampling.interval_seconds) ? ', about ' + sampling.interval_seconds + ' seconds apart.' : '.')) : 'No checked pictures are available.')
-    + ' Visual actions, cuts or brief text between these times may be missed.';
-  const timeline = [], byId = new Map();
-  const pictureReview=result.visual_review;
-  const descriptions=new Map(pictureReview?.state==='available'&&pictureReview.source_sha256===manifest.content_sha256?(pictureReview.notes||[]).filter(note=>note.release?.decision==='supported'&&note.release.description_supported===true&&note.release.source_time_image_checks===true).map(note=>[note.observation_id,note]):[]);
-  if(descriptions.size)overview.push('I added descriptions of '+descriptions.size+' selected picture'+(descriptions.size===1?'':'s')+'. Other checked pictures remain below for you to inspect. This does not establish every action between pictures.');
-  if(descriptions.size&&pictureReview.coverage?.inspected>descriptions.size)overview.push('Descriptions for '+(pictureReview.coverage.inspected-descriptions.size)+' other selected pictures could not be confirmed and are left out.');
-  for (const [name, lane] of Object.entries(lanes)) {
-    for (const item of observations(lane)) {
-      const note = {id:item.observation_id, time:when(item), title:names[name] || 'Video note', text:describeObservation(name,item), label:observationLabel(name,item), lane:name};
-      const description=descriptions.get(item.observation_id);
-      if(name==='visible_actions_subjects_ui_state'&&description?.source_timestamp_seconds===note.time){note.title='What is shown';note.text=description.description;if(description.change&&description.release.change_supported===true&&description.frame_refs?.length===2)note.text+=' Compared with the picture at '+timeLabel(description.frame_refs[0].source_timestamp_seconds)+': '+description.change;note.label=note.title+' at '+timeLabel(note.time);}
-      if (note.id) byId.set(note.id, note);
-      // The transcript already presents these passages; duplicated ASR is not
-      // independent speaker evidence. Keep IDs available for old corrections.
-      if (name !== 'speaker_turns'&&!(name==='visible_actions_subjects_ui_state'&&descriptions.size&&!description)) timeline.push(note);
-    }
+  const manifest=result.manifest||{},lanes=result.evidence?.lanes||{},frames=manifest.coverage?.visual_sampling?.frames||[];
+  const byId=new Map();
+  // Retain old observation IDs for historical corrections; raw extraction is
+  // not a user-facing finding and is not promoted to verified speech or text.
+  for(const [name,lane] of Object.entries(lanes))for(const item of observations(lane)){
+    if(item.observation_id)byId.set(item.observation_id,{id:item.observation_id,time:when(item),title:names[name]||'Earlier note',text:describeObservation(name,item),label:observationLabel(name,item)});
   }
-  timeline.sort((a,b) => (Number.isFinite(a.time) ? a.time : Infinity) - (Number.isFinite(b.time) ? b.time : Infinity));
-  const checks = (evidence.modality_conflicts || []).filter(item => item.type === 'spoken_caption_disagreement').map(item => ({time:when(item),text:'The saved speech and on-screen wording disagree here. Listen and check the picture; neither version has been confirmed as correct.'}));
-  if (!checks.length && speech.length) checks.push({text:'Check the spoken wording before quoting or editing from it. Automatic transcription can get words wrong.'});
-  return {overview,coverage,timeline,byId,checks,limits:[
-    'A full review of the story, hook, pacing, delivery, product proof, calls to action and B-roll needs is not available in this version.',
-    'Picture descriptions cover selected moments. Following actions between them, explaining a complete workflow, finding repeated work or errors, and recommending improvements still need the deeper video-understanding stage.',
-    'Reusable shot recommendations, stock suitability and performance judgments are also unfinished. These basic notes do not grade your video or decide what to cut.'
+  const pictures=result.visual_review;
+  const pictureNotes=pictures?.state==='available'&&pictures.source_sha256===manifest.content_sha256?(pictures.notes||[]).filter(x=>x.release?.description_supported===true&&x.release.source_time_image_checks===true):[];
+  const content=result.content_review;
+  const ready=content?.state==='available'&&content.source_sha256===manifest.content_sha256;
+  const overview=ready?content.summary.map(x=>x.text):['A complete content review is not ready for this saved run. The earlier text and speech extraction was not reliable enough to present as a transcript.'];
+  const transcript=ready?(content.transcript?.segments||[]).map(x=>({id:x.id,time:x.time,end:x.end,text:x.text,title:'Transcript',label:'Transcript at '+timeLabel(x.time)})):[];
+  const screenText=ready?(content.screen_text||[]).map(x=>({id:x.id,time:x.time,text:x.text,title:'Words on screen',label:'Words on screen at '+timeLabel(x.time)})):[];
+  for(const note of [...transcript,...screenText])byId.set(note.id,note);
+  const timeline=ready?content.moments.map(x=>({time:x.time,text:x.text,title:'Key moment',id:x.refs.find(id=>byId.has(id))})):[];
+  const detailNotes=pictureNotes.map(x=>({id:x.observation_id,time:x.source_timestamp_seconds,title:'What is shown',text:x.description+(x.change&&x.release.change_supported===true?' '+x.change:''),label:'What is shown at '+timeLabel(x.source_timestamp_seconds)}));
+  for(const note of detailNotes)byId.set(note.id,note);
+  // Keep distinct picture detail accessible without flooding the main review
+  // with near-identical sampled still descriptions.
+  const visualDetails=detailNotes.filter((x,i)=>i===0||x.text!==detailNotes[i-1].text);
+  const checks=ready?[{text:'Automatic transcription and descriptions can still make mistakes. Use the timestamps to listen or look, and correct any wording that is wrong.'}]:[];
+  if(ready&&content.transcript?.withheld)checks.push({text:content.transcript.withheld+' unclear speech passage(s) were left out rather than guessed.'});
+  const coverage=frames.length+' pictures sampled across '+timeLabel(manifest.duration_seconds)+'. Brief text and actions between these pictures may be missed.';
+  return {overview,transcript,screenText,timeline,visualDetails,byId,correctable:[...transcript,...screenText,...visualDetails],checks,coverage,ready,transcriptState:ready?content.transcript?.state:'not_run',limits:[
+    'This review explains the recovered content. Detailed advice on the hook, pacing, editing, product proof, calls to action, workflow and reusable shots is still unfinished.'
   ]};
 }
