@@ -1,0 +1,194 @@
+{
+  "schema": "mary-kate-video-content-review-receipt.v1",
+  "observed_at": "2026-10-16T02:37:57.322804+00:00",
+  "status": "BOUNDED_LIVE_CONTENT_TRANSCRIPT_AND_SCREEN_TEXT_PASS",
+  "creator_acceptance": "FAIL_REPORTED_BY_FOUNDER; replacement awaits founder acceptance",
+  "full_V1_creative_workflow_acceptance": "UNPASSED",
+  "product": {
+    "pull_request": "https://github.com/ashleybrookeugc/Ashley-brooke-cohen/pull/57",
+    "implementation_commit": "10d3524966fc17c6b0cc3242b6634429ca6b2715",
+    "merged_main": "545dead366b27487d88537809cdb44e3a9238183",
+    "normal_CI_and_Workers_Builds": "SUCCESS",
+    "live_assets": [
+      {
+        "file": "index.html",
+        "status": 200,
+        "exact": true
+      },
+      {
+        "file": "app.js",
+        "status": 200,
+        "exact": true
+      },
+      {
+        "file": "review.js",
+        "status": 200,
+        "exact": true
+      },
+      {
+        "file": "style.css",
+        "status": 200,
+        "exact": true
+      }
+    ],
+    "route": "https://ashleybrookecohen.com/video-test/"
+  },
+  "failure": {
+    "founder_screenshot": "2026-10-15 22:02:51 America/New_York",
+    "examples": [
+      "ef",
+      "ey",
+      "inl",
+      "Bey af,",
+      "hale"
+    ],
+    "cause": "Raw failed OCR and weak legacy speech were promoted to primary findings; label/picture fixes did not deliver a content review.",
+    "preserved_attempts": [
+      "First combined report omitted speech content from summary.",
+      "Speech topic critic rejected thematic paraphrase as if it asserted visible actions.",
+      "Final speech-topic template distinguishes what words are about from claims that events happened.",
+      "Python urllib asset check returned403 while normal Node client returned200; no authentication or route workaround used."
+    ]
+  },
+  "local_validation": {
+    "website_tests": 207,
+    "passed": 207,
+    "failed": 0,
+    "skipped": 0,
+    "requirements": 14,
+    "worker_dry_run": "PASS",
+    "focused_content_picture_UI_tests": 17
+  },
+  "local_models": {
+    "vision": {
+      "id": "mlx-community/Qwen3-VL-8B-Instruct-4bit",
+      "revision": "defcdea7cc7a4b0858fea563cbbce171d328e457",
+      "runtime": "mlx-vlm 0.7.8",
+      "license": "Apache-2.0"
+    },
+    "speech": {
+      "id": "mlx-community/whisper-large-v3-turbo-fp16",
+      "revision": "258e98b1f53da60a0a51c1e45e480ffa3ec71e23",
+      "runtime": "mlx-audio 0.5.9, already installed",
+      "license": "Apache-2.0 conversion; MIT base tokenizer",
+      "weight_bytes": 1613977612,
+      "weight_sha256": "951ed3fc1203e6a62467abb2144a96ce7eafca8fa77e3704fdb8635ff3e7f8a6",
+      "tokenizer_source": "openai/whisper-large-v3-turbo",
+      "tokenizer_revision": "41f01f3fe87f28c78e2fbf8b568835947dd65ed9",
+      "load": "Strict parameter validation; only native conversion alignment_heads metadata removed; pinned processor alignment heads retained."
+    }
+  },
+  "security_and_integrity": {
+    "inference": "offline Mac only",
+    "new_packages": 0,
+    "new_credentials": 0,
+    "private_route_auth_and_secrets": "unchanged",
+    "source_deletion": false,
+    "original_analyzer": "unchanged",
+    "core_sha256": "1b2f52b6804c3a28927bee84c8450edd95b647a34433887d5dcb5bf079be00a7",
+    "understanding_sha256": "389463b526930caaf0bd9763e5e093ef218a96350bfb119a65fbc34828a89177",
+    "checks": [
+      "SHA-bound original retained source",
+      "fresh private mono16kHz audio revision with hash checks before/after inference and readback",
+      "ffprobe audio-format timing offset",
+      "verified sampled image paths, frame IDs, source times and hashes",
+      "model revision and exact claim-check/citation binding",
+      "private candidate/audit/audio paths excluded from browser",
+      "historical observation IDs and source-bound append-only corrections retained"
+    ]
+  },
+  "live_non_private_test": {
+    "job_id": "3fce3691-e556-4d2c-b7c5-70af70ae124a",
+    "source_sha256": "c48f66d57aff8697302e6e2c4b7ae143ebe738d3a3c82b10de2a2685e0440c6d",
+    "source_bytes": 52236,
+    "source_duration_seconds": 5.185805,
+    "actual_browser_upload": true,
+    "existing_Mary_Kate_login": true,
+    "extra_login_or_token": false,
+    "source_readback_verified": true,
+    "full_decode": {
+      "state": "complete",
+      "method": "ffmpeg_full_stream_decode",
+      "duration_seconds": 5.185805,
+      "decoded_through_seconds": 5.185805,
+      "tolerance_seconds": 0.5,
+      "ffmpeg_exit_code": 0,
+      "verified_at": "2026-10-16T02:33:55.410Z"
+    },
+    "summary": [
+      "The video shows a static screen with text and spoken words. The screen displays the word 'EXPORT' and the phrase 'I think this is fair' against a dark blue background.",
+      "The spoken words are about fairness in answering questions and mention checking answers."
+    ],
+    "transcript": {
+      "state": "available",
+      "language": "en",
+      "withheld": 0,
+      "segments": [
+        {
+          "id": "speech-0",
+          "time": 0,
+          "end": 2.12,
+          "text": "I do not think this is fair because you know the answer.",
+          "checked": true,
+          "avg_logprob": -0.20134311455946702,
+          "no_speech_prob": 2.1332909397320243e-12
+        },
+        {
+          "id": "speech-1",
+          "time": 3.2,
+          "end": 5.1,
+          "text": "Why not because I already checked it?",
+          "checked": true,
+          "avg_logprob": -0.20134311455946702,
+          "no_speech_prob": 2.1332909397320243e-12
+        }
+      ]
+    },
+    "confirmed_screen_text": [
+      "EXPORT",
+      "I think this is fair"
+    ],
+    "image_widths": [
+      720,
+      720
+    ],
+    "seek": {
+      "seconds": 5,
+      "readyState": 4
+    },
+    "correction": {
+      "id": "6700e556-46bb-4828-98e6-e0767f5db642",
+      "job_id": "3fce3691-e556-4d2c-b7c5-70af70ae124a",
+      "source_sha256": "c48f66d57aff8697302e6e2c4b7ae143ebe738d3a3c82b10de2a2685e0440c6d",
+      "observation_id": "speech-1",
+      "timestamp_seconds": 3.2,
+      "text": "Non-private transcript review: use a question break here \u2014 \u201cWhy not? Because I already checked it.\u201d The recovered words should remain source-bound to this clip.",
+      "kind": "creator_correction",
+      "created_at": "2026-10-16T02:34:52.271Z",
+      "analyzer_version": "synchronized-evidence-2.0.0"
+    },
+    "worker_readback": true,
+    "reload_after_worker_restart_retrieval": true,
+    "raw_panels": 0
+  },
+  "saved_real_clip_repair": {
+    "job_id": "27a02482-825b-41b1-b425-52d8ebc35d40",
+    "source_sha256": "6dd48cee55f394e20558f21ea5815c76385946babca4a10ba44b93635b18a8fc",
+    "duration_seconds": 45.033333,
+    "released_summary_sentences": 2,
+    "released_key_moments": 4,
+    "transcript_segments": 22,
+    "confirmed_screen_lines": 1,
+    "old_fragment_cards": 0,
+    "live_DOM_verified": true,
+    "private_transcript_and_frames": "remain local; not included in GitHub receipt"
+  },
+  "limits": [
+    "Automatic speech and same-model image/semantic rechecks remain fallible; no independent human verification.",
+    "Known fixture fixes fair/negation wording but punctuation still needs correction.",
+    "At most24 sampled pictures; short text and events between samples can be missed.",
+    "Full actions/workflow/friction, UGC/edit advice, B-roll/library, B-Paid/performance and arbitrary-video qualification remain unfinished.",
+    "Physical iPhone and M4 Pro24GB qualification not run.",
+    "Mac and private connector must stay online; no autostart or external archival added."
+  ]
+}
