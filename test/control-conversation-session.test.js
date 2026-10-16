@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {createControlService,createMemoryStore,normalizeConversationHistory} from '../src/control/service.js';
+import {createControlService,createMemoryStore,normalizeConversationHistory,controlErrorResponse} from '../src/control/service.js';
 
 const active=`# Active Work
 ## Current focus
@@ -54,4 +54,16 @@ test('conversation history is bounded and rejects malformed or oversized context
   assert.deepEqual(normalizeConversationHistory(null),[]);
   assert.throws(()=>normalizeConversationHistory([{role:'system',text:'hidden'}]),/user or assistant/);
   assert.throws(()=>normalizeConversationHistory(Array.from({length:13},()=>({role:'user',text:'turn'}))),/at most 12/);
+  assert.throws(()=>normalizeConversationHistory([{role:'assistant',text:'x'.repeat(2200)}]),/1–2000 characters/);
+});
+
+test('a long old assistant answer cannot make current priority advice report missing Project Truth',async()=>{
+  const app=createControlService({github,router:{route(){assert.fail('No model call');}},store:createMemoryStore()});
+  const longAnswer='Mary Kate / AI operating system and video processing. '.repeat(50);
+  const history=[{role:'user',text:'What should I do today?'},{role:'assistant',text:longAnswer.slice(0,2000)}];
+  const result=await app.capture('What should I do today?',{contextWorkstream:'mary-kate-command-center',conversationHistory:history});
+  assert.match(result.plain_summary,/current focus/);
+  assert.equal(result.model_selection.calls,0);
+  try {await app.capture('What should I do today?',{conversationHistory:[{role:'assistant',text:longAnswer}]});assert.fail('Oversized context must be rejected');}
+  catch(error){assert.equal(controlErrorResponse(error).code,'invalid_request');}
 });

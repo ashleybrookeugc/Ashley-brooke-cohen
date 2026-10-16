@@ -196,6 +196,7 @@ function requirePriorState(receipt) {
 // schema key it would have to decipher.
 function translateControlError(error) {
   if (error instanceof PriorStateGateError) {
+    if(error.code==='invalid_request') return {error:error.message,code:'invalid_request'};
     const conflict=error.prior_state?.blockers?.find(blocker=>blocker.reason==='conflict');
     if (conflict) {
       const choices=conflict.facts.map(fact=>({source:fact.section||fact.id,value:fact.value}));
