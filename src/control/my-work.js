@@ -59,7 +59,25 @@ function plainBlocker(item, status, name) {
   if (/mary kate/i.test(name)) return 'Live answers, current priorities, and phone approval actions still need Ashley’s real-world testing.';
   if (/b-paid/i.test(name) && /fixture|footage|media|ssd|source/i.test(evidence)) return 'The next real-world test needs one known Ashley or Russell video that can be opened from connected storage.';
   if (/portfolio/i.test(name) && /audition|performance|media|review|source/i.test(evidence)) return 'The saved source videos have not yet been reviewed end to end, so the strongest portfolio evidence is still unknown.';
-  if (/video|analyzer|evidence/i.test(name) && /unverified|not proven|transport|iphone|browser|connection/i.test(evidence)) return 'The full video-understanding experience has not yet been proven on Ashley’s phone with a real file.';
+  if (/video|analyzer|evidence/i.test(name)) {
+    // Keep an explicit project blocker, but do not treat its absence as
+    // evidence that acceptance passed. Use existing verified project text.
+    if (direct) return sentence(direct);
+    const verified=String(item['Last verified work']||'');
+    const failed=verified.split(/(?<=[.!?])\s+/)
+      .find(part=>/failed|unpassed|unverified|not accepted/i.test(part)
+        && /creator|workflow|understand|acceptance|video/i.test(part));
+    const current=String(firstField(item,FIELD_CHOICES.current)||'');
+    const unfinished=/unverified|unpassed|not proven|unfinished|not accepted|failed/i.test(current);
+    if (failed||unfinished) {
+      const concern=failed||current;
+      const next=firstField(item,FIELD_CHOICES.next);
+      return 'Still to prove: '+sentence(concern)
+        +(next?' Next check: '+sentence(next):'');
+    }
+    if (/unverified|not proven|transport|iphone|browser|connection/i.test(evidence))
+      return 'The full video-understanding experience has not yet been proven on Ashley’s phone with a real file.';
+  }
   if (direct) return sentence(direct);
   if (/unverified|not proven|not executed|not accepted|blocked/i.test(evidence)) return 'Important live or user-facing checks are still unverified.';
   if (/BLOCKED/i.test(status)) return 'The current blocker needs verification before this work can move forward.';
