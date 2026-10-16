@@ -101,6 +101,17 @@ function progressEvent(agent,observedAt) {
   };
 }
 
+const PLAN_STATES=new Set(['completed','current','next','pending','blocked']);
+function cleanPlan(plan,observedAt) {
+  if(!plan||typeof plan!=='object'||Array.isArray(plan)||typeof plan.goal!=='string'||!plan.goal.trim()) return null;
+  const steps=Array.isArray(plan.steps)?plan.steps.slice(0,8).map(step=>{
+    const label=typeof step?.label==='string'?step.label.replace(/[\u0000-\u001f\u007f]/g,' ').trim().slice(0,200):'';
+    return label&&PLAN_STATES.has(step?.state)?{label,state:step.state}:null;
+  }).filter(Boolean):[];
+  if(!steps.length||!steps.some(step=>step.state==='current'||step.state==='next')) return null;
+  return {goal:plan.goal.replace(/[\u0000-\u001f\u007f]/g,' ').trim().slice(0,240),steps,updated_at:observedAt};
+}
+
 function safeWorker(worker,agent,observedAt) {
   const state=mapState(agent);
   const latest=progressEvent(agent,observedAt);
@@ -117,6 +128,7 @@ function safeWorker(worker,agent,observedAt) {
     runtime_metrics:{model:null,tokens:null,cost:null},
     last_observed_at:observedAt,
     progress_events:structuredClone(worker.progress_events),
+    plan:worker.plan?structuredClone(worker.plan):null,
     identity:{session:worker.session,workspace_id:worker.workspace_id,pane_id:worker.pane_id,agent_name:worker.agent_name},
   };
 }
@@ -137,6 +149,7 @@ function unavailableWorker(worker,error,observedAt) {
     runtime_metrics:{model:null,tokens:null,cost:null},
     last_observed_at:observedAt,
     progress_events:structuredClone(worker.progress_events),
+    plan:worker.plan?structuredClone(worker.plan):null,
     identity:{session:worker.session,workspace_id:worker.workspace_id,pane_id:worker.pane_id,agent_name:worker.agent_name},
     telemetry:{status:'unavailable',message:'Worker telemetry is temporarily unavailable.',diagnostic_code:code},
   };
@@ -213,7 +226,7 @@ export function createHerdrWorkerAdapter({
       try {
         const started=await command(['agent','start',agentName,'--kind','codex','--pane',paneId,'--timeout','120000','--',...CODEX_HARDENING_ARGS,'-C',resolved],'agent start',130000);
         const agent=started?.agent;
-        const worker={id:`herdr:${sessionName}:${workspaceId}:${agentName}`,session:sessionName,workspace_id:workspaceId,pane_id:paneId,agent_name:agentName,task:{id:task.id,summary:task.summary},progress_events:[],state:'unknown',last_observed_at:null};
+        const worker={id:`herdr:${sessionName}:${workspaceId}:${agentName}`,session:sessionName,workspace_id:workspaceId,pane_id:paneId,agent_name:agentName,task:{id:task.id,summary:task.summary},plan:cleanPlan(task.plan,now()),progress_events:[],state:'unknown',last_observed_at:null};
         workers.set(worker.id,worker);
         return safeWorker(worker,agent,now());
       } catch(error) {
@@ -241,6 +254,14 @@ export function createHerdrWorkerAdapter({
         if(['agent_not_found','target_not_found','herdr_command_failed'].includes(error.code)) return safeWorker(worker,null,now());
         throw error;
       }
+    },
+    async updatePlan(workerId,plan) {
+      const worker=workers.get(workerId);
+      if(!worker) throw new HerdrAdapterError('worker_not_found','Worker is not managed by this adapter');
+      const next=cleanPlan(plan,now());
+      if(!next) throw new HerdrAdapterError('invalid_request','A bounded task plan with a current or next step is required');
+      worker.plan=next;
+      return structuredClone(next);
     },
     async list() {
       if(!active) throw new HerdrAdapterError('adapter_inactive','The Herdr adapter has not been activated');
