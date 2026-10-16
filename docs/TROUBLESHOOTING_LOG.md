@@ -1,5 +1,17 @@
 # Ashley Brooke Cohen Website — Troubleshooting & Recovery Log
 
+## 2026-10-15 — V1 conversation loses its project and desired outcome
+
+**Symptom:** Ashley supplied the exact four-turn sequence frozen in `test/control-natural-followups.test.js`: V1 status answers, “what is my desired outcome” loses scope, “for this site. for mk…” remains ambiguous, and “where am i going wrong” fails the routing contract. This is a product defect; it is not evidence that Ashley failed to set up a chatbot.
+
+**Cause / repair:** the first deterministic V1 answer resolved its project from the Command Center page, but follow-up scope reconstruction did not retain that resolution. Desired-outcome retrieval stayed global/current-state rather than selecting the indexed Mary Kate founder authority. Clarification-prefixed questions missed the explicit read-question predicate. Preserve the existing current-main read-only model path and triage, reconstruct page-resolved scope from user turns, route scoped goal questions to the founder authority, and carry the resolved project into indexed evidence selection. Assistant prose cannot grant authority or select a project; mixed commands and multi-project ambiguity retain their gates.
+
+**Reconciliation and failed attempts:** PR #41 was the initial test base; it is stale and remains unmerged. An attempted temporary integration with newer main conflicted, so it was aborted. The older adapter prototype was discarded because main already added the read-only message path. The narrower repair was reapplied to main `5123021295c9ab838969a11f2d8ed5d7ac82353c`, preserving concurrent triage and video changes. On main `75ce2f1` the five new tests first failed 2 / passed 3; with the residual repair all 5 pass. Full reconciled suite: 192 total, 190 passed, 2 analyzer-dependent skips, 0 failures. Requirements: 14 mapped. Wrangler 4.151.0 dry-run and diff checks PASS. Provider outputs in these tests are doubles; they prove routing, evidence selection, message contract and zero proposals/writes, not live answer usefulness.
+
+**Authenticated live baseline:** replayed all four exact turns in a fresh existing-session Command Center tab. V1 answered; desired outcome now answers by repeating V1 capabilities (founder-authority grounding unestablished); the explicit “for this site. for mk…” clarification still returned `422 prior_state_ambiguous_scope`. The final question no longer had a routing-contract error, but asked Ashley which chatbot-design task she was struggling with instead of diagnosing the observed product failure. That is still a usefulness failure. Visible queues stayed 0 awaiting approval / 3 AI can handle. These are baseline results, not candidate results; exact deployed version was not captured.
+
+**Access / stop boundary:** a single bounded direct model probe through the already-authorized Cloudflare MCP returned API error 10000, Authentication error. No credential/scope/provider change was made. The candidate has not been deployed and live semantic acceptance is not claimed. Next: review this exact narrow PR, obtain explicit merge/deployment approval, then replay the same four turns through the authenticated normal interface and record source/version, grounded answers and unchanged queues. PR #36 remains untouched.
+
 ## 2026-10-15 — Founder still sees raw code after the first plain-English repair
 
 **Symptom:** Ashley reports “Still showing raw code” after PR #43. Her original loaded tab was not conclusively inspected; a cache issue is not established.

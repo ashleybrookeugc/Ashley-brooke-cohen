@@ -4,7 +4,8 @@ import {WRITE_REPO} from './contracts.js';
 // proposal/approval path, including commands after a question or polite prefix.
 export function isReadQuestion(text) {
   const input=String(text||'').replace(/[’‘]/g,"'").trim();
-  const question=/^(?:(?:and|so)\s+)?(?:(?:please\s+)?(?:(?:can|could|would) you\s+)?(?:what|why|when|where|who|how|was|were|is|are|has|have|does|did|do you think|should|tell me|show me|give me|explain|assess|evaluate|summarize)\b|actually\s+i\s+meant\b|i need help with\b)/i.test(input);
+  const question=/^(?:(?:and|so)\s+)?(?:(?:please\s+)?(?:(?:can|could|would) you\s+)?(?:what|why|when|where|who|how|was|were|is|are|has|have|does|did|do you think|should|tell me|show me|give me|explain|assess|evaluate|summarize)\b|actually\s+i\s+meant\b|i need help with\b)/i.test(input)
+    || /^(?:for|about)\b[\s\S]*\b(?:what|why|when|where|who|how|is|are|does|did)\b/i.test(input);
   const command=/(?:^|[?!;.]\s*|\band\s+(?:then\s+)?)(?:(?:please|now)\s+)*(?:update|set|change|mark|approve|publish|ship|post|send|delete|spend|pay|purchase|transfer|remove|deploy|merge|buy|upload|execute|run|resume|continue|advance|switch)\b/i.test(input)
     || /\b(?:can|could|would) you\s+(?:please\s+)?(?:update|set|change|approve|publish|send|delete|deploy|merge|run|execute|buy|pay|upload)\b/i.test(input);
   return question&&!command;
@@ -12,9 +13,10 @@ export function isReadQuestion(text) {
 
 export const isPriorityQuestion=text=>isReadQuestion(text)&&/\b(?:prioriti(?:ze|es|y)|what should (?:i|we) (?:do|focus on)|what (?:needs|requires) (?:my|our) attention|what is (?:currently )?blocked)\b/i.test(text);
 
-export function authorityKind(text) {
+export function authorityKind(text,workstream=null) {
+  if(/^Mary Kate(?:\s*\/|\s*—|$)/i.test(workstream||'')&&/\b(?:desired (?:outcome|result)|(?:my|our|product) goals?|founder intent)\b/i.test(text)) return 'founder';
   if(/\b(?:decid(?:e|ed)|permissions?|automatic|model selection|capability selection)\b/i.test(text)) return 'founder';
-  if(/\b(?:fail(?:ed|ure)?|read.only|went wrong)\b/i.test(text)) return 'failure';
+  if(/\b(?:fail(?:ed|ure)?|read.only|went wrong|going wrong)\b/i.test(text)) return 'failure';
   if(/\b(?:telemetry|tests?|benchmark|evaluation)\b/i.test(text)) return 'tests';
   return 'current';
 }

@@ -112,7 +112,7 @@ export function resolveAuthoritativeWorkstream(text, facts) {
   const family=section=>canonicalSectionName(section).split(' / ')[0];
   const explicitFamilies=[...new Set(sections.map(family).filter(name=>textWords(input).includes(textWords(name))))];
   if(explicitFamilies.length>1) return {status:'ambiguous',section:null,candidates:sections.filter(section=>explicitFamilies.includes(family(section)))};
-  if(namesMaryKate(text)&&readOnlyAssessment(text)) {
+  if(namesMaryKate(text)&&isReadQuestion(text)) {
     const named=scores.filter(candidate=>candidate.score>0);
     // A second named project remains ambiguous, even if its shorter heading
     // would have lost the token-overlap competition.
@@ -256,12 +256,18 @@ export function normalizeConversationHistory(value) {
 }
 
 const commandCenterOverviewQuestion=text=>/\b(?:all\s+(?:project\s+)?tasks?|prioriti(?:ze|zed|zation|es)|time management|what should i (?:do|focus on)|today(?:'s)? (?:work|tasks?|priorities)|across (?:my|all) projects?)\b/i.test(normalizedInput(text));
-const conversationWorkstream=(history,facts)=>{
+const conversationWorkstream=(history,facts,pageContext)=>{
   for(let index=history.length-1;index>=0;index--) {
     if(history[index].role!=='user') continue;
     const resolution=resolveAuthoritativeWorkstream(history[index].text,facts);
     if(resolution.status==='resolved') return resolution.section;
     if(resolution.status==='ambiguous') return null;
+    // Reconstruct the server's page-scoped V1 answer, never a scope claimed
+    // by assistant prose. History remains conversation context, not authority.
+    if(pageContext==='mary-kate-command-center'&&readOnlyAssessment(history[index].text)) {
+      const pageResolution=resolveAuthoritativeWorkstream(`${history[index].text} For Mary Kate.`,facts);
+      if(pageResolution.status==='resolved') return pageResolution.section;
+    }
   }
   return null;
 };
@@ -350,8 +356,8 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
       const previousScope=triage.priority_followup?lastRoute?.model_selection?.scope_section:null;
       const priorityScope=previousScope&&facts.some(fact=>fact.section===previousScope)?previousScope:null;
       const rawResolution=resolveAuthoritativeWorkstream(priorityScope?`For ${canonicalSectionName(priorityScope)}, ${text}`:text,facts);
-      const kind=authorityKind(text);
-      const priorConversationSection=rawResolution.status==='unknown'&&kind==='current'?conversationWorkstream(history,facts):null;
+      const priorConversationSection=rawResolution.status==='unknown'?conversationWorkstream(history,facts,contextWorkstream):null;
+      const kind=authorityKind(text,rawResolution.section||priorConversationSection);
       const commandCenterOverview=!priorConversationSection&&activeWorkstreamSections(facts).length>0&&isPriorityQuestion(text);
       const assentScope=readOnlyAssentScope(text,recentConversation,facts,initial,now(),packetTtlMs);
       // The persistent Command Center chat may supply its page context for an
@@ -412,7 +418,8 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
         return {retrieval_trace:trace,interaction_id:interaction.id,conversation_id:conversationId,plain_summary:route.plain_summary,responsibility:route.responsibility,route_kind:route.route_kind,queue_item:null,model_selection:route.model_selection,triage,handoff:{status:'conversation_active',can_clear:false,message:'This is still a conversation. No task or GitHub change has been claimed.'}};
       }
       if(readOnly&&!snapshot.completion_authority) {
-        snapshot.retrieval_evidence=await retrieveIndexedEvidence(github,text,{activeWork:typeof packet.raw_content==='string'?{content:packet.raw_content,sha:packet.source.sha}:await github.readFile(WRITE_REPO,'ACTIVE_WORK.md'),kind});
+        const retrievalText=ambiguity_gate.section?`${text} Context: ${canonicalSectionName(ambiguity_gate.section)}.`:text;
+        snapshot.retrieval_evidence=await retrieveIndexedEvidence(github,retrievalText,{activeWork:typeof packet.raw_content==='string'?{content:packet.raw_content,sha:packet.source.sha}:await github.readFile(WRITE_REPO,'ACTIVE_WORK.md'),kind});
         // The answer packet needs the relevant current paragraphs, not every project's history.
         snapshot.projects=ambiguity_gate.section?initial.projects.filter(project=>project.name===ambiguity_gate.section):[];
       }

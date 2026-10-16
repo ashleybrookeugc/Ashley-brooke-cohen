@@ -1,0 +1,71 @@
+{
+  "recorded_at_utc": "2026-10-16T01:01:16.949222+00:00",
+  "status": "local_routing_PASS; production_acceptance_UNVERIFIED",
+  "base_commit": "5123021295c9ab838969a11f2d8ed5d7ac82353c",
+  "inputs": [
+    "how is v1 doing",
+    "what is my desired outcome",
+    "for this site. for mk. ad why is it taking days to make when others have whole interactive dashboards in hours",
+    "why cant i figure out a simple chatbot, where am i going wrong"
+  ],
+  "baseline_current_main": {
+    "commit": "75ce2f1c83c4792e7a1b74ac05fd840ea35c8f33",
+    "targeted_pass": 3,
+    "targeted_fail": 2
+  },
+  "candidate": {
+    "targeted_pass": 5,
+    "suite_total": 192,
+    "passed": 190,
+    "skipped": 2,
+    "failed": 0,
+    "requirements_mapped": 14,
+    "wrangler": "4.151.0",
+    "packaging": "PASS",
+    "providers": "controlled doubles",
+    "canonical_writes": 0,
+    "proposals": 0
+  },
+  "direct_model_probe": {
+    "transport": "existing Cloudflare MCP authorization",
+    "calls": 1,
+    "result": "API error 10000 Authentication error",
+    "credentials_changed": false
+  },
+  "limits": [
+    "Not deployed",
+    "Live semantic quality not established",
+    "Bounded conversation history; not general durable memory",
+    "No overall V1 completion claim"
+  ],
+  "reconciliation": "Temporary merge with stale PR41 conflicted and was aborted; obsolete adapter prototype discarded; narrow residual change on current main preserves read-only triage and video changes.",
+  "live_baseline": {
+    "interface": "https://ashleybrookecohen.com/control/my-work/",
+    "candidate_deployed": false,
+    "observed_at_utc": "2026-10-16T01:02:54.681Z",
+    "results": [
+      {
+        "turn": 1,
+        "result": "Deterministic V1 answer; tally22/0/16/5/1"
+      },
+      {
+        "turn": 2,
+        "result": "Now answers desired-outcome question; repeats V1 capabilities, canonical founder retrieval not established"
+      },
+      {
+        "turn": 3,
+        "result": "FAIL: Request status422 prior_state_ambiguous_scope; asks for project despite explicit mk clarification"
+      },
+      {
+        "turn": 4,
+        "result": "No routing-contract error now, but FAIL usefulness: generic chatbot-design question; does not diagnose the observed product failure"
+      }
+    ],
+    "queues": {
+      "needs_approval": 0,
+      "ai_can_handle": 3,
+      "observation": "Visible queue before/after replay; no approve/reject used"
+    },
+    "worker_version": "Not captured; UI replay is current live behavior, not exact deployment provenance"
+  }
+}
