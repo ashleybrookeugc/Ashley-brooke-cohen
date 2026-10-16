@@ -1,5 +1,6 @@
 const encoder=new TextEncoder();
 const STATES=new Set(['running','idle','completed','blocked','disconnected','unknown']);
+const PLAN_STEP_STATES=new Set(['completed','current','next','pending','blocked']);
 const TELEMETRY_VERSION='mary-kate.worker-telemetry.v1';
 const DEFAULT_FRESH_MS=20000;
 
@@ -44,6 +45,18 @@ function cleanEvent(event) {
   };
 }
 
+function cleanPlan(plan) {
+  if(!plan||typeof plan!=='object'||Array.isArray(plan)) return null;
+  const goal=cleanString(plan.goal,240);
+  const steps=Array.isArray(plan.steps)?plan.steps.slice(0,8).map(step=>{
+    const label=cleanString(step?.label,200);
+    const state=PLAN_STEP_STATES.has(step?.state)?step.state:null;
+    return label&&state?{label,state}:null;
+  }).filter(Boolean):[];
+  if(!goal||!steps.length||!steps.some(step=>step.state==='current'||step.state==='next')) return null;
+  return {goal,steps,updated_at:cleanTime(plan.updated_at)};
+}
+
 function cleanWorker(worker) {
   const id=cleanString(worker?.id,180);
   const taskId=cleanString(worker?.task?.id,64);
@@ -63,6 +76,7 @@ function cleanWorker(worker) {
     },
     last_observed_at:cleanTime(worker?.last_observed_at),
     progress_events:Array.isArray(worker?.progress_events)?worker.progress_events.slice(-20).map(cleanEvent):[],
+    plan:cleanPlan(worker?.plan),
     identity:{
       session:cleanString(worker?.identity?.session,80),
       workspace_id:cleanString(worker?.identity?.workspace_id,100),
@@ -117,7 +131,7 @@ export function createWorkerTelemetryStore(db,{now=()=>new Date().toISOString(),
       if(!row) return {version:TELEMETRY_VERSION,enabled:true,read_only:true,observed_at:now(),connection:{state:'disconnected',fresh:false,last_received_at:null},workers:[]};
       const payload=JSON.parse(row.payload_json);
       const fresh=Date.parse(row.expires_at)>Date.parse(now());
-      const workers=fresh?payload.workers:payload.workers.map(worker=>({...worker,state:'disconnected',outcome_verified:false,telemetry:{status:'unavailable',message:'The M4 worker connection is offline or stale.',diagnostic_code:'m4_connection_stale'}}));
+      const workers=fresh?payload.workers:payload.workers.map(worker=>({...worker,state:'disconnected',outcome_verified:false,plan:worker.plan?{...worker.plan,stale:true}:null,telemetry:{status:'unavailable',message:'The M4 worker connection is offline or stale.',diagnostic_code:'m4_connection_stale'}}));
       return {...payload,observed_at:payload.observed_at,connection:{state:fresh?'connected':'disconnected',fresh,last_received_at:row.received_at,expires_at:row.expires_at},workers};
     },
   };
