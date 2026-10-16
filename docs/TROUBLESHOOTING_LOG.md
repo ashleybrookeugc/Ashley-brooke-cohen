@@ -862,3 +862,15 @@ Local regression tests include the production phrasings, natural follow-ups, an 
 **Verification:** Six new regression groups; full201 tests,199 passed,2 existing analyzer-dependent skips,0 failed; requirements14/14; Worker dry-run and diff checks PASS. Seven-question actual-service comparison uses hash-verified GitHub files at vault5339c290 and baseline product9d2e7a7. Candidate retrieves video plan+receipts, telemetry acceptance, founder decision, exact failure record and creator evidence; all replay writes/queues zero. Provider answers are doubles, not semantic acceptance. [Receipt](test-receipts/2026-10-16-wiki-reading.json).
 
 **Boundary:** Existing current-focus/conversation fixes on main are preserved; the separate prior PR48 is not silently restored. No ICM installation, folder migration, framework, provider change or production deployment. Semantic completeness, automatic freshness, product-repo code lookup and live answer quality remain open. Do not claim all wiki knowledge is discoverable from this bounded route set.
+
+## 2026-10-16 — Activity card covered video only
+
+**Symptom:** The Today card mentioned a video worker, but Ashley needed the same view for every workstream, including Mary Kate's own repair of the current-work record. A saved priority did not say what an agent was doing now.
+
+**Failed/looping approach:** A video-name match on worker summaries implied a relationship that Herdr had not recorded. It also left other project cards without a progress checkpoint.
+
+**Root cause:** The projection had no per-project last verified progress field, and worker telemetry lacked an exact project association.
+
+**Verified fix:** Project Truth's optional `Last verified work` field is shown separately from live Herdr status on Today and every project card. A Herdr worker appears on a project only when its allowlisted `task.project_id` exactly matches that project's saved ID and the connection is fresh. Unknown, unlinked, stale, and unavailable workers never appear as currently working. The worker adapter retains the explicit association without widening its read-only authorization. Project and telemetry tests pass.
+
+**Prevention rule:** Save a dated, evidence-backed progress sentence per active workstream when a meaningful milestone is verified. Link workers by explicit project ID. Do not infer live work from task wording, a saved priority, or a ChatGPT Work conversation that Herdr cannot observe.
