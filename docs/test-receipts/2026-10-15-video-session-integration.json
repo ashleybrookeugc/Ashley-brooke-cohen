@@ -1,7 +1,7 @@
 {
   "schema": "mary-kate-video-session-integration.v1",
   "date": "2026-10-15",
-  "status": "LIVE_EXISTING_LOGIN_AND_ANALYSIS_PASS_FINAL_REVIEW_PENDING",
+  "status": "PASS_LIVE_EXISTING_MARY_KATE_SESSION_UPLOAD_ANALYSIS_REVIEW_CORRECTION_RELOAD",
   "founder_decision": "Reuse the existing Mary Kate authenticated session. No separate testing token or second login. Keep the Mac connection private.",
   "implementation": {
     "base_main": "fb384d5d9270126916e5c932d295bbd9022750c6",
@@ -138,7 +138,7 @@
       }
     },
     "browser": {
-      "browser": "Existing native Brave tab",
+      "browser": "Native Brave plus existing Codex test-browser tab 3",
       "before": "Signed-in Mary Kate Command Center, but Video Testing required a token and Analyze was disabled",
       "after": "Same existing Mary Kate session recognized automatically; Analyzer connected; token prompt absent",
       "new_login_or_token_entry": false,
@@ -151,8 +151,36 @@
         0,
         5
       ],
-      "timestamp_seek": "PENDING: active user tab changes interrupted native UI",
-      "correction_save_and_reload": "PENDING: active user tab changes interrupted native UI"
+      "timestamp_seek": {
+        "seconds": 5,
+        "actual_current_time": 5,
+        "duration_seconds": 5.185805,
+        "ready_state": 4
+      },
+      "correction_save_and_reload": {
+        "status": "PASS",
+        "id": "54de58b8-a0cf-4660-92ee-ebf3ee6c6c68",
+        "observation_id": "speech-000001",
+        "timestamp_seconds": 0.03,
+        "worker_readback_http": 200,
+        "exact_worker_readback": true,
+        "browser_reload_retrieval": true
+      },
+      "frames_loaded": [
+        {
+          "source_seconds": 0,
+          "width": 720
+        },
+        {
+          "source_seconds": 5,
+          "width": 720
+        }
+      ],
+      "verification_surfaces": {
+        "native_Brave": "Existing Mary Kate login automatically connected; selected fixture, enabled Analyze, uploaded and displayed completed evidence.",
+        "test_browser": "Existing tab reloaded and automatically recognized a valid Mary Kate session; no additional sign-in/token. Opened exact new job, loaded frames, sought to 5s, saved/read back correction, reloaded and retrieved identical feedback."
+      },
+      "native_interruption": "Active user tab changes interrupted native correction checks; remaining checks completed through the existing authenticated test-browser tab. Browser-coordination question no longer blocks verification."
     },
     "job_proof": {
       "observed_at": "2026-10-15T23:56:51.552Z",
@@ -215,7 +243,19 @@
         0,
         5
       ],
-      "feedback": [],
+      "feedback": [
+        {
+          "id": "54de58b8-a0cf-4660-92ee-ebf3ee6c6c68",
+          "job_id": "67281538-0100-4b3b-a5b6-0d45a8e213d9",
+          "source_sha256": "c48f66d57aff8697302e6e2c4b7ae143ebe738d3a3c82b10de2a2685e0440c6d",
+          "observation_id": "speech-000001",
+          "timestamp_seconds": 0.03,
+          "text": "Mary Kate session integration test: the non-private fixture says “I do not think this is fair because you know the answer.” The ASR “is is there” is incorrect. Technical test only.",
+          "kind": "creator_correction",
+          "created_at": "2026-10-16T00:04:10.410Z",
+          "analyzer_version": "synchronized-evidence-2.0.0"
+        }
+      ],
       "worker_source_retained": true
     }
   },
@@ -239,5 +279,7 @@
     "autostart": false,
     "remote_archival": false
   },
-  "historical_activation": "docs/test-receipts/2026-10-15-video-analyzer-mac-activation.json"
+  "historical_activation": "docs/test-receipts/2026-10-15-video-analyzer-mac-activation.json",
+  "observed_at": "2026-10-16T00:05:15.374Z",
+  "verification_boundary": "PASS proves the ordinary existing-login technical upload → analysis → loaded source-time review/seek → source-bound correction → reload retrieval flow. Physical iPhone, creator/semantic acceptance remain unpassed; prior 17/18 ASR regression unchanged."
 }
