@@ -31,16 +31,23 @@ export function selectParagraphs(content,query,budget=10000) {
     const h=text.match(/^#{1,6}\s+(.+)/m);if(h)heading=h[1];
     const lower=text.toLowerCase();
     return {index,section:heading,text,score:terms.reduce((sum,term)=>sum+(lower.includes(term)?1:0),0)};
-  }).filter(x=>x.score>0).sort((a,b)=>b.score-a.score||a.index-b.index);
+  });
+  // A focused small source fits whole: lexical filtering must not drop its
+  // cause or qualifications just because they use different words.
+  if(String(content).length<=budget) return {excerpts:scored.map(({index,section,text})=>({paragraph:index,section,text})),source_characters:String(content).length,selected_characters:String(content).length,truncated:false,selection:'complete source within character budget'};
+  const ranked=scored.filter(x=>x.score>0).sort((a,b)=>b.score-a.score||a.index-b.index);
   let used=0;const selected=[];
-  for(const block of scored) {if(used+block.text.length>budget)continue;selected.push(block);used+=block.text.length;if(selected.length===8)break;}
+  for(const block of ranked) {if(used+block.text.length>budget)continue;selected.push(block);used+=block.text.length;if(selected.length===8)break;}
   return {excerpts:selected.sort((a,b)=>a.index-b.index).map(({index,section,text})=>({paragraph:index,section,text})),source_characters:String(content).length,selected_characters:used,truncated:used<String(content).length,selection:'query-term overlap; whole paragraphs; source order breaks ties'};
 }
 
 export async function retrieveIndexedEvidence(github,text,{activeWork,kind=authorityKind(text)}={}) {
+  // Expand a domain synonym only for evidence lookup; never for intent or
+  // permission. The linked incident must still come from the indexed hub.
+  const query=kind==='failure'&&/\bchatbot\b/i.test(text)?`${text} chat conversation read-only`:text;
   const sources=[];const missing=[];let routing_source=null;
   const add=(path,file,budget)=>{if(!file?.sha||typeof file.content!=='string'){missing.push({path,reason:'unversioned_or_missing'});return;}
-    const selected=selectParagraphs(file.content,text,budget);
+    const selected=selectParagraphs(file.content,query,budget);
     sources.push({source:{repo:WRITE_REPO,path,sha:file.sha,sha_kind:'blob'},...selected});
     if(!selected.excerpts.length)missing.push({path,reason:'no_matching_paragraphs'});
   };
@@ -74,7 +81,7 @@ export async function retrieveIndexedEvidence(github,text,{activeWork,kind=autho
       // links present in the retrieved hub. Never accept a model-supplied URL.
       if(kind==='failure') {
         const candidates=[...String(file.content).matchAll(/(?:\]\(|`)((?:[\w./-]+\/)?failures\/[\w-]+\.md)(?:[)#`])/g)].map(m=>m[1].startsWith('failures/')?'shared-capabilities/ai-workflows/'+m[1]:m[1]);
-        const ranked=[...new Set(candidates)].map(path=>({path,score:(path.toLowerCase().match(/read-only|retriev|priorit/g)||[]).filter(term=>text.toLowerCase().replace('read-only','read-only').includes(term)).length})).sort((a,b)=>b.score-a.score);
+        const ranked=[...new Set(candidates)].map(path=>({path,score:(path.toLowerCase().match(/read-only|retriev|priorit|chat|follow-up/g)||[]).filter(term=>query.toLowerCase().includes(term)).length})).sort((a,b)=>b.score-a.score);
         const follow=ranked.find(x=>x.score>0&&/^shared-capabilities\/ai-workflows\/failures\/[\w-]+\.md$/.test(x.path));
         if(follow)add(follow.path,await github.readFile(WRITE_REPO,follow.path),3000);
       }

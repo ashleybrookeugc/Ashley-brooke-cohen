@@ -24,7 +24,8 @@
     "packaging": "PASS",
     "providers": "controlled doubles",
     "canonical_writes": 0,
-    "proposals": 0
+    "proposals": 0,
+    "grounding_followup": "Fresh evidence placed after fallible assistant history; duplicate history excluded from evidence; source-grounded product diagnosis rather than invented schedule excuses; bounded chatbot synonym reaches indexed incident and small source keeps whole cause/qualification."
   },
   "direct_model_probe": {
     "transport": "existing Cloudflare MCP authorization",
@@ -67,5 +68,40 @@
       "observation": "Visible queue before/after replay; no approve/reject used"
     },
     "worker_version": "Not captured; UI replay is current live behavior, not exact deployment provenance"
-  }
+  },
+  "preview_attempts": [
+    {
+      "head": "e05b4c3452ba04f9e237079eb161e85413871401",
+      "version": "ea7536ed-3000-4469-bd74-178dcdac535a",
+      "authenticated": true,
+      "questions": [
+        "how is v1 doing",
+        "what is my desired outcome",
+        "for this site. for mk. ad why is it taking days to make when others have whole interactive dashboards in hours",
+        "why cant i figure out a simple chatbot, where am i going wrong"
+      ],
+      "results": [
+        {
+          "turn": 1,
+          "status": "Answers deterministic V1 status"
+        },
+        {
+          "turn": 2,
+          "status": "Answers desired outcome; largely repeats prior V1 reply, source-grounding not demonstrated"
+        },
+        {
+          "turn": 3,
+          "status": "Routing repaired but semantic FAIL",
+          "answer": "It's taking time to develop Mary Kate (MK) because it's a complex AI operating system that needs to integrate multiple components and ensure they work together seamlessly. The team is working on verifying each part, which includes testing, debugging, and refining the system.\n\nThe other interactive dashboards you're referring to might be simpler in scope or have fewer features, which allows them to be developed and deployed more quickly. Mary Kate, on the other hand, is a more comprehensive system that requires a more thorough and rigorous development process.\n\nThink of it like building a house: a simple shed can be constructed quickly, but a complex mansion requires more time, planning, and attention to detail. The team is working hard to ensure that Mary Kate is built with the highest quality and meets the desired standards, even if it takes a bit longer."
+        },
+        {
+          "turn": 4,
+          "status": "Semantic FAIL",
+          "answer": "It seems like you're having trouble understanding the current state of Mary Kate, which is a complex AI operating system. The conversation history shows that Mary Kate is still in the development phase and hasn't yet achieved its full functionality.\n\nTo help you better understand where you might be going wrong, I'd like to ask: What specific aspects of Mary Kate's functionality are you trying to understand or implement? Are you trying to replicate a particular feature or behavior?"
+        }
+      ],
+      "evaluation": "FAIL: unsupported team/activity, delay/competitor rationale and analogy; generic tutorial question instead of product diagnosis. Not accepted for production.",
+      "provider_identity": "Not captured from UI; no exact cost or latency claim"
+    }
+  ]
 }

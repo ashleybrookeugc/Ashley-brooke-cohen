@@ -15,10 +15,12 @@ const active=`## Current active workstreams
 **Desired outcome:** A stock footage marketplace.
 ## Session handoff rule`;
 const completion='research/ai-workflows/completion.md',founder='research/ai-workflows/founder.md';
+const failure='shared-capabilities/ai-workflows/failures/read-only-chat.md';
 const documents={
  'ACTIVE_WORK.md':active,
  'PROJECT_INDEX.md':`| Mary Kate current V1 completion/gap/evidence status | \`${completion}\` | |\n| Mary Kate founder intent, product boundaries | \`${founder}\` | |\n| Known failure, regression, or previously failed approach | \`shared-capabilities/ai-workflows/protocol.md\` | |`,
- 'shared-capabilities/ai-workflows/protocol.md':'## Mary Kate chatbot failure\n\nOrdinary questions were forced through a write-shaped classifier. That is a product failure, not a missing setup step by Ashley.',
+ 'shared-capabilities/ai-workflows/protocol.md':'## Mary Kate chatbot failure\n\nInspect the [read-only chat incident](failures/read-only-chat.md).',
+ [failure]:'## Read-only chatbot failure\n\nOrdinary questions were forced through a write-shaped classifier. That is a product failure, not a missing setup step by Ashley.',
  [completion]:'# V1 completion assessment\n\n**22 rows:** VERIFIED 0; PARTIAL 16; IMPLEMENTED — UNVERIFIED 5; NOT IMPLEMENTED 1',
  [founder]:'# Mary Kate founder intent\n\nThe desired outcome is natural conversation across my projects, grounded in saved knowledge, with checked work and continuity. A dashboard alone is not that outcome.'
 };
@@ -42,10 +44,14 @@ test('exact founder follow-ups retain page-resolved V1 context and use a read-on
   assert.match(packet.ambiguity_gate.section,/^Mary Kate \/ AI operating system/);
   assert.match(packet.intent,/^read_only_/);
   assert.ok(request.messages.filter(message=>message.role==='assistant').length>=1);
+  assert.ok(request.messages.at(-2).content.startsWith('{"context":'),'fresh source evidence follows fallible assistant history');
+  assert.equal(packet.conversation_history,undefined,'history is not duplicated into the evidence packet');
  }
  const outcome=evidencePacket(requests[0]);
  assert.ok(reads.includes(founder));
  assert.match(JSON.stringify(outcome.retrieval_evidence),/desired outcome is natural conversation/);
+ assert.ok(reads.includes(failure),'chatbot synonym follows a real incident link in the indexed hub');
+ assert.match(JSON.stringify(evidencePacket(requests[2]).retrieval_evidence),/product failure, not a missing setup step/);
  assert.equal(writes,0);
  assert.deepEqual(await store.listQueues(),{needs_ashley:[],ai_can_handle:[]});
 });
