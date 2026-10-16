@@ -13,13 +13,13 @@ function indexedDBDouble(saved){return {open(){const req={result:{transaction(){
 async function boot(saved,fetchImpl=async()=>new Response(JSON.stringify({error:'Worker offline'}),{status:503}),onReady=()=>{}){
  const elements=new Map([...html.matchAll(/id="([^"]+)"/g)].map(m=>[m[1],new Element()]));
  const document={getElementById:id=>{assert.ok(elements.has(id),'Missing element '+id);return elements.get(id)},createElement:()=>new Element()};
- const run=new (Object.getPrototypeOf(async function(){}).constructor)('document','indexedDB','fetch','Option','buildReview','timeLabel',source.replace(/^import .*;\n/,''));
- onReady(elements);await run(document,indexedDBDouble(saved),fetchImpl,function(label,value){this.textContent=label;this.value=value},buildReview,timeLabel);return elements;
+ const run=new (Object.getPrototypeOf(async function(){}).constructor)('document','indexedDB','fetch','Option','buildReview','timeLabel','localStorage',source.replace(/^import .*;\n/,''));
+ onReady(elements);await run(document,indexedDBDouble(saved),fetchImpl,function(label,value){this.textContent=label;this.value=value},buildReview,timeLabel,{getItem(){return saved.lastRun||null},setItem(k,v){saved.lastRun=v}});return elements;
 }
 test('actual UI module executes with DOM/storage doubles: offline review, correction, reload retrieval, safe text rendering',async()=>{
  const saved=new Map([['fixture',structuredClone(fixture)]]);let ui=await boot(saved);
  assert.match(ui.get('status').textContent,/offline/);assert.equal(ui.get('analyze').disabled,true);
- await ui.get('runs').children[0].onclick();assert.equal(ui.get('review').hidden,false);assert.match(ui.get('boundary').textContent,/full review.*unfinished/);
+ await ui.get('runs').children[0].onclick();assert.equal(ui.get('review').hidden,false);assert.match(ui.get('boundary').textContent,/generated privately on your Mac/);
  ui.get('text').value='<img src=x onerror=alert(1)> This observation is wrong.';ui.get('observation').value='visual-1';ui.get('time').value='0';
  await ui.get('correction').onsubmit({preventDefault(){}});assert.equal(saved.get('fixture').feedback.length,1);assert.equal(saved.get('fixture').feedback[0].synced,false);
  ui=await boot(saved);await ui.get('runs').children[0].onclick();assert.equal(ui.get('feedback').children.length,1);assert.match(ui.get('feedback').children[0].children[1].textContent,/<img/);
@@ -54,7 +54,7 @@ function connectedResponse(path,jobs){
 test('returning signed-in user sees the latest completed review in plain English without raw data',async()=>{
  const jobs=[{id:'older',state:'completed',created_at:'2026-10-14'},{...fixture.job,created_at:'2026-10-15'},{id:'running',state:'running',created_at:'2026-10-16'}];
  const calls=[];const ui=await boot(new Map(),async path=>{calls.push(path);return connectedResponse(path,jobs)});
- assert.equal(ui.get('review').hidden,false);assert.match(ui.get('overview').children[0].textContent,/0:01/);
+ assert.equal(ui.get('review').hidden,false);assert.match(ui.get('overview').children[0].textContent,/not ready/);
  assert.equal(ui.get('video').src,'/api/video-test/jobs/fixture/media');
  assert.ok(calls.includes('/api/video-test/jobs/fixture/result'));
  assert.doesNotMatch(html,/<pre\b|id="raw"|Technical details/);
@@ -78,7 +78,12 @@ test('an older saved review adds source-bound picture descriptions without a sec
   return connectedResponse(path,[fixture.job]);
  });
  assert.equal(ui.get('describe').disabled,false);await ui.get('describe').onclick();
- assert.equal(ui.get('describe').hidden,true);assert.equal(ui.get('lanes').children[0].children[0].textContent,'What is shown');
- assert.match(ui.get('lanes').children[0].children[2].textContent,/red mug/);
+ assert.equal(ui.get('describe').hidden,false);assert.equal(ui.get('visual-details').children[0].children[0].textContent,'What is shown');
+ assert.match(ui.get('visual-details').children[0].children[2].textContent,/red mug/);
  assert.deepEqual(calls.filter(x=>x.method==='POST'),[{path:'/api/video-test/jobs/fixture/describe',method:'POST'}]);
+});
+
+test('reload keeps the chosen creator video instead of replacing it with the latest test run',async()=>{
+ const saved=new Map();saved.lastRun='fixture';const jobs=[{...fixture.job,created_at:'2026-10-14'},{id:'synthetic-latest',state:'completed',created_at:'2026-10-16'}];
+ const ui=await boot(saved,path=>connectedResponse(path,jobs));assert.equal(ui.get('video').src,'/api/video-test/jobs/fixture/media');
 });

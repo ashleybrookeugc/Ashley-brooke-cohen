@@ -1,7 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {createControlService,createMemoryStore} from '../src/control/service.js';
+import {createControlService,createMemoryStore,createAmbiguityGate} from '../src/control/service.js';
 import {createWorkersAiRoutingAdapter,createOpenRouterFreeAdapter} from '../src/control/adapters.js';
+import {parseCanonicalFacts} from '../src/control/contracts.js';
 import {isReadQuestion} from '../src/control/retrieval.js';
 
 const active=`## Current active workstreams
@@ -102,4 +103,29 @@ test('free fallback uses the same read-only message contract without mutation to
  assert.equal(result.proposal,undefined);
  assert.equal(sent.tools,undefined);
  assert.doesNotMatch(sent.messages[0].content,/calling submit_control_route exactly once/);
+});
+
+// Minimal faithful shape from live ACTIVE_WORK blob58d034f: a historical MK
+// projection and the current operating-system projection share the short name.
+test('live duplicate MK headings resolve scoped read questions while actions keep ambiguity',async()=>{
+ const liveShape=`## 2026-10-15 checkpoint
+### Mary Kate / Project Truth reconciliation
+**Current:** Earlier reconciliation evidence only.
+## Current active workstreams
+### Mary Kate / AI operating system — **ACTIVE NOW**
+**Current:** Ordinary conversation remains unverified.
+### B-Paid — **WAITING FOR ASHLEY**
+**Current:** Waiting for source selection.
+## Session handoff rule`;
+ const facts=parseCanonicalFacts(liveShape);
+ for(const question of [turns[2],'For Mary Kate, what happened with the earlier read-only failures?']) {
+  assert.equal(isReadQuestion(question),true);
+  const gate=createAmbiguityGate(question,facts);
+  assert.equal(gate.status,'passed');assert.match(gate.section,/^Mary Kate \/ AI operating system/);
+ }
+ for(const command of ['For MK, why is it slow? Deploy it.','Update Mary Kate','Is Mary Kate or B-Paid ready?'])assert.equal(createAmbiguityGate(command,facts).status,'blocked',command);
+ let writes=0;const store=createMemoryStore(),packets=[];
+ const service=createControlService({store,github:{readFile:async(_repo,path)=>({content:path==='ACTIVE_WORK.md'?liveShape:documents[path],sha:'versioned-'+path}),writeFile:async()=>writes++},router:{route:async(_text,packet)=>{packets.push(packet);return{route_kind:'temporary_context',responsibility:'ai_can_handle',confidence:'high',plain_summary:'Controlled read-only answer.'};}}});
+ for(const text of [turns[2],'For Mary Kate, what happened with the earlier read-only failures?'])await service.capture(text,{contextWorkstream:'mary-kate-command-center'});
+ assert.equal(packets.length,2);assert.equal(writes,0);assert.deepEqual(await store.listQueues(),{needs_ashley:[],ai_can_handle:[]});
 });

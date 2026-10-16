@@ -11,6 +11,7 @@ const active=`# Active Work
 ### Mary Kate / AI operating system — **ACTIVE NOW**
 **Authority:** control.md
 **Current:** A safe Project Truth read gate passed, but a complete phone experience is not proven.
+**Last verified work:** Today: the Active Work record was checked and corrected.
 **Next bounded action:** Implement Save Key.
 ### Shared video-understanding / evidence engine — **ACTIVE / PARALLEL**
 **Current:** An analyzer implementation is available, but real phone acceptance is unverified.
@@ -33,6 +34,8 @@ test('My Work converts source records into plain-English current project cards',
   assert.match(maryKate.blocked_or_unverified,/real-world testing/i);
   assert.equal(maryKate.next,'Run one limited non-production preservation check.');
   assert.equal(maryKate.freshness,'reconciled');
+  assert.match(maryKate.last_verified_work,/Active Work record/);
+  assert.equal(result.today[0].last_verified_work,maryKate.last_verified_work);
   assert.doesNotMatch(maryKate.next,/save key/i);
   assert.match(result.work[1].what,/video/i);
   assert.doesNotMatch(result.work[1].next,/abcdef|96\/96/i);

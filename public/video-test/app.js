@@ -1,6 +1,6 @@
-import {buildReview, timeLabel} from './review.js?v=20261015-vision';
+import {buildReview, timeLabel} from './review.js?v=20261015-content';
 const $=id=>document.getElementById(id);
-const ui=Object.fromEntries(['access','status','file','video','selected','analyze','progress','refresh','runs','storage','review','boundary','overview','checks','capabilities','coverage','frames','lanes','describe','picture-status','correction','observation','time','text','feedback-status','feedback'].map(id=>[id,$(id)]));
+const ui=Object.fromEntries(['access','status','file','video','selected','analyze','progress','refresh','runs','storage','review','boundary','overview','transcript','screen-text','visual-details','checks','capabilities','coverage','frames','lanes','describe','picture-status','correction','observation','time','text','feedback-status','feedback'].map(id=>[id,$(id)]));
 let selected=null,objectURL=null,current=null,connected=false,authenticated=false,busy=false,pictures=false,poll=0,db=null;
 const cache=new Map();
 function message(text){ui.status.textContent=text;}
@@ -41,11 +41,11 @@ async function refresh(){
     const health=await api('/health');connected=health.state==='available';pictures=health.picture_descriptions==='available';message(connected?'Analyzer connected. Ready to upload a test video.':'Analyzer unavailable. No analysis will run; local playback and cached review remain available.');
     const jobs=(await api('/jobs')).jobs;showRuns(jobs);
     if(current)await syncFeedback(current);
-    else if(connected&&!selected&&!busy){const latest=jobs.filter(job=>job.state==='completed').sort((a,b)=>(b.created_at||'').localeCompare(a.created_at||''))[0];if(latest)await openRun(latest);}
+    else if(connected&&!selected&&!busy){const latest=jobs.filter(job=>job.state==='completed').sort((a,b)=>(b.created_at||'').localeCompare(a.created_at||''))[0];let remembered=null;try{remembered=localStorage.getItem('mk-video-last-run')}catch{}const choice=jobs.find(job=>job.id===remembered&&job.state==='completed')||latest;if(choice)await openRun(choice);}
   }catch(error){message(error.message+' Cached evidence and corrections remain on this browser.');showRuns();}finally{updateAnalyze();}
 }
 ui.refresh.onclick=refresh;
-ui.describe.onclick=async()=>{if(!current?.result||!pictures||busy||!connected)return;const run=current;busy=true;updateAnalyze();ui['picture-status'].textContent='Your Mac is describing the selected pictures and checking what changed. Your saved video is being reused; no upload is needed.';try{const job=await api('/jobs/'+run.id+'/describe',{method:'POST'});if(current?.id===run.id)await openRun(job,true);}catch(error){busy=false;updateAnalyze();ui['picture-status'].textContent=error.message;}};
+ui.describe.onclick=async()=>{if(!current?.result||!pictures||busy||!connected)return;const run=current;busy=true;updateAnalyze();ui['picture-status'].textContent='Your Mac is reading the video, transcribing the audio and writing the review. Your saved video is being reused.';try{const job=await api('/jobs/'+run.id+'/describe',{method:'POST'});if(current?.id===run.id)await openRun(job,true);}catch(error){busy=false;updateAnalyze();ui['picture-status'].textContent=error.message;}};
 ui.analyze.onclick=()=>{
   if(!selected||busy||!connected)return;
   if(selected.size>64*1048576){ui.progress.textContent='This test supports files up to 64 MiB. Choose a shorter clip.';return;}
@@ -56,12 +56,12 @@ ui.analyze.onclick=()=>{
   xhr.onload=async()=>{try{const job=JSON.parse(xhr.responseText);if(xhr.status!==202)throw Error(job.error||'Upload failed');ui.progress.textContent='Upload finished. Your Mac is checking the video.';await openRun(job,true);}catch(error){busy=false;updateAnalyze();ui.progress.textContent=error.message;}};xhr.send(selected);
 };
 async function openRun(job,keepPlayback=false){
-  clearTimeout(poll);current=cache.get(job.id)||{id:job.id,job,feedback:[]};current.job=job;const run=current;ui.review.hidden=true;
+  clearTimeout(poll);try{localStorage.setItem('mk-video-last-run',job.id)}catch{}current=cache.get(job.id)||{id:job.id,job,feedback:[]};current.job=job;const run=current;ui.review.hidden=true;
   if(!keepPlayback){if(objectURL){URL.revokeObjectURL(objectURL);objectURL=null;}ui.video.removeAttribute('src');ui.video.load();selected=null;updateAnalyze();if(connected)ui.video.src='/api/video-test/jobs/'+job.id+'/media';ui.selected.textContent=decodeName(job.name)+(connected?' · saved video on your Mac':' · source offline; select the original again for playback');}
   try{
     if(!connected){if(current.result)render(current);return;}
     const latest=await api('/jobs/'+job.id);if(current?.id!==job.id)return;run.job=latest;busy=['running','uploading'].includes(latest.state)||latest.visual_state==='running';updateAnalyze();
-    ui.progress.textContent=latest.state==='completed'?'Basic video notes are ready. The full creative and workflow review is still unfinished.':latest.error||'Analyzer '+latest.state+' · last checked '+new Date().toLocaleTimeString();
+    ui.progress.textContent=latest.state==='completed'?'Video processing finished. Read the review below.':latest.error||'Analyzer '+latest.state+' · last checked '+new Date().toLocaleTimeString();
     if(latest.state==='completed'){
       run.result=await api('/jobs/'+job.id+'/result');if(current?.id!==job.id)return;
       try{await persist(run);}catch(error){ui.storage.textContent=error.message;}
@@ -72,18 +72,24 @@ async function openRun(job,keepPlayback=false){
 function seek(time){if(Number.isFinite(time)){ui.video.currentTime=time;ui.time.value=time;}}
 function render(run){
   ui.review.hidden=false;const {manifest}=run.result;const report=buildReview(run.result);
-  ui.boundary.textContent='Read the notes alongside the video. Automatic picture descriptions can make mistakes and cover selected moments. A full review of the story, actions and editing choices is still unfinished.';
-  const pictureState=run.result.visual_review?.state;ui.describe.hidden=pictureState==='available';ui['picture-status'].textContent=pictureState==='available'?'Picture descriptions were created on your Mac. Check them against the pictures and correct anything wrong.':pictureState==='running'?'Your Mac is describing the selected pictures and checking what changed…':pictureState==='failed'||pictureState==='unreliable'?'Reliable picture descriptions could not be completed. Your saved video and basic notes remain available.':pictures?'This older run has basic change signals. Add picture descriptions using the saved video on your Mac.':'Picture descriptions are unavailable while the local vision component is disconnected.';updateAnalyze();
+  ui.boundary.textContent='Summary, speech, screen text and picture details are generated privately on your Mac. Use the video to check anything uncertain.';
+  const contentState=run.result.content_review?.state,pictureState=run.result.visual_review?.state;
+  ui.describe.hidden=report.ready||pictureState==='running';ui.describe.textContent='Create updated video review';
+  ui['picture-status'].textContent=report.ready?'':pictureState==='running'?'Your Mac is preparing the content summary, transcript and readable screen text…':contentState==='failed'||contentState==='unreliable'?'The content review could not be completed reliably. Your saved source and corrections are retained.':'This saved run needs the updated content review. Your existing video will be reused.';updateAnalyze();
   ui.overview.replaceChildren();for(const text of report.overview)ui.overview.append(element('p',text));
   ui.checks.replaceChildren();for(const check of report.checks){const p=element('article');if(Number.isFinite(check.time)){const b=element('button','Watch '+timeLabel(check.time));b.onclick=()=>seek(check.time);p.append(b);}p.append(element('p',check.text));ui.checks.append(p);}
   ui.capabilities.replaceChildren();for(const text of report.limits)ui.capabilities.append(element('p',text));
   ui.coverage.textContent=report.coverage;
   const frames=manifest.coverage?.visual_sampling?.frames||[];
   ui.frames.replaceChildren();frames.forEach((frame,index)=>{const card=element('div',undefined,'frame');if(connected){const img=element('img');img.src='/api/video-test/jobs/'+run.id+'/frames/'+index;img.alt='Picture checked at '+timeLabel(frame.source_timestamp_seconds);img.loading='lazy';card.append(img);}else card.append(element('p','Picture unavailable while your Mac is disconnected'));const b=element('button','Watch '+timeLabel(frame.source_timestamp_seconds));b.onclick=()=>seek(frame.source_timestamp_seconds);card.append(b);ui.frames.append(card);});
+  function appendNotes(target,notes,empty){target.replaceChildren();for(const note of notes){const item=element('article');if(note.title)item.append(element('h4',note.title));if(Number.isFinite(note.time)){const b=element('button','Watch '+timeLabel(note.time));b.onclick=()=>seek(note.time);item.append(b);}item.append(element('p',note.text));if(note.id){const b=element('button','Correct this note');b.onclick=()=>{ui.observation.value=note.id;ui.time.value=note.time||0;ui.text.focus();};item.append(b);}target.append(item);}if(!notes.length)target.append(element('p',empty));}
+  appendNotes(ui.transcript,report.transcript,report.transcriptState==='no_audio_track'?'This video has no audio track.':report.ready?'Clear speech could not be recovered. This does not mean the video is silent.':'The updated transcript is not ready.');
+  const uniqueScreen=[...new Map(report.screenText.map(note=>[note.text,note])).values()];
+  appendNotes(ui['screen-text'],uniqueScreen,report.ready?'No complete readable text was confirmed in the sampled pictures.':'Readable screen text is not ready.');
+  appendNotes(ui['visual-details'],report.visualDetails,'No reliable picture descriptions were recovered.');
   ui.lanes.replaceChildren();ui.observation.replaceChildren(new Option('The video overall','general'));const seen=new Set();
-  for(const note of report.byId.values()){if(!seen.has(note.id)){seen.add(note.id);ui.observation.append(new Option(note.label,note.id));}}
-  for(const note of report.timeline){const item=element('article');item.append(element('h4',note.title));if(Number.isFinite(note.time)){const b=element('button','Watch '+timeLabel(note.time));b.onclick=()=>seek(note.time);item.append(b);}item.append(element('p',note.text));if(note.id){const b=element('button','Correct this note');b.onclick=()=>{ui.observation.value=note.id;ui.time.value=Number.isFinite(note.time)?note.time:0;ui.text.focus();};item.append(b);}ui.lanes.append(item);}
-  if(!report.timeline.length)ui.lanes.append(element('p','No moment-by-moment notes were recovered. This is not evidence that nothing happened in the video.'));
+  for(const note of report.correctable){if(!seen.has(note.id)){seen.add(note.id);ui.observation.append(new Option(note.label,note.id));}}
+  appendNotes(ui.lanes,report.timeline,report.ready?'No additional key moments were confirmed.':'The updated review is not ready.');
   ui.time.max=manifest.duration_seconds;renderFeedback(run);
 }
 function renderFeedback(run){const notes=buildReview(run.result).byId;ui.feedback.replaceChildren();for(const f of run.feedback||[]){const item=element('article');item.append(element('p',timeLabel(f.timestamp_seconds)+' · '+(notes.get(f.observation_id)?.title||'Your video review')),element('p',f.text),element('p',f.synced?'Saved on your Mac and retrieved successfully.':'Saved in this browser; waiting to send to your Mac.','muted'));ui.feedback.append(item);}}

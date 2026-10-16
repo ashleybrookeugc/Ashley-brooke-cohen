@@ -1,0 +1,36 @@
+{
+  "version": "scope-publication-repair.v1",
+  "bad_published_head": "98212f07cd52378ddf9e8f96ec9c8b16ed090248",
+  "base_main": "545dead366b27487d88537809cdb44e3a9238183",
+  "exact_live_active_blob": "58d034f6f62398b6caac8a9f849a3d064d3d41b5",
+  "confirmed_failure": "GitHub tree omitted modified retrieval.js and dropped the frozen five-preview fixture; dirty local test success did not verify the published tree.",
+  "red": {
+    "natural_followups": {
+      "total": 6,
+      "pass": 3,
+      "fail": 3
+    },
+    "frozen_fixture": "ENOENT in clean checkout; restored byte-for-byte from9e4dd789"
+  },
+  "local": {
+    "total": 228,
+    "pass": 226,
+    "skip": 2,
+    "fail": 0,
+    "requirements": 14,
+    "packaging": "PASS",
+    "diff": "PASS"
+  },
+  "remote_exact_commit_verification": "PENDING",
+  "live": "PENDING",
+  "runtime_files_sha256": {
+    "src/control/adapters.js": "1edd57251b066a2680d17af67db7ff084cd4c7ca54c5961f84de289d4a41f631",
+    "src/control/conversation-contract.js": "a7ee8f6245879cc3fbccc899ddcbdc3923a38c9632f00d9e0e77ea3a1ed2b64b",
+    "src/control/retrieval.js": "3d8db88e8c52a5ca2233cb315a8e8d63a603d8eab17a973e28bca4cc023c39b4",
+    "src/control/service.js": "98e3416fa06fc9887a631424ac581ad9eb46e0479cefa6dff60cf1e948b1534c",
+    "test/control-conversation-contract.test.js": "3429509ae4f16620b10ef65a0184688b31dc03c077e63145e3df483cb7adbe44",
+    "test/control-natural-followups.test.js": "dc842b5311a61c472186036ec8985095b787465dd7a54de7c9a508da83c56471",
+    "test/wiki-reading.test.js": "4bef8666cf06e89f7b3ccea7e4a84843760204e779cf37f65cd8cfe0a7f7fcae"
+  },
+  "scope": "No provider/model/credential/config changes; same preview path; no software merge approval; PR36 untouched."
+}

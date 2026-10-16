@@ -1,5 +1,16 @@
 # Ashley Brooke Cohen Website — Troubleshooting & Recovery Log
 
+## 2026-10-15 — Published candidate omitted retrieval code and frozen acceptance evidence
+
+**Symptom:** PR47 live scoped follow-ups returned422 even while prior local tests were reported green. Direct Cloudflare MCP and existing Wrangler D1 metadata reads both failed7403; no credential/access change was made. Authenticated full-control source display identified ACTIVE_WORK blob58d034f6f62398b6caac8a9f849a3d064d3d41b5. Exact published-source replay reproduced ambiguity between historical Mary Kate / Project Truth reconciliation and current Mary Kate / AI operating system.
+
+**Confirmed cause:** the earlier GitHub tree publication omitted `src/control/retrieval.js`, while the local test checkout retained that modified file. A fresh checkout of published98212f07 reproduces3 failures in6 natural-follow-up tests: clarification-prefixed questions are not read-only, and desired-outcome retrieval does not reach founder authority. The publication also dropped the frozen five-preview JSON at9e4dd789, so a clean frozen-regression run fails ENOENT. Earlier214-pass local evidence did not establish published-tree completeness; the prior suspected cache discrepancy is superseded by this direct source mismatch.
+
+**Repair under verification:** restore the missing read-only classification, scoped founder/failure authority and bounded focused-source retrieval, integrated with main545dead's wiki reading. Preserve existing video/creator/test routes, two MK read projections, mixed-command/action ambiguity and both output guards. Restore the original five-preview fixture byte-for-byte from GitHub9e4dd789. Retain both concurrent log entries and both service routing behaviors when reconciling main. Minimal live-heading regression covers the two blocked questions, actions and cross-project ambiguity. No model/provider/credential/global configuration change.
+
+**Prevention / acceptance gate:** derive publication entries from the entire candidate-vs-main file set, include required fixtures, read every published file back, then fetch the published commit into a clean verification checkout and run the relevant checks there. Do not reuse green output from a dirty local checkout as exact published-source evidence. Live exact four-turn replay and historical/current controls are still required before merge approval.
+
+
 ## 2026-10-15 — Focused conversation repair: historical evidence and founder role
 
 **Observed failures:** five actual previews stored in the frozen natural-followups receipt presented archived422/priority/chat defects as current and treated Ashley as a chatbot developer. More prompt text and a larger-model trial did not establish acceptance. Evidence-only vault PR22 was explicitly approved; its initial405 merge conflict was resolved against current main without losing either record, merged at2cb5864d38fb972ffb8047f38c930c4bcd10d005 and read back from main.
@@ -33,6 +44,17 @@
 **Final exact replay — acceptance FAIL / documented approval stop:** head8a306bb4/versionc4d399d2 answers the four turns without the original422, retrieves the actual founder objective and abstains on unknown competitor timing, but copies historical technical failures as current and still asks the founder what steps she took developing a chatbot. The explicit role wording did not close this gate. Full actual DOM replies are preserved. Keep PR47 unmerged/unaccepted and PR36 untouched. Local201:199 PASS/2 analyzer skips/0 FAIL; exact-head Workers build PASS; latest GitHub Actions run unobserved, not borrowed from e05. New findings/solutions are preserved on evidence PR22, reconciled with current Project Truth. Runtime reads main, which does not yet include these new verified records. Existing merge approval covered PR18 only: stop for explicit approval to merge evidence-only research-vault PR22, then reread/read-back current authority and continue isolated diagnosis. This evidence approval is not software promotion or V1 acceptance.
 
 **Historical access boundary:** a single bounded direct model probe through the already-authorized Cloudflare MCP returned API error 10000, Authentication error. No credential/scope/provider change was made. The candidate has not been deployed and live semantic acceptance is not claimed. Next: review this exact narrow PR, obtain explicit merge/deployment approval, then replay the same four turns through the authenticated normal interface and record source/version, grounded answers and unchanged queues. PR #36 remains untouched.
+## 2026-10-15 — Failed OCR fragments and legacy speech are presented as a video review
+
+**Symptom / creator acceptance FAIL:** Ashley's screenshot shows “Words on screen” cards containing `ef`, `ey`, `inl` and other partial letters. Generic picture labels and repeated still descriptions do not explain the video, recover a usable transcript or provide the expected full review.
+
+**Failed approaches / root cause:** plumbing and plain-English relabeling passed bounded technical checks while raw Tesseract/PocketSphinx extraction was still promoted into primary findings. A first combined local report also omitted speech meaning from its overall summary. Do not blame browser caching or ask Ashley to correct dozens of failed extraction fragments.
+
+**Repair under verification:** use existing local vision runtime to read complete image text with a separate image check; add pinned local Whisper through already-installed MLX-Audio; synthesize modality-labelled, cited content summary and distinct key moments with exact-claim recheck. Fresh source-bound audio derivatives and all source/frame/time/model/receipt checks are enforced. Primary UI excludes raw legacy OCR/speech/pixel signals; originals and historical corrections remain retained. Remember the chosen saved run across reload. Initial strict model load rejected native `alignment_heads` metadata; remove only that known nonparameter field, retain strict parameter loading and pinned processor alignment metadata.
+
+**Local evidence:**207/207 zero skips, requirements14, packaging PASS. Frozen dialogue recovers “I do not think this is fair because you know the answer. Why not because I already checked it?”; saved real clip has22 transcript segments and the complete readable banner, replacing junk OCR. Deployed UI and correction flow remain pending at this implementation checkpoint. Full V1 creative/workflow and human usefulness remain UNPASSED.
+
+**Prevention:** acceptance must inspect actual content, not merely the existence of output, number of frames or readable labels. Test failed OCR exclusion without discarding valid short labels such as OK; preserve historical IDs without putting extraction failures into the main review. Keep sparse coverage, fallible checks and unfinished product lenses explicit.
 
 
 ## 2026-10-15 — Generic picture-change labels contain no visual meaning
@@ -884,3 +906,28 @@ Local regression tests include the production phrasings, natural follow-ups, an 
 **Live retest and follow-up:** A fresh authenticated conversation after PR #50 answered “What should I do today?” with video processing as current focus. “And what about the blockers?” still repeated the next action instead of answering the blocker question. A further bounded adjustment uses the follow-up's wording to report the focus project's saved blocker, or plainly says no specific blocker is saved. The prominent Today card also uses “Video processing” while retaining the exact canonical project identity underneath. These are read-only presentation changes, with fresh production readback pending.
 
 **More precise cause of the retained-chat 422:** The older conversation kept a 2,000-plus-character assistant answer. The browser sent that entire answer back as previous context, while the service rejects prior messages over 2,000 characters. Its error translator mislabeled this invalid request as `prior_state_missing`, falsely suggesting Project Truth lacked facts. A fresh chat succeeding while the retained chat failed exposed the difference. The browser now sends only the latest eight prior messages and caps each at the service limit, preserving the full visible transcript locally. The server reports `invalid_request` accurately for truly malformed callers. The broad historical-field gate removed in PR #50 was a separate source-level risk, not proven to be the cause of this particular live 422.
+
+
+## 2026-10-15 — Wiki routes stopped at current-work projection or catalog
+
+**Confirmed source failure:** Real service replay against pinned GitHub knowledge found video and creator-workflow questions retrieved only ACTIVE_WORK; telemetry stopped at its registry. The named historical read-only failure question stopped on multiple MK state projections. A narrow model or folder change cannot supply evidence the runner never fetches.
+
+**Repair:** Reuse PROJECT_INDEX rows, existing hubs, GitHub reader, context packet and provider policy. Add video/creator authority rows and compact creator-hub source descriptors. Follow at most one relevant linked expansion: four versioned knowledge files plus the index,16,000 selected characters. Reject unsafe/nonlocal targets and do not misinterpret bare product paths as vault links. Preserve heading-owned whole paragraphs and whole JSON outcome/qualification fields. Label source roles and missing evidence. A read-only indexed lookup may span MK projections only; distinct projects, explicit facts, action scope, approval, stale SHA and canonical reread remain unchanged.
+
+**Regression discoveries:** Initial tests exposed a punctuation-sensitive catalog match and explanatory text lost beneath a heading; both repaired. Real-source walk also exposed bare product paths being resolved relative to vault documents; these no longer enter link traversal. Unsupported/missing sources are explicit, never counted as retrieved. These are source observations and controlled reproductions, not fresh deployed model failures.
+
+**Verification:** Six new regression groups; full201 tests,199 passed,2 existing analyzer-dependent skips,0 failed; requirements14/14; Worker dry-run and diff checks PASS. Seven-question actual-service comparison uses hash-verified GitHub files at vault5339c290 and baseline product9d2e7a7. Candidate retrieves video plan+receipts, telemetry acceptance, founder decision, exact failure record and creator evidence; all replay writes/queues zero. Provider answers are doubles, not semantic acceptance. [Receipt](test-receipts/2026-10-16-wiki-reading.json).
+
+**Boundary:** Existing current-focus/conversation fixes on main are preserved; the separate prior PR48 is not silently restored. No ICM installation, folder migration, framework, provider change or production deployment. Semantic completeness, automatic freshness, product-repo code lookup and live answer quality remain open. Do not claim all wiki knowledge is discoverable from this bounded route set.
+
+## 2026-10-16 — Activity card covered video only
+
+**Symptom:** The Today card mentioned a video worker, but Ashley needed the same view for every workstream, including Mary Kate's own repair of the current-work record. A saved priority did not say what an agent was doing now.
+
+**Failed/looping approach:** A video-name match on worker summaries implied a relationship that Herdr had not recorded. It also left other project cards without a progress checkpoint.
+
+**Root cause:** The projection had no per-project last verified progress field, and worker telemetry lacked an exact project association.
+
+**Verified fix:** Project Truth's optional `Last verified work` field is shown separately from live Herdr status on Today and every project card. A Herdr worker appears on a project only when its allowlisted `task.project_id` exactly matches that project's saved ID and the connection is fresh. Unknown, unlinked, stale, and unavailable workers never appear as currently working. The worker adapter retains the explicit association without widening its read-only authorization. Project and telemetry tests pass.
+
+**Prevention rule:** Save a dated, evidence-backed progress sentence per active workstream when a meaningful milestone is verified. Link workers by explicit project ID. Do not infer live work from task wording, a saved priority, or a ChatGPT Work conversation that Herdr cannot observe.

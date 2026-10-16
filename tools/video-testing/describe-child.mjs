@@ -1,14 +1,18 @@
 import {readFile,writeFile} from 'node:fs/promises';
 import {join} from 'node:path';
 import {pathToFileURL,fileURLToPath} from 'node:url';
-import {describeFrames,saveVisualReview,visionReady} from './visual-review.mjs';
+import {describeFrames,saveVisualReview,visionReady,readVisualReview,RELEASE_VERSION} from './visual-review.mjs';
+import {createUsefulReview,usefulReady} from './useful-review.mjs';
 export async function describeStored(modulePath,jobDir){
   if(!await visionReady())throw Error('Local image descriptions are not configured');
   const stored=JSON.parse(await readFile(join(jobDir,'result.json'),'utf8'));
   const {verifyEvidencePackage}=await import(pathToFileURL(modulePath));
   const checked=await verifyEvidencePackage(stored.package_directory);
   const result={...stored,manifest:checked.manifest,evidence:checked.evidence,semantic_input:checked.semantic_input};
-  const review=await describeFrames(result);await saveVisualReview(jobDir,review);return review;
+  let review=await readVisualReview(jobDir,result);
+  if(review.state!=='available'||review.release_version!==RELEASE_VERSION){review=await describeFrames(result);await saveVisualReview(jobDir,review);}
+  if(await usefulReady())await createUsefulReview(jobDir,result,review);
+  return review;
 }
 if(process.argv[1]===fileURLToPath(import.meta.url)){
   const [modulePath,jobDir]=process.argv.slice(2);

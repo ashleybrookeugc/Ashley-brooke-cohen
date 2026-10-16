@@ -121,7 +121,7 @@ function safeWorker(worker,agent,observedAt) {
   worker.state=state;
   return {
     id:worker.id,
-    task:{id:worker.task.id,summary:worker.task.summary},
+    task:{id:worker.task.id,summary:worker.task.summary,project_id:worker.task.project_id||null},
     state,
     state_source:'herdr',
     outcome_verified:false,
@@ -142,7 +142,7 @@ function unavailableWorker(worker,error,observedAt) {
   worker.state='unknown';
   return {
     id:worker.id,
-    task:{id:worker.task.id,summary:worker.task.summary},
+    task:{id:worker.task.id,summary:worker.task.summary,project_id:worker.task.project_id||null},
     state:'unknown',
     state_source:'herdr',
     outcome_verified:false,
@@ -214,6 +214,8 @@ export function createHerdrWorkerAdapter({
       if(!active) throw new HerdrAdapterError('adapter_inactive','The Herdr adapter has not been activated');
       requireString(task?.id,'task.id',/^[a-z][a-z0-9_-]{0,63}$/);
       requireString(task?.summary,'task.summary',/^.{1,240}$/s);
+      if(task?.project_id!=null) requireString(task.project_id,'task.project_id',/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
+      if(task?.project_id?.length>100) throw new HerdrAdapterError('invalid_request','task.project_id is invalid');
       requireString(agentName,'agentName',/^[a-z][a-z0-9_-]{0,31}$/);
       requireAuthorization(authorization,task.id);
       await verifyConfiguration();
@@ -226,7 +228,7 @@ export function createHerdrWorkerAdapter({
       try {
         const started=await command(['agent','start',agentName,'--kind','codex','--pane',paneId,'--timeout','120000','--',...CODEX_HARDENING_ARGS,'-C',resolved],'agent start',130000);
         const agent=started?.agent;
-        const worker={id:`herdr:${sessionName}:${workspaceId}:${agentName}`,session:sessionName,workspace_id:workspaceId,pane_id:paneId,agent_name:agentName,task:{id:task.id,summary:task.summary},plan:cleanPlan(task.plan,now()),progress_events:[],state:'unknown',last_observed_at:null};
+        const worker={id:`herdr:${sessionName}:${workspaceId}:${agentName}`,session:sessionName,workspace_id:workspaceId,pane_id:paneId,agent_name:agentName,task:{id:task.id,summary:task.summary,project_id:task.project_id||null},plan:cleanPlan(task.plan,now()),progress_events:[],state:'unknown',last_observed_at:null};
         workers.set(worker.id,worker);
         return safeWorker(worker,agent,now());
       } catch(error) {
