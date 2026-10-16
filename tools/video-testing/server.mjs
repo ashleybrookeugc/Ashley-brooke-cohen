@@ -7,6 +7,7 @@ import {randomUUID,timingSafeEqual,createHash} from 'node:crypto';
 import {spawn,spawnSync} from 'node:child_process';
 import {LIMIT} from '../../src/video-testing/gateway.js';
 import {visionReady,readVisualReview,RELEASE_VERSION} from './visual-review.mjs';
+import {usefulReady,readUsefulReview} from './useful-review.mjs';
 const here=dirname(fileURLToPath(import.meta.url));
 const digest=v=>createHash('sha256').update(v).digest();
 const send=(res,status,body)=>{res.writeHead(status,{'content-type':'application/json','cache-control':'no-store','x-content-type-options':'nosniff'});res.end(JSON.stringify(body));};
@@ -54,7 +55,7 @@ export async function createVideoWorker({root,modulePath,token,maxBytes=LIMIT}={
     if(!timingSafeEqual(digest(req.headers.authorization||''),digest('Bearer '+token)))return send(res,401,{error:'Unauthorized'});
     const url=new URL(req.url,'http://localhost'),path=url.pathname;
     try{
-      if(path==='/video-worker/health'&&req.method==='GET')return send(res,200,{state:await ready()?'available':'unavailable',active_job:active,max_bytes:maxBytes,picture_descriptions:await visionReady()?'available':'unavailable',note:'Sampled evidence with optional local picture descriptions; full creative/workflow analysis unfinished.'});
+      if(path==='/video-worker/health'&&req.method==='GET')return send(res,200,{state:await ready()?'available':'unavailable',active_job:active,max_bytes:maxBytes,picture_descriptions:await visionReady()?'available':'unavailable',content_review:await usefulReady()?'available':'unavailable',note:'Local content summary, transcript and sampled picture review; full creative/workflow analysis unfinished.'});
       if(path==='/video-worker/jobs'&&req.method==='GET'){
         const jobs=[];for(const id of await readdir(root))if(/^[a-f0-9-]{36}$/.test(id))try{jobs.push(await jobFor(id))}catch{}
         return send(res,200,{jobs:jobs.sort((a,b)=>b.created_at.localeCompare(a.created_at)).slice(0,100)});
@@ -92,7 +93,7 @@ export async function createVideoWorker({root,modulePath,token,maxBytes=LIMIT}={
         if(active)return send(res,409,{error:'Your Mac is already analyzing a video. Try again after it finishes.'});
         if(!await visionReady())return send(res,503,{error:'Local picture descriptions are unavailable. Basic notes and source are retained.'});
         if(active)return send(res,409,{error:'An analysis is already active.'});
-        const result=await resultFor(id),prior=await readVisualReview(dir,result);if(prior.state==='available'&&prior.release_version===RELEASE_VERSION)return send(res,200,job);
+        const result=await resultFor(id),prior=await readVisualReview(dir,result),content=await readUsefulReview(dir,result,prior);if(prior.state==='available'&&prior.release_version===RELEASE_VERSION&&(!await usefulReady()||content.state==='available'))return send(res,200,job);
         if(active)return send(res,409,{error:'An analysis is already active.'});active=id;job.visual_state='running';await save(join(dir,'job.json'),job);
         const child=spawn(process.execPath,[join(here,'describe-child.mjs'),modulePath,dir],{stdio:'ignore'});let settled=false;
         const finish=async code=>{if(settled)return;settled=true;try{const review=code===0?await readVisualReview(dir,result):{state:'failed'};job.visual_state=review.state==='not_run'?'failed':review.state;await save(join(dir,'job.json'),job);}finally{active=null}};
@@ -103,7 +104,8 @@ export async function createVideoWorker({root,modulePath,token,maxBytes=LIMIT}={
         const result=await resultFor(id);
         // Local machine paths are not browser API fields.
         const manifest=structuredClone(result.manifest);delete manifest.source.local_path;delete manifest.persistence.local.package_location;
-        return send(res,200,{manifest,evidence:result.evidence,semantic_input:result.semantic_input,readback:result.readback,visual_review:await visualFor(id,result)});
+        const pictures=await visualFor(id,result),content=await readUsefulReview(dir,result,pictures);
+        return send(res,200,{manifest,evidence:result.evidence,semantic_input:result.semantic_input,readback:result.readback,visual_review:pictures,content_review:content});
       }
       if(action?.startsWith('frames/')&&req.method==='GET'){
         const result=await resultFor(id),frame=result.manifest.coverage.visual_sampling.frames[Number(action.split('/')[1])];
@@ -121,7 +123,9 @@ export async function createVideoWorker({root,modulePath,token,maxBytes=LIMIT}={
           if(!/^[a-f0-9-]{36}$/.test(body.id)||typeof body.text!=='string'||!body.text.trim()||body.text.length>8000||typeof body.observation_id!=='string'||body.observation_id.length>200||!Number.isFinite(body.timestamp_seconds)||body.timestamp_seconds<0)return send(res,400,{error:'Invalid feedback'});
           const result=await resultFor(id);
           if(body.source_sha256!==result.manifest.content_sha256||body.timestamp_seconds>result.manifest.duration_seconds)return send(res,409,{error:'Feedback source or timestamp does not match this run'});
-          if(body.observation_id!=='general'&&!Object.values(result.evidence.lanes).some(lane=>[...(lane.observations||[]),...(lane.spans||[]),...(lane.raw_observations||[])].some(o=>o.observation_id===body.observation_id)))return send(res,409,{error:'Unknown observation'});
+          const pictures=await readVisualReview(dir,result),content=await readUsefulReview(dir,result,pictures);
+          const contentIds=new Set([...(content.transcript?.segments||[]),...(content.screen_text||[])].map(x=>x.id));
+          if(body.observation_id!=='general'&&!contentIds.has(body.observation_id)&&!Object.values(result.evidence.lanes).some(lane=>[...(lane.observations||[]),...(lane.spans||[]),...(lane.raw_observations||[])].some(o=>o.observation_id===body.observation_id)))return send(res,409,{error:'Unknown observation'});
           const saved={id:body.id,job_id:id,source_sha256:body.source_sha256,observation_id:body.observation_id,timestamp_seconds:body.timestamp_seconds,text:body.text,kind:'creator_correction',created_at:new Date().toISOString(),analyzer_version:result.manifest.processing.analyzer_version};
           const target=join(folder,body.id+'.json');
           try{await writeFile(target,JSON.stringify(saved),{flag:'wx',mode:0o600});}catch(error){if(error.code!=='EEXIST')throw error;const prior=await readJson(target);if(prior.text!==saved.text||prior.observation_id!==saved.observation_id||prior.timestamp_seconds!==saved.timestamp_seconds||prior.source_sha256!==saved.source_sha256)return send(res,409,{error:'Feedback ID already has different content'});}

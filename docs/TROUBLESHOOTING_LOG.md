@@ -1,5 +1,18 @@
 # Ashley Brooke Cohen Website — Troubleshooting & Recovery Log
 
+## 2026-10-15 — Failed OCR fragments and legacy speech are presented as a video review
+
+**Symptom / creator acceptance FAIL:** Ashley's screenshot shows “Words on screen” cards containing `ef`, `ey`, `inl` and other partial letters. Generic picture labels and repeated still descriptions do not explain the video, recover a usable transcript or provide the expected full review.
+
+**Failed approaches / root cause:** plumbing and plain-English relabeling passed bounded technical checks while raw Tesseract/PocketSphinx extraction was still promoted into primary findings. A first combined local report also omitted speech meaning from its overall summary. Do not blame browser caching or ask Ashley to correct dozens of failed extraction fragments.
+
+**Repair under verification:** use existing local vision runtime to read complete image text with a separate image check; add pinned local Whisper through already-installed MLX-Audio; synthesize modality-labelled, cited content summary and distinct key moments with exact-claim recheck. Fresh source-bound audio derivatives and all source/frame/time/model/receipt checks are enforced. Primary UI excludes raw legacy OCR/speech/pixel signals; originals and historical corrections remain retained. Remember the chosen saved run across reload. Initial strict model load rejected native `alignment_heads` metadata; remove only that known nonparameter field, retain strict parameter loading and pinned processor alignment metadata.
+
+**Local evidence:**207/207 zero skips, requirements14, packaging PASS. Frozen dialogue recovers “I do not think this is fair because you know the answer. Why not because I already checked it?”; saved real clip has22 transcript segments and the complete readable banner, replacing junk OCR. Deployed UI and correction flow remain pending at this implementation checkpoint. Full V1 creative/workflow and human usefulness remain UNPASSED.
+
+**Prevention:** acceptance must inspect actual content, not merely the existence of output, number of frames or readable labels. Test failed OCR exclusion without discarding valid short labels such as OK; preserve historical IDs without putting extraction failures into the main review. Keep sparse coverage, fallible checks and unfinished product lenses explicit.
+
+
 ## 2026-10-15 — Generic picture-change labels contain no visual meaning
 
 **Symptom:** Ashley sees “picture or screen change” without image detail or an explanation of the difference.
