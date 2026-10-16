@@ -1,5 +1,17 @@
 # Ashley Brooke Cohen Website — Troubleshooting & Recovery Log
 
+## 2026-10-15 — Generic picture-change labels contain no visual meaning
+
+**Symptom:** Ashley sees “picture or screen change” without image detail or an explanation of the difference.
+
+**Confirmed cause / failed approaches:** the unchanged extractor measures sampled pixel differences and leaves subjects/objects unrecovered; rephrasing its labels cannot create semantic detail. The existing V1 plan already requires a selective local semantic consumer. An initial MLX/Qwen prototype describes the fixture correctly but its two-image critic accepts a deliberately reversed comparison. A parser intermediate conservatively withholds positives when an optional empty detail list is missing. The first live release then hides5 supported still-image descriptions because their comparisons are uncertain. These are preserved failures, not successful analyzer acceptance.
+
+**Verified bounded repair:** PR52/53 add the local consumer over the existing verified frame contract, ground each image separately, check ordered comparison meaning, and release image/comparison claims independently. Exact source/time/frame/digest/path/restart gates remain enforced; candidates and append-only visual revisions stay private. Existing auth, private route, bearer and original extractor/packages are unchanged. Frozen positive packets2/2, unsafe0/7; unseen holdout unsafe0/5, valid0/1 (one false rejection). Same-model critique is explicitly fallible and not independent verification.
+
+Combined website195/195 zero skips, requirements14, packaging and both PR/main CI/normal Builds pass. Four live assets exact200. Actual non-private upload yields two object descriptions and a specific mug/bottle difference, three720px frames, 10s seek at readyState4, a visual correction bound to visual-000003/time10 and worker/fresh-tab retrieval after restart. Existing saved review now shows7/9 descriptions,1 comparison and2 explicit omissions, without re-upload/re-decode. Full action/workflow/creative lenses, arbitrary-video/M4-Pro qualification and physical-iPhone/creator usefulness remain unpassed. Exact receipt: `docs/test-receipts/2026-10-15-local-picture-descriptions.json`.
+
+**Prevention:** freeze wrong-meaning/reversed-order controls before release; check meaning against actual frames, not just valid references. Preserve false rejections separately. Gate at the smallest useful claim; do not discard supported image detail because a comparison is uncertain. Reuse retained evidence for enrichment, disclose sparse coverage, and never promote this bounded picture feature into whole-video understanding.
+
 ## 2026-10-16 — Video priority does not show current agent work
 
 **Symptom:** Today named video processing as the current priority but gave no answer about whether an agent was working on it or what step the agent was doing.
