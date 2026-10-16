@@ -80,6 +80,42 @@ deep-document retrieval and useful authenticated production answers require thei
 own acceptance evidence. The indexed retrieval repair was integrated with triage in product PR #44 and released through the normal main-to-Cloudflare path. The authenticated production check returned a current-priority answer, but its wording remains too technical for Ashley's acceptance.
 
 
-## Production release check
+## Current execution-priority contract (2026-10-15 America/New_York)
+
+The released priority answer was freshly observed in the authenticated production
+UI: it no longer returned 422, but selected an older project Next field and
+repeated technical text. This repair uses the existing ACTIVE_WORK source,
+parser, cache and prior-state validator; no skill installation or new model.
+
+For an unscoped focus/next-action question, read these exact fields under
+`## Current execution priority`: `Current objective`, `Next bounded action`,
+and optional `Current blocker`. Source authors supply short plain language;
+the renderer does not infer a ranking from dates, paraphrase, or cut off a
+qualification. Once any contract field exists, both required fields must exist
+and each selected fact must have one unambiguous value. Missing/conflicting
+facts stop safely. A field over 600 characters produces an honest concise-summary
+limitation instead of falling back to an older task or making an inference call.
+
+Named-project questions and their scoped follow-ups retain their own authority.
+Whole-project overviews and blocker scans retain the existing collection of
+projects; a single focus must not erase them. Registries with none of the explicit
+priority fields retain the tested legacy projection. Caller-required evidence,
+mutation approval, allowlists, stale-SHA checks and canonical reread are unchanged.
+
+The existing privacy-safe retrieval trace now records source SHA, section,
+selected field keys and character count for this deterministic path. It records
+no field values or raw conversation. The six new regression groups and the
+[source-backed four-cell replay](test-receipts/2026-10-16-current-priority-authority.json)
+separate source cleanup from code behavior. This is a reviewed development
+candidate, not a new production acceptance claim. Full semantic routing,
+dashboard reconciliation, broad readable answers and exact Worker lineage remain
+separate work. Source contract fields must be maintained as derived current state
+against product implementation evidence; their existence alone proves no outcome.
+
+This borrows ICM's small job/input contract and walk-test discipline within the
+existing linked architecture. Method stays in this document, facts in ACTIVE_WORK,
+and verification in the receipt. No folder migration or filesystem orchestrator.
+
+### Prior release evidence (unchanged)
 
 Product PR [#44](https://github.com/ashleybrookeugc/Ashley-brooke-cohen/pull/44) merged to `main` at `dcce6e99e22f4d73d26893f3e3ae5c41515f450b`. GitHub's regression workflow #130 passed the full 185-test suite, requirement mapping and Worker packaging. An authenticated production Command Center session asked “What should I do today?” and received current saved-work priorities rather than the former 422. The visible answer is long and technical. The page did not expose the Worker version ID or actual inference counter, so the UI check does not independently prove exact runtime commit lineage or the live zero-call count. Live answer quality remains open.
