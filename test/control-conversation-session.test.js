@@ -15,27 +15,27 @@ const active=`# Active Work
 
 const github={readFile:async()=>({content:active,sha:'a'.repeat(40)})};
 
-test('a follow-up inherits the last uniquely named workstream and carries bounded history to routing',async()=>{
-  let packet;
-  const router={route:async(_text,next)=>{packet=next;return {route_kind:'temporary_context',responsibility:'ai_can_handle',confidence:'high',plain_summary:'Choose the saved B-Paid source video first.'}}};
+test('a follow-up inherits the last uniquely named workstream and answers without a model call',async()=>{
+  let calls=0;
+  const router={route:async()=>{calls++;throw new Error('Routine priority advice should not dispatch a model');}};
   const app=createControlService({github,router,store:createMemoryStore()});
   const history=[{role:'user',text:'Tell me what is happening with B-Paid.'},{role:'assistant',text:'The source-video choice is still open.'}];
   const result=await app.capture('What should I do first?',{contextWorkstream:'mary-kate-command-center',conversationHistory:history,conversationId:'session_12345678'});
-  assert.equal(packet.ambiguity_gate.section,'B-Paid — ACTIVE / PARALLEL');
-  assert.deepEqual(packet.conversation_history,history);
+  assert.equal(calls,0);
+  assert.match(result.plain_summary,/B-Paid — ACTIVE \/ PARALLEL: Choose one source video/);
   assert.equal(result.conversation_id,'session_12345678');
   assert.equal(result.handoff.status,'conversation_active');
 });
 
-test('a cross-project prioritization question is read-only and is not stopped as ambiguous',async()=>{
-  let calls=0,packet;
-  const router={route:async(_text,next)=>{calls++;packet=next;return {route_kind:'temporary_context',responsibility:'ai_can_handle',confidence:'high',plain_summary:'Start with the phone acceptance, then choose the B-Paid source video.'}}};
+test('a cross-project prioritization question is read-only and needs no model call',async()=>{
+  let calls=0;
+  const router={route:async()=>{calls++;throw new Error('Routine priority advice should not dispatch a model');}};
   const app=createControlService({github,router,store:createMemoryStore()});
   const result=await app.capture('I need help with time management. Can you prioritize all project tasks?',{contextWorkstream:'mary-kate-command-center'});
-  assert.equal(calls,1);
-  assert.equal(packet.intent,'read_only_assessment');
-  assert.equal(packet.ambiguity_gate.scope,'all_current_workstreams');
-  assert.match(result.plain_summary,/phone acceptance/);
+  assert.equal(calls,0);
+  assert.equal(result.model_selection.calls,0);
+  assert.match(result.plain_summary,/Continue phone acceptance/);
+  assert.match(result.plain_summary,/Choose one source video/);
 });
 
 test('tracked work is distinguished from conversation and from a running worker',async()=>{
