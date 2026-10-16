@@ -30,7 +30,7 @@ const app=createServer(async(req,res)=>{
    const request=new Request(url,{method:req.method,headers:req.headers,body:req.method==='POST'?Buffer.concat(chunks):undefined});
    response=await handleVideoTesting(request,env,{fetchImpl:async(target,options)=>{if(offline)throw Error('Synthetic disconnect');assert.equal(new URL(target).origin,env.VIDEO_TEST_WORKER_URL);return fetch('http://127.0.0.1:'+worker.address().port+new URL(target).pathname,options)}});
   }else{
-   const files={'/video-test/':['index.html','text/html'],'/video-test/app.js':['app.js','text/javascript'],'/video-test/style.css':['style.css','text/css']};
+   const files={'/video-test/':['index.html','text/html'],'/video-test/app.js':['app.js','text/javascript'],'/video-test/style.css':['style.css','text/css'],'/video-test/review.js':['review.js','text/javascript']};
    const file=files[url.pathname];response=file?new Response(await readFile(resolve('public/video-test',file[0])),{headers:{...securityHeaders,'content-type':file[1]}}):new Response('Not found',{status:404});
   }
   res.writeHead(response.status,Object.fromEntries(response.headers));res.end(Buffer.from(await response.arrayBuffer()));
@@ -53,11 +53,11 @@ try{
  assert.equal(await page.locator('#token').count(),0);
  await page.locator('#file').setInputFiles(fixture);assert.equal(await page.locator('#analyze').isEnabled(),true);await page.locator('#analyze').click();
  await page.locator('#review').waitFor({state:'visible',timeout:30000});
- assert.match(await page.locator('#coverage').textContent(),/1.00 seconds/);
+ assert.match(await page.locator('#overview').textContent(),/0:01 long/);
  assert.equal(await page.locator('#frames img').count(),1);
  await page.waitForFunction(()=>document.querySelector('#frames img')?.naturalWidth>0);
  await page.locator('#text').fill('Browser acceptance correction');await page.locator('#correction button').click();
- await page.waitForFunction(()=>document.getElementById('feedback').textContent.includes('Saved and retrieved'));
+ await page.waitForFunction(()=>document.getElementById('feedback').textContent.includes('retrieved successfully'));
  await page.reload();await page.waitForFunction(()=>document.getElementById('status').textContent.includes('Analyzer connected'));
  assert.equal(await page.locator('#access').isVisible(),false);
  await page.locator('#runs button').first().click();await page.locator('#review').waitFor({state:'visible'});
@@ -69,10 +69,10 @@ try{
  await page.locator('#runs button').first().click();await page.locator('#review').waitFor({state:'visible'});
  await page.locator('#file').setInputFiles(fixture);await page.waitForFunction(()=>document.getElementById('selected').textContent.includes('exact source identity verified'));
  await page.locator('#text').fill('Offline browser correction');await page.locator('#correction button').click();
- await page.waitForFunction(()=>document.getElementById('feedback').textContent.includes('waiting to sync'));
+ await page.waitForFunction(()=>document.getElementById('feedback').textContent.includes('waiting to send'));
  await page.reload();await page.waitForFunction(()=>document.getElementById('runs').children.length>0);await page.locator('#runs button').first().click();
  await page.waitForFunction(()=>document.getElementById('feedback').textContent.includes('Offline browser correction'));
- offline=false;await page.locator('#refresh').click();await page.waitForFunction(()=>!document.getElementById('feedback').textContent.includes('waiting to sync'));
+ offline=false;await page.locator('#refresh').click();await page.waitForFunction(()=>!document.getElementById('feedback').textContent.includes('waiting to send'));
  assert.deepEqual(errors,[]);
  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
  console.log(JSON.stringify({status:'PASS',scope:'real Chromium mobile viewport; synthetic footage; real IndexedDB/cookie/upload/analyzer/frame/playback/correction/reload/offline/reconnect',physical_iPhone:'NOT_TESTED',live_Cloudflare:'NOT_TESTED',screenshot:join(root,'mobile-review.png')}));

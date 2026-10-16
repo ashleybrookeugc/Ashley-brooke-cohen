@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
+import {buildReview,timeLabel} from '../public/video-test/review.js';
 const source=await readFile(new URL('../public/video-test/app.js',import.meta.url),'utf8');
 const html=await readFile(new URL('../public/video-test/index.html',import.meta.url),'utf8');
 class Element{
@@ -12,8 +13,8 @@ function indexedDBDouble(saved){return {open(){const req={result:{transaction(){
 async function boot(saved,fetchImpl=async()=>new Response(JSON.stringify({error:'Worker offline'}),{status:503})){
  const elements=new Map([...html.matchAll(/id="([^"]+)"/g)].map(m=>[m[1],new Element()]));
  const document={getElementById:id=>{assert.ok(elements.has(id),'Missing element '+id);return elements.get(id)},createElement:()=>new Element()};
- const run=new (Object.getPrototypeOf(async function(){}).constructor)('document','indexedDB','fetch','Option',source);
- await run(document,indexedDBDouble(saved),fetchImpl,function(label,value){this.textContent=label;this.value=value});return elements;
+ const run=new (Object.getPrototypeOf(async function(){}).constructor)('document','indexedDB','fetch','Option','buildReview','timeLabel',source.replace(/^import .*;\n/,''));
+ await run(document,indexedDBDouble(saved),fetchImpl,function(label,value){this.textContent=label;this.value=value},buildReview,timeLabel);return elements;
 }
 test('actual UI module executes with DOM/storage doubles: offline review, correction, reload retrieval, safe text rendering',async()=>{
  const saved=new Map([['fixture',structuredClone(fixture)]]);let ui=await boot(saved);
