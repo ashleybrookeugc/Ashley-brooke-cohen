@@ -1,5 +1,5 @@
 {
-  "recorded_at_utc": "2026-10-16T01:01:16.949222+00:00",
+  "recorded_at_utc": "2026-10-16T01:25:59.078Z",
   "status": "local_routing_PASS; production_acceptance_UNVERIFIED",
   "base_commit": "5123021295c9ab838969a11f2d8ed5d7ac82353c",
   "inputs": [
@@ -14,9 +14,9 @@
     "targeted_fail": 2
   },
   "candidate": {
-    "targeted_pass": 5,
-    "suite_total": 192,
-    "passed": 190,
+    "targeted_pass": 6,
+    "suite_total": 193,
+    "passed": 191,
     "skipped": 2,
     "failed": 0,
     "requirements_mapped": 14,
@@ -25,7 +25,7 @@
     "providers": "controlled doubles",
     "canonical_writes": 0,
     "proposals": 0,
-    "grounding_followup": "Fresh evidence placed after fallible assistant history; duplicate history excluded from evidence; source-grounded product diagnosis rather than invented schedule excuses; bounded chatbot synonym reaches indexed incident and small source keeps whole cause/qualification."
+    "grounding_followup": "Read-only model receives focused selected evidence, not a duplicate technical project ledger. Goal synonyms and heading-aware paragraph selection recover the actual founder objective and user-level jobs. Scoped development-delay questions retrieve linked conversation failures."
   },
   "direct_model_probe": {
     "transport": "existing Cloudflare MCP authorization",
@@ -102,6 +102,416 @@
       ],
       "evaluation": "FAIL: unsupported team/activity, delay/competitor rationale and analogy; generic tutorial question instead of product diagnosis. Not accepted for production.",
       "provider_identity": "Not captured from UI; no exact cost or latency claim"
+    },
+    {
+      "head": "8749d561f00da262ecdb74cf368ed62da29de005",
+      "version": "12ef90f6-1e51-4b64-9f32-e88601af44bf",
+      "observed_at_utc": "2026-10-16T01:19:32.021Z",
+      "nodes": [
+        {
+          "className": "chat-message chat-message-user",
+          "tag": "DIV",
+          "text": "Youhow is v1 doing"
+        },
+        {
+          "className": "chat-message chat-message-assistant",
+          "tag": "DIV",
+          "text": "Mary KateNot yet. The Command Center opens on your phone and can read the latest saved project information without changing it. But Mary Kate has not yet proved the full experience from start to finish.\n\nStill to prove:\n• understand ordinary questions without making you name projects or technical systems\n• keep project information current automatically\n• give work to the right AI worker and return a clear result that was actually checked\n• continue after interruptions without making you carry messages between systems\n• explain status and next steps clearly on your phone\n• complete one small real video task without risking the original file\n\nNext: run one real task from this phone screen all the way from your request to a clear result that was actually checked. Any confusing, stale, or wrong step means V1 is still not ready.\n\nThis is still a conversation. No task or GitHub change has been claimed.Technical detailsV1 source status: 22 total; 0 verified complete; 16 partial; 5 implemented but unverified; 1 not implemented."
+        },
+        {
+          "className": "chat-message chat-message-user",
+          "tag": "DIV",
+          "text": "Youwhat is my desired outcome"
+        },
+        {
+          "className": "chat-message chat-message-assistant",
+          "tag": "DIV",
+          "text": "Mary KateYour desired outcome is to have a fully functional V1 of Mary Kate, an AI operating system, that can understand ordinary questions, keep project information current automatically, give work to the right AI worker and return a clear result that was actually checked, continue after interruptions without making you carry messages between systems, explain status and next steps clearly on your phone, and complete one small real video task without risking the original file.\n\nThe current status is that V1 is still not ready, and several key features and tests are still unverified or insufficient. The latest evidence suggests that the production safe-write vertical slice, clean-room retrieval, contextless delegation, mobile loop, convergence, and bounded media loop remain distinct acceptance rows.\n\nThis is still a conversation. No task or GitHub change has been claimed."
+        },
+        {
+          "className": "chat-message chat-message-user",
+          "tag": "DIV",
+          "text": "Youfor this site. for mk. ad why is it taking days to make when others have whole interactive dashboards in hours"
+        },
+        {
+          "className": "chat-message chat-message-assistant",
+          "tag": "DIV",
+          "text": "Mary KateThe evidence suggests that Mary Kate's development is still in the process of verifying several key features and tests, including the production safe-write vertical slice, clean-room retrieval, contextless delegation, mobile loop, convergence, and bounded media loop. These features are distinct acceptance rows, and no V1 row is yet verified.\n\nThe current implementation is still in the testing phase, and the team is working on verifying the remaining real conversation questions and natural follow-ups against current saved evidence. This process requires careful attention to detail and thorough testing to ensure that the system functions as intended.\n\nIn contrast, other interactive dashboards may have been developed using different approaches or technologies that allow for faster development and deployment. However, the evidence does not suggest that Mary Kate's development is intentionally taking longer than necessary.\n\nTo provide a more accurate estimate of the development timeline, it would be helpful to know more about the specific features and tests that are still outstanding.\n\nThis is still a conversation. No task or GitHub change has been claimed."
+        },
+        {
+          "className": "chat-message chat-message-user",
+          "tag": "DIV",
+          "text": "Youwhy cant i figure out a simple chatbot, where am i going wrong"
+        },
+        {
+          "className": "chat-message chat-message-assistant",
+          "tag": "DIV",
+          "text": "Mary KateThe evidence suggests that you're trying to understand why Mary Kate, a complex AI operating system, is still in development and not yet ready for use. You're comparing it to other interactive dashboards that have been developed more quickly.\n\nThe main issue is that Mary Kate's development is still in the process of verifying several key features and tests, including the production safe-write vertical slice, clean-room retrieval, contextless delegation, mobile loop, convergence, and bounded media loop. These features are distinct acceptance rows, and no V1 row is yet verified.\n\nIt's not that you're going wrong, but rather that Mary Kate's development is still in the testing phase, and the team is working on verifying the remaining real conversation questions and natural follow-ups against current saved evidence.\n\nTo better understand the development process, you might want to focus on the following:\n\n1. Review the current implementation and testing status.\n2. Understand the distinct acceptance rows and the remaining tests to be verified.\n3. Ask more specific questions about the development process and the challenges being faced.\n\nThis will help you gain a better understanding of why Mary Kate is still in development and what needs to be done to make it ready for use.\n\nThis is still a conversation. No task or GitHub change has been claimed."
+        }
+      ],
+      "evaluation": "FAIL: answers all turns but repeats technical row labels, unsupported team/delay/competitor rationale and tells founder to inspect implementation and ask more specific questions."
     }
-  ]
+  ],
+  "packet_diagnostic": {
+    "vault_ref": "0c48fd76669a1ad7f38755b37b8f834b418a511c",
+    "method": "Actual service and Workers AI adapter; pinned GitHub contents; controlled provider output; same real UI conversation history. Not a capture of exact live request or semantic score.",
+    "before": {
+      "requests": [
+        {
+          "input": "what is my desired outcome",
+          "total_characters": 15978,
+          "keys": {
+            "version": 24,
+            "purpose": 15,
+            "active_work": 6478,
+            "freshness": 102,
+            "prior_state": 244,
+            "ambiguity_gate": 146,
+            "triage": 174,
+            "intent": 18,
+            "retrieval_evidence": 5106
+          },
+          "evidence": [
+            {
+              "path": "research/ai-workflows/2026-10-04-mary-kate-founder-intent-decomposition.md",
+              "source_characters": 36814,
+              "selected_characters": 3526,
+              "sections": [
+                {
+                  "section": "Mary Kate — founder-intent decomposition and real V1 capability map",
+                  "characters": 69,
+                  "prefix": "# Mary Kate — founder-intent decomposition and real V1 capability map"
+                },
+                {
+                  "section": "Mary Kate — founder-intent decomposition and real V1 capability map",
+                  "characters": 485,
+                  "prefix": "**status:** founder-intent decomposition; reuse decisions remain open where not already proven  \n**date:** 2026-10-04  \n**scope:** Mary Kate / AI operating syst"
+                },
+                {
+                  "section": "Why this decomposition exists",
+                  "characters": 603,
+                  "prefix": "Mary Kate did not originate as a desire to custom-build generic agent infrastructure. The recurring problem was that Ashley could tell an AI what she wanted, bu"
+                },
+                {
+                  "section": "The actual Mary Kate kernel",
+                  "characters": 30,
+                  "prefix": "## The actual Mary Kate kernel"
+                },
+                {
+                  "section": "The actual Mary Kate kernel",
+                  "characters": 51,
+                  "prefix": "The smallest defensible custom Mary Kate kernel is:"
+                },
+                {
+                  "section": "2026-10-05 — Sahaj interaction pattern; unresolved “Ampere @ GitHub” reference",
+                  "characters": 497,
+                  "prefix": "**Sahaj transfer (narrow):** a useful control-surface pattern is: user describes the moment → chooses the mode/intent → receives one small, reversible next acti"
+                },
+                {
+                  "section": "Deferred approved work and Mac-return queue",
+                  "characters": 773,
+                  "prefix": "Founder-approved future requirement: Mary Kate must capture tasks Ashley explicitly agrees to do later, distinguish them from unapproved suggestions, and use th"
+                },
+                {
+                  "section": "Deferred remote-worker authenticated preview access",
+                  "characters": 1018,
+                  "prefix": "Founder-approved Mary Kate V1 requirement: authorized cloud AI workers should be able to perform authenticated staging/preview acceptance of the existing `/cont"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "input": "for this site. for mk. ad why is it taking days to make when others have whole interactive dashboards in hours",
+          "total_characters": 19621,
+          "keys": {
+            "version": 24,
+            "purpose": 15,
+            "active_work": 6478,
+            "freshness": 99,
+            "prior_state": 244,
+            "ambiguity_gate": 146,
+            "triage": 174,
+            "intent": 18,
+            "retrieval_evidence": 7763
+          },
+          "evidence": [
+            {
+              "path": "ACTIVE_WORK.md",
+              "source_characters": 77662,
+              "selected_characters": 6842,
+              "sections": [
+                {
+                  "section": "Mary Kate / AI operating system — **ACTIVE NOW**",
+                  "characters": 6295,
+                  "prefix": "### Mary Kate / AI operating system — **ACTIVE NOW**\n**Authority:** `shared-capabilities/ai-workflows/SECOND_BRAIN_CONTROL_PLANE.md`, `research/ai-workflows/202"
+                },
+                {
+                  "section": "Session handoff rule",
+                  "characters": 91,
+                  "prefix": "Do not preserve conversational filler when the durable state is already captured elsewhere."
+                },
+                {
+                  "section": "2026-10-10 — Ashley weekend return checkpoint",
+                  "characters": 456,
+                  "prefix": "**Deferred, approved and already routed:** Mary Kate natural-conversation/Save key reliability, trusted remote-worker preview access, approved deferred-task/Whe"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "input": "why cant i figure out a simple chatbot, where am i going wrong",
+          "total_characters": 21963,
+          "keys": {
+            "version": 24,
+            "purpose": 15,
+            "active_work": 6478,
+            "freshness": 99,
+            "prior_state": 244,
+            "ambiguity_gate": 146,
+            "triage": 174,
+            "intent": 18,
+            "retrieval_evidence": 8624
+          },
+          "evidence": [
+            {
+              "path": "shared-capabilities/ai-workflows/SESSION_AND_FAILURE_PROTOCOL.md",
+              "source_characters": 57173,
+              "selected_characters": 2972,
+              "sections": [
+                {
+                  "section": "Session Routing + Failure-Prevention Protocol",
+                  "characters": 467,
+                  "prefix": "**status:** active  \n**date:** 2026-09-13  \n**type:** capability / operating protocol  \n**topics:** ai-agents, prompting, context-management, failures, task-rou"
+                },
+                {
+                  "section": "Why this exists",
+                  "characters": 18,
+                  "prefix": "## Why this exists"
+                },
+                {
+                  "section": "Why this exists",
+                  "characters": 308,
+                  "prefix": "Long conversations naturally drift across features and projects. That is not itself a problem. The problem is making Ashley manually reorganize chats, losing th"
+                },
+                {
+                  "section": "Why this exists",
+                  "characters": 142,
+                  "prefix": "The system should preserve continuity without requiring a new session for every subject change and without carrying every prior token forever."
+                },
+                {
+                  "section": "GitHub App / Cloudflare integration preflight and monotonic-debugging failure",
+                  "characters": 84,
+                  "prefix": "**Observed 2026-09-27 in Mary Kate production GitHub App ↔ Cloudflare integration.**"
+                },
+                {
+                  "section": "Established-architecture retrieval and narrow-execution contract were not applied before advising the user",
+                  "characters": 677,
+                  "prefix": "**Observed 2026-09-29 during Mary Kate production GitHub App / Cloudflare debugging:** After Work was blocked by ERR_BLOCKED_BY_CLIENT / Cloudflare security ver"
+                },
+                {
+                  "section": "Read-only advice, priority retrieval, and repeated chat failures",
+                  "characters": 856,
+                  "prefix": "For ordinary questions such as “what should I do today?”, “what should I prioritize next?”, or “why did that read-only question fail?”, inspect the [existing re"
+                },
+                {
+                  "section": "2026-10-15 — Separate testing authentication hid an ordinary-session integration defect",
+                  "characters": 420,
+                  "prefix": "**Superseding authentication requirement:** the October 10 guard against admin-password dependence must not be interpreted as requiring a second testing login. "
+                }
+              ]
+            },
+            {
+              "path": "shared-capabilities/ai-workflows/failures/2026-10-15-read-only-priority-advice-422.md",
+              "source_characters": 17326,
+              "selected_characters": 2988,
+              "sections": [
+                {
+                  "section": "Broad daily-priority advice was rejected as read-only — 2026-10-15",
+                  "characters": 68,
+                  "prefix": "# Broad daily-priority advice was rejected as read-only — 2026-10-15"
+                },
+                {
+                  "section": "Broad daily-priority advice was rejected as read-only — 2026-10-15",
+                  "characters": 284,
+                  "prefix": "- **Status:** repaired in the Mary Kate development branch; production deployment not authorized\n- **Scope:** Mary Kate control-plane conversation and Project T"
+                },
+                {
+                  "section": "What happened",
+                  "characters": 259,
+                  "prefix": "Mary Kate retrieved current work and recognized the request as read-only, but the routing result still contained a state-change proposal. The safety gate correc"
+                },
+                {
+                  "section": "Verified repair",
+                  "characters": 355,
+                  "prefix": "The product branch now recognizes broad questions about today's focus, priorities, blockers, and attention as a first-class read-only prioritization request. It"
+                },
+                {
+                  "section": "Production audit follow-up — 2026-10-15",
+                  "characters": 728,
+                  "prefix": "The [authenticated production retrieval audit](../../../research/ai-workflows/2026-10-15-production-retrieval-audit.md) reproduced the live read-only-route reje"
+                },
+                {
+                  "section": "Shared triage and cost-policy candidate — 2026-10-15",
+                  "characters": 349,
+                  "prefix": "**Reuse:** existing Project Truth projection, conversation/D1 storage, text adapter and accepted-model budget infrastructure; no new chatbot framework, vector s"
+                },
+                {
+                  "section": "Shared triage and cost-policy candidate — 2026-10-15",
+                  "characters": 349,
+                  "prefix": "**Routing/ripple:** indexed failure doorway remains PROJECT_INDEX.md → shared-capabilities/ai-workflows/failures/. Website/Mary Kate APPLIES; ContentEase/B-Paid"
+                },
+                {
+                  "section": "Production release and authenticated retest — 2026-10-16",
+                  "characters": 596,
+                  "prefix": "The integrated repair was merged through product PR [#44](https://github.com/ashleybrookeugc/Ashley-brooke-cohen/pull/44) to product `main` at `dcce6e99e22f4d73"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "after": {
+      "requests": [
+        {
+          "input": "what is my desired outcome",
+          "total_characters": 7601,
+          "kind": "founder",
+          "duplicate_ledger_present": false,
+          "sources": [
+            {
+              "path": "research/ai-workflows/2026-10-04-mary-kate-founder-intent-decomposition.md",
+              "sha": "108eaf3caf5111288b5f286cdd0bf2343030f797",
+              "selected_characters": 2304,
+              "sections": [
+                "Why this decomposition exists",
+                "Six user-level jobs",
+                "Six user-level jobs",
+                "Six user-level jobs",
+                "Six user-level jobs",
+                "2026-10-05 — “AI business OS” is an outcome architecture, not a V1 scope expansion",
+                "2026-10-05 — “AI business OS” is an outcome architecture, not a V1 scope expansion",
+                "2026-10-05 — “AI business OS” is an outcome architecture, not a V1 scope expansion"
+              ]
+            }
+          ],
+          "founder_objective_present": true,
+          "six_jobs_present": true
+        },
+        {
+          "input": "for this site. for mk. ad why is it taking days to make when others have whole interactive dashboards in hours",
+          "total_characters": 13245,
+          "kind": "failure",
+          "duplicate_ledger_present": false,
+          "sources": [
+            {
+              "path": "shared-capabilities/ai-workflows/SESSION_AND_FAILURE_PROTOCOL.md",
+              "sha": "de56b4cb8177f14c0731ecc1dd81f81b129de9a4",
+              "selected_characters": 2831,
+              "sections": [
+                "Session Routing + Failure-Prevention Protocol",
+                "Why this exists",
+                "Natural conversation is allowed",
+                "Failure-log rule",
+                "GitHub App / Cloudflare integration preflight and monotonic-debugging failure",
+                "Read-only advice, priority retrieval, and repeated chat failures",
+                "Read-only advice, priority retrieval, and repeated chat failures",
+                "Read-only advice, priority retrieval, and repeated chat failures"
+              ]
+            },
+            {
+              "path": "shared-capabilities/ai-workflows/failures/2026-10-15-read-only-priority-advice-422.md",
+              "sha": "9406c3d3f3ec701e4f3e3f9b726dd2bfa72c57fe",
+              "selected_characters": 2997,
+              "sections": [
+                "Broad daily-priority advice was rejected as read-only — 2026-10-15",
+                "Broad daily-priority advice was rejected as read-only — 2026-10-15",
+                "Failure fingerprints confirmed by the production retrieval audit — 2026-10-15",
+                "Failure fingerprints confirmed by the production retrieval audit — 2026-10-15",
+                "2026-10-16 — Dashboard focus corrected; production chat still returned 422"
+              ]
+            }
+          ],
+          "founder_objective_present": false,
+          "six_jobs_present": false
+        },
+        {
+          "input": "why cant i figure out a simple chatbot, where am i going wrong",
+          "total_characters": 14386,
+          "kind": "failure",
+          "duplicate_ledger_present": false,
+          "sources": [
+            {
+              "path": "shared-capabilities/ai-workflows/SESSION_AND_FAILURE_PROTOCOL.md",
+              "sha": "de56b4cb8177f14c0731ecc1dd81f81b129de9a4",
+              "selected_characters": 2654,
+              "sections": [
+                "Session Routing + Failure-Prevention Protocol",
+                "Session Routing + Failure-Prevention Protocol",
+                "Why this exists",
+                "Start-of-session routing",
+                "Chat-only competitor conclusion despite an existing research artifact",
+                "Read-only advice, priority retrieval, and repeated chat failures",
+                "Read-only advice, priority retrieval, and repeated chat failures",
+                "Read-only advice, priority retrieval, and repeated chat failures"
+              ]
+            },
+            {
+              "path": "shared-capabilities/ai-workflows/failures/2026-10-15-read-only-priority-advice-422.md",
+              "sha": "9406c3d3f3ec701e4f3e3f9b726dd2bfa72c57fe",
+              "selected_characters": 2997,
+              "sections": [
+                "Broad daily-priority advice was rejected as read-only — 2026-10-15",
+                "Broad daily-priority advice was rejected as read-only — 2026-10-15",
+                "Failure fingerprints confirmed by the production retrieval audit — 2026-10-15",
+                "Failure fingerprints confirmed by the production retrieval audit — 2026-10-15",
+                "2026-10-16 — Dashboard focus corrected; production chat still returned 422"
+              ]
+            }
+          ],
+          "founder_objective_present": false,
+          "six_jobs_present": false
+        }
+      ]
+    },
+    "source_manifest": [
+      {
+        "path": "ACTIVE_WORK.md",
+        "sha": "f212ea0af99532c1b76c489a3057eeb22c2b8c60",
+        "characters": 77662
+      },
+      {
+        "path": "shared-capabilities/ai-workflows/failures/2026-10-14-command-center-chat-lost-follow-up-context.md",
+        "sha": "5dda671bc6c195e34f32a9306cdea73b598a1b86",
+        "characters": 2532
+      },
+      {
+        "path": "shared-capabilities/ai-workflows/failures/2026-10-15-read-only-priority-advice-422.md",
+        "sha": "9406c3d3f3ec701e4f3e3f9b726dd2bfa72c57fe",
+        "characters": 17326
+      },
+      {
+        "path": "PROJECT_INDEX.md",
+        "sha": "abd644fbb04ece28f19345c1f8838888c1174b89",
+        "characters": 27164
+      },
+      {
+        "path": "research/ai-workflows/2026-10-04-mary-kate-founder-intent-decomposition.md",
+        "sha": "108eaf3caf5111288b5f286cdd0bf2343030f797",
+        "characters": 36814
+      },
+      {
+        "path": "shared-capabilities/ai-workflows/SESSION_AND_FAILURE_PROTOCOL.md",
+        "sha": "de56b4cb8177f14c0731ecc1dd81f81b129de9a4",
+        "characters": 57173
+      }
+    ],
+    "operator_failures": [
+      "Initial unauthenticated raw GitHub read returned404 for private repository; switched to authenticated connector, no credential export.",
+      "One220921-character data-staging call exceeded tool64000-byte execution limit; separately reviewed bounded data chunks succeeded.",
+      "UI enabled-button wait timed out while the real request was pending; read the completed DOM before continuing, without duplicate sends."
+    ]
+  }
 }

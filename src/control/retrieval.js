@@ -15,6 +15,7 @@ export const isPriorityQuestion=text=>isReadQuestion(text)&&/\b(?:prioriti(?:ze|
 
 export function authorityKind(text,workstream=null) {
   if(/^Mary Kate(?:\s*\/|\s*—|$)/i.test(workstream||'')&&/\b(?:desired (?:outcome|result)|(?:my|our|product) goals?|founder intent)\b/i.test(text)) return 'founder';
+  if(/^Mary Kate(?:\s*\/|\s*—|$)/i.test(workstream||'')&&isReadQuestion(text)&&/\b(?:delays?|slow|taking (?:days|hours|weeks)|not working|broken|going wrong)\b/i.test(text)) return 'failure';
   if(/\b(?:decid(?:e|ed)|permissions?|automatic|model selection|capability selection)\b/i.test(text)) return 'founder';
   if(/\b(?:fail(?:ed|ure)?|read.only|went wrong|going wrong)\b/i.test(text)) return 'failure';
   if(/\b(?:telemetry|tests?|benchmark|evaluation)\b/i.test(text)) return 'tests';
@@ -30,7 +31,7 @@ export function selectParagraphs(content,query,budget=10000) {
   const scored=blocks.map((text,index)=>{
     const h=text.match(/^#{1,6}\s+(.+)/m);if(h)heading=h[1];
     const lower=text.toLowerCase();
-    return {index,section:heading,text,score:terms.reduce((sum,term)=>sum+(lower.includes(term)?1:0),0)};
+    return {index,section:heading,text,score:terms.reduce((sum,term)=>sum+(lower.includes(term)?1:0)+(heading.toLowerCase().includes(term)?2:0),0)};
   });
   // A focused small source fits whole: lexical filtering must not drop its
   // cause or qualifications just because they use different words.
@@ -44,7 +45,9 @@ export function selectParagraphs(content,query,budget=10000) {
 export async function retrieveIndexedEvidence(github,text,{activeWork,kind=authorityKind(text)}={}) {
   // Expand a domain synonym only for evidence lookup; never for intent or
   // permission. The linked incident must still come from the indexed hub.
-  const query=kind==='failure'&&/\bchatbot\b/i.test(text)?`${text} chat conversation read-only`:text;
+  const query=kind==='founder'&&/\b(?:desired (?:outcome|result)|(?:my|our|product) goals?)\b/i.test(text)
+    ? `${text} product objective recurring problem user-level jobs`
+    : kind==='failure'&&/\b(?:chatbot|delays?|slow|taking (?:days|hours|weeks)|going wrong)\b/i.test(text)?`${text} chat conversation read-only failure`:text;
   const sources=[];const missing=[];let routing_source=null;
   const add=(path,file,budget)=>{if(!file?.sha||typeof file.content!=='string'){missing.push({path,reason:'unversioned_or_missing'});return;}
     const selected=selectParagraphs(file.content,query,budget);

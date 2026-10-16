@@ -46,11 +46,13 @@ test('exact founder follow-ups retain page-resolved V1 context and use a read-on
   assert.ok(request.messages.filter(message=>message.role==='assistant').length>=1);
   assert.ok(request.messages.at(-2).content.startsWith('{"context":'),'fresh source evidence follows fallible assistant history');
   assert.equal(packet.conversation_history,undefined,'history is not duplicated into the evidence packet');
+  assert.equal(packet.active_work,undefined,'selected source evidence is not competed with by a duplicate technical project ledger');
  }
  const outcome=evidencePacket(requests[0]);
  assert.ok(reads.includes(founder));
  assert.match(JSON.stringify(outcome.retrieval_evidence),/desired outcome is natural conversation/);
  assert.ok(reads.includes(failure),'chatbot synonym follows a real incident link in the indexed hub');
+ assert.equal(evidencePacket(requests[1]).retrieval_evidence.authority_kind,'failure','a scoped development-delay question needs failure evidence, not the completion backlog');
  assert.match(JSON.stringify(evidencePacket(requests[2]).retrieval_evidence),/product failure, not a missing setup step/);
  assert.equal(writes,0);
  assert.deepEqual(await store.listQueues(),{needs_ashley:[],ai_can_handle:[]});
@@ -59,6 +61,17 @@ test('exact founder follow-ups retain page-resolved V1 context and use a read-on
 test('question after a project clarification is read-only, while mixed commands retain action gates',()=>{
  assert.equal(isReadQuestion(turns[2]),true);
  for(const text of ['for mk. why is it slow? Deploy it.','For this site, why is it blocked; delete the original.','What is my desired outcome? Update it.'])assert.equal(isReadQuestion(text),false,text);
+});
+
+test('goal retrieval preserves user-level jobs whose body uses different words from the question',async()=>{
+ const source='## Why this decomposition exists\n\nThe product objective is ordinary work across projects without Ashley acting as memory or message bus.\n\n## Six user-level jobs\n\nKNOW: retrieve saved truth. UNDERSTAND: interpret ordinary speech. CONTINUE: resume across interruptions.\n\n## Unrelated history\n\n'+('Mary Kate infrastructure planning.\n\n'.repeat(400));
+ let request;
+ const service=createControlService({store:createMemoryStore(),github:{readFile:async(repo,path)=>({content:path===founder?source:documents[path],sha:'fixture-'+path})},router:createWorkersAiRoutingAdapter({AI:{run:async(model,input)=>{request=input;return {response:'Controlled answer.'};}}})});
+ await service.capture('What is my desired outcome?',{contextWorkstream:'mary-kate-command-center',conversationHistory:[{role:'user',text:'How is V1 doing?'}]});
+ const packet=evidencePacket(request);
+ assert.match(JSON.stringify(packet.retrieval_evidence),/without Ashley acting as memory or message bus/);
+ assert.match(JSON.stringify(packet.retrieval_evidence),/CONTINUE: resume across interruptions/);
+ assert.equal(packet.active_work,undefined);
 });
 
 test('assistant wording cannot replace the user workstream or grant mutation authority',async()=>{

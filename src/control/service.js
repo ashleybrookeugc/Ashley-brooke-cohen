@@ -418,7 +418,7 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
         return {retrieval_trace:trace,interaction_id:interaction.id,conversation_id:conversationId,plain_summary:route.plain_summary,responsibility:route.responsibility,route_kind:route.route_kind,queue_item:null,model_selection:route.model_selection,triage,handoff:{status:'conversation_active',can_clear:false,message:'This is still a conversation. No task or GitHub change has been claimed.'}};
       }
       if(readOnly&&!snapshot.completion_authority) {
-        const retrievalText=ambiguity_gate.section?`${text} Context: ${canonicalSectionName(ambiguity_gate.section)}.`:text;
+        const retrievalText=kind==='current'&&ambiguity_gate.section?`${text} Context: ${canonicalSectionName(ambiguity_gate.section)}.`:text;
         snapshot.retrieval_evidence=await retrieveIndexedEvidence(github,retrievalText,{activeWork:typeof packet.raw_content==='string'?{content:packet.raw_content,sha:packet.source.sha}:await github.readFile(WRITE_REPO,'ACTIVE_WORK.md'),kind});
         // The answer packet needs the relevant current paragraphs, not every project's history.
         snapshot.projects=ambiguity_gate.section?initial.projects.filter(project=>project.name===ambiguity_gate.section):[];
