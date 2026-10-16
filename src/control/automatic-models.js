@@ -1,4 +1,5 @@
 import {createDeterministicRoutingAdapter,createWorkersAiRoutingAdapter,modelPrompt,readOnlyTextResult,unresolvedFollowup} from './adapters.js';
+import {modelTaskProfile} from './triage.js';
 
 // Selection is application policy, never a model-granted permission. Candidates
 // are not eligible until the server records task-specific acceptance evidence.
@@ -11,14 +12,7 @@ const integer=(value,fallback,min,max)=>{const n=Number(value??fallback);return 
 const fail=(code,message)=>Object.assign(new Error(message),{code,status:503});
 const readOnly=context=>['read_only_advice','read_only_assessment'].includes(context?.intent);
 export function taskProfile(input,context={}) {
-  if(!readOnly(context)) return 'action';
-  // Include only the immediately preceding user request for elliptical followups;
-  // project registry names are not evidence of the latest task type.
-  const prior=context.recent_conversation?.turns?.filter(x=>x.role==='user').at(-1)?.content||'';
-  const text=input.trim().split(/\s+/).length<7?input+' '+prior:input;
-  if(/\b(code|coding|debug|bug|repair|implement|refactor|programming)\b/i.test(text))return 'coding';
-  if(/\b(compare|tradeoffs?|reasoning|evaluate|analysis|analyze)\b/i.test(text))return 'reasoning';
-  return 'conversation';
+  return modelTaskProfile(input,context);
 }
 function accepted(env,id,task){return String(env.CONTROL_MODEL_ACCEPTANCE||'').split(',').map(x=>x.trim()).includes(id+':'+task);}
 function candidates(env) {

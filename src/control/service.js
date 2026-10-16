@@ -1,6 +1,7 @@
 import {routingDiagnostic} from './diagnostics.js';
 import {applyProposal,normalizeFactKey,parseActiveWork,parseCanonicalFacts,RouteValidationError,validateRoute,WRITE_REPO} from './contracts.js';
 import {buildMyWorkProjection} from './my-work.js';
+import {triageRequest} from './triage.js';
 const markerStart='<!-- mary-kate-control-write:';
 const markerEnd='-->';
 const encodeMarker=value=>btoa(unescape(encodeURIComponent(JSON.stringify(value)))).replaceAll('+','-').replaceAll('/','_').replaceAll('=','');
@@ -47,47 +48,28 @@ const readOnlyAssessment=text=>{
     && /\b(?:v1|first version|status|stage|stand|complete|completed|completion|finished|unfinished|ready|readiness|left|remain|remains|remaining|outstanding|gaps?|missing|progress)\b/.test(words)
     && !/\b(?:update|set|change|mark|approve|publish|ship|post|send|delete|spend|pay|purchase|transfer|remove|deploy|merge|buy|upload|execute|run|resume|continue|advance)\b/.test(words);
 };
-// Advice about whether to do something is not the instruction to do it.
-// Mixed questions followed by an explicit command retain normal action gates.
-// Prioritization questions are deliberately broader than /^should/: Ashley can
-// ask "what should I do today?", "what needs my attention?", or "what is
-// blocked?" without naming one workstream. These ask Mary Kate to read the
-// current work picture; they do not authorize a change.
-const priorityAdviceRequest=text=>/^(?:(?:and|or|so)[,\s]+)?(?:(?:what\s+(?:should\s+(?:i|we)\s+do|do\s+i\s+do|should\s+i\s+focus\s+on|do\s+i\s+focus\s+on|are\s+(?:my|our)\s+priorities|is\s+(?:my|our)\s+priority|needs\s+(?:my|our)\s+attention|is\s+currently\s+blocked|are\s+the\s+current\s+blockers)|what\s+(?:needs|is)\s+(?:my|our)\s+(?:attention|focus)|what(?:'s|\s+is)\s+(?:currently\s+)?blocked)(?:\s+(?:today|right\s+now|at\s+the\s+moment))?[?.!\s]*)$/i.test(String(text||'').trim());
-const readOnlyAdvice=text=>(/^should\b/i.test(String(text).trim())||priorityAdviceRequest(text))
-  && !/[?!]\s*\S|;|\band\s+(?:then\s+)?(?:deploy|publish|send|delete|approve|update|change|run|execute|merge)\b/i.test(text);
-
 function priorityAdviceSummary(projects=[]) {
   const rows=(projects||[]).filter(project=>project?.name);
   const active=rows.filter(project=>!/(paused|waiting|blocked|inactive|completed|done)/i.test(project.name));
-  const focus=(active.length?active:rows).slice(0,5);
+  const ranked=active.map((project,index)=>({project,index,first:/ACTIVE NOW/i.test(project.name)}))
+    .sort((a,b)=>Number(b.first)-Number(a.first)||a.index-b.index).map(x=>x.project);
+  const focus=(ranked.length?ranked:rows).slice(0,5);
   if(!focus.length) return 'I could not find any current projects in the saved work record, so there is no verified priority to recommend yet.';
   const priorities=focus.map(project=>{
-    const next=project['Next bounded action']||project['Next decision']||project['Current objective']||project['Current stage'];
+    const next=project['Next bounded action']||project['Next decision']||project.Next||project['Current objective']||project['Current stage']||project.Current;
     return `${project.name}: ${next||'the current next step still needs verification'}`;
   });
-  const blockers=focus.map(project=>{
+  const blockers=rows.map(project=>{
     const direct=project['Current blocker'];
     if(direct) return `${project.name}: ${direct}`;
-    const evidence=[project['Current assessment'],project['Current objective'],project['Current stage']].filter(Boolean).join(' ');
+    const evidence=[project['Current assessment'],project['Current objective'],project['Current stage'],project.Current].filter(Boolean).join(' ');
     return /unverified|not proven|blocked|pending|open/i.test(evidence)
       ? `${project.name}: an important check is still unverified.` : null;
-  }).filter(Boolean);
+  }).filter(Boolean).slice(0,5);
   const priorityText=priorities.map(value=>value.replace(/[.;]+$/,'')+'.').join(' ');
   const blockerText=blockers.length?` Open checks or blockers: ${blockers.map(value=>value.replace(/[.;]+$/,'')+'.').join(' ')}`:' I do not see a separate blocker recorded for these projects.';
   return `Based on the current saved work, your priorities are: ${priorityText}${blockerText}`;
 }
-// A contextual fragment can ask for advice without a question mark. This
-// conservative boundary grants no action authority and never names model options.
-const readOnlyFollowup=(text,recent)=>{
-  const value=normalizedInput(text).trim();
-  if(/\b(?:add|update|set|change|mark|approve|publish|ship|post|send|delete|spend|pay|purchase|transfer|remove|deploy|merge|buy|upload|execute|run|resume|continue|advance|save|capture|record|switch)\b/i.test(value)) return false;
-  const question=value.replace(/^(?:i mean|i meant|to clarify|what i mean is|let me clarify|my question is|i'm asking|i am asking)[,:\s]+/i,'');
-  if(/^(?:what|which|how|where|when|why|is|are|does|do you|can|could|would)\b/i.test(question)) return true;
-  if(!recent?.turns?.length) return false;
-  return /^(?:and|or|what about|how about)\b/i.test(value)
-    || /^no\b[\s,.:!-]*(?:i(?:'m| am)|that(?:'s| is)|my question)\b/i.test(value);
-};
 const readOnlyReturn=(text,recent)=>Boolean(recent?.turns?.length&&!recent.truncated)
   && /^(?:(?:ok(?:ay)?|alright)[,\s]+)?(?:back|return) to\b/i.test(text.trim())
   && !/\b(?:update|set|change|approve|publish|send|delete|spend|pay|deploy|merge|buy|upload|execute|run|save|record|build|edit)\b/i.test(text);
@@ -248,6 +230,7 @@ export function createControlTaskPacket(snapshot) {
     freshness:snapshot.context,
     prior_state:snapshot.prior_state,
     ambiguity_gate:snapshot.ambiguity_gate,
+    ...(snapshot.triage?{triage:snapshot.triage}:{}),
     ...(snapshot.recent_conversation?{recent_conversation:snapshot.recent_conversation}:{}),
     ...(snapshot.intent?{intent:snapshot.intent}:{}),
     ...(snapshot.read_only_continuation?{read_only_continuation:snapshot.read_only_continuation}:{}),
@@ -296,31 +279,43 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
       const packet=await store.getContextPacket('active-work.v1');
       const facts=packet?.facts||[];
       const recentConversation=store.listRecentConversation?await store.listRecentConversation():null;
+      const lastRoute=initial.history?.[0]?.route||initial.history?.[0];
+      const triage=triageRequest(text,{recent:recentConversation,lastRoute});
       const assentScope=readOnlyAssentScope(text,recentConversation,facts,initial,now(),packetTtlMs);
       const navigation=readOnlyReturn(text,recentConversation);
-      const rawResolution=resolveAuthoritativeWorkstream(text,facts);
+      const previousScope=triage.priority_followup?lastRoute?.model_selection?.scope_section:null;
+      const priorityScope=previousScope&&facts.some(fact=>fact.section===previousScope)?previousScope:null;
+      const rawResolution=resolveAuthoritativeWorkstream(priorityScope?`For ${canonicalSectionName(priorityScope)}, ${text}`:text,facts);
       // The persistent Command Center chat may supply its page context for an
       // otherwise unqualified read-only assessment. It never overrides an
       // explicit project, an ambiguous request, or anything action-bearing.
       const useCommandCenterContext=contextWorkstream==='mary-kate-command-center'
         && readOnlyAssessment(text)
         && rawResolution.status==='unknown';
-      const scopedText=assentScope?`What is the V1 assessment for ${canonicalSectionName(assentScope)}?`:useCommandCenterContext?`${text.trim()} For Mary Kate.`:text;
-      const ambiguity_gate=navigation?{status:'passed',section:null,candidates:[],reason:'conversation_navigation_read_only'}:createAmbiguityGate(scopedText,facts);
+      const scopedText=priorityScope?`For ${canonicalSectionName(priorityScope)}, ${text}`:assentScope?`What is the V1 assessment for ${canonicalSectionName(assentScope)}?`:useCommandCenterContext?`${text.trim()} For Mary Kate.`:text;
+      // A whole-workload question needs no single write target. Keep the
+      // original ambiguity gate for actions and conflicting explicit projects.
+      const wholeWorkload=triage.mode==='priority_advice'&&rawResolution.status==='unknown';
+      const actionScope=triage.mode==='action'&&rawResolution.status==='unknown'?triage.action_scope_text:scopedText;
+      const ambiguity_gate=wholeWorkload?{status:'passed',section:null,candidates:[],reason:'cross_project_read_only_priority'}:navigation?{status:'passed',section:null,candidates:[],reason:'conversation_navigation_read_only'}:createAmbiguityGate(actionScope,facts);
       if(ambiguity_gate.status==='blocked') {
         const detail=ambiguity_gate.reason==='unbound_workstream_request'?'Mary Kate found more than one workstream and could not bind this request to one current workstream, so it changed nothing.':'Mary Kate could not bind this request to one current workstream, so it changed nothing.';
         throw new PriorStateGateError('ambiguous_scope',detail,{gate:'authoritative-ambiguity.v1',status:'blocked',evidence:[],blockers:[{reason:'ambiguous_scope',key:'workstream',facts:ambiguity_gate.candidates.map(section=>({section,label:'workstream'}))}]});
       }
-      const readOnly=Boolean(assentScope||navigation)||readOnlyAssessment(text)||readOnlyAdvice(text)||readOnlyFollowup(text,recentConversation);
-      if(!Array.isArray(requiredFactKeys)) throw new PriorStateGateError('invalid_request','required_fact_keys must be an array of strings');
+      const readOnly=triage.read_only;
+      if(!Array.isArray(requiredFactKeys)||requiredFactKeys.some(key=>typeof key!=='string')) throw new PriorStateGateError('invalid_request','required_fact_keys must be an array of strings');
       const assessmentKeys=readOnly&&maryKateSection(ambiguity_gate.section)?[...new Set((packet?.facts||[]).filter(fact=>fact.section===ambiguity_gate.section&&['current-stage','current','current-assessment'].includes(fact.key)).map(fact=>fact.key))]:[];
-      const scoped=requestedFacts(scopedText,facts,initial.projects,[...requiredFactKeys,...(readOnly&&maryKateSection(ambiguity_gate.section)?assessmentKeys.length?assessmentKeys:['current-stage']:[])]);
+      // "Next" in a priority question is conversational language, not a
+      // demand for every project's literal Next field. Validate each relevant
+      // project's recorded evidence on the local projection path below.
+      const scoped=triage.mode==='priority_advice'?requiredFactKeys.map(key=>({key:normalizeFactKey(key),section:ambiguity_gate.section})):requestedFacts(scopedText,facts,initial.projects,[...requiredFactKeys,...(readOnly&&maryKateSection(ambiguity_gate.section)?assessmentKeys.length?assessmentKeys:['current-stage']:[])]);
       const snapshot=scoped.length?await state({requiredFacts:scoped}):initial;
       snapshot.ambiguity_gate=ambiguity_gate;
+      snapshot.triage=triage;
       if(readOnly) snapshot.intent=assentScope||readOnlyAssessment(text)?'read_only_assessment':'read_only_advice';
       if(assentScope) snapshot.read_only_continuation={source:'single_immediate_private_assessment_offer',section:assentScope,permission_authority:false};
       requirePriorState(snapshot.prior_state);
-      if(readOnly&&maryKateSection(ambiguity_gate.section)) snapshot.completion_authority=await retrieveCompletionAuthority(github);
+      if(readOnly&&triage.mode!=='priority_advice'&&maryKateSection(ambiguity_gate.section)) snapshot.completion_authority=await retrieveCompletionAuthority(github);
       // Existing private interaction storage is the conversation source. Do
       // not infer permission from these turns or attach unrelated UI history.
       if(recentConversation) snapshot.recent_conversation=recentConversation;
@@ -328,10 +323,18 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
       // not a model-classification task. Answer it from the facts already
       // retrieved so a provider cannot turn "what should I do today?" into a
       // state proposal and so a useful answer does not depend on a paid call.
-      if(readOnly&&priorityAdviceRequest(text)) {
-        const route={route_kind:'temporary_context',responsibility:'ai_can_handle',confidence:'high',plain_summary:priorityAdviceSummary(snapshot.projects),why:'Deterministic current-work prioritization; no model call or mutation authority.',model_selection:{provider:'none',calls:0,task:'priority_advice'}};
+      if(readOnly&&['priority_advice','greeting'].includes(triage.mode)) {
+        const projects=ambiguity_gate.section?snapshot.projects.filter(project=>project.name===ambiguity_gate.section):snapshot.projects;
+        if(triage.mode==='priority_advice') {
+          const sections=new Set(projects.map(project=>project.name));
+          const keys=new Set(['next-bounded-action','next-decision','next','current-objective','current-stage','current','current-assessment','current-blocker']);
+          const requests=[...new Map(facts.filter(fact=>sections.has(fact.section)&&keys.has(fact.key)).map(fact=>[fact.section+'\n'+fact.key,{section:fact.section,key:fact.key}])).values()];
+          snapshot.prior_state=createPriorStateReceipt(packet,requests);
+          requirePriorState(snapshot.prior_state);
+        }
+        const route={route_kind:'temporary_context',responsibility:'ai_can_handle',confidence:'high',plain_summary:triage.mode==='greeting'?'I’m here. Ask about your current work, priorities, or a specific project.':priorityAdviceSummary(projects),why:'Deterministic read-only triage; no model call or mutation authority.',triage,prior_state:snapshot.prior_state,model_selection:{provider:'none',calls:0,task:triage.mode,...(ambiguity_gate.section?{scope_section:ambiguity_gate.section}:{})}};
         const interaction=await store.addInteraction({raw_text:text.trim(),route});
-        return {interaction_id:interaction.id,plain_summary:route.plain_summary,responsibility:route.responsibility,route_kind:route.route_kind,queue_item:null,model_selection:route.model_selection};
+        return {interaction_id:interaction.id,plain_summary:route.plain_summary,responsibility:route.responsibility,route_kind:route.route_kind,queue_item:null,model_selection:route.model_selection,triage};
       }
       let candidate;
       try {
@@ -356,7 +359,7 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
         error.code='read_only_route_violation';error.status=422;error.message='Routing proposed an action for a read-only question. No approval or change was saved.';
         throw error;
       }
-      const route=enforceResolvedWriteTarget({...candidate,prior_state:snapshot.prior_state,...(snapshot.completion_authority?{retrieval_authority:{source:snapshot.completion_authority.source,routing_source:snapshot.completion_authority.routing_source}}:{})},snapshot.prior_state,ambiguity_gate);
+      const route=enforceResolvedWriteTarget({...candidate,triage,prior_state:snapshot.prior_state,...(snapshot.completion_authority?{retrieval_authority:{source:snapshot.completion_authority.source,routing_source:snapshot.completion_authority.routing_source}}:{})},snapshot.prior_state,ambiguity_gate);
       // Restore the existing conversation-acceptance branch's reviewed-version
       // guard. Model output never supplies this approval authority.
       if(route.proposal) {
@@ -367,7 +370,7 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
       const interaction=await store.addInteraction({raw_text:text.trim(),route});
       let item=null;
       if(route.proposal) item=await store.addQueueItem({interaction_id:interaction.id,...route});
-      return {interaction_id:interaction.id,plain_summary:route.plain_summary,responsibility:route.responsibility,route_kind:route.route_kind,queue_item:item,...(route.model_selection?{model_selection:route.model_selection}:{})};
+      return {interaction_id:interaction.id,plain_summary:route.plain_summary,responsibility:route.responsibility,route_kind:route.route_kind,queue_item:item,triage,...(route.model_selection?{model_selection:route.model_selection}:{})};
     },
     async approve(id,note='') {
       const item=await store.getQueueItem(id);
@@ -448,7 +451,7 @@ export function createD1Store(db,{id=()=>crypto.randomUUID(),now=()=>new Date().
     async getQueueItem(key){return parse(await db.prepare('SELECT * FROM control_queue_items WHERE id=?').bind(key).first());},
     async resolveQueueItem(key,status,note,receipt){await db.prepare('UPDATE control_queue_items SET status=?,resolution_note=?,technical_receipt_json=?,resolved_at=? WHERE id=?').bind(status,note||null,receipt?JSON.stringify(receipt):null,now(),key).run();},
     async listQueues(){const rows=(await db.prepare("SELECT * FROM control_queue_items WHERE status='pending' ORDER BY created_at DESC").all()).results||[];return{needs_ashley:rows.filter(x=>x.responsibility==='needs_ashley').map(parse),ai_can_handle:rows.filter(x=>x.responsibility==='ai_can_handle').map(parse)};},
-    async listHistory(limit){const rows=(await db.prepare('SELECT i.id,i.route_json,i.plain_summary,i.route_kind,i.responsibility,i.created_at,q.status AS outcome_status,q.resolved_at,q.technical_receipt_json FROM control_interactions i LEFT JOIN control_queue_items q ON q.interaction_id=i.id ORDER BY i.created_at DESC LIMIT ?').bind(limit).all()).results||[];return rows.map(({route_json,...row})=>{const route=JSON.parse(route_json||'{}');return {...row,outcome_status:route.outcome_status||row.outcome_status||'captured',diagnostic:route.diagnostic||null,receipt:row.technical_receipt_json?JSON.parse(row.technical_receipt_json):null};});}
+    async listHistory(limit){const rows=(await db.prepare('SELECT i.id,i.route_json,i.plain_summary,i.route_kind,i.responsibility,i.created_at,q.status AS outcome_status,q.resolved_at,q.technical_receipt_json FROM control_interactions i LEFT JOIN control_queue_items q ON q.interaction_id=i.id ORDER BY i.created_at DESC LIMIT ?').bind(limit).all()).results||[];return rows.map(({route_json,...row})=>{const route=JSON.parse(route_json||'{}');return {...row,outcome_status:route.outcome_status||row.outcome_status||'captured',diagnostic:route.diagnostic||null,...(route.model_selection?{model_selection:route.model_selection}:{}),receipt:row.technical_receipt_json?JSON.parse(row.technical_receipt_json):null};});}
   };
 }
 export function createMemoryStore({now=()=>new Date().toISOString()}={}) {

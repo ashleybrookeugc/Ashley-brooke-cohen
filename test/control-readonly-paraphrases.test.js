@@ -17,7 +17,7 @@ const cases=Object.freeze([
   {id:'missing-proof',text:'Tell me what proof is missing for MK.',mode:'assessment'},
   {id:'exact-switch',text:'Switch to Mary Kate / AI operating system.',mode:'bound'},
   {id:'exact-continuation',text:'Continue MK / AI operating system with the next bounded action.',mode:'bound'},
-  {id:'unbound-next',text:'What’s next?',mode:'blocked'},
+  {id:'unbound-next',text:'What’s next?',mode:'priority'},
   {id:'unbound-assent',text:'Yes, go ahead.',mode:'blocked'},
   {id:'cross-project',text:'Is MK or ContentEase ready?',mode:'blocked'},
   {id:'conflicting-action',text:'Approve the next action for MK or ContentEase.',mode:'blocked',singleProjection:true},
@@ -63,6 +63,10 @@ test('frozen expanded language holdout measures unsafe certainty and unnecessary
     assert.equal(writes,0,entry.id);
     if(entry.mode==='blocked') {
       if(error) assert.equal(calls,0,entry.id);
+    } else if(!error&&entry.mode==='priority') {
+      assert.equal(calls,0,entry.id);
+      assert.equal(result.model_selection.calls,0,entry.id);
+      assert.equal(result.queue_item,null,entry.id);
     } else if(!error) {
       assert.equal(result.queue_item,null,entry.id);
       assert.equal(packet.ambiguity_gate.section,section,entry.id);

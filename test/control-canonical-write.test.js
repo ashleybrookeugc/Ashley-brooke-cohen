@@ -56,7 +56,7 @@ test('side-idea approvals bind their own target version, not the active-work pac
   let side='# Side ideas\n',sideSha='side-base',writes=0;
   const store=createMemoryStore();
   const app=createControlService({store,github:{readFile:async(_repo,path)=>path==='ACTIVE_WORK.md'?{content:initial,sha:'active-base'}:{content:side,sha:sideSha},writeFile:async(_repo,_path,next)=>{writes++;side=next;sideSha='written';return{commit_sha:'fixture-commit',content_sha:sideSha};}},router:{route:async()=>({route_kind:'side_idea',responsibility:'ai_can_handle',confidence:'high',plain_summary:'Pending idea',proposal:{target_repo:proposal.target_repo,target_path:'SIDE_IDEAS.md',operation:'append_side_idea',title:'Fixture',body:'Synthetic idea',scope:'testing'}})}});
-  const result=await app.capture('A synthetic idea for later');
+  const result=await app.capture('Capture a synthetic idea for later');
   side='# Side ideas\nA newer canonical entry\n';sideSha='side-newer';
   await assert.rejects(app.approve(result.queue_item.id),error=>error.code==='canonical_review_stale');
   assert.equal(writes,0);assert.match(side,/newer canonical entry/);

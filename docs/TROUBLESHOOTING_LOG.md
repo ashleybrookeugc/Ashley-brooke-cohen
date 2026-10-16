@@ -1,5 +1,35 @@
 # Ashley Brooke Cohen Website — Troubleshooting & Recovery Log
 
+## 2026-10-15 — Priority paraphrase and cost triage repair
+
+**Symptom:** Ashley reported `what to prioritize next` still returning 422
+`prior_state_ambiguous_scope` after a separate daily-priority development repair.
+That earlier repair was not deployed; do not infer active production bytes.
+
+**Failed approach:** a narrow phrase allowlist and keyword-based difficulty
+selection did not cover ordinary paraphrases. The priority handler also ran
+after the workstream/field gate; conversational Next could become a global
+field request. Short new questions inherited hard-task words from old turns.
+
+**Candidate repair:** shared triage defaults ordinary speech to read-only;
+whole-workload priority advice bypasses single-write-target resolution, checks
+each project's relevant facts, and answers without a model call. Named scope and
+natural follow-ups are retained. Model difficulty is separate from permission;
+status lookups and new short questions stay conversation. Both legacy and
+automatic service routes prohibit quota-driven retries/fallback under triage.
+
+**Verification:** see `CONVERSATION_TRIAGE.md` and `test/control-triage.test.js`.
+Provider calls in tests are mocked. Approval, reviewed-version, scoped-write,
+readback and deployment gates remain. Exact full-suite/build receipts are
+recorded with the development commit; production/user acceptance remains open.
+Final local suite: 182/182; triage groups: 17; My Work mapping: 14/14;
+conversation-runner syntax and Worker packaging dry-run PASS. Receipt:
+`docs/test-receipts/2026-10-15-conversation-triage.json`.
+
+**Prevention:** unknown wording must never grant mutation authority or trigger
+expensive escalation. Test cost, retrieval, natural follow-ups and write safety
+as separate properties. Do not equate a code commit with a deployed fix.
+
 This is the durable record for recurring failures, loops, misleading symptoms, and verified fixes in the `ashleybrookeugc/Ashley-brooke-cohen` website project.
 
 ## How to use this file

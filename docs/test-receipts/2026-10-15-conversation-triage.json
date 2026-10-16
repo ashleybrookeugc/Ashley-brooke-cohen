@@ -1,0 +1,27 @@
+{
+  "version": "mary-kate.triage-verification.v1",
+  "date": "2026-10-15",
+  "base_commit": "25a77f64a6795ab463f8048465f166e39ac9806e",
+  "target_branch": "mary-kate/conversation-regressions-20261014",
+  "scope": "Shared conversational triage, read-only prioritization and cost classification",
+  "checks": {
+    "full_node_suite": {"tests": 182, "passed": 182, "failed": 0, "skipped": 0},
+    "triage_regression_groups": 17,
+    "my_work_requirements": {"mapped": 14, "missing": 0},
+    "conversation_runner_syntax": "PASS",
+    "worker_packaging_dry_run": "PASS",
+    "git_diff_whitespace": "PASS"
+  },
+  "call_boundaries": {
+    "priority_advice": 0,
+    "greeting": 0,
+    "other_conversation": "At most one inference; no separate classifier or retry",
+    "paid_calls_during_verification": 0,
+    "live_provider_calls_during_verification": 0
+  },
+  "preserved": ["explicit action scope", "read-only proposal rejection", "reviewed SHA", "approval", "canonical write allowlist", "readback", "model acceptance and spending gates"],
+  "workspace_provenance": "Isolated Git clone from existing same-repository object cache, pinned to freshly verified GitHub branch head. Missing current-tree blobs recovered from SHA-identical source copy or authenticated GitHub blob reads. Current base worktree clean before implementation. Historical cache objects remain incomplete; publication uses GitHub Git data APIs and an exact tested-tree comparison rather than assuming terminal push access.",
+  "integration_boundary": "Separate production retrieval audit PR41 head30102408 is not merged into this development candidate. Reconcile before promotion; do not overwrite its retrieval/trace work.",
+  "not_proven": ["production deployment", "live conversational model quality", "authenticated mobile acceptance", "arbitrary semantic generalization", "invoice-level cost measurement"],
+  "deployed": false
+}

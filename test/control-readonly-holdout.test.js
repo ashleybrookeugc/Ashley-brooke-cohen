@@ -171,7 +171,8 @@ test('mixed read-and-action requests do not acquire read-only disambiguation',()
 });
 
 test('negative holdout questions stop before model, queues, history, or canonical writes',async()=>{
-  for(const text of ["What's next?",'What’s next?','Is MK or ContentEase ready?',
+  // Whole-workload next advice is now covered by the zero-call triage tests.
+  for(const text of ['Is MK or ContentEase ready?',
     'Is MK complete? Publish it.','Assess MK V1 and send the private footage.']) {
     const run=setup(answer);
     await assert.rejects(()=>run.service.capture(text),error=>error.code==='ambiguous_scope',text);

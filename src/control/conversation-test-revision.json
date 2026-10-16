@@ -1,15 +1,16 @@
 {
   "version": "conversation-test.candidate.v1",
   "source_pr": 10,
-  "previous_head": "eefabaa835478a5de41a0b6504c24aaa2765cfec",
+  "previous_head": "25a77f64a6795ab463f8048465f166e39ac9806e",
   "integrated_main": "0733499ebc711385053909094f6bbfb774ed60e7",
   "source_sha256": {
-    "src/control/service.js": "7d4d8007ba700faae4bfc7b8a0fee6feb770c88c407c010daede8464144fc127",
-    "src/control/adapters.js": "88bc6436778f3c76a26ee07ca451ec1710e75a7c1e1e01b8ba07b7a9b3314a83",
+    "src/control/service.js": "af882bf6ff69618410b5fcae83d934879b5be055e3f1da097b89211bdaaaf601",
+    "src/control/adapters.js": "48baa2d61cf362253bc913ed98f598ece4655394cd395cc7c66b05b813016b0a",
     "scripts/acceptance/conversation-regressions.js": "2daccdf5ab7dee88b19a1bc82b7f6ef38d190e4d13c6cf02857a19c186643e8f",
     "scripts/acceptance/conversation-holdouts.json": "1aeacae3ff95fdec3798388e18deb57bb3acc675ed62b135521049556f2066a0",
     "src/control/conversation-test-surface.js": "d2449faa624611bf7169371cf245ccc524848e0463f3f96e9b3e23930cc5b84e",
-    "src/control/automatic-models.js": "0fdae7a3a807749f92ad97c4aedac828ba6bd96b2546fc573e7566f00c8e267f",
+    "src/control/automatic-models.js": "baf7e71c04e85adb6768f40d7b8c6d1b486753f0ca2c835c025d737b13ba8791",
+    "src/control/triage.js": "03f96f72faf304f4dc364cc4de3fdaadac640d4a81cf5847507aa0f6e5c2fa0c",
     "src/control-worker.js": "6f6ccc56cf5b53a765217be8b9b7abd3c37c6a25a1b8a3c0d8b3b5b06f7a3329"
   },
   "boundary": "These source hashes identify a candidate, not deployed production lineage or live conversational acceptance."

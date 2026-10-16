@@ -161,6 +161,9 @@ function actionModelPrompt(input,context) { return [{role:'system',content:'Clas
 // Unknown short conjunctive fragments cannot license a guessed topic expansion.
 export function unresolvedFollowup(input,context) {
   if(!isReadOnlyIntent(context)||!/^(?:and|or)\b/i.test(input.trim())) return false;
+  // A complete question can introduce new words. Lexical novelty alone is
+  // not missing intent and must not force another clarification round.
+  if(/^(?:and|or)\s+(?:what|which|why|how|where|when|is|are|can|could|should|would)\b/i.test(input.trim())) return false;
   const words=value=>String(value).normalize('NFKC').toLowerCase().match(/[\p{L}\p{N}]+/gu)||[];
   const tokens=words(input);
   if(tokens.length>12) return false;
@@ -187,7 +190,7 @@ export function readOnlyTextResult(data,identity) {
 
 export function createWorkersAiRoutingAdapter(env) {
   return { async route(input,context) {
-    if(!env.AI) throw new Error('Workers AI is unavailable');
+    if(!env.AI) throw Object.assign(new Error('Workers AI is unavailable'),{code:'inference_unavailable',status:503});
     if(unresolvedFollowup(input,context)) return {route_kind:'temporary_context',responsibility:'ai_can_handle',confidence:'low',plain_summary:'What do you mean by “'+input.trim()+'”?',why:'clarification_required:unresolved_followup_terms'};
     const model=env.CONTROL_WORKERS_AI_MODEL||'@cf/meta/llama-3.1-8b-instruct-fp8';
     const readOnly=isReadOnlyIntent(context);
@@ -215,6 +218,10 @@ export function createPolicyRoutingAdapter(env,{workers=createWorkersAiRoutingAd
     const local=await deterministic.route(input,context); if(local) return local;
     try { return await workers.route(input,context); } catch(error) {
       if(!/429|quota|capacity|unavailable|Workers AI/i.test(String(error?.message||error))) throw error;
+      if(context?.triage?.max_model_calls===1) {
+        if(error.code==='inference_unavailable') throw error;
+        throw Object.assign(new Error('The AI connection is unavailable or its allowance was reached. No retry or other provider call ran.'),{code:'model_provider_failed',status:503});
+      }
       return openrouter.route(input,context);
     }
   }};
