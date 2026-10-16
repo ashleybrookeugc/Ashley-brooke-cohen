@@ -66,6 +66,9 @@ test('primary Command Center copy translates backend state before exposing techn
   assert.match(page,/Your phone testing is still finding real problems/);
   assert.match(page,/Saved records reread/);
   assert.match(page,/Current priority is separated from older resume plans/);
+  assert.match(page,/<details id="suggestion-details" hidden>/);
+  assert.match(page,/These may be outdated or wrong\. They are not today’s priorities/);
+  assert.doesNotMatch(page,/AI can handle next/);
   assert.match(page,/Changes that were checked after saving/);
   assert.doesNotMatch(page,/Project Truth refreshed/);
   assert.doesNotMatch(page,/verified canonical updates/i);
