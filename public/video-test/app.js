@@ -1,6 +1,6 @@
 import {buildReview, timeLabel} from './review.js?v=20261016-plain';
 const $=id=>document.getElementById(id);
-const ui=Object.fromEntries(['access','status','file','video','selected','analyze','progress','refresh','runs','storage','review','boundary','overview','checks','capabilities','coverage','frames','lanes','raw','correction','observation','time','text','feedback-status','feedback'].map(id=>[id,$(id)]));
+const ui=Object.fromEntries(['access','status','file','video','selected','analyze','progress','refresh','runs','storage','review','boundary','overview','checks','capabilities','coverage','frames','lanes','correction','observation','time','text','feedback-status','feedback'].map(id=>[id,$(id)]));
 let selected=null,objectURL=null,current=null,connected=false,authenticated=false,busy=false,poll=0,db=null;
 const cache=new Map();
 function message(text){ui.status.textContent=text;}
@@ -39,7 +39,9 @@ function decodeName(name){try{return decodeURIComponent(name)}catch{return name|
 async function refresh(){
   connected=false;try{const session=await api('/session');if(!session.configured){authenticated=false;ui.access.hidden=true;message('Mary Kate sign-in is not configured. Analysis is unavailable.');showRuns();return;}authenticated=session.authenticated;ui.access.hidden=authenticated;if(!authenticated){message('Sign in to Mary Kate to analyze videos. Your selected video stays on this device.');showRuns();return;}
     const health=await api('/health');connected=health.state==='available';message(connected?'Analyzer connected. Ready to upload a test video.':'Analyzer unavailable. No analysis will run; local playback and cached review remain available.');
-    showRuns((await api('/jobs')).jobs);if(current)await syncFeedback(current);
+    const jobs=(await api('/jobs')).jobs;showRuns(jobs);
+    if(current)await syncFeedback(current);
+    else if(connected&&!selected&&!busy){const latest=jobs.filter(job=>job.state==='completed').sort((a,b)=>(b.created_at||'').localeCompare(a.created_at||''))[0];if(latest)await openRun(latest);}
   }catch(error){message(error.message+' Cached evidence and corrections remain on this browser.');showRuns();}finally{updateAnalyze();}
 }
 ui.refresh.onclick=refresh;
@@ -80,7 +82,7 @@ function render(run){
   for(const note of report.byId.values()){if(!seen.has(note.id)){seen.add(note.id);ui.observation.append(new Option(note.label,note.id));}}
   for(const note of report.timeline){const item=element('article');item.append(element('h4',note.title));if(Number.isFinite(note.time)){const b=element('button','Watch '+timeLabel(note.time));b.onclick=()=>seek(note.time);item.append(b);}item.append(element('p',note.text));if(note.id){const b=element('button','Correct this note');b.onclick=()=>{ui.observation.value=note.id;ui.time.value=Number.isFinite(note.time)?note.time:0;ui.text.focus();};item.append(b);}ui.lanes.append(item);}
   if(!report.timeline.length)ui.lanes.append(element('p','No moment-by-moment notes were recovered. This is not evidence that nothing happened in the video.'));
-  ui.raw.textContent=JSON.stringify(run.result,null,2);ui.time.max=manifest.duration_seconds;renderFeedback(run);
+  ui.time.max=manifest.duration_seconds;renderFeedback(run);
 }
 function renderFeedback(run){const notes=buildReview(run.result).byId;ui.feedback.replaceChildren();for(const f of run.feedback||[]){const item=element('article');item.append(element('p',timeLabel(f.timestamp_seconds)+' · '+(notes.get(f.observation_id)?.title||'Your video review')),element('p',f.text),element('p',f.synced?'Saved on your Mac and retrieved successfully.':'Saved in this browser; waiting to send to your Mac.','muted'));ui.feedback.append(item);}}
 async function syncFeedback(run){
