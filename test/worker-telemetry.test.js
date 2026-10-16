@@ -13,6 +13,7 @@ const worker={
   runtime_metrics:{model:null,tokens:null,cost:null},
   last_observed_at:'2026-10-09T12:00:00.000Z',
   progress_events:[{observed_at:'2026-10-09T12:00:00.000Z',source:'herdr',source_status:'working',state:'running',state_change_seq:2,completion_seq:null,revision:2}],
+  plan:{goal:'Verify the command-center plan display.',steps:[{label:'Read the current worker state.',state:'completed'},{label:'Publish the compact plan.',state:'current'},{label:'Reread the worker receipt.',state:'next'}],updated_at:'2026-10-09T12:00:00.000Z'},
   identity:{session:'mk',workspace_id:'w1',pane_id:'w1:p1',agent_name:'worker'},
 };
 const envelope={version:'mary-kate.local-workers.v1',enabled:true,read_only:true,observed_at:'2026-10-09T12:00:01.000Z',configuration_integrity:'matched',workers:[worker]};
@@ -50,6 +51,13 @@ test('fresh D1 telemetry is connected and an expired snapshot becomes disconnect
   assert.equal(stale.connection.state,'disconnected');
   assert.equal(stale.workers[0].state,'disconnected');
   assert.equal(stale.workers[0].telemetry.diagnostic_code,'m4_connection_stale');
+  assert.equal(stale.workers[0].plan.stale,true);
+});
+
+test('task plans are bounded, plain, and cannot carry arbitrary telemetry fields',()=>{
+  const normalized=normalizeWorkerTelemetry({...envelope,workers:[{...worker,plan:{goal:'Show a clear checklist.',steps:[{label:'Finished',state:'completed',secret:'TOKEN_MARKER'},{label:'Working now',state:'current'},{label:'Next',state:'next'}],updated_at:'2026-10-09T12:00:00.000Z',private_key:'PRIVATE_KEY_MARKER'}}]},{receivedAt:'2026-10-09T12:00:02.000Z'});
+  assert.deepEqual(normalized.workers[0].plan.steps.map(step=>step.state),['completed','current','next']);
+  assert.doesNotMatch(JSON.stringify(normalized.workers[0].plan),/TOKEN_MARKER|PRIVATE_KEY_MARKER/);
 });
 
 test('publisher is disabled by default and sends one bounded signed HTTPS heartbeat when enabled',async()=>{

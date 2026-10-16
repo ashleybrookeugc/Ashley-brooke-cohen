@@ -1,6 +1,18 @@
 # Private video testing — implementation and activation
 
-Status: deployed private testing loop; actual non-private live acceptance PASS on 2026-10-15. Physical iPhone and creator/semantic acceptance remain untested.
+Status: deployed Mary Kate session integration; existing authorized sessions connect, analyze, review, correct and retrieve after reload without a testing token. Actual non-private live technical flow PASS; physical iPhone/creator/semantic acceptance remains unpassed. Physical iPhone and creator/semantic acceptance remain untested.
+
+## Current review presentation — founder correction
+
+The default review now presents a plain-English overview, chronological notes, speech/caption conflicts, readable timestamp links and source-bound correction labels. Raw programming data stays in a collapsed technical disclosure. This is a deterministic presentation of existing evidence, not a new semantic analyzer. The full saved scope includes workflow/actions/friction, UGC story/hook/pacing/edit advice, B-roll/library, B-Paid and performance lenses; their missing stages remain explicit and unpassed. [Requirement-to-implementation map](REVIEW_REQUIREMENTS.md) routes to the canonical shared V1 plan. Live readable-review/5s seek/source-bound correction/worker readback/reopening PASS; website152/152, requirements14, packaging and CI/normal Builds PASS. Exact presentation proof: docs/test-receipts/2026-10-15-plain-english-video-review.json. Prior live technical PASS does not mean this broader creator outcome is complete.
+
+## Current authentication — 2026-10-15 founder correction
+
+Video Testing reuses Mary Kate's existing signed `abc_admin` login. A user already signed in can select a file and press Analyze with no extra token. A signed-out user follows `/admin/login?returnTo=/video-test/`; successful normal login returns only to that allowlisted path, otherwise to the existing `/control/` default. The shared validator is used by control/moderation and the video gateway, retaining the existing eight-hour expiry and Secure/HttpOnly/SameSite=Strict cookie. Logout or expiry locks video APIs too. No video cookie is minted, and old `__Host-video_test` cookies no longer authorize anything.
+
+The worker bearer remains server-only. The same fixed private VPC service still reaches only the Mac's loopback port; browser cookies are never forwarded. Exact same-origin POST checks, upload cap, endpoint allowlist, redirect refusal and failure without public fallback remain enforced. `VIDEO_TEST_ACCESS_TOKEN` is now obsolete and ignored; its existing secret is retained unused for rollback, without changing any production credentials. `ADMIN_SESSION_SECRET` is the existing Mary Kate secret, not a new video credential. No schema/configuration change is required.
+
+Local validation: website 148/148 with zero skips, 14-requirement gate and Worker packaging pass, including the real Wrangler login → signed cookie → video session → logout, rejected passwords, expired/forged/legacy-cookie rejection, allowed return path, and UI Analyze enablement without token entry. PR #40 merged through the normal GitHub → Workers Builds path (`141d95e`), with CI/Builds SUCCESS and deployed HTML/JS exact. Existing signed-in Brave session automatically connects; no login/token entry; clip selection enables Analyze and job `67281538-0100-4b3b-a5b6-0d45a8e213d9` completes with verified hash/decode/readback and displayed frames at 0/5s. Anonymous/forged/valid-retired-cookie requests remain 401; cross-origin writes 403; retired token exchange 405. Private target, ingress and secret names were reread preserved. Final review verification also PASSED in the existing authenticated Codex test-browser tab: both 720px frame images loaded; five-second seek set currentTime to 5 with readyState 4; speech-000001 correction at 0.03s (ID `54de58b8-a0cf-4660-92ee-ebf3ee6c6c68`) was saved, read back from the worker and retrieved after page reload. That tab also recognized its existing valid Mary Kate session without login/token entry. Initial native tab interruptions are resolved as a verification blocker; no credential handoff or special test auth was used. Exact current session receipt: `docs/test-receipts/2026-10-15-video-session-integration.json`.
 
 ## Current activation — 2026-10-15
 
@@ -12,7 +24,7 @@ The full unchanged analyzer is still 17/18: ASR reads `this is fair` as `is is t
 
 Keep the Mac and the detached analyzer/connector processes online. Autostart and remote evidence archival are not configured. Worker/connector credentials are kept locally in the existing analyzer's gitignored `.video-analysis-runtime/video-testing-secrets.json` with mode 0600; never print or commit them. Originals, evidence and corrections remain local and retained. Cloudflare Workers VPC is currently free in beta; recheck its pricing before any later transition. The historical checkpoints below preserve earlier stops; this current checkpoint supersedes their not-deployed/access-blocked state.
 
-## Cloud-only continuation — 2026-10-14
+## Historical cloud-only continuation — 2026-10-14
 
 The existing Node adapter ran in the ChatGPT Work cloud runtime against the unchanged shared analyzer checkout (`video-analyzer/f003-source-time-fidelity` at `e5dfe3e4d3967615f23eb064896de1303f86ded9`), with FFmpeg, ffprobe, Tesseract, and a temporary PocketSphinx 5.0.4 environment. A 5,510,872-byte, 60.095011-second public Big Buck Bunny MP4 (SHA-256 `543a4ad9fef4c9e0004ec9482cb7225c2574b0f889291e8270b1c4d61dbc1ab8`) passed gateway upload, exact source-hash match, full decode, readback-verified package, 13 timestamped sampled frames, OCR and ASR extraction, range playback, source-bound correction, worker restart and correction/result reread. A deliberately invalid file entered `failed`. This was an isolated loopback integration run; the temporary filesystem is not durable hosted storage, the public clip does not test Ashley's footage or speech accuracy, and there is no iPhone URL.
 
@@ -20,7 +32,7 @@ The first hosted-path blocker remains deployment/connectivity: this branch is no
 
 The adapter now verifies the stored evidence package before labeling a child run `completed`. If a previously completed package becomes unreadable, result retrieval changes the job to `failed` and retains the source; the pre-fix contradiction was reproduced and the negative regression passes. Website full suite after reconciling current main: 110/110. Unchanged analyzer suite with PocketSphinx: 17/18, with the frozen `fair` → `there` ASR wording failure. No semantic vision provider, enforced claim release, or canonical UGC creative-gate execution exists in this slice; those gates are **NOT RUN / NOT YET TESTABLE**, never passed by the successful extraction. See the updated test receipt.
 
-## Activation continuation — 2026-10-10
+## Historical activation continuation — 2026-10-10
 
 Ashley's “Make it usable” authorizes activation after safety checks; no additional paid infrastructure or private AI transfer is authorized. Worker packaging now PASSES using Wrangler 4.54.0 (`deploy --dry-run`, no upload). Real Chromium at 390×844 now PASSES actual upload to the unchanged analyzer, frame rendering, source playback, cookie persistence, real IndexedDB correction/reload, worker-offline review, exact-file relinking, and offline correction synchronization after reconnect. See `scripts/acceptance/video-testing-browser.mjs`; this uses synthetic media and loopback transport only. Physical iPhone and live Cloudflare remain unverified.
 
@@ -40,15 +52,15 @@ The Node adapter binds loopback, creates job receipts under the existing analyze
 
 Completed evidence and corrections also cache in browser IndexedDB. With the worker offline, cached evidence remains inspectable, corrections save locally for later synchronization, and reselected footage must exactly match the cached source SHA before playback. Frame bytes are not cached; they are explicitly offline. Clearing browser data can erase unsynced feedback; worker-saved feedback remains retrievable after restart. The page itself still requires an internet connection to load; no PWA/browser-offline installation is claimed.
 
-## Access separation
+## Current access and private transport
 
-Set independent, cryptographically random secrets of at least 32 characters through the existing deployment secret mechanism:
+Use the existing Mary Kate authentication for all video APIs. Keep these server-only bindings configured through the existing deployment secret mechanism:
 
-- `VIDEO_TEST_ACCESS_TOKEN`: testing-only token, entered once in the page. Rotating it revokes all testing sessions.
-- `VIDEO_TEST_WORKER_TOKEN`: separate server-to-worker credential; same value in the gateway and authorized worker environment, never sent to the browser.
-- `VIDEO_TEST_WORKER_URL`: an existing authorized HTTPS origin that forwards only `/video-worker/*` to the loopback worker. No redirects accepted. No caller-controlled destination.
+- `VIDEO_TEST_WORKER_TOKEN`: random server-to-worker credential shared with the authorized local worker; never sent to the browser.
+- `VIDEO_TEST_WORKER_URL`: fixed server-configured origin identity, with no caller-controlled destination or redirects.
+- `VIDEO_TEST_PRIVATE_SERVICE`: existing private VPC service bound to `127.0.0.1:8789` through the encrypted connector. No public hostname or DNS route.
 
-Trusted-device session: 30-day HMAC signature, `__Host-` cookie, Secure/HttpOnly/SameSite=Strict. POST requires exact same origin. Testing credentials do not authorize `abc_admin` or any production admin API. Shell/assets contain no private footage, credentials, or result data. No D1/schema changes. No new storage service, tunnel, hostname or paid infrastructure has been provisioned. A reachable authorized HTTPS transport has NOT been established in this task; do not invent one or expose the local worker publicly to finish acceptance.
+The previously configured `VIDEO_TEST_ACCESS_TOKEN` is ignored. Do not direct Ashley to token entry, copy a login cookie, or introduce another sign-in. Do not broaden connectivity or publish the worker. The historical activation checkpoints describe earlier state and do not override current authentication.
 
 ## Start the adapter on the authorized machine
 
@@ -68,7 +80,7 @@ Default bind: `127.0.0.1:8789`. The `VIDEO_ANALYZER_MODULE` path must be verifie
 
 Cloud receipt: `docs/test-receipts/2026-10-10-video-testing.json`.
 
-## Deployment hold and exact remaining acceptance
+## Historical deployment hold and acceptance — superseded by authorized activation and session integration
 
 This branch adds a Wrangler custom-build stop (`scripts/video-testing-build-guard.mjs`) for CI/Workers Builds unless `VIDEO_TEST_DEPLOY_APPROVED=1` is explicitly set after separate approval. This prevents an authorized branch push from silently becoming an unauthorized preview upload. Do not remove/enable it without approval. It intentionally blocks the CI Worker packaging step too; local dry-run is allowed. No main merge, preview or production deploy is authorized.
 

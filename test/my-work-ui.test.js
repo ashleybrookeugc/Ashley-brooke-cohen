@@ -94,6 +94,16 @@ test('worker activity is loaded separately from projects and never fabricates a 
   assert.doesNotMatch(page,/Herdr connection is not configured|Herdr-managed worker/);
 });
 
+test('live worker activity has one bounded task plan instead of a copied progress transcript',()=>{
+  assert.match(page,/Live task plan/);
+  assert.match(page,/Last confirmed plan/);
+  assert.match(page,/function workerPlan\(worker\)/);
+  assert.match(page,/worker\.plan/);
+  assert.match(page,/This worker has not checked in with a task plan yet/);
+  assert.match(page,/This plan is no longer live because the worker connection is stale/);
+  assert.doesNotMatch(page,/progress_events\?\.at\(-1\)\.message/);
+});
+
 test('technical source records stay in expandable details and errors stay understandable',()=>{
   assert.match(page,/function technical\(item\).*?<details>/s);
   assert.match(page,/The latest next step needs verification/);

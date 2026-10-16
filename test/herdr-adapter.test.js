@@ -122,6 +122,15 @@ test('read-only worker inventory returns managed snapshots without claiming metr
   assert.deepEqual(worker.runtime_metrics,{model:null,tokens:null,cost:null});
 });
 
+test('worker plan stays compact and updates without exposing a transcript',async()=>{
+  const f=await fixture();await f.adapter.activate();
+  const worker=await f.adapter.launch({task:{id:'worker-test',summary:'Show plan',plan:{goal:'Show a compact plan.',steps:[{label:'Read evidence',state:'completed'},{label:'Run the check',state:'current'},{label:'Report the result',state:'next'}]}},authorization:allowed,cwd:f.cwd,agentName:'mk-worker'});
+  assert.equal(worker.plan.steps.length,3);
+  const updated=await f.adapter.updatePlan(worker.id,{goal:'Finish the test.',steps:[{label:'Run the check',state:'completed'},{label:'Reread the result',state:'current'}]});
+  assert.equal(updated.steps[1].state,'current');
+  await assert.rejects(f.adapter.updatePlan(worker.id,{goal:'Bad plan',steps:[{label:'Nothing yet',state:'pending'}]}),error=>error.code==='invalid_request');
+});
+
 test('inventory reports unavailable telemetry as unknown rather than active',async()=>{
   const f=await fixture({run:async(_file,args)=>{
     if(args[0]==='workspace'&&args[1]==='create') return {status:0,stdout:JSON.stringify({result:{workspace:{workspace_id:'w1'},root_pane:{pane_id:'w1:p1'}}}),stderr:''};

@@ -49,6 +49,9 @@ test('actual Worker serves the video page assets and starts the private-access c
   const html = await page.text();
   const assets = [...html.matchAll(/(?:src|href)="(\/video-test\/(?:app\.js|style\.css)[^"]*)"/g)].map(match => match[1]);
   assert.equal(assets.length,2,'Check the actual script and stylesheet referenced by the served HTML');
+  const appSource=await readFile(join(repo,'public/video-test/app.js'),'utf8');
+  const modulePath=appSource.match(/from '\.\/(review\.js[^']*)'/)[1];
+  assets.push('/video-test/'+modulePath);
   for (const path of assets) {
     const response = await fetch(base+path);
     assert.equal(response.status,200,'Worker-first asset must load: '+path);

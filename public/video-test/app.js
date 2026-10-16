@@ -1,5 +1,6 @@
+import {buildReview, timeLabel} from './review.js?v=20261016-plain';
 const $=id=>document.getElementById(id);
-const ui=Object.fromEntries(['access','status','file','video','selected','analyze','progress','refresh','runs','storage','review','boundary','coverage','frames','lanes','raw','correction','observation','time','text','feedback-status','feedback'].map(id=>[id,$(id)]));
+const ui=Object.fromEntries(['access','status','file','video','selected','analyze','progress','refresh','runs','storage','review','boundary','overview','checks','capabilities','coverage','frames','lanes','raw','correction','observation','time','text','feedback-status','feedback'].map(id=>[id,$(id)]));
 let selected=null,objectURL=null,current=null,connected=false,authenticated=false,busy=false,poll=0,db=null;
 const cache=new Map();
 function message(text){ui.status.textContent=text;}
@@ -45,19 +46,19 @@ ui.refresh.onclick=refresh;
 ui.analyze.onclick=()=>{
   if(!selected||busy||!connected)return;
   if(selected.size>64*1048576){ui.progress.textContent='This test supports files up to 64 MiB. Choose a shorter clip.';return;}
-  busy=true;updateAnalyze();ui.progress.textContent='Uploading selected file to your authorized analyzer worker…';
+  busy=true;updateAnalyze();ui.progress.textContent='Sending your selected video securely to your Mac for analysis…';
   const xhr=new XMLHttpRequest();xhr.open('POST','/api/video-test/jobs');xhr.setRequestHeader('content-type','application/octet-stream');xhr.setRequestHeader('x-video-name',encodeURIComponent(selected.name));
   xhr.upload.onprogress=event=>{ui.progress.textContent=event.lengthComputable?'Uploading: '+Math.round(event.loaded/event.total*100)+'% (upload only; analysis has not completed).':'Uploading…';};
   xhr.onerror=()=>{busy=false;connected=false;updateAnalyze();ui.progress.textContent='Connection lost. No completed analysis confirmed. Refresh recent runs before retrying.';};
-  xhr.onload=async()=>{try{const job=JSON.parse(xhr.responseText);if(xhr.status!==202)throw Error(job.error||'Upload failed');ui.progress.textContent='Uploaded. Analyzer is running; no percentage estimate is available.';await openRun(job,true);}catch(error){busy=false;updateAnalyze();ui.progress.textContent=error.message;}};xhr.send(selected);
+  xhr.onload=async()=>{try{const job=JSON.parse(xhr.responseText);if(xhr.status!==202)throw Error(job.error||'Upload failed');ui.progress.textContent='Upload finished. Your Mac is checking the video.';await openRun(job,true);}catch(error){busy=false;updateAnalyze();ui.progress.textContent=error.message;}};xhr.send(selected);
 };
 async function openRun(job,keepPlayback=false){
   clearTimeout(poll);current=cache.get(job.id)||{id:job.id,job,feedback:[]};current.job=job;const run=current;ui.review.hidden=true;
-  if(!keepPlayback){if(objectURL){URL.revokeObjectURL(objectURL);objectURL=null;}ui.video.removeAttribute('src');ui.video.load();selected=null;updateAnalyze();if(connected)ui.video.src='/api/video-test/jobs/'+job.id+'/media';ui.selected.textContent=decodeName(job.name)+(connected?' · worker source':' · source offline; select the original again for playback');}
+  if(!keepPlayback){if(objectURL){URL.revokeObjectURL(objectURL);objectURL=null;}ui.video.removeAttribute('src');ui.video.load();selected=null;updateAnalyze();if(connected)ui.video.src='/api/video-test/jobs/'+job.id+'/media';ui.selected.textContent=decodeName(job.name)+(connected?' · saved video on your Mac':' · source offline; select the original again for playback');}
   try{
     if(!connected){if(current.result)render(current);return;}
     const latest=await api('/jobs/'+job.id);if(current?.id!==job.id)return;run.job=latest;busy=['running','uploading'].includes(latest.state);updateAnalyze();
-    ui.progress.textContent=latest.state==='completed'?'Evidence extraction completed. Creative understanding has not been established.':latest.error||'Analyzer '+latest.state+' · last checked '+new Date().toLocaleTimeString();
+    ui.progress.textContent=latest.state==='completed'?'Basic video notes are ready. The full creative and workflow review is still unfinished.':latest.error||'Analyzer '+latest.state+' · last checked '+new Date().toLocaleTimeString();
     if(latest.state==='completed'){
       run.result=await api('/jobs/'+job.id+'/result');if(current?.id!==job.id)return;
       try{await persist(run);}catch(error){ui.storage.textContent=error.message;}
@@ -67,25 +68,21 @@ async function openRun(job,keepPlayback=false){
 }
 function seek(time){if(Number.isFinite(time)){ui.video.currentTime=time;ui.time.value=time;}}
 function render(run){
-  ui.review.hidden=false;const {manifest,evidence}=run.result;
-  ui.boundary.textContent='Actual sampled evidence, not a creative verdict. Visual meaning and creative findings are unavailable in this analyzer. Human review is separate. Never delete the original based on this test.';
-  const sampling=manifest.coverage.visual_sampling;
-  ui.coverage.textContent=manifest.duration_seconds.toFixed(2)+' seconds · '+sampling.frame_count+' sampled frames · '+sampling.interval_seconds+' second sampling interval. '+evidence.sampling_disclosure;
-  ui.frames.replaceChildren();sampling.frames.forEach((frame,index)=>{const card=element('div',undefined,'frame');if(connected){const img=element('img');img.src='/api/video-test/jobs/'+run.id+'/frames/'+index;img.alt='Sample at '+frame.source_timestamp_seconds+' seconds';img.loading='lazy';card.append(img);}else card.append(element('p','Frame image offline'));const b=element('button',frame.source_timestamp_seconds.toFixed(3)+'s');b.onclick=()=>seek(frame.source_timestamp_seconds);card.append(b);ui.frames.append(card);});
-  ui.lanes.replaceChildren();ui.observation.replaceChildren(new Option('General review','general'));const seen=new Set();
-  for(const [name,lane] of Object.entries(evidence.lanes)){
-    const section=element('div');section.append(element('h3',name.replaceAll('_',' ')),element('p','State: '+lane.state));
-    const observations=lane.observations||lane.spans||lane.raw_observations||[];
-    if(!observations.length)section.append(element('p','No observations supplied in this lane.','muted'));
-    for(const observation of observations){const item=element('article');const time=observation.source_timestamp_seconds??observation.start_seconds??observation.timestamp_seconds;const id=observation.observation_id;
-      if(Number.isFinite(time)){const b=element('button',time.toFixed(3)+'s');b.onclick=()=>seek(time);item.append(b);}
-      item.append(element('pre',JSON.stringify(observation,null,2)));
-      if(id&&!seen.has(id)){seen.add(id);ui.observation.append(new Option(name+' · '+id,id));const b=element('button','Flag / correct');b.onclick=()=>{ui.observation.value=id;ui.time.value=Number.isFinite(time)?time:0;ui.text.focus();};item.append(b);}section.append(item);
-    }ui.lanes.append(section);
-  }
+  ui.review.hidden=false;const {manifest}=run.result;const report=buildReview(run.result);
+  ui.boundary.textContent='These are basic video notes, not a creative verdict. Keep your original video. A full review of the story, actions and editing choices is still unfinished.';
+  ui.overview.replaceChildren();for(const text of report.overview)ui.overview.append(element('p',text));
+  ui.checks.replaceChildren();for(const check of report.checks){const p=element('article');if(Number.isFinite(check.time)){const b=element('button','Watch '+timeLabel(check.time));b.onclick=()=>seek(check.time);p.append(b);}p.append(element('p',check.text));ui.checks.append(p);}
+  ui.capabilities.replaceChildren();for(const text of report.limits)ui.capabilities.append(element('p',text));
+  ui.coverage.textContent=report.coverage;
+  const frames=manifest.coverage?.visual_sampling?.frames||[];
+  ui.frames.replaceChildren();frames.forEach((frame,index)=>{const card=element('div',undefined,'frame');if(connected){const img=element('img');img.src='/api/video-test/jobs/'+run.id+'/frames/'+index;img.alt='Picture checked at '+timeLabel(frame.source_timestamp_seconds);img.loading='lazy';card.append(img);}else card.append(element('p','Picture unavailable while your Mac is disconnected'));const b=element('button','Watch '+timeLabel(frame.source_timestamp_seconds));b.onclick=()=>seek(frame.source_timestamp_seconds);card.append(b);ui.frames.append(card);});
+  ui.lanes.replaceChildren();ui.observation.replaceChildren(new Option('The video overall','general'));const seen=new Set();
+  for(const note of report.byId.values()){if(!seen.has(note.id)){seen.add(note.id);ui.observation.append(new Option(note.label,note.id));}}
+  for(const note of report.timeline){const item=element('article');item.append(element('h4',note.title));if(Number.isFinite(note.time)){const b=element('button','Watch '+timeLabel(note.time));b.onclick=()=>seek(note.time);item.append(b);}item.append(element('p',note.text));if(note.id){const b=element('button','Correct this note');b.onclick=()=>{ui.observation.value=note.id;ui.time.value=Number.isFinite(note.time)?note.time:0;ui.text.focus();};item.append(b);}ui.lanes.append(item);}
+  if(!report.timeline.length)ui.lanes.append(element('p','No moment-by-moment notes were recovered. This is not evidence that nothing happened in the video.'));
   ui.raw.textContent=JSON.stringify(run.result,null,2);ui.time.max=manifest.duration_seconds;renderFeedback(run);
 }
-function renderFeedback(run){ui.feedback.replaceChildren();for(const f of run.feedback||[]){const item=element('article');item.append(element('p',f.timestamp_seconds+'s · '+f.observation_id),element('p',f.text),element('p',f.synced?'Saved and retrieved from analyzer worker.':'Saved on this browser; waiting to sync.','muted'));ui.feedback.append(item);}}
+function renderFeedback(run){const notes=buildReview(run.result).byId;ui.feedback.replaceChildren();for(const f of run.feedback||[]){const item=element('article');item.append(element('p',timeLabel(f.timestamp_seconds)+' · '+(notes.get(f.observation_id)?.title||'Your video review')),element('p',f.text),element('p',f.synced?'Saved on your Mac and retrieved successfully.':'Saved in this browser; waiting to send to your Mac.','muted'));ui.feedback.append(item);}}
 async function syncFeedback(run){
   if(!connected)return;
   try{

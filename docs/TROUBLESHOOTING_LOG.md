@@ -1,5 +1,30 @@
 # Ashley Brooke Cohen Website — Troubleshooting & Recovery Log
 
+## 2026-10-15 — Video review exposes programming data and misses the full creator outcome
+
+**Symptom:** Ashley receives JSON observations, enum states and internal IDs instead of plain-English analysis. She explicitly corrects the scope: the saved analyzer is meant to explain the whole video and support workflow/creative decisions, not only describe pictures.
+
+**Failed approach / root cause:** the default renderer called JSON.stringify for every observation and treated extraction lanes as the product review. Earlier technical activation tests established transport, fidelity and correction persistence, not meaningful creator analysis. The current unchanged worker has no semantic/creative provider or enforced semantic release; relabeling JSON cannot complete those capabilities.
+
+**Verified repair:** PR #43/main aad673a replaces primary code with a plain overview, chronological notes, speech/caption checks, readable source-time playback and correction labels; raw data is collapsed under optional technical details. The requirement map tools/video-testing/REVIEW_REQUIREMENTS.md routes to the full shared V1/Boardroom contracts and preserves unfinished actions/workflow/friction, UGC/edit advice, B-roll, B-Paid, performance and conversational lenses. Website152/152, requirements14, packaging and CI/normal Builds pass. All served assets match source. Actual retained non-private job2ee77206 renders readable notes, seeks to5s at readyState4, saves source-bound speech correction71e5cced at.03s, reads it from the worker and retrieves it on reopening. See docs/test-receipts/2026-10-15-plain-english-video-review.json. No analyzer/worker/auth/route/secret/dependency changes or deletion.
+
+**Diagnostic boundary:** new review module briefly returned404 during rollout, then exact200 without a code/config mutation; no persistent routing cause was established. An old browser test handle accepted reads while click/key actions had no effect; a fresh same-browser tab worked. Do not alter authentication or repeatedly re-upload to work around a stale automation handle.
+
+**Prevention:** verify every transitive browser module after deployment, then inspect the default creator-facing result and correction continuity. A readable extraction summary is a presentation PASS only. Full useful video understanding still requires the already-defined local component, semantic release and product-lens gates.
+
+## 2026-10-15 — Mary Kate login ignored by Video Testing
+
+**Symptom:** Ashley is already signed in to Mary Kate, but Video Testing asks for a separate token and Analyze remains locked after local video selection. Selecting a file/local preview is not evidence of an upload or analysis.
+
+**Failed approach:** the earlier private-token handoff proved the technical connection but made the founder work around an authentication-integration defect. Technical success with that separate cookie did not satisfy the ordinary signed-in user workflow. Ashley explicitly corrected the requirement: reuse existing authenticated login while keeping the Mac private.
+
+**Root cause:** the gateway authorized only `__Host-video_test`, ignoring the signed `abc_admin` session already validated by the control plane. The UI also rendered a mandatory token form. This was separate from the earlier asset and transport problems.
+
+**Repair / local proof:** extract the existing Mary Kate session validator into a shared module used by control/moderation and video. Remove token authentication and its form; existing valid sessions authorize directly, old testing cookies fail, and signed-out users follow the normal login with an allowlisted return to `/video-test/`. Existing eight-hour expiry, logout, same-origin writes, server-only worker bearer and fixed private route remain enforced. Real Wrangler login/session/logout, expired/forged/legacy rejection and actual UI module regressions pass; full website 148/148 with no skips. PR #40 merged at `141d95e58bad21d957cb24915089ae821d206aa0`; GitHub Actions and normal Workers Builds pass. Live HTML/JS match the tested source exactly. The actual existing Brave Mary Kate session automatically connects, with no new login/token; selecting the retained non-private clip enables Analyze and produces completed job `67281538-0100-4b3b-a5b6-0d45a8e213d9`, verified source/hash/full decode and displayed 0/5s frames. Live anonymous/forged/valid-retired-cookie jobs return 401, cross-origin POST 403, and retired token exchange 405. Private service target, 404-only ingress and all existing secret names were read back unchanged. Final review verification also PASSED in the existing authenticated Codex test-browser tab: both 720px frame images loaded; five-second seek set currentTime to 5 with readyState 4; speech-000001 correction at 0.03s (ID `54de58b8-a0cf-4660-92ee-ebf3ee6c6c68`) was saved, read back from the worker and retrieved after page reload. That tab also recognized its existing valid Mary Kate session without login/token entry. Initial native tab interruptions are resolved as a verification blocker; no credential handoff or special test auth was used. Exact receipt: `docs/test-receipts/2026-10-15-video-session-integration.json`.
+
+**Prevention:** exercise the product's ordinary authenticated session end-to-end. A special test credential can prove infrastructure while still hiding a broken user workflow. Do not introduce another login or move a private worker credential into the browser to repair integration.
+
+
 ## 2026-10-15 — Video-test shell loads but its JavaScript returns 503
 
 **Symptom:** Live `/video-test/` returns 200, but `/video-test/app.js?v=20261015b` returns 503 `Temporarily unavailable. Please try again.` The browser remains at `Checking private access…` with Analyze disabled. Separately, `/api/video-test/session` reports `configured:false`; fixing assets alone cannot activate the analyzer.
