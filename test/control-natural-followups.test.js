@@ -100,3 +100,15 @@ test('free fallback uses the same read-only message contract without mutation to
  assert.equal(sent.tools,undefined);
  assert.doesNotMatch(sent.messages[0].content,/calling submit_control_route exactly once/);
 });
+
+test('qualified read-only model remains configurable, bounded and separate from action routing',async()=>{
+ for(const override of [undefined,'@cf/meta/llama-3.1-8b-instruct-fp8']){
+  const calls=[];
+  const router=createWorkersAiRoutingAdapter({CONTROL_READ_ONLY_MODEL:override,AI:{run:async(model,request)=>{calls.push({model,request});return {response:'Controlled answer.'};}}});
+  await router.route('What is the saved goal?',{intent:'read_only_advice'});
+  assert.equal(calls.length,1);
+  assert.equal(calls[0].model,override||'@cf/meta/llama-3.3-70b-instruct-fp8-fast');
+  assert.equal(calls[0].request.max_tokens,700);
+  assert.equal(calls[0].request.tools,undefined);
+ }
+});

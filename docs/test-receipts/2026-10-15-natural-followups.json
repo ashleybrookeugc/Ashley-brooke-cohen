@@ -14,9 +14,9 @@
     "targeted_fail": 2
   },
   "candidate": {
-    "targeted_pass": 6,
-    "suite_total": 193,
-    "passed": 191,
+    "targeted_pass": 7,
+    "suite_total": 194,
+    "passed": 192,
     "skipped": 2,
     "failed": 0,
     "requirements_mapped": 14,
@@ -150,6 +150,54 @@
         }
       ],
       "evaluation": "FAIL: answers all turns but repeats technical row labels, unsupported team/delay/competitor rationale and tells founder to inspect implementation and ask more specific questions."
+    },
+    {
+      "head": "7ce7a93a60c7f8c1402d8cb361d06bcafb70c9d6",
+      "version": "ef34e1c9-51ba-4452-8c12-770e0f37adfd",
+      "observed_at_utc": "2026-10-16T01:32:49.925Z",
+      "nodes": [
+        {
+          "className": "chat-message chat-message-user",
+          "tag": "DIV",
+          "text": "Youhow is v1 doing"
+        },
+        {
+          "className": "chat-message chat-message-assistant",
+          "tag": "DIV",
+          "text": "Mary KateNot yet. The Command Center opens on your phone and can read the latest saved project information without changing it. But Mary Kate has not yet proved the full experience from start to finish.\n\nStill to prove:\n• understand ordinary questions without making you name projects or technical systems\n• keep project information current automatically\n• give work to the right AI worker and return a clear result that was actually checked\n• continue after interruptions without making you carry messages between systems\n• explain status and next steps clearly on your phone\n• complete one small real video task without risking the original file\n\nNext: run one real task from this phone screen all the way from your request to a clear result that was actually checked. Any confusing, stale, or wrong step means V1 is still not ready.\n\nThis is still a conversation. No task or GitHub change has been claimed.Technical detailsV1 source status: 22 total; 0 verified complete; 16 partial; 5 implemented but unverified; 1 not implemented."
+        },
+        {
+          "className": "chat-message chat-message-user",
+          "tag": "DIV",
+          "text": "Youwhat is my desired outcome"
+        },
+        {
+          "className": "chat-message chat-message-assistant",
+          "tag": "DIV",
+          "text": "Mary KateBased on the retrieved evidence, your desired outcome is to have a continuous and seamless experience with the AI system, where you can:\n\n1. **KNOW** the latest project information automatically\n2. **UNDERSTAND** ordinary natural-language questions without needing to name projects or technical systems\n3. **DO** tasks through the strongest appropriate capability, including vibe coding\n4. **CONTINUE** work across workers, sessions, devices, waits, and interruptions\n5. **ENFORCE** consequential rules and gates structurally, rather than relying on model obedience\n6. **LEARN** from genuine new evidence, decisions, failures, and state, and reconcile it into durable truth.\n\nThis is based on the \"Six user-level jobs\" section in the retrieved evidence, which outlines the core objectives of the V1 system.\n\nThis is still a conversation. No task or GitHub change has been claimed."
+        },
+        {
+          "className": "chat-message chat-message-user",
+          "tag": "DIV",
+          "text": "Youfor this site. for mk. ad why is it taking days to make when others have whole interactive dashboards in hours"
+        },
+        {
+          "className": "chat-message chat-message-assistant",
+          "tag": "DIV",
+          "text": "Mary KateBased on the retrieved evidence, it appears that the current implementation of the Mary Kate system is still in the process of being developed and tested. The evidence mentions that the system is still in the \"Mary Kate development branch\" and that the production deployment is not authorized.\n\nThe evidence also mentions that there are several issues that need to be addressed, such as:\n\n* The system is still returning HTTP 422 errors for certain requests, such as \"what should I do today?\" and \"what should I prioritize next?\"\n* The system is not correctly handling the display of video review as the current focus, and is instead returning a generic \"missing information\" explanation.\n* The system is still performing a broad prerequisite scan of every current project's historical Current/Next fields on the priority-advice path, which can block a general read-only answer for unrelated absent or disputed facts.\n\nThese issues suggest that the system is still in the process of being refined and debugged, and that it may take some time to resolve these issues and make the system more stable and functional.\n\nIt's worth noting that the evidence mentions that there are two pull requests (PR #50 and PR #51) that are being worked on to address some of these issues, but it's unclear when these changes will be deployed and when the system will be fully functional.\n\nIn terms of why others have been able to develop interactive dashboards in hours, it's not clear from the evidence. However, it's possible that they may have had a head start on development, or that they may have had a more straightforward set of requirements to implement.\n\nThis is still a conversation. No task or GitHub change has been claimed."
+        },
+        {
+          "className": "chat-message chat-message-user",
+          "tag": "DIV",
+          "text": "Youwhy cant i figure out a simple chatbot, where am i going wrong"
+        },
+        {
+          "className": "chat-message chat-message-assistant",
+          "tag": "DIV",
+          "text": "Mary KateBased on the retrieved evidence, it seems that the issue is not with you, but rather with the current implementation of the Mary Kate system.\n\nThe evidence suggests that the system is still in the process of being developed and tested, and there are several issues that need to be addressed. For example:\n\n* The system is still returning HTTP 422 errors for certain requests, such as \"what should I do today?\" and \"what should I prioritize next?\"\n* The system is not correctly handling the display of video review as the current focus, and is instead returning a generic \"missing information\" explanation.\n* The system is still performing a broad prerequisite scan of every current project's historical Current/Next fields on the priority-advice path, which can block a general read-only answer for unrelated absent or disputed facts.\n\nThese issues suggest that the system is still in the process of being refined and debugged, and that it may take some time to resolve these issues and make the system more stable and functional.\n\nIt's not that you're going wrong, but rather that the system is still in the process of being developed and tested. It's like trying to use a car that's still in the garage and not yet ready for the road.\n\nTo move forward, you can try the following:\n\n* Check the latest evidence and updates on the Mary Kate system to see if any new issues have been addressed.\n* Try to identify the specific issues that are causing the problems you're experiencing, and see if there are any workarounds or temporary solutions that can be used in the meantime.\n* Consider reaching out to the developers or maintainers of the Mary Kate system to ask for more information or assistance.\n\nThis is still a conversation. No task or GitHub change has been claimed.\n\nThis is still a conversation. No task or GitHub change has been claimed."
+        }
+      ],
+      "evaluation": "PARTIAL retrieval / FAIL plain-language acceptance: actual founder jobs recovered; delay answer conflates historical/current records and speculates about competitors; final answer directs founder to maintainers and repeats boilerplate."
     }
   ],
   "packet_diagnostic": {
@@ -513,5 +561,23 @@
       "One220921-character data-staging call exceeded tool64000-byte execution limit; separately reviewed bounded data chunks succeeded.",
       "UI enabled-button wait timed out while the real request was pending; read the completed DOM before continuing, without duplicate sends."
     ]
+  },
+  "read_only_model_qualification": {
+    "selected_model": "@cf/meta/llama-3.3-70b-instruct-fp8-fast",
+    "override": "CONTROL_READ_ONLY_MODEL",
+    "reason": "Three actual8B preview failures remain after evidence repair.",
+    "existing_provider": "Cloudflare AI binding",
+    "calls_per_answer": 1,
+    "max_output_tokens": 700,
+    "runtime_quota_fallback": false,
+    "action_model_changed": false,
+    "official_source": "https://developers.cloudflare.com/workers-ai/models/llama-3.3-70b-instruct-fp8-fast/",
+    "list_price_usd_per_million_tokens": {
+      "input": 0.293,
+      "output": 2.253
+    },
+    "qualification_3_calls_list_price_upper_bound_usd": 0.03,
+    "actual_cost": "unavailable",
+    "status": "awaiting real preview qualification; not promoted"
   }
 }

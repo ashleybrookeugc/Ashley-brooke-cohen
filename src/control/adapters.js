@@ -189,7 +189,9 @@ export function createWorkersAiRoutingAdapter(env) {
   return { async route(input,context,{observeModel=()=>{}}={}) {
     if(!env.AI) throw Object.assign(new Error('Workers AI is unavailable'),{code:'inference_unavailable',status:503});
     if(unresolvedFollowup(input,context)) return {route_kind:'temporary_context',responsibility:'ai_can_handle',confidence:'low',plain_summary:'What do you mean by “'+input.trim()+'”?',why:'clarification_required:unresolved_followup_terms'};
-    const readOnly=isReadOnlyIntent(context),model=env.CONTROL_WORKERS_AI_MODEL||'@cf/meta/llama-3.1-8b-instruct-fp8',started=Date.now();
+    const readOnly=isReadOnlyIntent(context),model=readOnly
+      ? env.CONTROL_READ_ONLY_MODEL||'@cf/meta/llama-3.3-70b-instruct-fp8-fast'
+      : env.CONTROL_WORKERS_AI_MODEL||'@cf/meta/llama-3.1-8b-instruct-fp8',started=Date.now();
     const data=await env.AI.run(model,{messages:modelPrompt(input,context),...(readOnly?{}:{tools:[CONTROL_ROUTE_TOOL]}),max_tokens:700,temperature:0});
     const usage=Object.fromEntries(['prompt_tokens','completion_tokens','total_tokens'].filter(key=>Number.isFinite(data?.usage?.[key])).map(key=>[key,data.usage[key]]));
     observeModel({provider:'workers-ai',model,latency_ms:Date.now()-started,usage});
