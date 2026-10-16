@@ -5,24 +5,7 @@
 
  ⛅️ wrangler 4.151.0
 ────────────────────
-[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mFailed to write to log file [Error: EPERM: operation not permitted, open '/Users/russellstoner/Library/Preferences/.wrangler/logs/wrangler-2026-10-16_02-37-24_461.log'] {[0m
-
-    errno: -1,
-    code: 'EPERM',
-    syscall: 'open',
-    path: '/Users/russellstoner/Library/Preferences/.wrangler/logs/wrangler-2026-10-16_02-37-24_461.log'
-  }
-
-
-[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mWould have written: [0m
-
-  --- 2026-10-16T02:37:24.528Z debug
-  🪵  Writing logs to "/Users/russellstoner/Library/Preferences/.wrangler/logs/wrangler-2026-10-16_02-37-24_461.log"
-  ---
-  
-
-
-✨ Read 458 files from the assets directory /private/tmp/mk-scope-repair/public
+✨ Read 458 files from the assets directory /private/tmp/mk-scope-published/public
 Total Upload: 269.26 KiB / gzip: 73.25 KiB
 Your Worker has access to the following bindings:
 Binding                                                                        Resource                     
@@ -35,4 +18,3 @@ env.CONTROL_GITHUB_APP_ID ("4962733")                                          E
 env.CONTROL_GITHUB_INSTALLATION_ID ("165552010")                               Environment Variable         
 
 --dry-run: exiting now.
-🪵  Logs were written to "/Users/russellstoner/Library/Preferences/.wrangler/logs/wrangler-2026-10-16_02-37-24_461.log"

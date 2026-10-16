@@ -21,8 +21,93 @@
     "packaging": "PASS",
     "diff": "PASS"
   },
-  "remote_exact_commit_verification": "PENDING",
-  "live": "PENDING",
+  "remote_exact_commit_verification": {
+    "status": "PASS",
+    "method": "Read all16 GitHub files byte-for-byte; fetch d5b6c46; git archive into a new empty checkout; run full test suite, requirements, packaging.",
+    "total": 228,
+    "passed": 226,
+    "skipped": 2,
+    "failed": 0,
+    "ci_run": "https://github.com/ashleybrookeugc/Ashley-brooke-cohen/actions/runs/38841493539",
+    "workers_build": "9c95861e-df50-4f0c-81d2-ab15b604908a",
+    "version": "20e4d7a3-3839-47cf-804a-1ead97b2be53"
+  },
+  "live": {
+    "status": "PASS for scoped-follow-up/founder-role/historical-current boundaries; not overall V1 acceptance",
+    "url": "https://codex-natural-chat-followups-ashley-brooke-cohen.ashleybrookeco.workers.dev/control/my-work/",
+    "requests": 6,
+    "original_sequence": "4/4 complete; no scope422 or routing-contract failure",
+    "goal": "Broad natural-language work across projects and continuity; no longer reduced to a small video task",
+    "historical": "Explicit earlier-failure query succeeds and dates the historical behavior2026-10-15",
+    "current": "Current422 question abstains: saved historical notes cannot establish current failure; unverified_present_failure guard",
+    "founder": "No implementation steps requested or engineering responsibility assigned",
+    "queue_before": {
+      "ai": 3,
+      "needs_ashley": 0
+    },
+    "queue_after": {
+      "ai": 3,
+      "needs_ashley": 0
+    },
+    "outcomes": "All six visible recent outcomes temporary_context · captured",
+    "active_work_blob": "58d034f6f62398b6caac8a9f849a3d064d3d41b5",
+    "transcript": [
+      {
+        "className": "chat-message chat-message-user",
+        "text": "Youhow is v1 doing"
+      },
+      {
+        "className": "chat-message chat-message-assistant",
+        "text": "Mary KateNot yet. The Command Center opens on your phone and can read the latest saved project information without changing it. But Mary Kate has not yet proved the full experience from start to finish.\n\nStill to prove:\n• understand ordinary questions without making you name projects or technical systems\n• keep project information current automatically\n• give work to the right AI worker and return a clear result that was actually checked\n• continue after interruptions without making you carry messages between systems\n• explain status and next steps clearly on your phone\n• complete one small real video task without risking the original file\n\nNext: run one real task from this phone screen all the way from your request to a clear result that was actually checked. Any confusing, stale, or wrong step means V1 is still not ready.\n\nThis is still a conversation. No task or GitHub change has been claimed.Technical detailsV1 source status: 22 total; 0 verified complete; 16 partial; 5 implemented but unverified; 1 not implemented."
+      },
+      {
+        "className": "chat-message chat-message-user",
+        "text": "Youwhat is my desired outcome"
+      },
+      {
+        "className": "chat-message chat-message-assistant",
+        "text": "Mary KateYour desired outcome is to have a fully functional V1 of Mary Kate, the AI operating system, that can handle ordinary natural-language work across your projects continuously, without you acting as memory, router, regression suite, or message bus. This means it should be able to understand your requests, retrieve relevant information, and provide accurate and reliable results, all while being able to continue working even after interruptions.\n\nThis is still a conversation. No task or GitHub change has been claimed."
+      },
+      {
+        "className": "chat-message chat-message-user",
+        "text": "Youfor this site. for mk. ad why is it taking days to make when others have whole interactive dashboards in hours"
+      },
+      {
+        "className": "chat-message chat-message-assistant",
+        "text": "Mary KateI don't have evidence to explain why it's taking days to complete V1. The latest saved state mentions that the integrated conversation triage and indexed retrieval repair is released through website PR #44, but it still requires verification for current-priority selection, readable language, broader follow-ups, and exact deployed-version evidence.\n\nThis is still a conversation. No task or GitHub change has been claimed."
+      },
+      {
+        "className": "chat-message chat-message-user",
+        "text": "Youwhy cant i figure out a simple chatbot, where am i going wrong"
+      },
+      {
+        "className": "chat-message chat-message-assistant",
+        "text": "Mary KateI don't have evidence to explain why you're having trouble with the chatbot. The latest saved state mentions that the integrated conversation triage and indexed retrieval repair is released through website PR #44, but it still requires verification for current-priority selection, readable language, broader follow-ups, and exact deployed-version evidence.\n\nThis is still a conversation. No task or GitHub change has been claimed."
+      },
+      {
+        "className": "chat-message chat-message-user",
+        "text": "YouFor Mary Kate, what happened with the earlier read-only failures?"
+      },
+      {
+        "className": "chat-message chat-message-assistant",
+        "text": "Mary KateThe earlier read-only failures were due to the routing result still containing a state-change proposal, which the safety gate correctly prevented, but Ashley received no answer about what to do. This was observed on 2026-10-15.\n\nThis is still a conversation. No task or GitHub change has been claimed."
+      },
+      {
+        "className": "chat-message chat-message-user",
+        "text": "YouIs the chatbot still returning 422 right now?"
+      },
+      {
+        "className": "chat-message chat-message-assistant",
+        "text": "Mary KateThe saved notes describe earlier failures. They do not prove those problems still exist on the current version; that needs a fresh check.\n\nThis is still a conversation. No task or GitHub change has been claimed.Technical detailsAnswer guard: abstained · unverified_present_failure"
+      }
+    ],
+    "limitations": [
+      "Delay and self-blame answers still repeat technical saved-state phrasing aboutPR44; wording usefulness remains partial.",
+      "Finite output guards and six observed requests do not establish arbitrary semantic correctness or V1 acceptance.",
+      "Direct D1 inspection denied7403 via MCP and existing Wrangler; observed UI queues are unchanged, not an independent D1 mutation-count audit.",
+      "No software merge or production promotion performed; approval is next."
+    ]
+  },
   "runtime_files_sha256": {
     "src/control/adapters.js": "1edd57251b066a2680d17af67db7ff084cd4c7ca54c5961f84de289d4a41f631",
     "src/control/conversation-contract.js": "a7ee8f6245879cc3fbccc899ddcbdc3923a38c9632f00d9e0e77ea3a1ed2b64b",
@@ -32,5 +117,7 @@
     "test/control-natural-followups.test.js": "dc842b5311a61c472186036ec8985095b787465dd7a54de7c9a508da83c56471",
     "test/wiki-reading.test.js": "4bef8666cf06e89f7b3ccea7e4a84843760204e779cf37f65cd8cfe0a7f7fcae"
   },
-  "scope": "No provider/model/credential/config changes; same preview path; no software merge approval; PR36 untouched."
+  "scope": "No provider/model/credential/config changes; same preview path; no software merge approval; PR36 untouched.",
+  "recorded_at_utc": "2026-10-16T02:43:01.708Z",
+  "published_source": "d5b6c46e21a10b927614ed4cafa55db6527368cf"
 }
