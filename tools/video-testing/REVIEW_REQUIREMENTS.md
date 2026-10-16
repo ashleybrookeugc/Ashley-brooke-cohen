@@ -17,7 +17,8 @@ Canonical scope: [shared V1 plan](https://github.com/ashleybrookeugc/research-va
 
 ## Presentation acceptance
 
-- Default result: a plain overview, useful checks, chronological notes, playable timestamps and correction controls. Internal IDs, enum states, fingerprints and JSON belong only in optional technical details.
+- Default result: a plain overview, useful checks, chronological notes, playable timestamps and correction controls. Internal IDs, enum states, fingerprints and raw JSON stay out of the webpage; private worker evidence receipts retain the technical data.
+- When returning while signed in and connected, automatically open the newest completed review if no current review or newly selected video exists. Never replace a file selected during connection/run loading.
 - Speech/caption wording stays exact; translating presentation must not silently correct ASR, promote OCR to speech, invent actions or add creative judgments.
 - Explain unavailable/missing/partial evidence in ordinary language. A successful extraction is never labeled a completed creative/workflow review.
 - Human-readable correction labels retain exact internal source/observation/time identities. Existing feedback and offline/reload behavior must survive.

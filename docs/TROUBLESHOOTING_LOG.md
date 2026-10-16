@@ -1,5 +1,15 @@
 # Ashley Brooke Cohen Website — Troubleshooting & Recovery Log
 
+## 2026-10-15 — Founder still sees raw code after the first plain-English repair
+
+**Symptom:** Ashley reports “Still showing raw code” after PR #43. Her original loaded tab was not conclusively inspected; a cache issue is not established.
+
+**Failed approach / confirmed implementation cause:** the earlier repair kept full result JSON in an optional disclosure and required selecting a saved run after reopening. A default plain renderer alone left a raw-code surface and made an existing review harder to find. Do not equate deployed source or a selected test run with the founder’s exact loaded-tab state.
+
+**Verified fix:** PR #46/main `64254d0bcea4675fa9804768a7b085c3878c9878` removes raw-data markup and renderer entirely, and automatically opens the newest completed run only when connected/signed in and no current review/newly selected file exists. Two regressions cover automatic plain review/no raw panel and protecting a file selected while runs load. Full187/187 zero skips using the unchanged analyzer, requirements14, Worker packaging and PR/main CI/normal Builds PASS. All four live assets exact200. A fresh existing-session live browser automatically opens the newest completed review, with raw pre/details panels0; no login/token, upload or run click. The known retained non-private job2ee77206 also displays readable notes, loads two720px frames, seeks to5s with readyState4 and retrieves both prior corrections. Exact receipt: `docs/test-receipts/2026-10-15-readable-video-review-followup.json`. Private/auth/analyzer settings and footage unchanged.
+
+**Prevention:** test return-to-page behavior and every remaining creator-visible raw-data surface. Reformat existing saved evidence rather than require another upload. Preserve the distinction between readable basic notes and still-unfinished action/workflow/creative understanding; actual physical-iPhone/founder usefulness acceptance remains open.
+
 ## 2026-10-15 — Video review exposes programming data and misses the full creator outcome
 
 **Symptom:** Ashley receives JSON observations, enum states and internal IDs instead of plain-English analysis. She explicitly corrects the scope: the saved analyzer is meant to explain the whole video and support workflow/creative decisions, not only describe pictures.

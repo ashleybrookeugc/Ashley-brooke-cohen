@@ -1,0 +1,117 @@
+{
+  "schema": "mary-kate-readable-video-review-followup.v1",
+  "observed_at": "2026-10-16T00:57:51.581Z",
+  "founder_correction": "The webpage is still showing raw code.",
+  "status": "LIVE_PRESENTATION_FOLLOWUP_PASS_FULL_ANALYZER_OUTCOME_UNFINISHED",
+  "implementation": {
+    "pr": 46,
+    "commit": "38174f832a3d0ce9f8d53c472b33d181a3dd5283",
+    "merged_main": "64254d0bcea4675fa9804768a7b085c3878c9878",
+    "changes": [
+      "Remove the raw JSON disclosure and renderer completely",
+      "Automatically open the newest completed run for a connected signed-in user with no current review or selected video",
+      "Preserve a new file selected during connection/run loading"
+    ]
+  },
+  "tests": {
+    "website_pass": 187,
+    "fail": 0,
+    "skipped": 0,
+    "requirement_gate": 14,
+    "packaging": "PASS",
+    "pr_checks": [
+      {
+        "name": "Workers Builds: ashley-brooke-cohen",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "test",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ],
+    "main_checks": [
+      {
+        "name": "Workers Builds: ashley-brooke-cohen",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "test",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ],
+    "regressions": [
+      "Returning user automatically sees a readable completed review, without raw-data markup",
+      "Selecting a video during connection loading prevents automatic saved-run replacement"
+    ]
+  },
+  "live": {
+    "url": "https://ashleybrookecohen.com/video-test/",
+    "assets": [
+      {
+        "path": "/video-test/",
+        "status": 200,
+        "exact": true,
+        "sha256": "cf42eebbd55058d7865023d6679b2f4257c4d08c523745d43024c619968fe53c"
+      },
+      {
+        "path": "/video-test/app.js?v=20261016-readable",
+        "status": 200,
+        "exact": true,
+        "sha256": "67426794ff9d092ddfb9ed983292987844e02933885b2f8b164b97e3701ce8ee"
+      },
+      {
+        "path": "/video-test/style.css?v=20261016-readable",
+        "status": 200,
+        "exact": true,
+        "sha256": "439d7940dbe80d4309afdbbad039a447b5286201501e15a6ec6dc3f181098a79"
+      },
+      {
+        "path": "/video-test/review.js?v=20261016-plain",
+        "status": 200,
+        "exact": true,
+        "sha256": "c827574feffc889940c05e9983a775c644cddb5744aed0d311d6011ab5f97105"
+      }
+    ],
+    "ordinary_existing_session": "Recognized automatically in a fresh browser tab; no token or new login entered",
+    "automatic_saved_review": "PASS; freshest completed run opened with readable overview without any run click or new upload",
+    "raw_pre_details_panels": 0,
+    "non_private_fixture": {
+      "job_id": "2ee77206-d5e2-48b3-8a8b-367c381a6294",
+      "source_sha256": "c48f66d57aff8697302e6e2c4b7ae143ebe738d3a3c82b10de2a2685e0440c6d",
+      "overview": "Your video is 0:05.186 long. Two speech passages and two pieces of on-screen text recovered.",
+      "frame_natural_widths": [
+        720,
+        720
+      ],
+      "seek_seconds": 5,
+      "player_ready_state": 4,
+      "correction_time_input": "5",
+      "previous_corrections_retrieved": [
+        "71e5cced-cfa4-4614-8769-dce55b2a69d5"
+      ],
+      "correction_status": "Saved on your Mac and retrieved successfully.",
+      "previous_correction_count": 2
+    },
+    "new_upload_or_analysis": false,
+    "new_correction": false,
+    "user_original_loaded_tab": "Not conclusively observed; no cache/root-cause claim about that tab. A fresh live page was directly verified."
+  },
+  "preserved": {
+    "analyzer_commit": "e5dfe3e4d3967615f23eb064896de1303f86ded9",
+    "auth_private_worker_secrets_dependencies": "No changes",
+    "source_evidence_feedback": "Retained; no footage deletion",
+    "full_action_workflow_creative_lenses": "UNFINISHED",
+    "asr_accuracy": "Prior frozen wording error remains; no analyzer quality pass claimed",
+    "physical_iphone_creator_acceptance": "UNPASSED"
+  },
+  "diagnostics": {
+    "initial_sandbox_runtime_check": "Localhost bind EPERM; rerun with authorized localhost access passed",
+    "initial_local_full_suite": "185 passed, 2 existing-analyzer integration skips; rerun with unchanged existing analyzer configured passed all 187",
+    "rollout": "Earlier HTML/JS served while Builds was in progress; exact new HTML/JS/CSS/module after success",
+    "nonbrowser_python_read": "403; existing Node public read returned 200; no authentication/config workaround"
+  }
+}
