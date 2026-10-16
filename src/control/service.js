@@ -368,6 +368,20 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
         const detail=ambiguity_gate.reason==='unbound_workstream_request'?'Mary Kate found more than one workstream and could not bind this request to one current workstream, so it changed nothing.':'Mary Kate could not bind this request to one current workstream, so it changed nothing.';
         throw new PriorStateGateError('ambiguous_scope',detail,{gate:'authoritative-ambiguity.v1',status:'blocked',evidence:[],blockers:[{reason:'ambiguous_scope',key:'workstream',facts:ambiguity_gate.candidates.map(section=>({section,label:'workstream'}))}]});
       }
+      if(triage.mode==='priority_advice') {
+        if(!Array.isArray(requiredFactKeys)||requiredFactKeys.some(key=>typeof key!=='string')) throw new PriorStateGateError('invalid_request','required_fact_keys must be an array of strings');
+        // A whole-workload question reads the current registry and its explicit
+        // focus. It does not ask for every historical project's Next field.
+        // This branch precedes generic field retrieval so missing or duplicated
+        // legacy fields cannot turn a useful read-only answer into HTTP 422.
+        const prior_state=createPriorStateReceipt(packet,requiredFactKeys.map(key=>({key:normalizeFactKey(key),section:ambiguity_gate.section})));
+        requirePriorState(prior_state);
+        const route={route_kind:'temporary_context',responsibility:'ai_can_handle',confidence:'high',plain_summary:priorityAdviceSummary(packet.raw_content,packet.source.sha,ambiguity_gate.section),why:'Deterministic read-only triage; no model call or mutation authority.',triage,prior_state,model_selection:{provider:'none',calls:0,task:'priority_advice',...(ambiguity_gate.section?{scope_section:ambiguity_gate.section}:{})}};
+        const interaction=await store.addInteraction({raw_text:text.trim(),route:{...route,retrieval_trace:trace}});
+        mark('response',{response_type:route.route_kind,queue_item_created:false});
+        try {observe(trace);} catch {}
+        return {retrieval_trace:trace,interaction_id:interaction.id,conversation_id:conversationId,plain_summary:route.plain_summary,responsibility:route.responsibility,route_kind:route.route_kind,queue_item:null,model_selection:route.model_selection,triage,handoff:{status:'conversation_active',can_clear:false,message:'This is still a conversation. No task or GitHub change has been claimed.'}};
+      }
       const readOnly=triage.read_only||readOnlyAssessment(text)||isReadQuestion(text);
       mark('intent',{intent:readOnly?'read_only_assessment':'action_or_unclassified'});
       if(!Array.isArray(requiredFactKeys)||requiredFactKeys.some(key=>typeof key!=='string')) throw new PriorStateGateError('invalid_request','required_fact_keys must be an array of strings');
@@ -391,16 +405,8 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
       mark('prior_state',{status:snapshot.prior_state.status,required_fact_keys:snapshot.prior_state.required_fact_keys});
       requirePriorState(snapshot.prior_state);
       if((readOnlyAssessment(text)||assentScope)&&maryKateSection(ambiguity_gate.section)) snapshot.completion_authority=await retrieveCompletionAuthority(github);
-      if(readOnly&&['priority_advice','greeting'].includes(triage.mode)) {
-        const projects=ambiguity_gate.section?snapshot.projects.filter(project=>project.name===ambiguity_gate.section):snapshot.projects;
-        if(triage.mode==='priority_advice') {
-          const sections=new Set(projects.map(project=>project.name));
-          const keys=new Set(['next-bounded-action','next-decision','next','current-objective','current-stage','current','current-assessment','current-blocker']);
-          const requests=[...new Map(facts.filter(fact=>sections.has(fact.section)&&keys.has(fact.key)).map(fact=>[fact.section+'\n'+fact.key,{section:fact.section,key:fact.key}])).values()];
-          snapshot.prior_state=createPriorStateReceipt(packet,requests);
-          requirePriorState(snapshot.prior_state);
-        }
-        const route={route_kind:'temporary_context',responsibility:'ai_can_handle',confidence:'high',plain_summary:triage.mode==='greeting'?'I’m here. Ask about your current work, priorities, or a specific project.':priorityAdviceSummary(packet.raw_content,packet.source.sha,ambiguity_gate.section),why:'Deterministic read-only triage; no model call or mutation authority.',triage,prior_state:snapshot.prior_state,model_selection:{provider:'none',calls:0,task:triage.mode,...(ambiguity_gate.section?{scope_section:ambiguity_gate.section}:{})}};
+      if(readOnly&&triage.mode==='greeting') {
+        const route={route_kind:'temporary_context',responsibility:'ai_can_handle',confidence:'high',plain_summary:'I’m here. Ask about your current work, priorities, or a specific project.',why:'Deterministic read-only triage; no model call or mutation authority.',triage,prior_state:snapshot.prior_state,model_selection:{provider:'none',calls:0,task:triage.mode,...(ambiguity_gate.section?{scope_section:ambiguity_gate.section}:{})}};
         const interaction=await store.addInteraction({raw_text:text.trim(),route:{...route,retrieval_trace:trace}});
         mark('response',{response_type:route.route_kind,queue_item_created:false});
         try {observe(trace);} catch {}

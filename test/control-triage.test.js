@@ -138,9 +138,16 @@ test('D1 history retains the inert priority marker for a following turn without 
   assert.equal(row.model_selection.task,'priority_advice');assert.equal(row.raw_text,undefined);
   assert.equal(triageRequest('Which one first?',{lastRoute:row,recent:{truncated:false}}).mode,'priority_advice');
 });
-test('priority projection cannot silently choose between conflicting recorded next actions',async()=>{
+test('an unrelated historical field conflict does not block today’s explicit focus',async()=>{
   const service=createControlService({store:createMemoryStore(),router:{route(){assert.fail('No dispatch');}},github:{readFile:async()=>({content:content.replace('**Next bounded action:** Check the repaired chat.','**Next bounded action:** Check the repaired chat.\n**Next bounded action:** Deploy immediately.'),sha:'conflicting'})}});
-  await assert.rejects(()=>service.capture('What should I prioritize next?'),{code:'conflict'});
+  const result=await service.capture('What should I prioritize next?');
+  assert.match(result.plain_summary,/Video processing is the current focus/);
+  assert.doesNotMatch(result.plain_summary,/Deploy immediately/);
+  assert.equal(result.model_selection.calls,0);
+});
+test('explicitly required conflicting facts still block before read-only advice',async()=>{
+  const service=createControlService({store:createMemoryStore(),router:{route(){assert.fail('No dispatch');}},github:{readFile:async()=>({content:content.replace('**Next bounded action:** Check the repaired chat.','**Next bounded action:** Check the repaired chat.\n**Next bounded action:** Deploy immediately.'),sha:'conflicting'})}});
+  await assert.rejects(()=>service.capture('What should I prioritize for Mary Kate?',{requiredFactKeys:['next-bounded-action']}),{code:'conflict'});
 });
 test('waiting-only current work is a read-only answer rather than an invented active priority',async()=>{
   const service=createControlService({store:createMemoryStore(),router:{route(){assert.fail('No dispatch');}},github:{readFile:async()=>({content:'## Current active workstreams\n### Video analyzer — WAITING FOR ASHLEY\n**Current blocker:** Need the source clip.\n## Session handoff rule',sha:'waiting'})}});
