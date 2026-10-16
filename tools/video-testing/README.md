@@ -2,6 +2,10 @@
 
 Status: deployed Mary Kate session integration; existing authorized sessions connect, analyze, review, correct and retrieve after reload without a testing token. Actual non-private live technical flow PASS; physical iPhone/creator/semantic acceptance remains unpassed. Physical iPhone and creator/semantic acceptance remain untested.
 
+## Current review presentation — founder correction
+
+The default review now presents a plain-English overview, chronological notes, speech/caption conflicts, readable timestamp links and source-bound correction labels. Raw programming data stays in a collapsed technical disclosure. This is a deterministic presentation of existing evidence, not a new semantic analyzer. The full saved scope includes workflow/actions/friction, UGC story/hook/pacing/edit advice, B-roll/library, B-Paid and performance lenses; their missing stages remain explicit and unpassed. [Requirement-to-implementation map](REVIEW_REQUIREMENTS.md) routes to the canonical shared V1 plan. Prior live technical PASS does not mean this broader creator outcome is complete.
+
 ## Current authentication — 2026-10-15 founder correction
 
 Video Testing reuses Mary Kate's existing signed `abc_admin` login. A user already signed in can select a file and press Analyze with no extra token. A signed-out user follows `/admin/login?returnTo=/video-test/`; successful normal login returns only to that allowlisted path, otherwise to the existing `/control/` default. The shared validator is used by control/moderation and the video gateway, retaining the existing eight-hour expiry and Secure/HttpOnly/SameSite=Strict cookie. Logout or expiry locks video APIs too. No video cookie is minted, and old `__Host-video_test` cookies no longer authorize anything.
