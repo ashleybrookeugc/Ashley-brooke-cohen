@@ -1,5 +1,17 @@
 # Ashley Brooke Cohen Website — Troubleshooting & Recovery Log
 
+## 2026-10-15 — Video review exposes programming data and misses the full creator outcome
+
+**Symptom:** Ashley receives JSON observations, enum states and internal IDs instead of plain-English analysis. She explicitly corrects the scope: the saved analyzer is meant to explain the whole video and support workflow/creative decisions, not only describe pictures.
+
+**Failed approach / root cause:** the default renderer called JSON.stringify for every observation and treated extraction lanes as the product review. Earlier technical activation tests established transport, fidelity and correction persistence, not meaningful creator analysis. The current unchanged worker has no semantic/creative provider or enforced semantic release; relabeling JSON cannot complete those capabilities.
+
+**Verified repair:** PR #43/main aad673a replaces primary code with a plain overview, chronological notes, speech/caption checks, readable source-time playback and correction labels; raw data is collapsed under optional technical details. The requirement map tools/video-testing/REVIEW_REQUIREMENTS.md routes to the full shared V1/Boardroom contracts and preserves unfinished actions/workflow/friction, UGC/edit advice, B-roll, B-Paid, performance and conversational lenses. Website152/152, requirements14, packaging and CI/normal Builds pass. All served assets match source. Actual retained non-private job2ee77206 renders readable notes, seeks to5s at readyState4, saves source-bound speech correction71e5cced at.03s, reads it from the worker and retrieves it on reopening. See docs/test-receipts/2026-10-15-plain-english-video-review.json. No analyzer/worker/auth/route/secret/dependency changes or deletion.
+
+**Diagnostic boundary:** new review module briefly returned404 during rollout, then exact200 without a code/config mutation; no persistent routing cause was established. An old browser test handle accepted reads while click/key actions had no effect; a fresh same-browser tab worked. Do not alter authentication or repeatedly re-upload to work around a stale automation handle.
+
+**Prevention:** verify every transitive browser module after deployment, then inspect the default creator-facing result and correction continuity. A readable extraction summary is a presentation PASS only. Full useful video understanding still requires the already-defined local component, semantic release and product-lens gates.
+
 ## 2026-10-15 — Mary Kate login ignored by Video Testing
 
 **Symptom:** Ashley is already signed in to Mary Kate, but Video Testing asks for a separate token and Analyze remains locked after local video selection. Selecting a file/local preview is not evidence of an upload or analysis.

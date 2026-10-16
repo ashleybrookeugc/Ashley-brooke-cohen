@@ -1,0 +1,133 @@
+{
+  "schema": "mary-kate-plain-english-review.v1",
+  "observed_at": "2026-10-16T00:29:33.049Z",
+  "founder_correction": "Plain English for a non-engineer; retrieve full saved analyzer goals rather than reduce them to isolated-frame descriptions.",
+  "status": "PRESENTATION_LIVE_PASS_FULL_SEMANTIC_AND_PRODUCT_LENSES_UNFINISHED",
+  "implementation": {
+    "pr": 43,
+    "commit": "5be5cf412ac79cd36635a5ac6d0fd6d43ee1adca",
+    "merged_main": "aad673a23919cffd92cfa6c5654c288514d403f8",
+    "method": "Deterministic presentation of existing evidence; no inference service or semantic analyzer added",
+    "requirement_map": "tools/video-testing/REVIEW_REQUIREMENTS.md"
+  },
+  "tests": {
+    "website_pass": 152,
+    "fail": 0,
+    "skipped": 0,
+    "requirement_gate": 14,
+    "packaging": "PASS",
+    "pr_and_main_ci_builds": "SUCCESS",
+    "focused_regressions": [
+      "exact speech/caption preservation and unresolved conflicts",
+      "sampled stability never becomes whole-video inactivity or workflow meaning",
+      "missing evidence never becomes silence/absent people/semantic success",
+      "bounded long-video coverage and untrusted text preserved as data"
+    ]
+  },
+  "live": {
+    "assets": {
+      "initial": [
+        {
+          "path": "/video-test/",
+          "status": 200,
+          "exact": true,
+          "sha256": "58bdf46548700d9cc85860c3bf0eede1177bdcdb2906dd1d56c8bcdb993e80e9"
+        },
+        {
+          "path": "/video-test/app.js?v=20261016-plain",
+          "status": 200,
+          "exact": true,
+          "sha256": "9bfa1dd44f8bb8601fabb608cd09be321a4c7deb953ff15b8f4f698f649332fd"
+        },
+        {
+          "path": "/video-test/style.css?v=20261016-plain",
+          "status": 200,
+          "exact": true,
+          "sha256": "439d7940dbe80d4309afdbbad039a447b5286201501e15a6ec6dc3f181098a79"
+        },
+        {
+          "path": "/video-test/review.js?v=20261016-plain",
+          "status": 404,
+          "exact": false,
+          "sha256": "a9a58eb74008d0bd42da78bea9b26dd18c7de0c4b6bac55af47670bfcb6bb47e"
+        }
+      ],
+      "module_after_propagation": {
+        "path": "/video-test/review.js?v=20261016-plain",
+        "status": 200,
+        "exact": true,
+        "sha256": "c827574feffc889940c05e9983a775c644cddb5744aed0d311d6011ab5f97105"
+      }
+    },
+    "fixture_job": "2ee77206-d5e2-48b3-8a8b-367c381a6294",
+    "source_sha256": "c48f66d57aff8697302e6e2c4b7ae143ebe738d3a3c82b10de2a2685e0440c6d",
+    "existing_session_recognized": true,
+    "additional_login_or_token": false,
+    "overview": "Your video is 0:05.186 long; 2 recovered speech passages and 2 distinct pieces of screen text",
+    "primary_json_blocks": 0,
+    "technical_details_collapsed": true,
+    "readable_observation_labels": true,
+    "conflict_warnings": 2,
+    "seek": {
+      "seconds": 5,
+      "ready_state": 4
+    },
+    "correction": {
+      "id": "71e5cced-cfa4-4614-8769-dce55b2a69d5",
+      "job_id": "2ee77206-d5e2-48b3-8a8b-367c381a6294",
+      "source_sha256": "c48f66d57aff8697302e6e2c4b7ae143ebe738d3a3c82b10de2a2685e0440c6d",
+      "observation_id": "speech-000001",
+      "timestamp_seconds": 0.03,
+      "text": "Plain-English review test: the spoken words should be “I do not think this is fair because you know the answer.” Keep this correction separate from the original automatic transcript.",
+      "kind": "creator_correction",
+      "created_at": "2026-10-16T00:28:09.957Z",
+      "analyzer_version": "synchronized-evidence-2.0.0"
+    },
+    "correction_worker_readback_http": 200,
+    "reopen_retrieval": true,
+    "reported_limitations_visible": true,
+    "browser_recovery": "Old tab handle accepted reads but interactions did nothing; fresh same-browser tab worked. No product change was made to bypass this tool condition."
+  },
+  "full_requirements": {
+    "source_identity_timeline_coverage": "PARTIAL: verified extraction plus sampled structure",
+    "actions_and_workflow_friction": "UNFINISHED: local semantics and claim release required",
+    "ugc_hook_pacing_proof_broll_edit_decisions": "UNFINISHED",
+    "broll_library_semantic_retrieval": "UNFINISHED",
+    "bpaid_qc_buyer_rights_candidates": "UNFINISHED",
+    "portfolio_performance_corpus_review": "UNFINISHED",
+    "conversational_goal_routing_lens_delivery": "UNFINISHED"
+  },
+  "preservation": {
+    "analyzer_core_sha256": "1b2f52b6804c3a28927bee84c8450edd95b647a34433887d5dcb5bf079be00a7",
+    "analyzer_core_changed": false,
+    "server_changed": false,
+    "auth_or_private_route_changes": false,
+    "secrets_changed": false,
+    "dependencies_installed": false,
+    "external_ai_video_calls": false,
+    "paid_services": false,
+    "footage_deleted": false
+  },
+  "acceptance_boundary": "Readable presentation and timestamp/correction continuity passed in a real deployed browser. This does not pass full-video understanding, useful creative/workflow recommendations, physical iPhone or creator acceptance.",
+  "type": "evidence",
+  "scope": "project",
+  "topics": [
+    "video-understanding",
+    "ux",
+    "creator-workflows"
+  ],
+  "source_scope": "internal-observation",
+  "canonical_for": "Founder plain-English/full-scope correction and bounded presentation verification",
+  "canonical_sources": [
+    {
+      "repo": "ashleybrookeugc/research-vault",
+      "path": "shared-capabilities/video-understanding/V1_IMPLEMENTATION_PLAN.md",
+      "blob_sha": "662a469d35cb2672e75bdf0d5e78c68c9a111929"
+    },
+    {
+      "repo": "ashleybrookeugc/research-vault",
+      "path": "shared-capabilities/video-understanding/BOARDROOM_AND_RECIPES.md",
+      "blob_sha": "e40d1bba7258f0bd8fe0992a2d8c137da23a4e7a"
+    }
+  ]
+}
