@@ -14,9 +14,9 @@
     "targeted_fail": 2
   },
   "candidate": {
-    "targeted_pass": 7,
-    "suite_total": 194,
-    "passed": 192,
+    "targeted_pass": 6,
+    "suite_total": 201,
+    "passed": 199,
     "skipped": 2,
     "failed": 0,
     "requirements_mapped": 14,
@@ -198,6 +198,54 @@
         }
       ],
       "evaluation": "PARTIAL retrieval / FAIL plain-language acceptance: actual founder jobs recovered; delay answer conflates historical/current records and speculates about competitors; final answer directs founder to maintainers and repeats boilerplate."
+    },
+    {
+      "head": "9aedbeb1bd3d87a91616f442ae92ad30c4fa90df",
+      "version": "bcb609e6-8a01-48ce-b30f-c406db2a8509",
+      "observed_at_utc": "2026-10-16T01:42:27.970Z",
+      "nodes": [
+        {
+          "className": "chat-message chat-message-user",
+          "tag": "DIV",
+          "text": "Youhow is v1 doing"
+        },
+        {
+          "className": "chat-message chat-message-assistant",
+          "tag": "DIV",
+          "text": "Mary KateNot yet. The Command Center opens on your phone and can read the latest saved project information without changing it. But Mary Kate has not yet proved the full experience from start to finish.\n\nStill to prove:\n• understand ordinary questions without making you name projects or technical systems\n• keep project information current automatically\n• give work to the right AI worker and return a clear result that was actually checked\n• continue after interruptions without making you carry messages between systems\n• explain status and next steps clearly on your phone\n• complete one small real video task without risking the original file\n\nNext: run one real task from this phone screen all the way from your request to a clear result that was actually checked. Any confusing, stale, or wrong step means V1 is still not ready.\n\nThis is still a conversation. No task or GitHub change has been claimed.Technical detailsV1 source status: 22 total; 0 verified complete; 16 partial; 5 implemented but unverified; 1 not implemented."
+        },
+        {
+          "className": "chat-message chat-message-user",
+          "tag": "DIV",
+          "text": "Youwhat is my desired outcome"
+        },
+        {
+          "className": "chat-message chat-message-assistant",
+          "tag": "DIV",
+          "text": "Mary KateYour desired outcome is to have an AI system, Mary Kate, that can continuously and reliably work across your projects, understanding your ordinary language and executing useful tasks without breaking across sessions, workers, or projects. This system should be able to retrieve relevant information, preserve and resume work, enforce rules, and learn from new evidence, all while providing a seamless and natural experience.\n\nIn particular, you want Mary Kate to be able to perform six key jobs:\n1. KNOW - retrieve relevant durable truth automatically\n2. UNDERSTAND - resolve your ordinary language to the intended project/workstream/goal\n3. DO - execute useful work through the strongest appropriate capability\n4. CONTINUE - preserve/resume work across workers, sessions, devices, waits, and interruptions\n5. ENFORCE - make consequential rules/gates structural rather than relying on model obedience\n6. LEARN - selectively reconcile genuine new evidence/decisions/failures/state into durable truth\n\nThis outcome is focused on making ordinary natural-language work across your projects continuously known, actionable, compliant, truthful, learnable, and resumable, without requiring you to act as memory, router, regression suite, or message bus.\n\nThis is still a conversation. No task or GitHub change has been claimed."
+        },
+        {
+          "className": "chat-message chat-message-user",
+          "tag": "DIV",
+          "text": "Youfor this site. for mk. ad why is it taking days to make when others have whole interactive dashboards in hours"
+        },
+        {
+          "className": "chat-message chat-message-assistant",
+          "tag": "DIV",
+          "text": "Mary KateThe evidence shows that Mary Kate's development is focused on a robust, read-only advice system with a strong emphasis on failure prevention, retrieval, and preservation of project state. This approach prioritizes reliability and accuracy over rapid prototyping.\n\nThe comparison to others having whole interactive dashboards in hours might not be directly applicable, as those dashboards may not have the same level of complexity, failure handling, or durability requirements as Mary Kate. The evidence suggests that Mary Kate's development is taking a more deliberate and thorough approach, which may take longer but aims to provide a more reliable and maintainable system.\n\nSome specific factors contributing to the development time include:\n\n* The need to integrate with multiple projects and systems, requiring careful consideration of compatibility and consistency.\n* The emphasis on failure prevention and handling, which requires additional design and testing efforts.\n* The use of a robust and durable data storage system, which may take longer to set up and configure.\n* The focus on providing accurate and reliable read-only advice, which requires careful tuning and testing of the system.\n\nIt's also worth noting that the evidence suggests that the development team is taking a iterative and incremental approach, with multiple pull requests and revisions being made to refine and improve the system. This approach may take longer, but it allows for more thorough testing and validation of the system.\n\nThis is still a conversation. No task or GitHub change has been claimed."
+        },
+        {
+          "className": "chat-message chat-message-user",
+          "tag": "DIV",
+          "text": "Youwhy cant i figure out a simple chatbot, where am i going wrong"
+        },
+        {
+          "className": "chat-message chat-message-assistant",
+          "tag": "DIV",
+          "text": "Mary KateBased on the evidence, it seems that you're trying to develop a robust and reliable chatbot, Mary Kate, that can handle complex conversations and provide accurate read-only advice. However, you're facing challenges in figuring out a simple chatbot.\n\nThe main issue appears to be the complexity of the system and the high standards you've set for it. The evidence suggests that you're trying to integrate multiple projects and systems, handle failures and exceptions, and provide a seamless user experience. This is a challenging task, and it's not surprising that you're struggling to get it right.\n\nSome specific areas where you might be going wrong include:\n\n* Over-engineering: You might be trying to build a system that's too complex, with too many features and capabilities. This can lead to a system that's difficult to understand, maintain, and debug.\n* Lack of clear requirements: The evidence suggests that you have a clear idea of what you want the system to do, but you might not have a clear and concise set of requirements. This can make it difficult to design and build a system that meets your needs.\n* Insufficient testing: The evidence suggests that you're doing some testing, but you might not be doing enough. You need to test the system thoroughly to ensure that it's working as expected and to identify any bugs or issues.\n\nTo get back on track, you might want to try the following:\n\n* Simplify your design: Take a step back and try to simplify your design. Focus on the core features and capabilities that you need, and eliminate any unnecessary complexity.\n* Clarify your requirements: Take some time to clarify your requirements and make sure that you have a clear and concise set of needs. This will help you design and build a system that meets your needs.\n* Test more thoroughly: Make sure that you're testing the system thoroughly, including edge cases and error handling. This will help you identify any bugs or issues and ensure that the system is working as expected.\n\nThis is still a conversation. No task or GitHub change has been claimed."
+        }
+      ],
+      "evaluation": "FAIL qualification: unsupported delay/quality rationale and explicit founder blame for alleged over-engineering, unclear requirements and insufficient testing. Larger model rejected, original model restored."
     }
   ],
   "packet_diagnostic": {
@@ -578,6 +626,20 @@
     },
     "qualification_3_calls_list_price_upper_bound_usd": 0.03,
     "actual_cost": "unavailable",
-    "status": "awaiting real preview qualification; not promoted"
+    "status": "FAILED; rejected; original model restored; optional override and recurring default change removed"
+  },
+  "final_reconciliation": {
+    "main": "9d2e7a7faab886e627ab1466dff607f4f9539f88",
+    "source_tests": {
+      "total": 201,
+      "passed": 199,
+      "skipped": 2,
+      "failed": 0
+    },
+    "doc_conflict": "Top-of-log collision only; preserve both entries",
+    "speaker_role": "Existing Mary Kate product assistant speaking with founder; not an external development adviser",
+    "original_model_restored": true,
+    "production_promotion": false,
+    "final_real_replay": "pending"
   }
 }

@@ -1,8 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {createControlService,createMemoryStore,normalizeConversationHistory} from '../src/control/service.js';
+import {createControlService,createMemoryStore,normalizeConversationHistory,controlErrorResponse} from '../src/control/service.js';
 
 const active=`# Active Work
+## Current focus
+**Workstream:** Mary Kate / AI operating system
+**Do next:** Check a normal conversation and follow-up on the phone.
 ## Current active workstreams
 ### Mary Kate / AI operating system — ACTIVE NOW
 **Current:** Command Center testing.
@@ -22,7 +25,7 @@ test('a follow-up inherits the last uniquely named workstream and answers withou
   const history=[{role:'user',text:'Tell me what is happening with B-Paid.'},{role:'assistant',text:'The source-video choice is still open.'}];
   const result=await app.capture('What should I do first?',{contextWorkstream:'mary-kate-command-center',conversationHistory:history,conversationId:'session_12345678'});
   assert.equal(calls,0);
-  assert.match(result.plain_summary,/B-Paid — ACTIVE \/ PARALLEL: Choose one source video/);
+  assert.match(result.plain_summary,/B-Paid.*project you asked about.*Choose one known messy source video/);
   assert.equal(result.conversation_id,'session_12345678');
   assert.equal(result.handoff.status,'conversation_active');
 });
@@ -34,8 +37,8 @@ test('a cross-project prioritization question is read-only and needs no model ca
   const result=await app.capture('I need help with time management. Can you prioritize all project tasks?',{contextWorkstream:'mary-kate-command-center'});
   assert.equal(calls,0);
   assert.equal(result.model_selection.calls,0);
-  assert.match(result.plain_summary,/Continue phone acceptance/);
-  assert.match(result.plain_summary,/Choose one source video/);
+  assert.match(result.plain_summary,/Mary Kate.*current focus.*normal conversation and follow-up/);
+  assert.doesNotMatch(result.plain_summary,/Choose one source video/);
 });
 
 test('tracked work is distinguished from conversation and from a running worker',async()=>{
@@ -44,11 +47,23 @@ test('tracked work is distinguished from conversation and from a running worker'
   const result=await app.capture('Update B-Paid so the next task is choosing one saved source video.',{contextWorkstream:'mary-kate-command-center'});
   assert.equal(result.handoff.status,'tracked');
   assert.equal(result.handoff.can_clear,true);
-  assert.match(result.handoff.message,/not shown as running until a worker actually checks in/i);
+  assert.match(result.handoff.message,/unreviewed AI suggestion.*No worker has started/i);
 });
 
 test('conversation history is bounded and rejects malformed or oversized context',()=>{
   assert.deepEqual(normalizeConversationHistory(null),[]);
   assert.throws(()=>normalizeConversationHistory([{role:'system',text:'hidden'}]),/user or assistant/);
   assert.throws(()=>normalizeConversationHistory(Array.from({length:13},()=>({role:'user',text:'turn'}))),/at most 12/);
+  assert.throws(()=>normalizeConversationHistory([{role:'assistant',text:'x'.repeat(2200)}]),/1–2000 characters/);
+});
+
+test('a long old assistant answer cannot make current priority advice report missing Project Truth',async()=>{
+  const app=createControlService({github,router:{route(){assert.fail('No model call');}},store:createMemoryStore()});
+  const longAnswer='Mary Kate / AI operating system and video processing. '.repeat(50);
+  const history=[{role:'user',text:'What should I do today?'},{role:'assistant',text:longAnswer.slice(0,2000)}];
+  const result=await app.capture('What should I do today?',{contextWorkstream:'mary-kate-command-center',conversationHistory:history});
+  assert.match(result.plain_summary,/current focus/);
+  assert.equal(result.model_selection.calls,0);
+  try {await app.capture('What should I do today?',{conversationHistory:[{role:'assistant',text:longAnswer}]});assert.fail('Oversized context must be rejected');}
+  catch(error){assert.equal(controlErrorResponse(error).code,'invalid_request');}
 });

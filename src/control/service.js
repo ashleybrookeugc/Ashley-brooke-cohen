@@ -49,27 +49,29 @@ const readOnlyAssessment=text=>{
     && /\b(?:v1|first version|status|stage|stand|complete|completed|completion|finished|unfinished|ready|readiness|left|remain|remains|remaining|outstanding|gaps?|missing|progress)\b/.test(words)
     && !/\b(?:update|set|change|mark|approve|publish|ship|post|send|delete|spend|pay|purchase|transfer|remove|deploy|merge|buy|upload|execute|run|resume|continue|advance)\b/.test(words);
 };
-function priorityAdviceSummary(projects=[]) {
-  const rows=(projects||[]).filter(project=>project?.name);
-  const active=rows.filter(project=>!/(paused|waiting|blocked|inactive|completed|done)/i.test(project.name));
-  const ranked=active.map((project,index)=>({project,index,first:/ACTIVE NOW/i.test(project.name)}))
-    .sort((a,b)=>Number(b.first)-Number(a.first)||a.index-b.index).map(x=>x.project);
-  const focus=(ranked.length?ranked:rows).slice(0,5);
-  if(!focus.length) return 'I could not find any current projects in the saved work record, so there is no verified priority to recommend yet.';
-  const priorities=focus.map(project=>{
-    const next=project['Next bounded action']||project['Next decision']||project.Next||project['Current objective']||project['Current stage']||project.Current;
-    return `${project.name}: ${next||'the current next step still needs verification'}`;
-  });
-  const blockers=rows.map(project=>{
-    const direct=project['Current blocker'];
-    if(direct) return `${project.name}: ${direct}`;
-    const evidence=[project['Current assessment'],project['Current objective'],project['Current stage'],project.Current].filter(Boolean).join(' ');
-    return /unverified|not proven|blocked|pending|open/i.test(evidence)
-      ? `${project.name}: an important check is still unverified.` : null;
-  }).filter(Boolean).slice(0,5);
-  const priorityText=priorities.map(value=>value.replace(/[.;]+$/,'')+'.').join(' ');
-  const blockerText=blockers.length?` Open checks or blockers: ${blockers.map(value=>value.replace(/[.;]+$/,'')+'.').join(' ')}`:' I do not see a separate blocker recorded for these projects.';
-  return `Based on the current saved work, your priorities are: ${priorityText}${blockerText}`;
+function priorityAdviceSummary(activeWork,sha,scope=null,question='') {
+  const view=buildMyWorkProjection({activeWork,activeSha:sha});
+  const focus=scope?view.projects.filter(project=>project.name===canonicalSectionName(scope)):view.today.map(item=>view.projects.find(project=>project.id===item.project_id)).filter(Boolean);
+  const asksBlockers=/\b(?:blockers?|blocked|holding (?:us|me) up)\b/i.test(question);
+  if(!focus.length) {
+    if(!view.projects.length) return 'I could not find any current projects in the saved work record, so I cannot recommend a priority yet.';
+    const waiting=view.projects.filter(project=>/waiting|blocked/i.test(project.project_status));
+    if(view.projects.length===1&&waiting.length===1) return `${waiting[0].name} is waiting: ${waiting[0].attention||waiting[0].blocked_or_unverified}`;
+    const video=view.projects.find(project=>/video|analyzer|evidence/i.test(project.name)&&/active/i.test(project.project_status));
+    return `The saved record does not identify one current focus.${video?' Video processing is still active.':''} I will not rank the other projects from old notes.`;
+  }
+  if(asksBlockers) return focus.map(project=>{
+    const name=/video|analyzer|evidence/i.test(project.name)?'video processing':project.name.replace(/\s*\/\s*AI operating system/i,'');
+    return project.blocked_or_unverified&&project.blocked_or_unverified!=='No blocker is currently recorded.'
+      ? `${name}: ${project.blocked_or_unverified}`
+      : `No specific blocker is saved for ${name}. The next step still needs to be checked with a real result.`;
+  }).join(' ');
+  return focus.map(project=>{
+    const name=/video|analyzer|evidence/i.test(project.name)?'Video processing':project.name.replace(/\s*\/\s*AI operating system/i,'');
+    const next=project.next_kind==='conflict'||project.next_kind==='missing'?'The next step needs a current check.':project.next;
+    const blocker=project.blocked_or_unverified&&project.blocked_or_unverified!=='No blocker is currently recorded.'?` Still to prove: ${project.blocked_or_unverified}`:'';
+    return `${name} is ${scope?'the project you asked about':'the current focus'}. Next: ${next}${blocker}`;
+  }).join(' ');
 }
 const readOnlyReturn=(text,recent)=>Boolean(recent?.turns?.length&&!recent.truncated)
   && /^(?:(?:ok(?:ay)?|alright)[,\s]+)?(?:back|return) to\b/i.test(text.trim())
@@ -97,7 +99,7 @@ const sectionScore=(text,section)=>{
   return distinctive.filter(word=>input.includes(' '+word+' ')).length;
 };
 export function resolveAuthoritativeWorkstream(text, facts) {
-  const sections=[...new Set(facts.map(f=>f.section))].filter(section=>section!=='document'&&!/^\d{4}-\d{2}-\d{2}/.test(section)&&! /^(?:current execution priority|current active workstreams|session handoff rule|rules)$/i.test(section));
+  const sections=[...new Set(facts.map(f=>f.section))].filter(section=>section!=='document'&&!/^\d{4}-\d{2}-\d{2}/.test(section)&&! /^(?:current focus|current execution priority|current active workstreams|session handoff rule|rules)$/i.test(section));
   const ugcApp=/\b(?:ugc app|ugc creator app|contentease)\b/i.test(text);
   if(ugcApp&&!namesMaryKate(text)&&! /\bb-paid\b/i.test(text)) {
     const matches=sections.filter(section=>/^ContentEase\s*\//i.test(section));
@@ -128,7 +130,7 @@ export function resolveAuthoritativeWorkstream(text, facts) {
 }
 const continuationWithoutBinding=text=>/^(?:yes|yep|sure|ok(?:ay)?|fine|go ahead|carry on|continue|do that|use that|send it|send whichever|the one we discussed)\b/i.test(text.trim());
 const activeWorkstreamSections=facts=>[...new Set((facts||[]).map(fact=>fact.section).filter(section=>{
-  if(!section||section==='document'||/^(?:session handoff rule|current active workstreams|current execution priority)$/i.test(section)) return false;
+  if(!section||section==='document'||/^(?:session handoff rule|current focus|current active workstreams|current execution priority)$/i.test(section)) return false;
   return !/\b(?:paused|waiting|blocked|inactive|completed|done)\b/i.test(section);
 }))];
 const unqualifiedWorkstreamRequest=text=>/^(?:(?:(?:can you|could you|please)\s+)?(?:tell me\s+|show me\s+|give me\s+)?(?:what(?:'s| is)\s+(?:the\s+)?(?:next|next step|next action|next bounded action|current action|current priority|current status|current stage|latest status)\b|what should (?:(?:we|i)\s+)?(?:do|happen)\s+next\b|what needs to happen next\b)|(?:(?:which|what)\s+(?:project|workstream|thread)\s+should\s+(?:we|i)\b)|(?:(?:advance|resume|continue|proceed|move forward|update|set|change|approve|publish|send|delete|spend|transfer|remove)\b))/i.test(String(text||'').trim());
@@ -194,6 +196,7 @@ function requirePriorState(receipt) {
 // schema key it would have to decipher.
 function translateControlError(error) {
   if (error instanceof PriorStateGateError) {
+    if(error.code==='invalid_request') return {error:error.message,code:'invalid_request'};
     const conflict=error.prior_state?.blockers?.find(blocker=>blocker.reason==='conflict');
     if (conflict) {
       const choices=conflict.facts.map(fact=>({source:fact.section||fact.id,value:fact.value}));
@@ -379,6 +382,20 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
         const detail=ambiguity_gate.reason==='unbound_workstream_request'?'Mary Kate found more than one workstream and could not bind this request to one current workstream, so it changed nothing.':'Mary Kate could not bind this request to one current workstream, so it changed nothing.';
         throw new PriorStateGateError('ambiguous_scope',detail,{gate:'authoritative-ambiguity.v1',status:'blocked',evidence:[],blockers:[{reason:'ambiguous_scope',key:'workstream',facts:ambiguity_gate.candidates.map(section=>({section,label:'workstream'}))}]});
       }
+      if(triage.mode==='priority_advice') {
+        if(!Array.isArray(requiredFactKeys)||requiredFactKeys.some(key=>typeof key!=='string')) throw new PriorStateGateError('invalid_request','required_fact_keys must be an array of strings');
+        // A whole-workload question reads the current registry and its explicit
+        // focus. It does not ask for every historical project's Next field.
+        // This branch precedes generic field retrieval so missing or duplicated
+        // legacy fields cannot turn a useful read-only answer into HTTP 422.
+        const prior_state=createPriorStateReceipt(packet,requiredFactKeys.map(key=>({key:normalizeFactKey(key),section:ambiguity_gate.section})));
+        requirePriorState(prior_state);
+        const route={route_kind:'temporary_context',responsibility:'ai_can_handle',confidence:'high',plain_summary:priorityAdviceSummary(packet.raw_content,packet.source.sha,ambiguity_gate.section,text),why:'Deterministic read-only triage; no model call or mutation authority.',triage,prior_state,model_selection:{provider:'none',calls:0,task:'priority_advice',...(ambiguity_gate.section?{scope_section:ambiguity_gate.section}:{})}};
+        const interaction=await store.addInteraction({raw_text:text.trim(),route:{...route,retrieval_trace:trace}});
+        mark('response',{response_type:route.route_kind,queue_item_created:false});
+        try {observe(trace);} catch {}
+        return {retrieval_trace:trace,interaction_id:interaction.id,conversation_id:conversationId,plain_summary:route.plain_summary,responsibility:route.responsibility,route_kind:route.route_kind,queue_item:null,model_selection:route.model_selection,triage,handoff:{status:'conversation_active',can_clear:false,message:'This is still a conversation. No task or GitHub change has been claimed.'}};
+      }
       const readOnly=triage.read_only||readOnlyAssessment(text)||isReadQuestion(text);
       mark('intent',{intent:readOnly?'read_only_assessment':'action_or_unclassified'});
       if(!Array.isArray(requiredFactKeys)||requiredFactKeys.some(key=>typeof key!=='string')) throw new PriorStateGateError('invalid_request','required_fact_keys must be an array of strings');
@@ -402,16 +419,8 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
       mark('prior_state',{status:snapshot.prior_state.status,required_fact_keys:snapshot.prior_state.required_fact_keys});
       requirePriorState(snapshot.prior_state);
       if((readOnlyAssessment(text)||assentScope)&&maryKateSection(ambiguity_gate.section)) snapshot.completion_authority=await retrieveCompletionAuthority(github);
-      if(readOnly&&['priority_advice','greeting'].includes(triage.mode)) {
-        const projects=ambiguity_gate.section?snapshot.projects.filter(project=>project.name===ambiguity_gate.section):snapshot.projects;
-        if(triage.mode==='priority_advice') {
-          const sections=new Set(projects.map(project=>project.name));
-          const keys=new Set(['next-bounded-action','next-decision','next','current-objective','current-stage','current','current-assessment','current-blocker']);
-          const requests=[...new Map(facts.filter(fact=>sections.has(fact.section)&&keys.has(fact.key)).map(fact=>[fact.section+'\n'+fact.key,{section:fact.section,key:fact.key}])).values()];
-          snapshot.prior_state=createPriorStateReceipt(packet,requests);
-          requirePriorState(snapshot.prior_state);
-        }
-        const route={route_kind:'temporary_context',responsibility:'ai_can_handle',confidence:'high',plain_summary:triage.mode==='greeting'?'I’m here. Ask about your current work, priorities, or a specific project.':priorityAdviceSummary(projects),why:'Deterministic read-only triage; no model call or mutation authority.',triage,prior_state:snapshot.prior_state,model_selection:{provider:'none',calls:0,task:triage.mode,...(ambiguity_gate.section?{scope_section:ambiguity_gate.section}:{})}};
+      if(readOnly&&triage.mode==='greeting') {
+        const route={route_kind:'temporary_context',responsibility:'ai_can_handle',confidence:'high',plain_summary:'I’m here. Ask about your current work, priorities, or a specific project.',why:'Deterministic read-only triage; no model call or mutation authority.',triage,prior_state:snapshot.prior_state,model_selection:{provider:'none',calls:0,task:triage.mode,...(ambiguity_gate.section?{scope_section:ambiguity_gate.section}:{})}};
         const interaction=await store.addInteraction({raw_text:text.trim(),route:{...route,retrieval_trace:trace}});
         mark('response',{response_type:route.route_kind,queue_item_created:false});
         try {observe(trace);} catch {}
@@ -473,7 +482,7 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
       let item=null;
       if(route.proposal) item=await store.addQueueItem({interaction_id:interaction.id,...route});
       const handoff=item
-        ? {status:'tracked',can_clear:true,message:route.responsibility==='needs_ashley'?'This is saved in Needs your attention until you approve or reject it.':'This is saved under Today as work AI can handle next. It is not shown as running until a worker actually checks in.'}
+        ? {status:'tracked',can_clear:true,message:route.responsibility==='needs_ashley'?'This is saved in Needs your attention until you approve or reject it.':'This is saved as an unreviewed AI suggestion, separate from today’s priorities. No worker has started.'}
         : {status:'conversation_active',can_clear:false,message:'This is still a conversation. No task or GitHub change has been claimed.'};
       mark('response',{response_type:route.route_kind,queue_item_created:Boolean(item)});
       try {observe(trace);} catch { /* Diagnostics must not alter authorization or availability. */ }
