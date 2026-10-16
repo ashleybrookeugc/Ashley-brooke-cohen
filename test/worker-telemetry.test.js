@@ -39,6 +39,14 @@ test('telemetry allowlist cannot transmit credentials or claim verified output',
   assert.doesNotMatch(text,/PRIVATE_KEY_MARKER|TOKEN_MARKER|SECRET_MARKER|authorization|private_key/i);
 });
 
+test('project association is exact and bounded without trusting arbitrary task fields',()=>{
+  const normalized=normalizeWorkerTelemetry({...envelope,workers:[{...worker,task:{...worker.task,project_id:'mary-kate-ai-operating-system',secret:'TOKEN_MARKER'}}]});
+  assert.equal(normalized.workers[0].task.project_id,'mary-kate-ai-operating-system');
+  assert.doesNotMatch(JSON.stringify(normalized),/TOKEN_MARKER/);
+  const invalid=normalizeWorkerTelemetry({...envelope,workers:[{...worker,task:{...worker.task,project_id:'../../other-project'}}]});
+  assert.equal(invalid.workers[0].task.project_id,null);
+});
+
 test('fresh D1 telemetry is connected and an expired snapshot becomes disconnected',async()=>{
   let current='2026-10-09T12:00:02.000Z';
   const store=createWorkerTelemetryStore(memoryDb(),{now:()=>current,freshMs:20000});

@@ -65,7 +65,7 @@ function cleanWorker(worker) {
   const telemetryStatus=worker?.telemetry?.status==='unavailable'?'unavailable':'available';
   return {
     id,
-    task:{id:taskId,summary:cleanString(worker?.task?.summary,240)||'Task unavailable'},
+    task:{id:taskId,summary:cleanString(worker?.task?.summary,240)||'Task unavailable',project_id:/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(worker?.task?.project_id||'')&&worker.task.project_id.length<=100?worker.task.project_id:null},
     state,
     state_source:worker?.state_source==='herdr'?'herdr':'unknown',
     outcome_verified:false,

@@ -109,24 +109,28 @@ test('live worker activity has one bounded task plan instead of a copied progres
   assert.doesNotMatch(page,/progress_events\?\.at\(-1\)\.message/);
 });
 
-test('Today ties fresh video worker steps to the saved priority without claiming stale or unrelated work',()=>{
-  const start=script.indexOf('const isVideoFocus=');
+test('all projects show saved progress and only explicitly linked fresh workers as live',()=>{
+  const start=script.indexOf('function projectActivity(');
   const end=script.indexOf('function priorityCard(',start);
   assert.ok(start>0&&end>start);
-  const activity=new Script('const esc=s=>String(s??"").replaceAll("<","&lt;");'+script.slice(start,end)+';todayActivity').runInNewContext();
-  const video={project:'Shared video analyzer',label:'Video processing'};
-  const worker={task:{summary:'Repair video analyzer uploads'},identity:{agent_name:'Video worker'},state:'running',state_source:'herdr',plan:{goal:'Verify uploaded-file workflow',steps:[{label:'Inspect the failure',state:'completed'},{label:'Test an upload',state:'current'},{label:'Review result',state:'next'}]}};
+  const activity=new Script('const esc=s=>String(s??"").replaceAll("<","&lt;");'+script.slice(start,end)+';projectActivity').runInNewContext();
+  const video={project_id:'video-analyzer',last_verified_work:'Yesterday: fixed the upload flow.'};
+  const worker={task:{project_id:'video-analyzer',summary:'Repair video analyzer uploads'},identity:{agent_name:'Video worker'},state:'running',state_source:'herdr',plan:{goal:'Verify uploaded-file workflow',steps:[{label:'Inspect the failure',state:'completed'},{label:'Test an upload',state:'current'},{label:'Review result',state:'next'}]}};
   const connected={enabled:true,connection:{state:'connected',fresh:true},workers:[worker]};
   assert.match(activity(video,connected),/Working now:.*Video worker/);
+  assert.match(activity(video,connected),/Last saved progress:.*Yesterday/);
   assert.match(activity(video,connected),/Current step:.*Test an upload/);
   assert.match(activity(video,connected),/Next:.*Review result/);
   assert.doesNotMatch(activity(video,{...connected,connection:{state:'disconnected',fresh:false}}),/Working now:/);
   assert.match(activity(video,{...connected,connection:{state:'disconnected',fresh:false}}),/Herdr is offline/);
-  assert.match(activity(video,{...connected,workers:[{...worker,task:{summary:'Cloudflare worker display acceptance'},plan:null}]}),/no video agent has checked in/);
+  assert.match(activity(video,{...connected,workers:[{...worker,task:{summary:'Repair video analyzer uploads'},plan:null}]}),/No linked agent/);
   assert.doesNotMatch(activity(video,{...connected,workers:[{...worker,state:'completed'}]}),/Working now:/);
   assert.doesNotMatch(activity(video,{...connected,workers:[{...worker,plan:null}]}),/Current step:/);
   assert.match(activity(video,null),/Live worker updates are unavailable/);
-  assert.equal(activity({project:'Mary Kate / AI operating system'},connected),'');
+  const maryKate={id:'mary-kate-ai-operating-system',last_verified_work:'Today: updated Active Work.'};
+  assert.match(activity(maryKate,connected),/Today: updated Active Work/);
+  assert.doesNotMatch(activity(maryKate,connected),/Working now:/);
+  assert.match(activity(maryKate,{...connected,workers:[{...worker,task:{...worker.task,project_id:maryKate.id}}]}),/Working now:/);
 });
 
 test('technical source records stay in expandable details and errors stay understandable',()=>{
