@@ -77,6 +77,8 @@ test('primary Command Center copy translates backend state before exposing techn
 test('chat preserves safe structured failures instead of replacing every response with a generic message',()=>{
   assert.match(page,/function chatFailure/);
   assert.match(page,/prior_state_ambiguous_scope/);
+  assert.match(page,/conversation\.messages\.slice\(-8\)\.map/);
+  assert.match(page,/text:text\.slice\(0,2000\)/);
   assert.match(page,/I misunderstood your question as a request to change something/);
   assert.doesNotMatch(page,/Routing selected a write target outside the resolved workstream/);
   assert.match(page,/Nothing was recorded as successful/);

@@ -43,8 +43,11 @@ test('equivalent prioritization requests retrieve evidence and answer with zero 
     assert.equal(result.queue_item,null);
     assert.equal(run.reads,1);
     assert.equal(run.writes,0);
-    assert.match(result.plain_summary,/Video processing is the current focus/i,input);
-    assert.match(result.plain_summary,/Review a real video from start to finish/i);
+    if(/blockers?|blocked/i.test(input)) assert.match(result.plain_summary,/No specific blocker is saved for video processing/i,input);
+    else {
+      assert.match(result.plain_summary,/Video processing is the current focus/i,input);
+      assert.match(result.plain_summary,/Review a real video from start to finish/i);
+    }
     assert.doesNotMatch(result.plain_summary,/repaired chat|signed agreement/i);
     const row=(await run.store.listHistory(1))[0];
     assert.equal(row.route.prior_state.material[0].sha,'current-work-sha');
@@ -57,6 +60,10 @@ test('natural priority follow-ups are free and cached work is refreshed at expir
   await run.service.capture('what to prioritize next');
   for(const input of ['Which one first?', 'And what about the blockers?', 'Anything else?']){
     const result=await run.service.capture(input);assert.equal(result.model_selection.calls,0,input);
+    if(/blockers/.test(input)) {
+      assert.match(result.plain_summary,/No specific blocker is saved for video processing/i);
+      assert.doesNotMatch(result.plain_summary,/Next: Review/i);
+    }
   }
   assert.equal(run.reads,1);
   time=300001;

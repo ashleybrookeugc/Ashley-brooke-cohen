@@ -49,9 +49,10 @@ const readOnlyAssessment=text=>{
     && /\b(?:v1|first version|status|stage|stand|complete|completed|completion|finished|unfinished|ready|readiness|left|remain|remains|remaining|outstanding|gaps?|missing|progress)\b/.test(words)
     && !/\b(?:update|set|change|mark|approve|publish|ship|post|send|delete|spend|pay|purchase|transfer|remove|deploy|merge|buy|upload|execute|run|resume|continue|advance)\b/.test(words);
 };
-function priorityAdviceSummary(activeWork,sha,scope=null) {
+function priorityAdviceSummary(activeWork,sha,scope=null,question='') {
   const view=buildMyWorkProjection({activeWork,activeSha:sha});
   const focus=scope?view.projects.filter(project=>project.name===canonicalSectionName(scope)):view.today.map(item=>view.projects.find(project=>project.id===item.project_id)).filter(Boolean);
+  const asksBlockers=/\b(?:blockers?|blocked|holding (?:us|me) up)\b/i.test(question);
   if(!focus.length) {
     if(!view.projects.length) return 'I could not find any current projects in the saved work record, so I cannot recommend a priority yet.';
     const waiting=view.projects.filter(project=>/waiting|blocked/i.test(project.project_status));
@@ -59,6 +60,12 @@ function priorityAdviceSummary(activeWork,sha,scope=null) {
     const video=view.projects.find(project=>/video|analyzer|evidence/i.test(project.name)&&/active/i.test(project.project_status));
     return `The saved record does not identify one current focus.${video?' Video processing is still active.':''} I will not rank the other projects from old notes.`;
   }
+  if(asksBlockers) return focus.map(project=>{
+    const name=/video|analyzer|evidence/i.test(project.name)?'video processing':project.name.replace(/\s*\/\s*AI operating system/i,'');
+    return project.blocked_or_unverified&&project.blocked_or_unverified!=='No blocker is currently recorded.'
+      ? `${name}: ${project.blocked_or_unverified}`
+      : `No specific blocker is saved for ${name}. The next step still needs to be checked with a real result.`;
+  }).join(' ');
   return focus.map(project=>{
     const name=/video|analyzer|evidence/i.test(project.name)?'Video processing':project.name.replace(/\s*\/\s*AI operating system/i,'');
     const next=project.next_kind==='conflict'||project.next_kind==='missing'?'The next step needs a current check.':project.next;
@@ -189,6 +196,7 @@ function requirePriorState(receipt) {
 // schema key it would have to decipher.
 function translateControlError(error) {
   if (error instanceof PriorStateGateError) {
+    if(error.code==='invalid_request') return {error:error.message,code:'invalid_request'};
     const conflict=error.prior_state?.blockers?.find(blocker=>blocker.reason==='conflict');
     if (conflict) {
       const choices=conflict.facts.map(fact=>({source:fact.section||fact.id,value:fact.value}));
@@ -376,7 +384,7 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
         // legacy fields cannot turn a useful read-only answer into HTTP 422.
         const prior_state=createPriorStateReceipt(packet,requiredFactKeys.map(key=>({key:normalizeFactKey(key),section:ambiguity_gate.section})));
         requirePriorState(prior_state);
-        const route={route_kind:'temporary_context',responsibility:'ai_can_handle',confidence:'high',plain_summary:priorityAdviceSummary(packet.raw_content,packet.source.sha,ambiguity_gate.section),why:'Deterministic read-only triage; no model call or mutation authority.',triage,prior_state,model_selection:{provider:'none',calls:0,task:'priority_advice',...(ambiguity_gate.section?{scope_section:ambiguity_gate.section}:{})}};
+        const route={route_kind:'temporary_context',responsibility:'ai_can_handle',confidence:'high',plain_summary:priorityAdviceSummary(packet.raw_content,packet.source.sha,ambiguity_gate.section,text),why:'Deterministic read-only triage; no model call or mutation authority.',triage,prior_state,model_selection:{provider:'none',calls:0,task:'priority_advice',...(ambiguity_gate.section?{scope_section:ambiguity_gate.section}:{})}};
         const interaction=await store.addInteraction({raw_text:text.trim(),route:{...route,retrieval_trace:trace}});
         mark('response',{response_type:route.route_kind,queue_item_created:false});
         try {observe(trace);} catch {}
