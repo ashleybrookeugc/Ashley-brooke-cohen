@@ -1,5 +1,15 @@
 # Ashley Brooke Cohen Website — Troubleshooting & Recovery Log
 
+## 2026-10-16 — Video priority does not show current agent work
+
+**Symptom:** Today named video processing as the current priority but gave no answer about whether an agent was working on it or what step the agent was doing.
+
+**Failed approach / root cause:** A saved priority and the separate Herdr worker section were displayed independently. A priority is an intention; it is not evidence of a running worker. Herdr only reports its own adapter-owned workers through signed short-lived check-ins, and a stale connection cannot prove present activity.
+
+**Repair:** Today now reads the existing private worker projection on the same five-second refresh. A fresh running worker whose assigned task clearly names video work shows its current and next plan steps. Offline, unavailable, blocked and no matching worker states receive distinct plain-language messages. The saved next step remains visible. No worker is launched or falsely attached to the priority.
+
+**Prevention / proof:** UI regressions cover a fresh video plan, unrelated worker, completed worker, missing plan, unavailable telemetry and stale Herdr check-in. Local suite 194 passed, 2 skipped; Worker dry-run packaging and 14-requirement gate pass. CI and live readback are still required before production claims.
+
 ## 2026-10-16 — Current video priority displaced by historical notes and AI suggestions
 
 **Symptom:** After refresh, Today listed Mary Kate, B-Paid, portfolio and website with technical saved steps, while a separate card asserted “Processing videos is not currently a priority.” Ashley confirmed that video processing has been active for weeks and remains a priority.
