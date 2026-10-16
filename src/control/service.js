@@ -3,6 +3,7 @@ import {routingDiagnostic} from './diagnostics.js';
 import {applyProposal,normalizeFactKey,parseActiveWork,parseCanonicalFacts,RouteValidationError,validateRoute,WRITE_REPO} from './contracts.js';
 import {buildMyWorkProjection} from './my-work.js';
 import {triageRequest} from './triage.js';
+import {enforceConversationAnswer} from './conversation-contract.js';
 const markerStart='<!-- mary-kate-control-write:';
 const markerEnd='-->';
 const encodeMarker=value=>btoa(unescape(encodeURIComponent(JSON.stringify(value)))).replaceAll('+','-').replaceAll('/','_').replaceAll('=','');
@@ -114,7 +115,7 @@ export function resolveAuthoritativeWorkstream(text, facts) {
   const family=section=>canonicalSectionName(section).split(' / ')[0];
   const explicitFamilies=[...new Set(sections.map(family).filter(name=>textWords(input).includes(textWords(name))))];
   if(explicitFamilies.length>1) return {status:'ambiguous',section:null,candidates:sections.filter(section=>explicitFamilies.includes(family(section)))};
-  if(namesMaryKate(text)&&readOnlyAssessment(text)) {
+  if(namesMaryKate(text)&&isReadQuestion(text)) {
     const named=scores.filter(candidate=>candidate.score>0);
     // A second named project remains ambiguous, even if its shorter heading
     // would have lost the token-overlap competition.
@@ -259,12 +260,18 @@ export function normalizeConversationHistory(value) {
 }
 
 const commandCenterOverviewQuestion=text=>/\b(?:all\s+(?:project\s+)?tasks?|prioriti(?:ze|zed|zation|es)|time management|what should i (?:do|focus on)|today(?:'s)? (?:work|tasks?|priorities)|across (?:my|all) projects?)\b/i.test(normalizedInput(text));
-const conversationWorkstream=(history,facts)=>{
+const conversationWorkstream=(history,facts,pageContext)=>{
   for(let index=history.length-1;index>=0;index--) {
     if(history[index].role!=='user') continue;
     const resolution=resolveAuthoritativeWorkstream(history[index].text,facts);
     if(resolution.status==='resolved') return resolution.section;
     if(resolution.status==='ambiguous') return null;
+    // Reconstruct the server's page-scoped V1 answer, never a scope claimed
+    // by assistant prose. History remains conversation context, not authority.
+    if(pageContext==='mary-kate-command-center'&&readOnlyAssessment(history[index].text)) {
+      const pageResolution=resolveAuthoritativeWorkstream(`${history[index].text} For Mary Kate.`,facts);
+      if(pageResolution.status==='resolved') return pageResolution.section;
+    }
   }
   return null;
 };
@@ -353,13 +360,14 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
       const previousScope=triage.priority_followup?lastRoute?.model_selection?.scope_section:null;
       const priorityScope=previousScope&&facts.some(fact=>fact.section===previousScope)?previousScope:null;
       const rawResolution=resolveAuthoritativeWorkstream(priorityScope?`For ${canonicalSectionName(priorityScope)}, ${text}`:text,facts);
-      const kind=authorityKind(text);
-      // Specific wiki evidence is not a whole-workload priority projection.
+      const initialKind=authorityKind(text);
+      const priorConversationSection=rawResolution.status==='unknown'&&!['video','creator','tests'].includes(initialKind)?conversationWorkstream(history,facts,contextWorkstream):null;
+      const kind=authorityKind(text,rawResolution.section||priorConversationSection);
+      // Preserve indexed video/creator/test routing rather than projecting priorities.
       if(triage.mode==='priority_advice'&&['video','creator','tests'].includes(kind)&&!isPriorityQuestion(text)) {
         triage.mode='conversation';triage.max_model_calls=1;
         triage.reason='Read the indexed topic authority before answering; no mutation authority.';
       }
-      const priorConversationSection=rawResolution.status==='unknown'&&kind==='current'?conversationWorkstream(history,facts):null;
       const commandCenterOverview=!priorConversationSection&&activeWorkstreamSections(facts).length>0&&isPriorityQuestion(text);
       const assentScope=readOnlyAssentScope(text,recentConversation,facts,initial,now(),packetTtlMs);
       // The persistent Command Center chat may supply its page context for an
@@ -475,6 +483,13 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
         const error=new RouteValidationError('proposal','Read-only assessment cannot propose or authorize an action');
         error.code='read_only_route_violation';error.status=422;error.message='Routing proposed an action for a read-only question. No approval or change was saved.';
         throw error;
+      }
+      if(readOnly) {
+        const checked=enforceConversationAnswer(candidate.plain_summary,createControlTaskPacket(snapshot),text);
+        const guard=checked.guard.status==='abstained'?checked.guard:candidate.answer_guard||checked.guard;
+        candidate={...candidate,plain_summary:checked.text,answer_guard:guard,...(guard.status==='abstained'?{confidence:'low'}:{})};
+        mark('answer_contract',{status:guard.status,reasons:guard.reasons||[]});
+        if(guard.status==='abstained')technicalSummary='Answer guard: abstained · '+(guard.reasons||[]).join(', ');
       }
       const route=enforceResolvedWriteTarget({...candidate,triage,prior_state:snapshot.prior_state,...(snapshot.completion_authority?{retrieval_authority:{source:snapshot.completion_authority.source,routing_source:snapshot.completion_authority.routing_source}}:{})},snapshot.prior_state,ambiguity_gate);
       if(route.proposal) {

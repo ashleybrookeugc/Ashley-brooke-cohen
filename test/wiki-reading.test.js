@@ -57,7 +57,7 @@ test('an indexed failure question can read across MK projections without weakeni
  const store=createMemoryStore();let packet;
  const service=createControlService({store,github,router:{route:async(_q,p)=>{packet=p;return{route_kind:'temporary_context',responsibility:'ai_can_handle',confidence:'high',plain_summary:'Provider double'};}}});
  await service.capture('Why did Mary Kate previously fail to answer my read-only questions?');
- assert.equal(packet.ambiguity_gate.scope,'indexed_authority_read_only');
+ assert.ok(packet.ambiguity_gate.scope==='indexed_authority_read_only'||/^Mary Kate \/ AI operating system/.test(packet.ambiguity_gate.section),'read-only evidence can use the resolved canonical MK projection');
  assert.ok(packet.retrieval_evidence.sources.some(s=>s.source.path===protocol));
  await assert.rejects(()=>service.capture('Is Mary Kate or B-Paid ready?'),{code:'ambiguous_scope'});
  await assert.rejects(()=>service.capture('Update Mary Kate or B-Paid'),{code:'ambiguous_scope'});

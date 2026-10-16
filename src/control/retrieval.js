@@ -4,7 +4,8 @@ import {WRITE_REPO} from './contracts.js';
 // proposal/approval path, including commands after a question or polite prefix.
 export function isReadQuestion(text) {
   const input=String(text||'').replace(/[’‘]/g,"'").trim();
-  const question=/^(?:(?:and|so)\s+)?(?:(?:please\s+)?(?:(?:can|could|would) you\s+)?(?:what|why|when|where|who|how|was|were|is|are|has|have|does|did|do you think|should|tell me|show me|give me|explain|assess|evaluate|summarize)\b|actually\s+i\s+meant\b|i need help with\b)/i.test(input);
+  const question=/^(?:(?:and|so)\s+)?(?:(?:please\s+)?(?:(?:can|could|would) you\s+)?(?:what|why|when|where|who|how|was|were|is|are|has|have|does|did|do you think|should|tell me|show me|give me|explain|assess|evaluate|summarize)\b|actually\s+i\s+meant\b|i need help with\b)/i.test(input)
+    || /^(?:for|about)\b[\s\S]*\b(?:what|why|when|where|who|how|is|are|does|did)\b/i.test(input);
   const command=/(?:^|[?!;.]\s*|\band\s+(?:then\s+)?)(?:(?:please|now)\s+)*(?:update|set|change|mark|approve|publish|ship|post|send|delete|spend|pay|purchase|transfer|remove|deploy|merge|buy|upload|execute|run|resume|continue|advance|switch)\b/i.test(input)
     || /\b(?:can|could|would) you\s+(?:please\s+)?(?:update|set|change|approve|publish|send|delete|deploy|merge|run|execute|buy|pay|upload)\b/i.test(input);
   return question&&!command;
@@ -12,9 +13,11 @@ export function isReadQuestion(text) {
 
 export const isPriorityQuestion=text=>isReadQuestion(text)&&/\b(?:prioriti(?:ze|es|y)|what should (?:i|we) (?:do|focus on)|what (?:needs|requires) (?:my|our) attention|what is (?:currently )?blocked)\b/i.test(text);
 
-export function authorityKind(text) {
+export function authorityKind(text,workstream=null) {
+  if(/^Mary Kate(?:\s*\/|\s*—|$)/i.test(workstream||'')&&/\b(?:desired (?:outcome|result)|(?:my|our|product) goals?|founder intent)\b/i.test(text)) return 'founder';
+  if(/^Mary Kate(?:\s*\/|\s*—|$)/i.test(workstream||'')&&isReadQuestion(text)&&/\b(?:delays?|slow|taking (?:days|hours|weeks)|not working|broken|going wrong)\b/i.test(text)) return 'failure';
   if(/\b(?:decid(?:e|ed)|permissions?|automatic|model selection|capability selection)\b/i.test(text)) return 'founder';
-  if(/\b(?:fail(?:ed|ure)?|read.only|went wrong)\b/i.test(text)) return 'failure';
+  if(/\b(?:fail(?:ed|ure)?|read.only|went wrong|going wrong)\b/i.test(text)) return 'failure';
   if(/\b(?:telemetry|tests?|benchmark|evaluation)\b/i.test(text)) return 'tests';
   if(/\b(?:creator workflow|source language|campaign proof|retention findings|contentease)\b/i.test(text)) return 'creator';
   if(/\b(?:video analyzer|video understanding|video-understanding|evidence engine|private video|video upload)\b/i.test(text)) return 'video';
@@ -87,12 +90,18 @@ function selectWikiEvidence(content,path,text,budget,anchor) {
     while(end<lines.length&&!new RegExp('^#{1,'+level+'} ').test(lines[end]))end++;
     scope=lines.slice(start,end).join('\n');
   }
-  return {...selectParagraphs(scope,text,budget),source_characters:content.length,...(anchor?{section_anchor:anchor,paragraph_scope:'indexed section'}:{})};
+  const selection=scope.length<=budget
+    ? {excerpts:scope.split(/\n\s*\n/).map((text,paragraph)=>({paragraph,section:anchor||'document',text})),selected_characters:scope.length,truncated:false,selection:'complete focused source within character budget'}
+    : selectParagraphs(scope,text,budget);
+  return {...selection,source_characters:content.length,...(anchor?{section_anchor:anchor,paragraph_scope:'indexed section'}:{})};
 }
 
 export async function retrieveIndexedEvidence(github,text,{activeWork,kind=authorityKind(text),scope=null}={}) {
   const sources=[],missing=[],navigation=[],visited=new Set();let routing_source=null,used=0;
-  const limit=16000,maxSources=4,query=text+(scope?' '+scope:'');
+  const lookupText=kind==='founder'&&/\b(?:desired (?:outcome|result)|(?:my|our|product) goals?)\b/i.test(text)
+    ? `${text} product objective recurring problem user-level jobs`
+    : kind==='failure'&&/\b(?:chatbot|delays?|slow|taking (?:days|hours|weeks)|going wrong)\b/i.test(text)?`${text} chat conversation read-only failure`:text;
+  const limit=16000,maxSources=4,query=lookupText+(scope?' '+scope:'');
   const read=async path=>{try{return await github.readFile(WRITE_REPO,path);}catch{missing.push({path,reason:'read_unavailable'});return null;}};
   const add=(path,file,budget,anchor=null,role='evidence')=>{
     if(visited.has(path)||sources.length>=maxSources)return;
