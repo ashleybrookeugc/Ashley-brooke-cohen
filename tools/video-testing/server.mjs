@@ -6,7 +6,7 @@ import {fileURLToPath} from 'node:url';
 import {randomUUID,timingSafeEqual,createHash} from 'node:crypto';
 import {spawn,spawnSync} from 'node:child_process';
 import {LIMIT} from '../../src/video-testing/gateway.js';
-import {visionReady,readVisualReview} from './visual-review.mjs';
+import {visionReady,readVisualReview,RELEASE_VERSION} from './visual-review.mjs';
 const here=dirname(fileURLToPath(import.meta.url));
 const digest=v=>createHash('sha256').update(v).digest();
 const send=(res,status,body)=>{res.writeHead(status,{'content-type':'application/json','cache-control':'no-store','x-content-type-options':'nosniff'});res.end(JSON.stringify(body));};
@@ -92,7 +92,7 @@ export async function createVideoWorker({root,modulePath,token,maxBytes=LIMIT}={
         if(active)return send(res,409,{error:'Your Mac is already analyzing a video. Try again after it finishes.'});
         if(!await visionReady())return send(res,503,{error:'Local picture descriptions are unavailable. Basic notes and source are retained.'});
         if(active)return send(res,409,{error:'An analysis is already active.'});
-        const result=await resultFor(id),prior=await readVisualReview(dir,result);if(prior.state==='available')return send(res,200,job);
+        const result=await resultFor(id),prior=await readVisualReview(dir,result);if(prior.state==='available'&&prior.release_version===RELEASE_VERSION)return send(res,200,job);
         if(active)return send(res,409,{error:'An analysis is already active.'});active=id;job.visual_state='running';await save(join(dir,'job.json'),job);
         const child=spawn(process.execPath,[join(here,'describe-child.mjs'),modulePath,dir],{stdio:'ignore'});let settled=false;
         const finish=async code=>{if(settled)return;settled=true;try{const review=code===0?await readVisualReview(dir,result):{state:'failed'};job.visual_state=review.state==='not_run'?'failed':review.state;await save(join(dir,'job.json'),job);}finally{active=null}};
