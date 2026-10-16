@@ -1,0 +1,244 @@
+{
+  "schema": "mary-kate.current-priority-authority.v1",
+  "recorded_at": "2026-10-16T01:02:42.959Z",
+  "baseline_product_commit": "75ce2f1c83c4792e7a1b74ac05fd840ea35c8f33",
+  "vault_commit": "eda36978208ef560c7f9c04c5077316191ea91e2",
+  "source_blobs": {
+    "before": "20c03758838dd0063e0b03fcad5f098b77b75ec2",
+    "local_candidate": "036f14b2de2d7d3ddeb2f088bd9210af4c427e28"
+  },
+  "live_before": {
+    "environment": "Existing authenticated cloud-browser Command Center Send UI",
+    "question": "What should I do today?",
+    "observed_local_time": "2026-10-15 20:56 America/New_York",
+    "result": "Useful response replaces prior 422, but begins with older Save key/frozen case E task, includes commit hash and long technical project text.",
+    "exact_response_matches_released_source_replay": "Visible wording matches released_source / before cell; no intercepted HTTP payload or active Worker version proof.",
+    "pending_approval_items": 0,
+    "ai_queue_items": 3,
+    "no_approval_clicked": true
+  },
+  "rows": [
+    {
+      "code": "released_source",
+      "source": "before",
+      "input": "What should I do today?",
+      "reads": [
+        {
+          "repo": "ashleybrookeugc/research-vault",
+          "path": "ACTIVE_WORK.md",
+          "sha": "20c03758838dd0063e0b03fcad5f098b77b75ec2",
+          "origin": "pinned_github_blob"
+        }
+      ],
+      "response": "Based on the current saved work, your priorities are: Mary Kate / AI operating system \u2014 **ACTIVE NOW**: implement the existing Save key workflow against frozen case E in an isolated store, requiring verified reconciliation receipts before any saved claim. New source `181eff651ee9f5d84c3e38e20e9d768c5e366998` closes private capture loss/stale approval in fixtures, not the missing conversational/reconciliation capabilities. Production promotion and authenticated acceptance remain separate later gates. Shared video-understanding / evidence engine \u2014 **ACTIVE / PARALLEL**: Continue the existing local component comparison and enforced claim-release stages in the V1 plan, then the first real editing/workflow lens: supported chronological actions, waits/backtracking/errors, friction and useful improvements on a bounded real recording. Preserve the known ASR counterexample and zero-recurring-cost/local/privacy constraints. A readable extraction report or another technical upload PASS must not replace this missing creator outcome. Keep current login/private transport working; no new token, public exposure, paid service or footage deletion. Physical iPhone/creator acceptance remains separate. ContentEase / UGC Creator App \u2014 **ACTIVE / PARALLEL**: native work resumes only in an environment with the required checkout/toolchain; current campaign/editing work resumes from latest source-backed campaign state. Do not rebuild proven PhotoKit foundations or infer current script/media state from memory. UGC / creator campaign and editing operations \u2014 **ACTIVE / PARALLEL**: each live campaign/editing task resumes from its latest preserved campaign/source state; new durable workflow lessons reconcile back to the playbook/evidence system without turning every campaign into a new software project. Open checks or blockers: Mary Kate / AI operating system \u2014 **ACTIVE NOW**: an important check is still unverified. Shared video-understanding / evidence engine \u2014 **ACTIVE / PARALLEL**: an important check is still unverified. Ashley professional website / portfolio \u2014 **PAUSED / RESUMABLE**: an important check is still unverified.",
+      "response_characters": 2135,
+      "estimated_response_tokens": 534,
+      "provider_calls": 0,
+      "canonical_writes": 0,
+      "queues": {
+        "needs_ashley": [],
+        "ai_can_handle": []
+      },
+      "retrieval": null
+    },
+    {
+      "code": "released_source",
+      "source": "candidate",
+      "input": "What should I do today?",
+      "reads": [
+        {
+          "repo": "ashleybrookeugc/research-vault",
+          "path": "ACTIVE_WORK.md",
+          "sha": "036f14b2de2d7d3ddeb2f088bd9210af4c427e28",
+          "origin": "local_candidate_projection"
+        }
+      ],
+      "response": "Based on the current saved work, your priorities are: Mary Kate / AI operating system \u2014 **ACTIVE NOW**: Verify the remaining real conversation questions and natural follow-ups against current saved evidence; repair stale priority selection and keep the answer understandable. Preserve approvals and write verification. The separate Save Key fixture is retained work, not the current conversational acceptance instruction. Shared video-understanding / evidence engine \u2014 **ACTIVE / PARALLEL**: Continue the existing local component comparison and enforced claim-release stages in the V1 plan, then the first real editing/workflow lens: supported chronological actions, waits/backtracking/errors, friction and useful improvements on a bounded real recording. Preserve the known ASR counterexample and zero-recurring-cost/local/privacy constraints. A readable extraction report or another technical upload PASS must not replace this missing creator outcome. Keep current login/private transport working; no new token, public exposure, paid service or footage deletion. Physical iPhone/creator acceptance remains separate. ContentEase / UGC Creator App \u2014 **ACTIVE / PARALLEL**: native work resumes only in an environment with the required checkout/toolchain; current campaign/editing work resumes from latest source-backed campaign state. Do not rebuild proven PhotoKit foundations or infer current script/media state from memory. UGC / creator campaign and editing operations \u2014 **ACTIVE / PARALLEL**: each live campaign/editing task resumes from its latest preserved campaign/source state; new durable workflow lessons reconcile back to the playbook/evidence system without turning every campaign into a new software project. Open checks or blockers: Shared video-understanding / evidence engine \u2014 **ACTIVE / PARALLEL**: an important check is still unverified. Ashley professional website / portfolio \u2014 **PAUSED / RESUMABLE**: an important check is still unverified.",
+      "response_characters": 1962,
+      "estimated_response_tokens": 491,
+      "provider_calls": 0,
+      "canonical_writes": 0,
+      "queues": {
+        "needs_ashley": [],
+        "ai_can_handle": []
+      },
+      "retrieval": null
+    },
+    {
+      "code": "local_candidate",
+      "source": "before",
+      "input": "What should I do today?",
+      "reads": [
+        {
+          "repo": "ashleybrookeugc/research-vault",
+          "path": "ACTIVE_WORK.md",
+          "sha": "20c03758838dd0063e0b03fcad5f098b77b75ec2",
+          "origin": "pinned_github_blob"
+        }
+      ],
+      "response": "Based on the current saved work, your priorities are: Mary Kate / AI operating system \u2014 **ACTIVE NOW**: implement the existing Save key workflow against frozen case E in an isolated store, requiring verified reconciliation receipts before any saved claim. New source `181eff651ee9f5d84c3e38e20e9d768c5e366998` closes private capture loss/stale approval in fixtures, not the missing conversational/reconciliation capabilities. Production promotion and authenticated acceptance remain separate later gates. Shared video-understanding / evidence engine \u2014 **ACTIVE / PARALLEL**: Continue the existing local component comparison and enforced claim-release stages in the V1 plan, then the first real editing/workflow lens: supported chronological actions, waits/backtracking/errors, friction and useful improvements on a bounded real recording. Preserve the known ASR counterexample and zero-recurring-cost/local/privacy constraints. A readable extraction report or another technical upload PASS must not replace this missing creator outcome. Keep current login/private transport working; no new token, public exposure, paid service or footage deletion. Physical iPhone/creator acceptance remains separate. ContentEase / UGC Creator App \u2014 **ACTIVE / PARALLEL**: native work resumes only in an environment with the required checkout/toolchain; current campaign/editing work resumes from latest source-backed campaign state. Do not rebuild proven PhotoKit foundations or infer current script/media state from memory. UGC / creator campaign and editing operations \u2014 **ACTIVE / PARALLEL**: each live campaign/editing task resumes from its latest preserved campaign/source state; new durable workflow lessons reconcile back to the playbook/evidence system without turning every campaign into a new software project. Open checks or blockers: Mary Kate / AI operating system \u2014 **ACTIVE NOW**: an important check is still unverified. Shared video-understanding / evidence engine \u2014 **ACTIVE / PARALLEL**: an important check is still unverified. Ashley professional website / portfolio \u2014 **PAUSED / RESUMABLE**: an important check is still unverified.",
+      "response_characters": 2135,
+      "estimated_response_tokens": 534,
+      "provider_calls": 0,
+      "canonical_writes": 0,
+      "queues": {
+        "needs_ashley": [],
+        "ai_can_handle": []
+      },
+      "retrieval": {
+        "stage": "retrieval",
+        "elapsed_ms": 6,
+        "sources": [
+          {
+            "repo": "ashleybrookeugc/research-vault",
+            "path": "ACTIVE_WORK.md",
+            "sha": "20c03758838dd0063e0b03fcad5f098b77b75ec2"
+          }
+        ],
+        "section": "Current active workstreams",
+        "fields": [
+          "current",
+          "current-assessment",
+          "next-bounded-action",
+          "current",
+          "next",
+          "current",
+          "next",
+          "current",
+          "current",
+          "current",
+          "current",
+          "current",
+          "next"
+        ],
+        "selected_characters": 0,
+        "selection": "recorded workstream fields"
+      }
+    },
+    {
+      "code": "local_candidate",
+      "source": "candidate",
+      "input": "What should I do today?",
+      "reads": [
+        {
+          "repo": "ashleybrookeugc/research-vault",
+          "path": "ACTIVE_WORK.md",
+          "sha": "036f14b2de2d7d3ddeb2f088bd9210af4c427e28",
+          "origin": "local_candidate_projection"
+        }
+      ],
+      "response": "Your current focus is: Make Mary Kate answer ordinary questions from current saved evidence and keep useful follow-ups.\n\nNext: Check the remaining real questions and natural follow-ups against the released repair, and correct any stale source selection before claiming the conversation works.\n\nStill open: The original daily-priority question now answers in production, but its answer is still too technical and can repeat an older task. Broader conversation and exact deployed-version evidence remain unproven.",
+      "response_characters": 511,
+      "estimated_response_tokens": 128,
+      "provider_calls": 0,
+      "canonical_writes": 0,
+      "queues": {
+        "needs_ashley": [],
+        "ai_can_handle": []
+      },
+      "retrieval": {
+        "stage": "retrieval",
+        "elapsed_ms": 4,
+        "sources": [
+          {
+            "repo": "ashleybrookeugc/research-vault",
+            "path": "ACTIVE_WORK.md",
+            "sha": "036f14b2de2d7d3ddeb2f088bd9210af4c427e28"
+          }
+        ],
+        "section": "Current execution priority",
+        "fields": [
+          "current-objective",
+          "next-bounded-action",
+          "current-blocker"
+        ],
+        "selected_characters": 466,
+        "selection": "explicit execution-priority fields; no inferred ranking"
+      }
+    }
+  ],
+  "continuation": [
+    {
+      "input": "What should I prioritize next?",
+      "response": "Your current focus is: Make Mary Kate answer ordinary questions from current saved evidence and keep useful follow-ups.\n\nNext: Check the remaining real questions and natural follow-ups against the released repair, and correct any stale source selection before claiming the conversation works.\n\nStill open: The original daily-priority question now answers in production, but its answer is still too technical and can repeat an older task. Broader conversation and exact deployed-version evidence remain unproven.",
+      "scope": null,
+      "provider_calls": 0,
+      "queue_item": null
+    },
+    {
+      "input": "Which one first?",
+      "response": "Your current focus is: Make Mary Kate answer ordinary questions from current saved evidence and keep useful follow-ups.\n\nNext: Check the remaining real questions and natural follow-ups against the released repair, and correct any stale source selection before claiming the conversation works.\n\nStill open: The original daily-priority question now answers in production, but its answer is still too technical and can repeat an older task. Broader conversation and exact deployed-version evidence remain unproven.",
+      "scope": null,
+      "provider_calls": 0,
+      "queue_item": null
+    },
+    {
+      "input": "What should I prioritize for ContentEase?",
+      "response": "Based on the current saved work, your priorities are: ContentEase / UGC Creator App \u2014 **ACTIVE / PARALLEL**: native work resumes only in an environment with the required checkout/toolchain; current campaign/editing work resumes from latest source-backed campaign state. Do not rebuild proven PhotoKit foundations or infer current script/media state from memory. I do not see a separate blocker recorded for these projects.",
+      "scope": "ContentEase / UGC Creator App \u2014 **ACTIVE / PARALLEL**",
+      "provider_calls": 0,
+      "queue_item": null
+    },
+    {
+      "input": "Which one first?",
+      "response": "Based on the current saved work, your priorities are: ContentEase / UGC Creator App \u2014 **ACTIVE / PARALLEL**: native work resumes only in an environment with the required checkout/toolchain; current campaign/editing work resumes from latest source-backed campaign state. Do not rebuild proven PhotoKit foundations or infer current script/media state from memory. I do not see a separate blocker recorded for these projects.",
+      "scope": "ContentEase / UGC Creator App \u2014 **ACTIVE / PARALLEL**",
+      "provider_calls": 0,
+      "queue_item": null
+    },
+    {
+      "input": "What are our blockers?",
+      "response": "Based on the current saved work, your priorities are: Mary Kate / AI operating system \u2014 **ACTIVE NOW**: Verify the remaining real conversation questions and natural follow-ups against current saved evidence; repair stale priority selection and keep the answer understandable. Preserve approvals and write verification. The separate Save Key fixture is retained work, not the current conversational acceptance instruction. Shared video-understanding / evidence engine \u2014 **ACTIVE / PARALLEL**: Continue the existing local component comparison and enforced claim-release stages in the V1 plan, then the first real editing/workflow lens: supported chronological actions, waits/backtracking/errors, friction and useful improvements on a bounded real recording. Preserve the known ASR counterexample and zero-recurring-cost/local/privacy constraints. A readable extraction report or another technical upload PASS must not replace this missing creator outcome. Keep current login/private transport working; no new token, public exposure, paid service or footage deletion. Physical iPhone/creator acceptance remains separate. ContentEase / UGC Creator App \u2014 **ACTIVE / PARALLEL**: native work resumes only in an environment with the required checkout/toolchain; current campaign/editing work resumes from latest source-backed campaign state. Do not rebuild proven PhotoKit foundations or infer current script/media state from memory. UGC / creator campaign and editing operations \u2014 **ACTIVE / PARALLEL**: each live campaign/editing task resumes from its latest preserved campaign/source state; new durable workflow lessons reconcile back to the playbook/evidence system without turning every campaign into a new software project. Open checks or blockers: Shared video-understanding / evidence engine \u2014 **ACTIVE / PARALLEL**: an important check is still unverified. Ashley professional website / portfolio \u2014 **PAUSED / RESUMABLE**: an important check is still unverified.",
+      "scope": null,
+      "provider_calls": 0,
+      "queue_item": null
+    },
+    {
+      "input": "Update the priority",
+      "error": "ambiguous_scope"
+    }
+  ],
+  "safety": {
+    "provider_calls": 0,
+    "canonical_writes": 0,
+    "queues": {
+      "needs_ashley": [],
+      "ai_can_handle": []
+    }
+  },
+  "checks": {
+    "targeted": "31/31 after six added regression groups",
+    "full": "191 total; 189 pass; 2 existing analyzer-dependent skips; 0 fail",
+    "requirements": "14/14",
+    "worker_packaging": "Wrangler 4.151.0 dry-run PASS"
+  },
+  "failures": [
+    {
+      "kind": "environment",
+      "observation": "First full suite lacked Wrangler in fresh checkout; reused existing installed dependencies and full suite passed."
+    },
+    {
+      "kind": "browser_tool",
+      "observation": "DOM transcript locator timed out; existing accessibility observation recovered exact visible response. No repeated send."
+    }
+  ],
+  "limitations": [
+    "This matrix executes real service code with fetched GitHub bytes, a memory store, and a router that fails if invoked. It is not a deployed candidate test.",
+    "The proposed source contract is explicitly labelled local candidate, not fetched canonical truth.",
+    "Response tokens are characters/4 estimates; no inference usage or backend latency is measured.",
+    "Only one fresh live priority request was made. Existing transcript errors are historical, not new live failures.",
+    "No production merge or deployment performed."
+  ],
+  "combined_current_main": {
+    "base": "5123021295c9ab838969a11f2d8ed5d7ac82353c",
+    "tests": {
+      "total": 193,
+      "passed": 191,
+      "skipped": 2,
+      "failed": 0
+    },
+    "requirements": "14/14",
+    "worker_packaging": "PASS",
+    "concurrent_video_files_preserved": true
+  }
+}

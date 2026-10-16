@@ -71,6 +71,22 @@ function priorityAdviceSummary(projects=[]) {
   const blockerText=blockers.length?` Open checks or blockers: ${blockers.map(value=>value.replace(/[.;]+$/,'')+'.').join(' ')}`:' I do not see a separate blocker recorded for these projects.';
   return `Based on the current saved work, your priorities are: ${priorityText}${blockerText}`;
 }
+const executionPrioritySection='Current execution priority';
+const executionPriorityKeys=['current-objective','next-bounded-action','current-blocker'];
+function executionPriority(packet) {
+  const fields=packet.facts.filter(fact=>fact.section===executionPrioritySection&&executionPriorityKeys.includes(fact.key));
+  if(!fields.length) return null; // Existing registries retain their tested fallback.
+  const required=executionPriorityKeys.slice(0,2).concat(fields.some(fact=>fact.key==='current-blocker')?['current-blocker']:[]);
+  const receipt=createPriorStateReceipt(packet,required.map(key=>({section:executionPrioritySection,key})));
+  requirePriorState(receipt);
+  const values=Object.fromEntries(receipt.evidence.map(fact=>[fact.key,fact.value]));
+  // Source authors supply concise language. Do not truncate a qualification or
+  // use another model merely to polish a lookup. Never replace it with old Next.
+  const tooLong=Object.values(values).some(value=>value.length>600);
+  return {receipt,fields:required,characters:Object.values(values).reduce((n,value)=>n+value.length,0),
+    summary:tooLong?'The current priority is saved, but its wording is too detailed for a short answer. It needs a concise, verified summary; I have not substituted an older task.':
+      `Your current focus is: ${values['current-objective']}\n\nNext: ${values['next-bounded-action']}${values['current-blocker']?'\n\nStill open: '+values['current-blocker']:''}`};
+}
 const readOnlyReturn=(text,recent)=>Boolean(recent?.turns?.length&&!recent.truncated)
   && /^(?:(?:ok(?:ay)?|alright)[,\s]+)?(?:back|return) to\b/i.test(text.trim())
   && !/\b(?:update|set|change|approve|publish|send|delete|spend|pay|deploy|merge|buy|upload|execute|run|save|record|build|edit)\b/i.test(text);
@@ -345,7 +361,7 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
       const recentConversation={turns:history.map(({role,text})=>({role,content:text})),truncated:false};
       const previousAssistant=recentConversation.turns.at(-1)?.role==='assistant'?recentConversation.turns.at(-1).content:'';
       const lastHistory=initial.history?.[0];
-      const lastRoute=lastHistory?.route||lastHistory||(/your priorities are:/i.test(previousAssistant)?{model_selection:{task:'priority_advice'}}:null);
+      const lastRoute=lastHistory?.route||lastHistory||(/your priorities are:|your current focus is:/i.test(previousAssistant)?{model_selection:{task:'priority_advice'}}:null);
       const triage=triageRequest(text,{recent:recentConversation,lastRoute});
       const previousScope=triage.priority_followup?lastRoute?.model_selection?.scope_section:null;
       const priorityScope=previousScope&&facts.some(fact=>fact.section===previousScope)?previousScope:null;
@@ -398,14 +414,22 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
       if((readOnlyAssessment(text)||assentScope)&&maryKateSection(ambiguity_gate.section)) snapshot.completion_authority=await retrieveCompletionAuthority(github);
       if(readOnly&&['priority_advice','greeting'].includes(triage.mode)) {
         const projects=ambiguity_gate.section?snapshot.projects.filter(project=>project.name===ambiguity_gate.section):snapshot.projects;
+        // An overview/blocker request still needs its collection of projects;
+        // a single global focus must not erase those separate saved records.
+        const collectionRequest=/\b(?:overview|blockers?|blocked|workload|active (?:work|projects)|current (?:work|projects)|all (?:(?:my|our|the) )?(?:projects|tasks))\b/i.test(text);
+        const currentPriority=triage.mode==='priority_advice'&&!ambiguity_gate.section&&!collectionRequest?executionPriority(packet):null;
         if(triage.mode==='priority_advice') {
-          const sections=new Set(projects.map(project=>project.name));
-          const keys=new Set(['next-bounded-action','next-decision','next','current-objective','current-stage','current','current-assessment','current-blocker']);
-          const requests=[...new Map(facts.filter(fact=>sections.has(fact.section)&&keys.has(fact.key)).map(fact=>[fact.section+'\n'+fact.key,{section:fact.section,key:fact.key}])).values()];
-          snapshot.prior_state=createPriorStateReceipt(packet,requests);
+          if(currentPriority) snapshot.prior_state=currentPriority.receipt;
+          else {
+            const sections=new Set(projects.map(project=>project.name));
+            const keys=new Set(['next-bounded-action','next-decision','next','current-objective','current-stage','current','current-assessment','current-blocker']);
+            const requests=[...new Map(facts.filter(fact=>sections.has(fact.section)&&keys.has(fact.key)).map(fact=>[fact.section+'\n'+fact.key,{section:fact.section,key:fact.key}])).values()];
+            snapshot.prior_state=createPriorStateReceipt(packet,requests);
+          }
           requirePriorState(snapshot.prior_state);
+          mark('retrieval',{sources:[initial.source],section:currentPriority?executionPrioritySection:ambiguity_gate.section||'Current active workstreams',fields:currentPriority?.fields||snapshot.prior_state.required_fact_keys,selected_characters:currentPriority?.characters||0,selection:currentPriority?'explicit execution-priority fields; no inferred ranking':'recorded workstream fields'});
         }
-        const route={route_kind:'temporary_context',responsibility:'ai_can_handle',confidence:'high',plain_summary:triage.mode==='greeting'?'I’m here. Ask about your current work, priorities, or a specific project.':priorityAdviceSummary(projects),why:'Deterministic read-only triage; no model call or mutation authority.',triage,prior_state:snapshot.prior_state,model_selection:{provider:'none',calls:0,task:triage.mode,...(ambiguity_gate.section?{scope_section:ambiguity_gate.section}:{})}};
+        const route={route_kind:'temporary_context',responsibility:'ai_can_handle',confidence:'high',plain_summary:triage.mode==='greeting'?'I’m here. Ask about your current work, priorities, or a specific project.':currentPriority?.summary||priorityAdviceSummary(projects),why:'Deterministic read-only triage; no model call or mutation authority.',triage,prior_state:snapshot.prior_state,model_selection:{provider:'none',calls:0,task:triage.mode,...(ambiguity_gate.section?{scope_section:ambiguity_gate.section}:{})}};
         const interaction=await store.addInteraction({raw_text:text.trim(),route:{...route,retrieval_trace:trace}});
         mark('response',{response_type:route.route_kind,queue_item_created:false});
         try {observe(trace);} catch {}
