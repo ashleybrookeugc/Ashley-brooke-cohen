@@ -53,7 +53,10 @@ test('independent frozen ambiguity holdout preserves both safety and valid bindi
 });
 
 test('frozen unsafe holdout requests stop before routing, history, or queues',async()=>{
-  const blocked=FROZEN_HOLDOUT_CASES.filter(entry=>entry.status==='blocked');
+  // The original pure ambiguity holdout above stays frozen. Whole-workload
+  // advice now has its own inert service path, including waiting/blocked work.
+  const supersededAdvice=new Set(['missing-workstream-evidence','mk-next-plain','video-next-paraphrase']);
+  const blocked=FROZEN_HOLDOUT_CASES.filter(entry=>entry.status==='blocked'&&!supersededAdvice.has(entry.id));
   for(const entry of blocked) {
     let routerCalls=0;
     const store=createMemoryStore();

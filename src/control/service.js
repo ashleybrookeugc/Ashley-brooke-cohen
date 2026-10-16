@@ -1,6 +1,8 @@
+import {isReadQuestion,isPriorityQuestion,authorityKind,retrieveIndexedEvidence} from './retrieval.js';
 import {routingDiagnostic} from './diagnostics.js';
 import {applyProposal,normalizeFactKey,parseActiveWork,parseCanonicalFacts,RouteValidationError,validateRoute,WRITE_REPO} from './contracts.js';
 import {buildMyWorkProjection} from './my-work.js';
+import {triageRequest} from './triage.js';
 const markerStart='<!-- mary-kate-control-write:';
 const markerEnd='-->';
 const encodeMarker=value=>btoa(unescape(encodeURIComponent(JSON.stringify(value)))).replaceAll('+','-').replaceAll('/','_').replaceAll('=','');
@@ -47,17 +49,61 @@ const readOnlyAssessment=text=>{
     && /\b(?:v1|first version|status|stage|stand|complete|completed|completion|finished|unfinished|ready|readiness|left|remain|remains|remaining|outstanding|gaps?|missing|progress)\b/.test(words)
     && !/\b(?:update|set|change|mark|approve|publish|ship|post|send|delete|spend|pay|purchase|transfer|remove|deploy|merge|buy|upload|execute|run|resume|continue|advance)\b/.test(words);
 };
+function priorityAdviceSummary(projects=[]) {
+  const rows=(projects||[]).filter(project=>project?.name);
+  const active=rows.filter(project=>!/(paused|waiting|blocked|inactive|completed|done)/i.test(project.name));
+  const ranked=active.map((project,index)=>({project,index,first:/ACTIVE NOW/i.test(project.name)}))
+    .sort((a,b)=>Number(b.first)-Number(a.first)||a.index-b.index).map(x=>x.project);
+  const focus=(ranked.length?ranked:rows).slice(0,5);
+  if(!focus.length) return 'I could not find any current projects in the saved work record, so there is no verified priority to recommend yet.';
+  const priorities=focus.map(project=>{
+    const next=project['Next bounded action']||project['Next decision']||project.Next||project['Current objective']||project['Current stage']||project.Current;
+    return `${project.name}: ${next||'the current next step still needs verification'}`;
+  });
+  const blockers=rows.map(project=>{
+    const direct=project['Current blocker'];
+    if(direct) return `${project.name}: ${direct}`;
+    const evidence=[project['Current assessment'],project['Current objective'],project['Current stage'],project.Current].filter(Boolean).join(' ');
+    return /unverified|not proven|blocked|pending|open/i.test(evidence)
+      ? `${project.name}: an important check is still unverified.` : null;
+  }).filter(Boolean).slice(0,5);
+  const priorityText=priorities.map(value=>value.replace(/[.;]+$/,'')+'.').join(' ');
+  const blockerText=blockers.length?` Open checks or blockers: ${blockers.map(value=>value.replace(/[.;]+$/,'')+'.').join(' ')}`:' I do not see a separate blocker recorded for these projects.';
+  return `Based on the current saved work, your priorities are: ${priorityText}${blockerText}`;
+}
+const readOnlyReturn=(text,recent)=>Boolean(recent?.turns?.length&&!recent.truncated)
+  && /^(?:(?:ok(?:ay)?|alright)[,\s]+)?(?:back|return) to\b/i.test(text.trim())
+  && !/\b(?:update|set|change|approve|publish|send|delete|spend|pay|deploy|merge|buy|upload|execute|run|save|record|build|edit)\b/i.test(text);
+function readOnlyAssentScope(text,recent,facts,initial,now,ttl) {
+  if(!/^(?:yes[,\s]+)?(?:agreed|yes|yep|sure|okay|ok)[.!\s]*$/i.test(text.trim())||recent?.truncated||recent?.turns?.length<2) return null;
+  const last=initial.history?.[0],age=now-Date.parse(last?.created_at);
+  if(!last||last.route?.route_kind!=='temporary_context'||last.outcome_status==='failed'||!Number.isFinite(age)||age<0||age>ttl) return null;
+  if(Object.values(initial.queues||{}).some(rows=>Array.isArray(rows)&&rows.some(row=>!['rejected','applied','completed','superseded'].includes(row.status)))) return null;
+  const user=recent.turns.at(-2),assistant=recent.turns.at(-1);
+  if(user?.role!=='user'||assistant?.role!=='assistant') return null;
+  const unnegated=assistant.content.replace(/\b(?:i|we) (?:will|shall) not (?:change|modify|write|delete|deploy|publish|send)[^.?!]*[.?!]?/gi,'');
+  if(!/\b(?:i|we) can (?:read|inspect|check|review)\b/i.test(unnegated)||!/\b(?:v1|assessment|status|readiness|completion|proof)\b/i.test(unnegated)) return null;
+  if(/\b(?:or|either|alternatively|update|change|modify|write|delete|deploy|publish|send|spend|pay|merge|approve|execute|run|save|record|buy|purchase|transfer|remove|post|upload|build|edit|hire|book|schedule|launch)\b/i.test(unnegated)) return null;
+  const resolution=resolveAuthoritativeWorkstream('What is the V1 assessment? '+user.content,facts);
+  return resolution.status==='resolved'&&maryKateSection(resolution.section)?resolution.section:null;
+}
 const sectionScore=(text,section)=>{
   const heading=section.split(' — ')[0].trim();
   const words=textWords(heading).trim().split(' ').filter(Boolean);
   const input=textWords(text);
   if(input.includes(' '+words.join(' ')+' ')) return words.length+100;
   // A partial project name is useful only when it identifies one section.
-  const distinctive=words.filter(word=>word.length>2&&!['active','now','parallel','blocked','resumable','paused','waiting','ashley','current','project','work','system','operating','reconciliation','truth'].includes(word));
+  const distinctive=words.filter(word=>word.length>2&&!(isReadQuestion(text)?['and','the','for','with','app']:[]).includes(word)&&!['active','now','parallel','blocked','resumable','paused','waiting','ashley','current','project','work','system','operating','reconciliation','truth'].includes(word));
   return distinctive.filter(word=>input.includes(' '+word+' ')).length;
 };
 export function resolveAuthoritativeWorkstream(text, facts) {
-  const sections=[...new Set(facts.map(f=>f.section))].filter(section=>section!=='document');
+  const sections=[...new Set(facts.map(f=>f.section))].filter(section=>section!=='document'&&!/^\d{4}-\d{2}-\d{2}/.test(section)&&! /^(?:current execution priority|current active workstreams|session handoff rule|rules)$/i.test(section));
+  const ugcApp=/\b(?:ugc app|ugc creator app|contentease)\b/i.test(text);
+  if(ugcApp&&!namesMaryKate(text)&&! /\bb-paid\b/i.test(text)) {
+    const matches=sections.filter(section=>/^ContentEase\s*\//i.test(section));
+    const others=sections.filter(section=>!/^ContentEase\s*\/|^UGC\s*\//i.test(section)&&sectionScore(text,section)>0);
+    if(matches.length===1&&!others.length)return {status:'resolved',section:matches[0],candidates:matches};
+  }
   const aliasInput=maryKateInput(text);
   const input=namesMaryKate(text)?(/\bmary kate\b/.test(aliasInput)?aliasInput:aliasInput.replace(/\bai operating system\b/g,'mary kate')):text;
   const scores=sections.map(section=>({section,score:sectionScore(input,section)}));
@@ -146,7 +192,7 @@ function requirePriorState(receipt) {
 // This is intentionally a translation boundary: policy and internal evidence stay
 // structured, while the UI receives a decision-ready explanation rather than a
 // schema key it would have to decipher.
-export function controlErrorResponse(error) {
+function translateControlError(error) {
   if (error instanceof PriorStateGateError) {
     const conflict=error.prior_state?.blockers?.find(blocker=>blocker.reason==='conflict');
     if (conflict) {
@@ -179,6 +225,7 @@ export function controlErrorResponse(error) {
   }
   return {error:error?.message||'Control request failed',code:error?.code||'invalid_request',...(error?.interaction_id?{interaction_id:error.interaction_id,technical:{interaction_id:error.interaction_id,diagnostic:error.diagnostic}}:{})};
 }
+export function controlErrorResponse(error) {return {...translateControlError(error),...(error?.retrieval_trace?{retrieval_trace:error.retrieval_trace}:{})};}
 export function createControlTaskPacket(snapshot) {
   return {
     version:'control-task-packet.v1',
@@ -187,8 +234,11 @@ export function createControlTaskPacket(snapshot) {
     freshness:snapshot.context,
     prior_state:snapshot.prior_state,
     ambiguity_gate:snapshot.ambiguity_gate,
+    ...(snapshot.triage?{triage:snapshot.triage}:{}),
+    ...(snapshot.recent_conversation?{recent_conversation:snapshot.recent_conversation}:{}),
     ...(snapshot.intent?{intent:snapshot.intent}:{}),
     ...(snapshot.completion_authority?{completion_authority:snapshot.completion_authority}:{}),
+    ...(snapshot.retrieval_evidence?{retrieval_evidence:snapshot.retrieval_evidence}:{}),
     ...(snapshot.conversation_history?.length?{conversation_history:snapshot.conversation_history}:{})
   };
 }
@@ -252,14 +302,14 @@ function completionAssessment(authority) {
     technical_summary:`V1 source status: ${total} total; ${verified} verified complete; ${partial} partial; ${implementedUnverified} implemented but unverified; ${notImplemented} not implemented.`
   };
 }
-export function createControlService({github,router,store,now=()=>Date.now(),packetTtlMs=300000}) {
+export function createControlService({github,router,store,now=()=>Date.now(),packetTtlMs=300000,observe=()=>{},deployment=null}) {
   const state = async ({refresh=false,requiredFacts=[],requiredFactKeys=[]}={}) => {
     const key='active-work.v1';
     if(refresh) await store.invalidateContextPacket(key);
     let packet=await store.getContextPacket(key);
     let reused=Boolean(packet);
     if(packet&&!Array.isArray(packet.facts)){packet=null;reused=false;}
-    if(!packet){const source=await github.readFile(WRITE_REPO,'ACTIVE_WORK.md');const created_at=new Date(now()).toISOString();packet={projects:parseActiveWork(source.content),facts:parseCanonicalFacts(source.content),source:{repo:WRITE_REPO,path:'ACTIVE_WORK.md',sha:source.sha},created_at,expires_at:new Date(now()+packetTtlMs).toISOString()};await store.putContextPacket(key,packet);}
+    if(!packet){const source=await github.readFile(WRITE_REPO,'ACTIVE_WORK.md');const created_at=new Date(now()).toISOString();packet={raw_content:source.content,projects:parseActiveWork(source.content),facts:parseCanonicalFacts(source.content),source:{repo:WRITE_REPO,path:'ACTIVE_WORK.md',sha:source.sha},created_at,expires_at:new Date(now()+packetTtlMs).toISOString()};await store.putContextPacket(key,packet);}
     const prior_state=createPriorStateReceipt(packet,requiredFacts.length?requiredFacts:requiredFactKeys);
     return {routing_diagnostics:{version:'control-routing-failure.v1',storage:'control_interactions.route_json'},ambiguity_gate:{version:'authoritative-ambiguity.v1'},projects:packet.projects,source:packet.source,context:{status:reused?'reused':'refreshed',created_at:packet.created_at,expires_at:packet.expires_at},fact_keys:[...new Set(packet.facts.map(f=>f.key))],prior_state,queues:await store.listQueues(),history:await store.listHistory(20)};
   };
@@ -278,45 +328,100 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
       }
     },
     async capture(text,{requiredFactKeys=[],contextWorkstream=null,refreshContext=false,conversationHistory=[],conversationId=null}={}) {
+      const started=now();
+      const trace={version:'control-retrieval-trace.v1',request_id:crypto.randomUUID(),deployment,stages:[]};
+      const mark=(stage,details={})=>{trace.stages.push({stage,elapsed_ms:now()-started,...details});};
+      try {
+      mark('input',{characters:typeof text==='string'?text.length:0});
       if(typeof text!=='string'||!text.trim()||text.length>4000) throw new Error('Message must be 1–4000 characters');
       const history=normalizeConversationHistory(conversationHistory);
       if(conversationId!=null&&!/^[A-Za-z0-9_-]{8,80}$/.test(conversationId)) throw new PriorStateGateError('invalid_request','conversation_id is invalid');
+      mark('conversation',{messages:history.length});
       const initial=await state({refresh:refreshContext===true});
       // Scope each requested fact against the actual canonical facts, not the de-duplicated key list.
       const packet=await store.getContextPacket('active-work.v1');
+      mark('current_work',{source:initial.source,cache:initial.context.status,source_characters:packet?.raw_content?.length||0});
       const facts=packet?.facts||[];
-      const rawResolution=resolveAuthoritativeWorkstream(text,facts);
-      const priorConversationSection=rawResolution.status==='unknown'?conversationWorkstream(history,facts):null;
-      const commandCenterOverview=contextWorkstream==='mary-kate-command-center'&&!priorConversationSection&&commandCenterOverviewQuestion(text);
+      const recentConversation={turns:history.map(({role,text})=>({role,content:text})),truncated:false};
+      const previousAssistant=recentConversation.turns.at(-1)?.role==='assistant'?recentConversation.turns.at(-1).content:'';
+      const lastHistory=initial.history?.[0];
+      const lastRoute=lastHistory?.route||lastHistory||(/your priorities are:/i.test(previousAssistant)?{model_selection:{task:'priority_advice'}}:null);
+      const triage=triageRequest(text,{recent:recentConversation,lastRoute});
+      const previousScope=triage.priority_followup?lastRoute?.model_selection?.scope_section:null;
+      const priorityScope=previousScope&&facts.some(fact=>fact.section===previousScope)?previousScope:null;
+      const rawResolution=resolveAuthoritativeWorkstream(priorityScope?`For ${canonicalSectionName(priorityScope)}, ${text}`:text,facts);
+      const kind=authorityKind(text);
+      const priorConversationSection=rawResolution.status==='unknown'&&kind==='current'?conversationWorkstream(history,facts):null;
+      const commandCenterOverview=!priorConversationSection&&activeWorkstreamSections(facts).length>0&&isPriorityQuestion(text);
+      const assentScope=readOnlyAssentScope(text,recentConversation,facts,initial,now(),packetTtlMs);
       // The persistent Command Center chat may supply its page context for an
       // otherwise unqualified read-only assessment. It never overrides an
       // explicit project, an ambiguous request, or anything action-bearing.
       const useCommandCenterContext=contextWorkstream==='mary-kate-command-center'
         && readOnlyAssessment(text)
         && rawResolution.status==='unknown';
-      const scopedText=priorConversationSection?`${text.trim()} Continue the conversation about ${canonicalSectionName(priorConversationSection)}.`:useCommandCenterContext?`${text.trim()} For Mary Kate.`:text;
-      const ambiguity_gate=commandCenterOverview&&rawResolution.status==='unknown'
+      const scopedText=priorityScope?`For ${canonicalSectionName(priorityScope)}, ${text}`:assentScope?`What is the V1 assessment for ${canonicalSectionName(assentScope)}?`:priorConversationSection?`${text.trim()} Continue the conversation about ${canonicalSectionName(priorConversationSection)}.`:useCommandCenterContext?`${text.trim()} For Mary Kate.`:text;
+      const wholeWorkload=triage.mode==='priority_advice'&&rawResolution.status==='unknown'&&!priorConversationSection;
+      const actionScope=triage.mode==='action'&&rawResolution.status==='unknown'?triage.action_scope_text:scopedText;
+      const navigation=readOnlyReturn(text,recentConversation);
+      const ambiguity_gate=(wholeWorkload||commandCenterOverview)&&rawResolution.status==='unknown'
         ? {status:'passed',section:null,candidates:[],scope:'all_current_workstreams'}
-        : createAmbiguityGate(scopedText,facts);
+        : navigation?{status:'passed',section:null,candidates:[],reason:'conversation_navigation_read_only'}
+        : createAmbiguityGate(actionScope,facts);
+      mark('workstream',{...ambiguity_gate});
       if(ambiguity_gate.status==='blocked') {
         const detail=ambiguity_gate.reason==='unbound_workstream_request'?'Mary Kate found more than one workstream and could not bind this request to one current workstream, so it changed nothing.':'Mary Kate could not bind this request to one current workstream, so it changed nothing.';
         throw new PriorStateGateError('ambiguous_scope',detail,{gate:'authoritative-ambiguity.v1',status:'blocked',evidence:[],blockers:[{reason:'ambiguous_scope',key:'workstream',facts:ambiguity_gate.candidates.map(section=>({section,label:'workstream'}))}]});
       }
-      const readOnly=readOnlyAssessment(text)||commandCenterOverview;
-      if(!Array.isArray(requiredFactKeys)) throw new PriorStateGateError('invalid_request','required_fact_keys must be an array of strings');
-      const assessmentKeys=readOnly&&maryKateSection(ambiguity_gate.section)?[...new Set((packet?.facts||[]).filter(fact=>fact.section===ambiguity_gate.section&&['current-stage','current','current-assessment'].includes(fact.key)).map(fact=>fact.key))]:[];
-      const scoped=requestedFacts(scopedText,facts,initial.projects,[...requiredFactKeys,...(readOnly&&maryKateSection(ambiguity_gate.section)?assessmentKeys.length?assessmentKeys:['current-stage']:[])]);
+      const readOnly=triage.read_only||readOnlyAssessment(text)||isReadQuestion(text);
+      mark('intent',{intent:readOnly?'read_only_assessment':'action_or_unclassified'});
+      if(!Array.isArray(requiredFactKeys)||requiredFactKeys.some(key=>typeof key!=='string')) throw new PriorStateGateError('invalid_request','required_fact_keys must be an array of strings');
+      const assessmentKeys=readOnlyAssessment(text)&&maryKateSection(ambiguity_gate.section)?[...new Set((packet?.facts||[]).filter(fact=>fact.section===ambiguity_gate.section&&['current-stage','current','current-assessment'].includes(fact.key)).map(fact=>fact.key))]:[];
+      // Inherited or explicitly named workstream titles are scope, not fact
+      // requests (Evidence engine must not demand a missing Evidence field).
+      // Keep genuine requested fields and every caller-specified requirement.
+      let factText=readOnly?text:scopedText;
+      if(readOnly&&ambiguity_gate.section)factText=textWords(factText).replace(textWords(canonicalSectionName(ambiguity_gate.section)),' ');
+      if(readOnly&&isPriorityQuestion(text))factText=factText.replace(/\bnext\b/gi,'');
+      const scoped=triage.mode==='priority_advice'
+        ? requiredFactKeys.map(key=>({key:normalizeFactKey(key),section:ambiguity_gate.section}))
+        : requestedFacts(factText,facts,initial.projects,[...requiredFactKeys,...(readOnlyAssessment(text)&&maryKateSection(ambiguity_gate.section)?assessmentKeys.length?assessmentKeys:['current-stage']:[])]).map(request=>({...request,section:request.section||ambiguity_gate.section}));
       const snapshot=scoped.length?await state({requiredFacts:scoped}):initial;
       snapshot.ambiguity_gate=ambiguity_gate;
       snapshot.conversation_history=history;
-      if(readOnly) snapshot.intent='read_only_assessment';
+      snapshot.triage=triage;
+      snapshot.recent_conversation=recentConversation;
+      if(readOnly) snapshot.intent=readOnlyAssessment(text)||assentScope?'read_only_assessment':'read_only_advice';
+      if(assentScope) snapshot.read_only_continuation={source:'single_immediate_private_assessment_offer',section:assentScope,permission_authority:false};
+      mark('prior_state',{status:snapshot.prior_state.status,required_fact_keys:snapshot.prior_state.required_fact_keys});
       requirePriorState(snapshot.prior_state);
-      if(readOnly&&maryKateSection(ambiguity_gate.section)) snapshot.completion_authority=await retrieveCompletionAuthority(github);
+      if((readOnlyAssessment(text)||assentScope)&&maryKateSection(ambiguity_gate.section)) snapshot.completion_authority=await retrieveCompletionAuthority(github);
+      if(readOnly&&['priority_advice','greeting'].includes(triage.mode)) {
+        const projects=ambiguity_gate.section?snapshot.projects.filter(project=>project.name===ambiguity_gate.section):snapshot.projects;
+        if(triage.mode==='priority_advice') {
+          const sections=new Set(projects.map(project=>project.name));
+          const keys=new Set(['next-bounded-action','next-decision','next','current-objective','current-stage','current','current-assessment','current-blocker']);
+          const requests=[...new Map(facts.filter(fact=>sections.has(fact.section)&&keys.has(fact.key)).map(fact=>[fact.section+'\n'+fact.key,{section:fact.section,key:fact.key}])).values()];
+          snapshot.prior_state=createPriorStateReceipt(packet,requests);
+          requirePriorState(snapshot.prior_state);
+        }
+        const route={route_kind:'temporary_context',responsibility:'ai_can_handle',confidence:'high',plain_summary:triage.mode==='greeting'?'I’m here. Ask about your current work, priorities, or a specific project.':priorityAdviceSummary(projects),why:'Deterministic read-only triage; no model call or mutation authority.',triage,prior_state:snapshot.prior_state,model_selection:{provider:'none',calls:0,task:triage.mode,...(ambiguity_gate.section?{scope_section:ambiguity_gate.section}:{})}};
+        const interaction=await store.addInteraction({raw_text:text.trim(),route:{...route,retrieval_trace:trace}});
+        mark('response',{response_type:route.route_kind,queue_item_created:false});
+        try {observe(trace);} catch {}
+        return {retrieval_trace:trace,interaction_id:interaction.id,conversation_id:conversationId,plain_summary:route.plain_summary,responsibility:route.responsibility,route_kind:route.route_kind,queue_item:null,model_selection:route.model_selection,triage,handoff:{status:'conversation_active',can_clear:false,message:'This is still a conversation. No task or GitHub change has been claimed.'}};
+      }
+      if(readOnly&&!snapshot.completion_authority) {
+        snapshot.retrieval_evidence=await retrieveIndexedEvidence(github,text,{activeWork:typeof packet.raw_content==='string'?{content:packet.raw_content,sha:packet.source.sha}:await github.readFile(WRITE_REPO,'ACTIVE_WORK.md'),kind});
+        // The answer packet needs the relevant current paragraphs, not every project's history.
+        snapshot.projects=ambiguity_gate.section?initial.projects.filter(project=>project.name===ambiguity_gate.section):[];
+      }
       // A Command Center V1-status question has a canonical indexed answer.
       // Keep this narrow read-only path independent of a model's ability to
       // emit the control-route schema; all broader conversation still routes
       // through the existing policy adapter and gates below.
-      let candidate=contextWorkstream==='mary-kate-command-center'&&readOnly&&maryKateSection(ambiguity_gate.section)
+      mark('retrieval',{sources:snapshot.retrieval_evidence?.sources.map(x=>({...x.source,selected_characters:x.selected_characters,paragraphs:x.excerpts.map(e=>e.paragraph)}))||[snapshot.completion_authority?.source||initial.source],routing_source:snapshot.retrieval_evidence?.routing_source||snapshot.completion_authority?.routing_source||null,missing:snapshot.retrieval_evidence?.missing||[]});
+      let candidate=contextWorkstream==='mary-kate-command-center'&&readOnlyAssessment(text)&&maryKateSection(ambiguity_gate.section)
         ? completionAssessment(snapshot.completion_authority)
         : null;
       let technicalSummary=null;
@@ -326,7 +431,11 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
         candidate=validateRoute(publicCandidate);
       }
       else try {
-        const output=await router.route(text.trim(),createControlTaskPacket(snapshot));
+        const taskPacket=createControlTaskPacket(snapshot);
+        const characters=JSON.stringify(taskPacket).length;
+        mark('routing_dispatch',{context_characters:characters,estimated_tokens:Math.ceil(characters/4),token_estimate_method:'characters/4; not provider usage'});
+        const output=await router.route(text.trim(),taskPacket,{observeModel:details=>mark('model_metrics',details)});
+        mark('routing_return',{route_kind:output?.route_kind,proposal_present:Boolean(output?.proposal)});
         try {candidate=validateRoute(output);} catch(error) {
           error.code='routing_contract_invalid';error.status=422;
           error.diagnostic=routingDiagnostic(output,{},error);
@@ -346,14 +455,23 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
         error.code='read_only_route_violation';error.status=422;error.message='Routing proposed an action for a read-only question. No approval or change was saved.';
         throw error;
       }
-      const route=enforceResolvedWriteTarget({...candidate,prior_state:snapshot.prior_state,...(snapshot.completion_authority?{retrieval_authority:{source:snapshot.completion_authority.source,routing_source:snapshot.completion_authority.routing_source}}:{})},snapshot.prior_state,ambiguity_gate);
-      const interaction=await store.addInteraction({raw_text:text.trim(),route});
+      const route=enforceResolvedWriteTarget({...candidate,triage,prior_state:snapshot.prior_state,...(snapshot.completion_authority?{retrieval_authority:{source:snapshot.completion_authority.source,routing_source:snapshot.completion_authority.routing_source}}:{})},snapshot.prior_state,ambiguity_gate);
+      if(route.proposal) {
+        const reviewed=route.proposal.target_path==='ACTIVE_WORK.md'?snapshot.source:await github.readFile(route.proposal.target_repo,route.proposal.target_path);
+        if(!reviewed.sha) throw new CanonicalWriteError('canonical_review_missing','Mary Kate could not verify the proposal source version. Nothing was queued.');
+        route.proposal.reviewed_sha=reviewed.sha;
+      }
+      mark('safety',{route_kind:route.route_kind,mutation_proposed:Boolean(route.proposal)});
+      const interaction=await store.addInteraction({raw_text:text.trim(),route:{...route,retrieval_trace:trace}});
       let item=null;
       if(route.proposal) item=await store.addQueueItem({interaction_id:interaction.id,...route});
       const handoff=item
         ? {status:'tracked',can_clear:true,message:route.responsibility==='needs_ashley'?'This is saved in Needs your attention until you approve or reject it.':'This is saved under Today as work AI can handle next. It is not shown as running until a worker actually checks in.'}
         : {status:'conversation_active',can_clear:false,message:'This is still a conversation. No task or GitHub change has been claimed.'};
-      return {interaction_id:interaction.id,conversation_id:conversationId,plain_summary:route.plain_summary,...(technicalSummary?{technical_summary:technicalSummary}:{}),responsibility:route.responsibility,route_kind:route.route_kind,queue_item:item,handoff};
+      mark('response',{response_type:route.route_kind,queue_item_created:Boolean(item)});
+      try {observe(trace);} catch { /* Diagnostics must not alter authorization or availability. */ }
+      return {retrieval_trace:trace,interaction_id:interaction.id,conversation_id:conversationId,plain_summary:route.plain_summary,...(technicalSummary?{technical_summary:technicalSummary}:{}),responsibility:route.responsibility,route_kind:route.route_kind,queue_item:item,handoff,triage,...(route.model_selection?{model_selection:route.model_selection}:{model_selection:{provider:'workers-ai',calls:1,task:triage.mode}})};
+      } catch(error) {mark('failure',{code:error?.code||'invalid_request',first_failed_stage:trace.stages.at(-1)?.stage});error.retrieval_trace=trace;try {observe(trace);} catch {} throw error;}
     },
     async approve(id,note='') {
       const item=await store.getQueueItem(id);
@@ -373,6 +491,11 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
         if(!commit_sha) throw new CanonicalWriteError('canonical_provenance_unavailable','Mary Kate found the prior change but could not verify its GitHub provenance. Nothing new was written.',502);
       } else {
         if(item.status==='approved') throw new CanonicalWriteError('canonical_receipt_not_verified','Mary Kate has an operational receipt but GitHub does not verify this change. Nothing new was written.');
+        if(!item.proposal.reviewed_sha) throw new CanonicalWriteError('canonical_review_missing','Mary Kate cannot verify the source version reviewed for this pending approval. Prepare a fresh proposal before approving. Nothing was written.');
+        if(current.sha!==item.proposal.reviewed_sha) {
+          if(target.path==='ACTIVE_WORK.md') await store.invalidateContextPacket('active-work.v1');
+          throw new CanonicalWriteError('canonical_review_stale','Project Truth changed after this proposal was prepared. Review a fresh proposal before approving. Nothing was written.');
+        }
         const canonical=applyProposal(stripMarker(current.content),item.proposal);
         const operation={version:'control-write-operation.v1',operation_id:item.id,payload_digest,expected_prior_sha:current.sha,target_repo:target.repo,target_path:target.path,content_digest:await hash(canonical)};
         updated=canonical.trimEnd()+'\n\n'+markerStart+encodeMarker(operation)+markerEnd+'\n';
@@ -416,7 +539,7 @@ export function createD1Store(db,{id=()=>crypto.randomUUID(),now=()=>new Date().
     async getQueueItem(key){return parse(await db.prepare('SELECT * FROM control_queue_items WHERE id=?').bind(key).first());},
     async resolveQueueItem(key,status,note,receipt){await db.prepare('UPDATE control_queue_items SET status=?,resolution_note=?,technical_receipt_json=?,resolved_at=? WHERE id=?').bind(status,note||null,receipt?JSON.stringify(receipt):null,now(),key).run();},
     async listQueues(){const rows=(await db.prepare("SELECT * FROM control_queue_items WHERE status='pending' ORDER BY created_at DESC").all()).results||[];return{needs_ashley:rows.filter(x=>x.responsibility==='needs_ashley').map(parse),ai_can_handle:rows.filter(x=>x.responsibility==='ai_can_handle').map(parse)};},
-    async listHistory(limit){const rows=(await db.prepare('SELECT i.id,i.route_json,i.plain_summary,i.route_kind,i.responsibility,i.created_at,q.status AS outcome_status,q.resolved_at,q.technical_receipt_json FROM control_interactions i LEFT JOIN control_queue_items q ON q.interaction_id=i.id ORDER BY i.created_at DESC LIMIT ?').bind(limit).all()).results||[];return rows.map(({route_json,...row})=>{const route=JSON.parse(route_json||'{}');return {...row,outcome_status:route.outcome_status||row.outcome_status||'captured',diagnostic:route.diagnostic||null,receipt:row.technical_receipt_json?JSON.parse(row.technical_receipt_json):null};});}
+    async listHistory(limit){const rows=(await db.prepare('SELECT i.id,i.route_json,i.plain_summary,i.route_kind,i.responsibility,i.created_at,q.status AS outcome_status,q.resolved_at,q.technical_receipt_json FROM control_interactions i LEFT JOIN control_queue_items q ON q.interaction_id=i.id ORDER BY i.created_at DESC LIMIT ?').bind(limit).all()).results||[];return rows.map(({route_json,...row})=>{const route=JSON.parse(route_json||'{}');return {...row,outcome_status:route.outcome_status||row.outcome_status||'captured',diagnostic:route.diagnostic||null,...(route.model_selection?{model_selection:route.model_selection}:{}),receipt:row.technical_receipt_json?JSON.parse(row.technical_receipt_json):null};});}
   };
 }
 export function createMemoryStore({now=()=>new Date().toISOString()}={}) {

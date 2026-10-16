@@ -42,6 +42,35 @@ Actual deployed browser upload produced job `2ee77206-d5e2-48b3-8a8b-367c381a629
 **Credential-handling boundary:** The read-only browser adapter did not supply the password-field value. Automatic approval review rejected a proposed system-clipboard transfer because it would expand credential exposure; no clipboard action executed. A one-use loopback handoff into browser runtime memory completed sign-in without printing the token. Credentials now persist in the existing analyzer's ignored runtime directory with mode 0600.
 
 **Prevention:** For Worker-first static paths, test the actual JS/CSS responses and module startup using the same effective asset bindings as deployment. After authenticated configuration through the existing path, verify the deployed bytes, private worker reachability, and actual upload → timestamped review → correction retrieval before claiming activation.
+## 2026-10-15 — Priority paraphrase and cost triage repair
+
+**Symptom:** Ashley reported `what to prioritize next` still returning 422
+`prior_state_ambiguous_scope` after a separate daily-priority development repair.
+That earlier repair was not deployed; do not infer active production bytes.
+
+**Failed approach:** a narrow phrase allowlist and keyword-based difficulty
+selection did not cover ordinary paraphrases. The priority handler also ran
+after the workstream/field gate; conversational Next could become a global
+field request. Short new questions inherited hard-task words from old turns.
+
+**Candidate repair:** shared triage defaults ordinary speech to read-only;
+whole-workload priority advice bypasses single-write-target resolution, checks
+each project's relevant facts, and answers without a model call. Named scope and
+natural follow-ups are retained. Model difficulty is separate from permission;
+status lookups and new short questions stay conversation. Both legacy and
+automatic service routes prohibit quota-driven retries/fallback under triage.
+
+**Verification:** see `CONVERSATION_TRIAGE.md` and `test/control-triage.test.js`.
+Provider calls in tests are mocked. Approval, reviewed-version, scoped-write,
+readback and deployment gates remain. Exact full-suite/build receipts are
+recorded with the development commit; production/user acceptance remains open.
+Final local suite: 182/182; triage groups: 17; My Work mapping: 14/14;
+conversation-runner syntax and Worker packaging dry-run PASS. Receipt:
+`docs/test-receipts/2026-10-15-conversation-triage.json`.
+
+**Prevention:** unknown wording must never grant mutation authority or trigger
+expensive escalation. Test cost, retrieval, natural follow-ups and write safety
+as separate properties. Do not equate a code commit with a deployed fix.
 
 This is the durable record for recurring failures, loops, misleading symptoms, and verified fixes in the `ashleybrookeugc/Ashley-brooke-cohen` website project.
 
@@ -747,3 +776,16 @@ Canonical [sanitized preflight receipt](https://github.com/ashleybrookeugc/resea
 **Concrete recovery path awaiting merge approval:** Merge this documentation-only PR through the normal GitHub main → Workers Builds path, after explicit approval (the previous approval covered PR #18 only). Wait until that exact main build is latest and active; recheck immediately before the already-authorized telemetry-only `wrangler secret put`. Keep the new credential alive in one protected parent process. First run bounded signed invalid-envelope probes: HTTP 400 `worker_telemetry_invalid` means authentication passed without storing synthetic telemetry; negative signatures must return 401. Capture safe code/time/CF-Ray and deployment IDs, require a consistent window, then execute the unchanged real Mac runner with separate authenticated lifecycle/expiry observations. Stop on not-configured, unexplained version changes or persistent 401; preserve all outcomes. Phone acceptance still requires Ashley's observation.
 
 **Receipt:** [sanitized diagnosis](https://github.com/ashleybrookeugc/research-vault/blob/codex/issue-31-http-diagnosis/research/ai-workflows/2026-10-15-issue-31-http-diagnosis.json). [Cloudflare secret behavior](https://developers.cloudflare.com/workers/configuration/secrets/). This entry is a documented stop and recovery plan, not a verified solution.
+## 2026-10-15 — Live retrieval audit: knowledge map bypassed and ordinary words became field requirements
+
+**Observed symptom:** All seven informational questions and the continuation/correction cases failed to produce useful answers in the authenticated production Command Center. The underspecified mutation safely asked for clarification; this is a correct safety stop, not a conversational failure. A separate explicit V1-status control answered through the existing deterministic path. Existing sanitized production history confirms Workers AI `@cf/meta/llama-3.1-8b-instruct-fp8` emitted `state_update` proposals with invalid fields/targets; five new failure interaction receipts were preserved. Pending queues were unchanged (Needs Ashley 0, AI can handle 3), no approval was clicked.
+
+**Confirmed source causes:** General requests retrieved only parsed ACTIVE_WORK projects; PROJECT_INDEX was used only by the completion-status specialization. `requestedFacts` treated ordinary “next” as the globally repeated Next field. Sequential replay also reproduced telemetry/failure questions demanding a missing Evidence field solely because the service appended the inherited “evidence engine” title. Common words selected unrelated UGC work for model/permission questions. Raw latest current-work checkpoints were absent from the answer packet. Model output availability remained coupled to a mutation-shaped route schema. Live output failures and source-level causes are distinguished in the canonical audit; exact active Worker version and internal fetches were unavailable in this Work session.
+
+**Bounded candidate repair:** Read-question detection; genuine requested fields and explicit required facts preserved, while inherited/named workstream titles are excluded from field discovery; stopword handling for read-only resolution; UGC-app alias with competing-project checks; exclude administrative/date headings from workstream candidates; indexed founder/test/failure retrieval and whole-paragraph context budgets; one bounded failure expansion; source/intent/context/provider/output tracing with no raw content logged. Existing completion and mutation contracts retained. The prior e1bb840 daily-priority repair is preserved, not replaced or indiscriminately merged.
+
+**Verification boundary:** Eight new regression groups plus existing positive/negative, ambiguity, hostile-proposal and canonical-write tests. Complete final counts and exact receipts live in the canonical audit. Provider-double source replays prove retrieval bytes/routes and safety, not model comprehension or readable live answers. No production deployment was authorized or performed. Do not declare the chatbot fixed until the unchanged conversational corpus passes against an authenticated deployment of the exact candidate.
+
+**Closeout freshness:** Current main advanced independently to `141d95e58bad21d957cb24915089ae821d206aa0` (shared video/admin login). No retrieval-candidate file overlaps that eleven-file change. The exact combined tree was checked:154 passed,2 skipped,0 failed; requirements14/14 and Worker dry-run PASS. The review branch retains the new main through a merge commit; no main/deployment write was made by this audit.
+
+**Failure-log reconciliation (2026-10-15):** The existing canonical read-only failure record now enumerates the Next-field, inherited Evidence-field, wrong-authority, stale-context and invalid-proposal fingerprints with their regression requirements; the priority/writeback record distinguishes completed incident preservation from unverified automatic capture. See [canonical failure fingerprints](https://github.com/ashleybrookeugc/research-vault/blob/main/shared-capabilities/ai-workflows/failures/2026-10-15-read-only-priority-advice-422.md). The independent triage candidate 29fb6c7 remains a separate development line; no integration or deployed prevention is claimed.
