@@ -31,7 +31,41 @@
         "exact": true
       }
     ],
-    "route": "https://ashleybrookecohen.com/video-test/"
+    "route": "https://ashleybrookecohen.com/video-test/",
+    "final_follow_up": {
+      "pull_request": "https://github.com/ashleybrookeugc/Ashley-brooke-cohen/pull/58",
+      "head": "0a194ebb5bec264b79b61c35b26acc8a0418a420",
+      "merged_main": "2b54c9fec27a57ad95ba5cf1d7ff6a10f322bda9",
+      "normal_Workers_Builds": "SUCCESS",
+      "final_live_assets": [
+        {
+          "file": "index.html",
+          "status": 200,
+          "exact": true
+        },
+        {
+          "file": "app.js",
+          "status": 200,
+          "exact": true
+        },
+        {
+          "file": "review.js",
+          "status": 200,
+          "exact": true
+        },
+        {
+          "file": "style.css",
+          "status": 200,
+          "exact": true
+        }
+      ],
+      "final_local_suite": {
+        "passed": 207,
+        "failed": 0,
+        "skipped": 0
+      },
+      "note": "PR58 includes only prompts, deduplication and evidence/docs, so GitHub Actions path filters did not add a separate test check; full final local suite passed. Production build succeeded."
+    }
   },
   "failure": {
     "founder_screenshot": "2026-10-15 22:02:51 America/New_York",
@@ -162,7 +196,7 @@
       "source_sha256": "c48f66d57aff8697302e6e2c4b7ae143ebe738d3a3c82b10de2a2685e0440c6d",
       "observation_id": "speech-1",
       "timestamp_seconds": 3.2,
-      "text": "Non-private transcript review: use a question break here \u2014 \u201cWhy not? Because I already checked it.\u201d The recovered words should remain source-bound to this clip.",
+      "text": "Non-private transcript review: use a question break here — “Why not? Because I already checked it.” The recovered words should remain source-bound to this clip.",
       "kind": "creator_correction",
       "created_at": "2026-10-16T02:34:52.271Z",
       "analyzer_version": "synchronized-evidence-2.0.0"
@@ -190,5 +224,17 @@
     "Full actions/workflow/friction, UGC/edit advice, B-roll/library, B-Paid/performance and arbitrary-video qualification remain unfinished.",
     "Physical iPhone and M4 Pro24GB qualification not run.",
     "Mac and private connector must stay online; no autostart or external archival added."
-  ]
+  ],
+  "project_truth": {
+    "commit": "1ed6fad8f4c752fa1beebfb5baf305c6930a9193",
+    "routing": [
+      "ACTIVE_WORK.md",
+      "shared-capabilities/video-understanding/V1_IMPLEMENTATION_PLAN.md",
+      "research/ai-workflows/MARY_KATE_TEST_AND_EVALUATION_REGISTRY.md",
+      "research/SOURCE_INVENTORY.md",
+      "shared-capabilities/ai-workflows/SESSION_AND_FAILURE_PROTOCOL.md"
+    ],
+    "sources": 3,
+    "remote_readback": "exact for active, plan, receipt and all three source cards"
+  }
 }
