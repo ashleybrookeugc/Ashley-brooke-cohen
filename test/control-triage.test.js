@@ -4,7 +4,10 @@ import {triageRequest,modelTaskProfile} from '../src/control/triage.js';
 import {createControlService,createMemoryStore,createD1Store} from '../src/control/service.js';
 import {createWorkersAiRoutingAdapter,createPolicyRoutingAdapter} from '../src/control/adapters.js';
 
-const content=`## Current active workstreams
+const content=`## Current focus
+**Workstream:** Video analyzer
+**Do next:** Review a real video from start to finish and improve the edit advice.
+## Current active workstreams
 ### Video analyzer — ACTIVE / PARALLEL
 **Next bounded action:** Verify the uploaded video.
 ### Mary Kate — ACTIVE NOW
@@ -40,9 +43,9 @@ test('equivalent prioritization requests retrieve evidence and answer with zero 
     assert.equal(result.queue_item,null);
     assert.equal(run.reads,1);
     assert.equal(run.writes,0);
-    assert.ok(result.plain_summary.indexOf('Check the repaired chat')<result.plain_summary.indexOf('Verify the uploaded video'));
-    assert.match(result.plain_summary,/Waiting for the signed agreement/);
-    assert.match(result.plain_summary,/unverified/);
+    assert.match(result.plain_summary,/Video processing is the current focus/i,input);
+    assert.match(result.plain_summary,/Review a real video from start to finish/i);
+    assert.doesNotMatch(result.plain_summary,/repaired chat|signed agreement/i);
     const row=(await run.store.listHistory(1))[0];
     assert.equal(row.route.prior_state.material[0].sha,'current-work-sha');
     assert.equal(row.route.proposal,undefined);
@@ -62,7 +65,7 @@ test('natural priority follow-ups are free and cached work is refreshed at expir
 test('explicit project advice stays scoped; missing evidence does not invent priorities',async()=>{
   const run=setup({route(){assert.fail('No model dispatch');}});
   const result=await run.service.capture('What should I prioritize for Video analyzer?');
-  assert.match(result.plain_summary,/Verify the uploaded video/);
+  assert.match(result.plain_summary,/Review a real video from start to finish/);
   assert.doesNotMatch(result.plain_summary,/Check the repaired chat|signed agreement/);
   const empty=createControlService({store:createMemoryStore(),router:{route(){assert.fail();}},github:{readFile:async()=>({content:'# Empty work',sha:'empty'})}});
   assert.match((await empty.capture('What should I prioritize?')).plain_summary,/could not find any current projects/i);
@@ -148,13 +151,13 @@ test('conversational next is not a request for global Next fields across differe
   const source=content.replace('**Next bounded action:** Verify the uploaded video.','**Next:** Verify the uploaded video.').replace('**Next bounded action:** Check the repaired chat.','**Next:** Check the repaired chat.');
   const service=createControlService({store:createMemoryStore(),router:{route(){assert.fail('No dispatch');}},github:{readFile:async()=>({content:source,sha:'different-next-fields'})}});
   const result=await service.capture('what to prioritize next');
-  assert.match(result.plain_summary,/Check the repaired chat/);assert.match(result.plain_summary,/Verify the uploaded video/);
+  assert.match(result.plain_summary,/Review a real video from start to finish/);assert.doesNotMatch(result.plain_summary,/repaired chat/);
 });
 test('a named priority and its elliptical follow-up do not silently switch to other projects',async()=>{
   const run=setup({route(){assert.fail('No dispatch');}});
   await run.service.capture('What should I prioritize for Video analyzer?');
   const result=await run.service.capture('Which one first?');
-  assert.match(result.plain_summary,/Verify the uploaded video/);assert.doesNotMatch(result.plain_summary,/repaired chat/);
+  assert.match(result.plain_summary,/Review a real video from start to finish/);assert.doesNotMatch(result.plain_summary,/repaired chat/);
 });
 test('keyword collisions remain normal questions, not workload summaries or action permission',()=>{
   for(const input of ['Which camera focus setting should I use?', 'What is a priority queue?', 'What does blocked mean?', 'How does CSS priority work?']) {

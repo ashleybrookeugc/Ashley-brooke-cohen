@@ -3,7 +3,10 @@ import assert from 'node:assert/strict';
 import {createControlService,createMemoryStore,resolveAuthoritativeWorkstream} from '../src/control/service.js';
 import {parseCanonicalFacts} from '../src/control/contracts.js';
 import {isReadQuestion,selectParagraphs} from '../src/control/retrieval.js';
-const active=`## Current execution priority
+const active=`## Current focus
+**Workstream:** Shared video-understanding / evidence engine
+**Do next:** Review a real video and improve useful editing advice.
+## Current execution priority
 **Latest video proof:** The private video upload works in a desktop browser. Physical phone and semantic accuracy remain unverified.
 ## Current active workstreams
 ### Mary Kate / AI operating system — ACTIVE NOW
@@ -34,7 +37,7 @@ function setup(output=answer) {
 test('priority next is ordinary advice, not an ambiguous cross-project Next field',async()=>{
  const run=setup();const result=await run.service.capture('What should I prioritize next?',{contextWorkstream:'mary-kate-command-center'});
  assert.equal(result.model_selection.calls,0);assert.equal(result.model_selection.task,'priority_advice');assert.equal(run.calls,0);assert.equal(run.writes,0);
- assert.match(result.plain_summary,/your priorities are/i);
+ assert.match(result.plain_summary,/Video processing is the current focus.*Review a real video/i);
 });
 test('ordinary questions follow the indexed authority and carry actual selected bytes',async()=>{
  for(const [text,path,proof] of [

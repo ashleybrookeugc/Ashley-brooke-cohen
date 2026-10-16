@@ -31,7 +31,7 @@ const clean = value => String(value || '').replace(/`[^`]+`/g,'').replace(/\b[0-
 const sentence = value => { const text=clean(value).replace(/^\*+|\*+$/g,''); return text ? text.replace(/\s*[.;]+$/,'')+'.' : null; };
 
 function stateFromName(name) {
-  const match=String(name).match(/^(.*?)\s+—\s+\*\*(.+?)\*\*\s*$/);
+  const match=String(name).match(/^(.*?)\s+—\s+(?:\*\*)?(ACTIVE NOW|ACTIVE \/ PARALLEL|WAITING FOR ASHLEY|BLOCKED|PAUSED \/ RESUMABLE)(?:\*\*)?\s*$/i);
   return match ? {name:match[1].trim(), status:match[2].trim()} : {name:String(name).trim(), status:'ACTIVE'};
 }
 
@@ -85,9 +85,22 @@ function priorityBlocks(markdown) {
     .map(match=>({heading:match[1],body:match[2]}));
 }
 
+function explicitFocus(markdown) {
+  const section=String(markdown||'').match(/^## Current focus\s*\n([\s\S]*?)(?=^## |$(?![\s\S]))/m)?.[1];
+  if (!section) return null;
+  const workstream=section.match(/^\*\*Workstream:\*\*\s*(.+)$/m)?.[1]?.trim();
+  const next=section.match(/^\*\*Do next:\*\*\s*(.+)$/m)?.[1]?.trim();
+  return workstream&&next?{workstream,next}:null;
+}
+
 function currentPriorityMatches(name, markdown) {
+  const focus=explicitFocus(markdown);
+  if (focus) return focus.workstream.toLowerCase()===name.toLowerCase()
+    ? [{heading:focus.workstream,body:`**Next:** ${focus.next}`}]:[];
   const current=priorityBlocks(markdown).find(block=>!/historical|superseded/i.test(block.heading));
-  return current && projectMatcher(name).test(`${current.heading} ${current.body}`) ? [current] : [];
+  // A historical checkpoint can discuss other projects in its body. Its
+  // title and opening sentence alone may identify the legacy current focus.
+  return current && projectMatcher(name).test(`${current.heading} ${current.body.split(/[.!?]\s/)[0]}`) ? [current] : [];
 }
 
 function reconciliationFor(name, markdown) {
@@ -101,11 +114,12 @@ function reconciliationFor(name, markdown) {
 
 function resumeNext(name, direct) {
   if (!direct) return null;
+  if (/mary kate/i.test(name)) return 'Check a normal conversation and follow-up, then verify that any approved change is saved correctly.';
   if (/b-paid/i.test(name)) return 'Choose one known messy source video, then mark the moments that should and should not become candidates.';
   if (/professional website|portfolio website/i.test(name)) return 'Compare the live site with the saved portfolio direction, then choose one focused design or content improvement.';
   if (/portfolio|performance identity/i.test(name)) return 'Review the saved performance videos from start to finish, then build the performance profile from what is actually visible.';
   if (/pop-up|event|casting/i.test(name)) return 'Compare the live experience with the saved product plan, then choose one focused improvement.';
-  if (/video|analyzer|evidence/i.test(name)) return 'Prove the testing page in a real browser, connect its authorized worker, then run one complete phone upload, review, correction, and reopen test.';
+  if (/video|analyzer|evidence/i.test(name)) return 'Keep improving the video review so it explains actions, pacing, and useful edits from the full recording.';
   return sentence(direct);
 }
 

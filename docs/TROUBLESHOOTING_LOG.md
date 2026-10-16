@@ -1,5 +1,14 @@
 # Ashley Brooke Cohen Website — Troubleshooting & Recovery Log
 
+## 2026-10-16 — Current video priority displaced by historical notes and AI suggestions
+
+**Symptom:** After refresh, Today listed Mary Kate, B-Paid, portfolio and website with technical saved steps, while a separate card asserted “Processing videos is not currently a priority.” Ashley confirmed that video processing has been active for weeks and remains a priority.
+
+**Failed approach / root cause:** The projection searched the entire first dated execution checkpoint for project-name keywords. That paragraph discussed several historical workstreams, so it promoted them all. The page also put pending model-generated `ai_can_handle` queue text under Today as if it were current authority. Read-only advice copied unreconciled technical next fields and ranked by status labels.
+
+**Repair:** A concise `Current focus` section in Project Truth names the active workstream and human next step. The projection binds that name exactly; legacy checkpoint matching is limited to its title and opening sentence. Broad prioritization uses the same source and does not invent a rank when focus is absent. Pending AI suggestions remain inspectable under a collapsed, explicitly unreviewed section away from Today. Approval and canonical-write gates are unchanged. The page states that other ChatGPT conversations are not connected; ChatGPT sign-in does not grant access to them.
+
+**Prevention / proof:** Freeze a current-video fixture whose older checkpoint mentions multiple projects and whose queue contains a false video-priority claim. Assert one plain Today card, scoped natural answers, zero model calls/writes, and preserved approval controls. Local tests prove the code path; production deployment and Ashley's refreshed view must be checked separately.
 ## 2026-10-15 — Founder still sees raw code after the first plain-English repair
 
 **Symptom:** Ashley reports “Still showing raw code” after PR #43. Her original loaded tab was not conclusively inspected; a cache issue is not established.

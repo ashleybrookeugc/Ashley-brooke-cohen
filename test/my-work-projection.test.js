@@ -36,7 +36,7 @@ test('My Work converts source records into plain-English current project cards',
   assert.doesNotMatch(maryKate.next,/save key/i);
   assert.match(result.work[1].what,/video/i);
   assert.doesNotMatch(result.work[1].next,/abcdef|96\/96/i);
-  assert.match(result.work[1].next,/complete phone upload/i);
+  assert.match(result.work[1].next,/full recording/i);
   assert.match(result.work[2].blocked_or_unverified,/saved source videos.*not yet been reviewed/i);
   assert.match(result.work[2].next,/Review the saved performance videos/i);
   assert.equal(result.work[2].next_label,'Saved resume point');
@@ -58,6 +58,15 @@ test('older priority checkpoints never promote unrelated projects into Today',()
   assert.deepEqual(result.today.map(item=>item.project),['Mary Kate / AI operating system']);
   assert.equal(result.work[1].focus,'available');
   assert.equal(result.work[2].focus,'available');
+});
+
+test('a current focus on video overrides historical cross-project mentions and unreviewed AI claims',()=>{
+  const source=active.replace('## Current execution priority','## Current focus\n**Workstream:** Shared video-understanding / evidence engine\n**Do next:** Review a real video from start to finish and improve the useful edit advice.\n## Current execution priority');
+  const result=buildMyWorkProjection({activeWork:source,activeSha:'a',queues:{ai_can_handle:[{id:'old',plain_summary:'Processing videos is not currently a priority.',why:'Stale model claim'}]}});
+  assert.deepEqual(result.today.map(item=>item.project),['Shared video-understanding / evidence engine']);
+  assert.equal(result.today[0].next,'Review a real video from start to finish and improve the useful edit advice.');
+  assert.equal(result.projects[0].next_label,'Saved resume point');
+  assert.equal(result.ai_queue[0].label,'Processing videos is not currently a priority.'); // retained as unreviewed queue history, never promoted to Today
 });
 
 test('queue approvals remain actionable while project blockers stay plain and non-mutating',()=>{
