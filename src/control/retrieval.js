@@ -16,9 +16,11 @@ export function authorityKind(text) {
   if(/\b(?:decid(?:e|ed)|permissions?|automatic|model selection|capability selection)\b/i.test(text)) return 'founder';
   if(/\b(?:fail(?:ed|ure)?|read.only|went wrong)\b/i.test(text)) return 'failure';
   if(/\b(?:telemetry|tests?|benchmark|evaluation)\b/i.test(text)) return 'tests';
+  if(/\b(?:creator workflow|source language|campaign proof|retention findings|contentease)\b/i.test(text)) return 'creator';
+  if(/\b(?:video analyzer|video understanding|video-understanding|evidence engine|private video|video upload)\b/i.test(text)) return 'video';
   return 'current';
 }
-const rowMatch={founder:/^\| Mary Kate founder intent,/,failure:/^\| Known failure,/,tests:/^\| Mary Kate tests,/};
+const rowMatch={founder:/^\| Mary Kate founder intent,/,failure:/^\| Known failure,/,tests:/^\| Mary Kate tests,/,video:/^\| Video analyzer capability\b/,creator:/^\| Creator workflow findings for ContentEase\b/};
 
 // Whole paragraphs retain qualifications/negation. Ranking is deterministic
 // lexical selection, not semantic understanding or a freshness guarantee.
@@ -28,55 +30,108 @@ export function selectParagraphs(content,query,budget=10000) {
   const scored=blocks.map((text,index)=>{
     const h=text.match(/^#{1,6}\s+(.+)/m);if(h)heading=h[1];
     const lower=text.toLowerCase();
-    return {index,section:heading,text,score:terms.reduce((sum,term)=>sum+(lower.includes(term)?1:0),0)};
+    return {index,section:heading,text,score:terms.reduce((sum,term)=>sum+(lower.includes(term)?1:heading.toLowerCase().includes(term)?0.5:0),0)};
   }).filter(x=>x.score>0).sort((a,b)=>b.score-a.score||a.index-b.index);
   let used=0;const selected=[];
   for(const block of scored) {if(used+block.text.length>budget)continue;selected.push(block);used+=block.text.length;if(selected.length===8)break;}
-  return {excerpts:selected.sort((a,b)=>a.index-b.index).map(({index,section,text})=>({paragraph:index,section,text})),source_characters:String(content).length,selected_characters:used,truncated:used<String(content).length,selection:'query-term overlap; whole paragraphs; source order breaks ties'};
+  return {excerpts:selected.sort((a,b)=>a.index-b.index).map(({index,section,text})=>({paragraph:index,section,text})),source_characters:String(content).length,selected_characters:used,truncated:used<String(content).length,selection:'query-term and owning-heading overlap; whole paragraphs; source order breaks ties'};
 }
 
-export async function retrieveIndexedEvidence(github,text,{activeWork,kind=authorityKind(text)}={}) {
-  const sources=[];const missing=[];let routing_source=null;
-  const add=(path,file,budget)=>{if(!file?.sha||typeof file.content!=='string'){missing.push({path,reason:'unversioned_or_missing'});return;}
-    const selected=selectParagraphs(file.content,text,budget);
-    sources.push({source:{repo:WRITE_REPO,path,sha:file.sha,sha_kind:'blob'},...selected});
-    if(!selected.excerpts.length)missing.push({path,reason:'no_matching_paragraphs'});
-  };
-  if(kind==='founder'||kind==='failure') {
-    // Their focused authority is sufficient; do not attach unrelated current-work history.
-  } else if(isPriorityQuestion(text)&&activeWork?.sha) {
-    const content=String(activeWork.content);
-    const priority=content.split('## Current execution priority')[1]?.split(/^## /m)[0]||'';
-    const excerpts=[];let used=0;
-    for(const paragraph of priority.split(/\n\s*\n/).filter(x=>x.trim()).slice(0,2)) {
-      if(used+paragraph.length<=7000){excerpts.push({section:'Current execution priority',text:paragraph});used+=paragraph.length;}
-    }
-    const current=content.split('## Current active workstreams')[1]?.split('## Session handoff rule')[0]||'';
-    let section='Current active workstreams';
-    for(const line of current.split(/\r?\n/)) {
-      if(line.startsWith('### '))section=line.slice(4);
-      if(/^\*\*(?:Current|Next|Next bounded action):/.test(line)&&used+line.length<=11000){excerpts.push({section,text:line});used+=line.length;}
-    }
-    sources.push({source:{repo:WRITE_REPO,path:'ACTIVE_WORK.md',sha:activeWork.sha,sha_kind:'blob'},excerpts,source_characters:content.length,selected_characters:used,truncated:used<content.length,selection:'first two execution checkpoints plus current/next fields; no inferred priority order'});
-    if(!excerpts.length)missing.push({path:'ACTIVE_WORK.md',reason:'no_current_work_sections'});
-  } else add('ACTIVE_WORK.md',activeWork,7000);
-  if(kind!=='current') {
-    const index=await github.readFile(WRITE_REPO,'PROJECT_INDEX.md');
-    routing_source={repo:WRITE_REPO,path:'PROJECT_INDEX.md',sha:index.sha,sha_kind:'blob'};
-    const rows=String(index.content).split(/\r?\n/).filter(line=>rowMatch[kind].test(line));
-    const path=rows.length===1?rows[0].split('|')[2]?.match(/`([^`]+)`/)?.[1]:null;
-    if(!index.sha||!path||! /^(?:research|shared-capabilities)\/[a-zA-Z0-9_./-]+\.md$/.test(path)||path.includes('..')) missing.push({reason:'indexed_authority_missing',kind});
-    else {
-      const file=await github.readFile(WRITE_REPO,path);add(path,file,kind==='failure'?3000:7000);
-      // One bounded expansion into a real failure record, chosen only from
-      // links present in the retrieved hub. Never accept a model-supplied URL.
-      if(kind==='failure') {
-        const candidates=[...String(file.content).matchAll(/(?:\]\(|`)((?:[\w./-]+\/)?failures\/[\w-]+\.md)(?:[)#`])/g)].map(m=>m[1].startsWith('failures/')?'shared-capabilities/ai-workflows/'+m[1]:m[1]);
-        const ranked=[...new Set(candidates)].map(path=>({path,score:(path.toLowerCase().match(/read-only|retriev|priorit/g)||[]).filter(term=>text.toLowerCase().replace('read-only','read-only').includes(term)).length})).sort((a,b)=>b.score-a.score);
-        const follow=ranked.find(x=>x.score>0&&/^shared-capabilities\/ai-workflows\/failures\/[\w-]+\.md$/.test(x.path));
-        if(follow)add(follow.path,await github.readFile(WRITE_REPO,follow.path),3000);
-      }
+
+// Read-only map -> hub -> evidence. References never become model tool arguments.
+function wikiTarget(reference,from='PROJECT_INDEX.md') {
+  if(typeof reference!=='string'||!reference||reference.startsWith('/')||! /^[A-Za-z0-9_./#-]+$/.test(reference))return null;
+  const [target,anchor,...extra]=reference.split('#');if(extra.length)return null;
+  const rooted=/^(?:research|shared-capabilities|evidence)\//.test(target);
+  const stack=rooted?[]:from.split('/').slice(0,-1);
+  for(const part of target.split('/')){if(!part||part==='.')continue;if(part==='..'){if(!stack.length)return null;stack.pop();}else stack.push(part);}
+  const path=stack.join('/');
+  if(!/^(?:research|shared-capabilities|evidence)\/[A-Za-z0-9_./-]+\.(?:md|json)$/.test(path))return null;
+  return {path,anchor:anchor||null};
+}
+function queryTerms(text) {
+  const extra=/contentease|creator workflow/i.test(text)?' ugc creator workflow campaign source proof':/telemetry/i.test(text)?' telemetry heartbeat acceptance lifecycle':/video/i.test(text)?' video analyzer acceptance unfinished correction':'';
+  return [...new Set((String(text).toLowerCase().concat(extra).match(/[a-z][a-z0-9-]{2,}/g)||[]).filter(x=>!['what','which','why','with','that','this','should','about','have','from','does','happened','actually','meant','the','and','for','next'].includes(x)))];
+}
+function linkedCandidates(content,from,text) {
+  const terms=queryTerms(text),links=[];let heading='';
+  for(const block of String(content).split(/\n\s*\n/)){
+    const h=block.match(/^#{1,6}\s+(.+)/m);if(h)heading=h[1];
+    for(const match of block.matchAll(/\[([^\]]+)\]\(([^)\s]+)\)|\x60([^\x60]+)\x60/g)){
+      // Bare product paths are prose references, not local wiki links. Only
+      // explicit Markdown links or vault-root backticked paths are traversed.
+      if(match[3]&&!/^(?:research|shared-capabilities|evidence)\//.test(match[3]))continue;
+      const target=wikiTarget(match[2]||match[3],from);if(!target)continue;
+      const label=(match[1]||'').toLowerCase(),path=target.path.toLowerCase(),scope=heading.toLowerCase();
+      const score=terms.reduce((n,t)=>n+(label.includes(t)?3:0)+(path.includes(t)?1:0)+(scope.includes(t)?1:0),0);
+      if(score)links.push({...target,score});
     }
   }
-  return {version:'indexed-evidence.v1',authority_kind:kind,routing_source,sources,missing,limitations:['Static indexed routes and lexical paragraph ranking; not semantic proof.','Blob SHAs identify fetched files; no atomic repository snapshot is claimed.','Conflicting historical/current notes must remain qualified; source order alone is not freshness.']};
+  const seen=new Set();return links.sort((a,b)=>b.score-a.score).filter(x=>{const key=x.path+'#'+(x.anchor||'');if(seen.has(key))return false;seen.add(key);return true;});
+}
+function selectWikiEvidence(content,path,text,budget,anchor) {
+  if(path.endsWith('.json')) {
+    let data;try{data=JSON.parse(content);}catch{return {excerpts:[],source_characters:content.length,selected_characters:0,truncated:true,selection:'invalid JSON; no evidence inferred'};}
+    if(!data||typeof data!=='object'||Array.isArray(data))return {excerpts:[],source_characters:content.length,selected_characters:0,truncated:true,selection:'unsupported JSON shape'};
+    const keys=['stop','status','acceptance_boundary','full_requirements','evidence','attempts',...Object.keys(data)];
+    let used=0;const excerpts=[],omitted_fields=[];
+    for(const key of [...new Set(keys)]){if(!(key in data))continue;const value=JSON.stringify({[key]:data[key]});if(used+value.length>budget){omitted_fields.push(key);continue;}excerpts.push({section:key,text:value});used+=value.length;}
+    return {excerpts,omitted_fields,source_characters:content.length,selected_characters:used,truncated:omitted_fields.length>0,selection:'whole JSON fields; outcome/limitations before supporting detail'};
+  }
+  let scope=content;
+  if(anchor) {
+    const lines=content.split('\n'),slug=s=>s.toLowerCase().replace(/[^\p{L}\p{N}_ -]/gu,'').replace(/ /g,'-');
+    const start=lines.findIndex(line=>/^#{1,6} /.test(line)&&slug(line.replace(/^#+ /,''))===anchor);
+    if(start<0)return {excerpts:[],source_characters:content.length,selected_characters:0,truncated:true,selection:'indexed section missing'};
+    const level=lines[start].match(/^#+/)[0].length;let end=start+1;
+    while(end<lines.length&&!new RegExp('^#{1,'+level+'} ').test(lines[end]))end++;
+    scope=lines.slice(start,end).join('\n');
+  }
+  return {...selectParagraphs(scope,text,budget),source_characters:content.length,...(anchor?{section_anchor:anchor,paragraph_scope:'indexed section'}:{})};
+}
+
+export async function retrieveIndexedEvidence(github,text,{activeWork,kind=authorityKind(text),scope=null}={}) {
+  const sources=[],missing=[],navigation=[],visited=new Set();let routing_source=null,used=0;
+  const limit=16000,maxSources=4,query=text+(scope?' '+scope:'');
+  const read=async path=>{try{return await github.readFile(WRITE_REPO,path);}catch{missing.push({path,reason:'read_unavailable'});return null;}};
+  const add=(path,file,budget,anchor=null,role='evidence')=>{
+    if(visited.has(path)||sources.length>=maxSources)return;
+    visited.add(path);
+    if(!file?.sha||typeof file.content!=='string'){missing.push({path,reason:'unversioned_or_missing'});return;}
+    const selected=selectWikiEvidence(file.content,path,query,Math.min(budget,limit-used),anchor);
+    used+=selected.selected_characters;
+    sources.push({source:{repo:WRITE_REPO,path,sha:file.sha,sha_kind:'blob'},role,...selected});
+    if(selected.omitted_fields?.some(key=>['stop','status','acceptance_boundary','full_requirements','limitations'].includes(key)))missing.push({path,reason:'outcome_qualification_omitted'});
+    if(!selected.excerpts.length)missing.push({path,reason:anchor?'indexed_section_empty_or_missing':'no_matching_paragraphs'});
+  };
+  const active=()=>add('ACTIVE_WORK.md',activeWork,kind==='current'?7000:3000,null,'current_state_projection');
+  if(kind==='current') active();
+  else {
+    if(['tests','video'].includes(kind))active();
+    const index=await read('PROJECT_INDEX.md');
+    if(index?.sha&&typeof index.content==='string') {
+      routing_source={repo:WRITE_REPO,path:'PROJECT_INDEX.md',sha:index.sha,sha_kind:'blob'};
+      const rows=index.content.split(/\r?\n/).filter(line=>rowMatch[kind]?.test(line));
+      const ref=rows.length===1?rows[0].split('|')[2]?.match(/\x60([^\x60]+)\x60/)?.[1]:null;
+      const target=wikiTarget(ref);
+      if(!target)missing.push({reason:'indexed_authority_missing',kind});
+      else {
+        const root=await read(target.path);
+        navigation.push({from:'PROJECT_INDEX.md',to:target.path,reason:'indexed authority row',status:root?.sha?'retrieved':'unavailable'});
+        add(target.path,root,{founder:7000,failure:3000,tests:6000,video:6000,creator:2000}[kind],target.anchor,['tests','creator'].includes(kind)?'catalog':kind==='failure'?'instruction':'authority');
+        if(root?.sha&&typeof root.content==='string'&&kind!=='founder') {
+          const candidates=linkedCandidates(root.content,target.path,query).filter(x=>!visited.has(x.path));
+          for(const child of candidates.slice(0,kind==='failure'?1:maxSources-sources.length)) {
+            const leaf=await read(child.path);
+            navigation.push({from:target.path,to:child.path,reason:'linked descriptor/query overlap',score:child.score,status:leaf?.sha?'retrieved':'unavailable'});
+            add(child.path,leaf,4000,child.anchor);
+          }
+        }
+      }
+    } else missing.push({path:'PROJECT_INDEX.md',reason:'unversioned_or_missing'});
+    if(!sources.length&&activeWork?.sha)active();
+  }
+  return {version:'indexed-evidence.v2',authority_kind:kind,routing_source,sources,missing,navigation,
+    reading_contract:{entry:'PROJECT_INDEX.md',maximum_sources:maxSources,maximum_depth:2,selected_character_limit:limit,selected_characters:used},
+    limitations:['Bounded indexed routes and lexical descriptor/paragraph ranking; not general semantic search.','Only successfully versioned reads count as evidence; links and model text confer no authority.','Catalog/instruction text is navigation or governance, not proof that a feature works.','Blob SHAs are per-file versions, not an atomic repo snapshot or a freshness guarantee.','Historical/current conflicts and omitted evidence remain qualified; source order is not freshness.']};
 }

@@ -354,6 +354,11 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
       const priorityScope=previousScope&&facts.some(fact=>fact.section===previousScope)?previousScope:null;
       const rawResolution=resolveAuthoritativeWorkstream(priorityScope?`For ${canonicalSectionName(priorityScope)}, ${text}`:text,facts);
       const kind=authorityKind(text);
+      // Specific wiki evidence is not a whole-workload priority projection.
+      if(triage.mode==='priority_advice'&&['video','creator','tests'].includes(kind)&&!isPriorityQuestion(text)) {
+        triage.mode='conversation';triage.max_model_calls=1;
+        triage.reason='Read the indexed topic authority before answering; no mutation authority.';
+      }
       const priorConversationSection=rawResolution.status==='unknown'&&kind==='current'?conversationWorkstream(history,facts):null;
       const commandCenterOverview=!priorConversationSection&&activeWorkstreamSections(facts).length>0&&isPriorityQuestion(text);
       const assentScope=readOnlyAssentScope(text,recentConversation,facts,initial,now(),packetTtlMs);
@@ -367,7 +372,13 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
       const wholeWorkload=triage.mode==='priority_advice'&&rawResolution.status==='unknown'&&!priorConversationSection;
       const actionScope=triage.mode==='action'&&rawResolution.status==='unknown'?triage.action_scope_text:scopedText;
       const navigation=readOnlyReturn(text,recentConversation);
-      const ambiguity_gate=(wholeWorkload||commandCenterOverview)&&rawResolution.status==='unknown'
+      // A saved MK decision/failure lookup need not choose between two MK
+      // state projections. Distinct projects, actions and required facts keep
+      // their existing ambiguity gates; this grants only an authority read.
+      const authorityOverview=triage.read_only&&['founder','failure','tests'].includes(kind)
+        &&rawResolution.status==='ambiguous'&&rawResolution.candidates.every(maryKateSection)
+        &&Array.isArray(requiredFactKeys)&&requiredFactKeys.length===0;
+      const ambiguity_gate=authorityOverview?{status:'passed',section:null,candidates:rawResolution.candidates,scope:'indexed_authority_read_only'}:(wholeWorkload||commandCenterOverview)&&rawResolution.status==='unknown'
         ? {status:'passed',section:null,candidates:[],scope:'all_current_workstreams'}
         : navigation?{status:'passed',section:null,candidates:[],reason:'conversation_navigation_read_only'}
         : createAmbiguityGate(actionScope,facts);
@@ -421,7 +432,8 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
         return {retrieval_trace:trace,interaction_id:interaction.id,conversation_id:conversationId,plain_summary:route.plain_summary,responsibility:route.responsibility,route_kind:route.route_kind,queue_item:null,model_selection:route.model_selection,triage,handoff:{status:'conversation_active',can_clear:false,message:'This is still a conversation. No task or GitHub change has been claimed.'}};
       }
       if(readOnly&&!snapshot.completion_authority) {
-        snapshot.retrieval_evidence=await retrieveIndexedEvidence(github,text,{activeWork:typeof packet.raw_content==='string'?{content:packet.raw_content,sha:packet.source.sha}:await github.readFile(WRITE_REPO,'ACTIVE_WORK.md'),kind});
+        const evidenceKind=kind==='current'?authorityKind(ambiguity_gate.section||''):kind;
+        snapshot.retrieval_evidence=await retrieveIndexedEvidence(github,text,{activeWork:typeof packet.raw_content==='string'?{content:packet.raw_content,sha:packet.source.sha}:await github.readFile(WRITE_REPO,'ACTIVE_WORK.md'),kind:evidenceKind,scope:ambiguity_gate.section});
         // The answer packet needs the relevant current paragraphs, not every project's history.
         snapshot.projects=ambiguity_gate.section?initial.projects.filter(project=>project.name===ambiguity_gate.section):[];
       }
@@ -429,7 +441,7 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
       // Keep this narrow read-only path independent of a model's ability to
       // emit the control-route schema; all broader conversation still routes
       // through the existing policy adapter and gates below.
-      mark('retrieval',{sources:snapshot.retrieval_evidence?.sources.map(x=>({...x.source,selected_characters:x.selected_characters,paragraphs:x.excerpts.map(e=>e.paragraph)}))||[snapshot.completion_authority?.source||initial.source],routing_source:snapshot.retrieval_evidence?.routing_source||snapshot.completion_authority?.routing_source||null,missing:snapshot.retrieval_evidence?.missing||[]});
+      mark('retrieval',{sources:snapshot.retrieval_evidence?.sources.map(x=>({...x.source,role:x.role||'evidence',selection:x.selection,selected_characters:x.selected_characters,paragraphs:x.excerpts.map(e=>e.paragraph)}))||[snapshot.completion_authority?.source||initial.source],routing_source:snapshot.retrieval_evidence?.routing_source||snapshot.completion_authority?.routing_source||null,navigation:snapshot.retrieval_evidence?.navigation||[],reading_contract:snapshot.retrieval_evidence?.reading_contract||null,missing:snapshot.retrieval_evidence?.missing||[]});
       let candidate=contextWorkstream==='mary-kate-command-center'&&readOnlyAssessment(text)&&maryKateSection(ambiguity_gate.section)
         ? completionAssessment(snapshot.completion_authority)
         : null;
