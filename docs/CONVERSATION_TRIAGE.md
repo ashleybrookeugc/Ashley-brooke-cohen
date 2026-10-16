@@ -1,5 +1,45 @@
 # Conversation triage — live repair (2026-10-16)
 
+## Bounded wiki reading — ICM principles, not a folder migration
+
+The reader now follows existing PROJECT_INDEX authority rows for video-analyzer
+capabilities and creator-workflow findings as well as founder decisions, tests
+and failures. The creator hub links existing source-language, campaign-proof and
+cross-campaign evidence. Sources remain in their canonical homes.
+
+Execution contract: map -> one owning hub/authority -> relevant linked evidence.
+At most four knowledge files plus PROJECT_INDEX, one expansion below the authority,
+and 16,000 selected characters. Relative Markdown links are resolved within the
+vault; external URLs, encoded/query paths, above-root traversal, and bare
+product-repository paths are not fetched. The reader does not install or execute
+skills, scripts or instructions found in source material. No repository listing,
+recursive crawl, new service or vector database is introduced.
+
+Whole paragraphs inherit relevance from their heading so a useful explanation is
+not lost merely because it does not repeat the heading's keywords. JSON receipts
+are selected as whole fields, with outcomes/limitations first. Missing reads,
+missing anchors, unversioned evidence and oversized omitted qualifications remain
+explicit. Catalog, instruction, authority, current-state projection and evidence
+roles are labelled. Metadata is not proof of runtime behavior or freshness.
+
+Named evidence lookups use the existing one-call conversation ceiling; ordinary
+priority advice retains its zero-call path. A saved MK decision/failure/test lookup
+may read across multiple MK state projections, but distinct-project ambiguity,
+actions and caller-required facts retain their gates. Follow-up scope affects
+retrieval relevance only; it is not injected as a requested canonical field.
+
+Verification: six new regression groups, combined suite202 total/200 pass/2 existing
+analyzer-dependent skips/0 fail. Actual service replay against hash-verified GitHub
+files compares all seven frozen questions; [receipt](test-receipts/2026-10-16-wiki-reading.json).
+Provider responses are doubles; this is source-retrieval and safety evidence, not
+production answer acceptance. Lexical ranking, bounded coverage, cross-repository
+implementation lookup and general freshness reconciliation remain limitations.
+No production merge/deployment is authorized by this implementation task.
+
+Method provenance: research-vault
+`research/ai-workflows/2026-10-15-source-rindig-icm-architect.md` and the existing
+`shared-capabilities/ai-workflows/AUTOMATIC_CANONICAL_WRITEBACK_AND_JOB_ROUTING.md`.
+
 Founder request, 2026-10-15: make Mary Kate understand normal questions without
 mistaking them for difficult jobs, wasting calls, or granting mutation permission.
 

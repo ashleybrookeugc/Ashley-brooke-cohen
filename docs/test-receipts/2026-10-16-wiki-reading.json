@@ -1,0 +1,1671 @@
+{
+  "schema": "mary-kate.wiki-reading-source-walk.v1",
+  "product_baseline": "9d2e7a7faab886e627ab1466dff607f4f9539f88",
+  "vault_snapshot": "5339c2904466d1fd2b1b073eb747102dcb36c996",
+  "limitations": [
+    "Actual service code with hash-verified fetched GitHub files; memory store and provider double. NOT a deployed answer or cold autonomous model benchmark.",
+    "Context tokens are characters/4 estimates; provider-double calls are not actual inference.",
+    "Source and indexed metadata selection are tested; semantic completeness/freshness is not guaranteed."
+  ],
+  "missing_materialized_sources": [],
+  "rows": [
+    {
+      "mode": "current_main_source",
+      "input": "What should I do today?",
+      "reads": [
+        "ACTIVE_WORK.md"
+      ],
+      "source_versions": [
+        {
+          "path": "ACTIVE_WORK.md",
+          "sha": "5bf72240e2d6124056d7852ec9f8dcc0c216dacf"
+        }
+      ],
+      "provider_double_calls": 0,
+      "canonical_writes": 0,
+      "queues": {
+        "needs_ashley": [],
+        "ai_can_handle": []
+      },
+      "actual_deterministic_response": "Video processing is the current focus. Next: Keep improving the video review so it explains what happens across the full recording and gives useful editing or workflow advice. Check the next result with a real video.",
+      "evidence": null,
+      "context_characters": 0,
+      "estimated_context_tokens": 0
+    },
+    {
+      "mode": "current_main_source",
+      "input": "What should I prioritize next?",
+      "reads": [
+        "ACTIVE_WORK.md"
+      ],
+      "source_versions": [
+        {
+          "path": "ACTIVE_WORK.md",
+          "sha": "5bf72240e2d6124056d7852ec9f8dcc0c216dacf"
+        }
+      ],
+      "provider_double_calls": 0,
+      "canonical_writes": 0,
+      "queues": {
+        "needs_ashley": [],
+        "ai_can_handle": []
+      },
+      "actual_deterministic_response": "Video processing is the current focus. Next: Keep improving the video review so it explains what happens across the full recording and gives useful editing or workflow advice. Check the next result with a real video.",
+      "evidence": null,
+      "context_characters": 0,
+      "estimated_context_tokens": 0
+    },
+    {
+      "mode": "current_main_source",
+      "input": "What's blocking the video analyzer?",
+      "reads": [
+        "ACTIVE_WORK.md"
+      ],
+      "source_versions": [
+        {
+          "path": "ACTIVE_WORK.md",
+          "sha": "5bf72240e2d6124056d7852ec9f8dcc0c216dacf"
+        }
+      ],
+      "provider_double_calls": 1,
+      "canonical_writes": 0,
+      "queues": {
+        "needs_ashley": [],
+        "ai_can_handle": []
+      },
+      "actual_deterministic_response": null,
+      "evidence": {
+        "version": "indexed-evidence.v1",
+        "authority_kind": "current",
+        "routing_source": null,
+        "sources": [
+          {
+            "source": {
+              "repo": "ashleybrookeugc/research-vault",
+              "path": "ACTIVE_WORK.md",
+              "sha": "5bf72240e2d6124056d7852ec9f8dcc0c216dacf",
+              "sha_kind": "blob"
+            },
+            "source_characters": 78845,
+            "selected_characters": 6982,
+            "truncated": true,
+            "selection": "query-term overlap; whole paragraphs; source order breaks ties",
+            "excerpt_locations": [
+              {
+                "paragraph": 2,
+                "section": "Active Work"
+              },
+              {
+                "paragraph": 4,
+                "section": "Current focus"
+              },
+              {
+                "paragraph": 13,
+                "section": "Current execution priority"
+              },
+              {
+                "paragraph": 14,
+                "section": "Current execution priority"
+              },
+              {
+                "paragraph": 39,
+                "section": "Shared video-understanding / evidence engine \u2014 **ACTIVE / PARALLEL**"
+              },
+              {
+                "paragraph": 51,
+                "section": "Video benchmark \u2014 first frozen-media retrieval identity proof (2026-09-23)"
+              },
+              {
+                "paragraph": 53,
+                "section": "Video benchmark \u2014 remaining-source retrieval stopped on social-05 identity mismatch (2026-09-25)"
+              }
+            ]
+          }
+        ],
+        "missing": [],
+        "limitations": [
+          "Static indexed routes and lexical paragraph ranking; not semantic proof.",
+          "Blob SHAs identify fetched files; no atomic repository snapshot is claimed.",
+          "Conflicting historical/current notes must remain qualified; source order alone is not freshness."
+        ]
+      },
+      "context_characters": 15156,
+      "estimated_context_tokens": 3789,
+      "selected_proof_checks": {
+        "qualification_present": true,
+        "http_503_present": true,
+        "http_401_present": true,
+        "source_wording_present": true
+      }
+    },
+    {
+      "mode": "current_main_source",
+      "input": "What happened with the telemetry test?",
+      "reads": [
+        "ACTIVE_WORK.md",
+        "PROJECT_INDEX.md",
+        "research/ai-workflows/MARY_KATE_TEST_AND_EVALUATION_REGISTRY.md"
+      ],
+      "source_versions": [
+        {
+          "path": "ACTIVE_WORK.md",
+          "sha": "5bf72240e2d6124056d7852ec9f8dcc0c216dacf"
+        },
+        {
+          "path": "PROJECT_INDEX.md",
+          "sha": "ff20982dfcebf72db238a6c932a57eec9665d707"
+        },
+        {
+          "path": "research/ai-workflows/MARY_KATE_TEST_AND_EVALUATION_REGISTRY.md",
+          "sha": "443c38802e185949cd0a9fb0a299bd82a0dae28e"
+        }
+      ],
+      "provider_double_calls": 1,
+      "canonical_writes": 0,
+      "queues": {
+        "needs_ashley": [],
+        "ai_can_handle": []
+      },
+      "actual_deterministic_response": null,
+      "evidence": {
+        "version": "indexed-evidence.v1",
+        "authority_kind": "tests",
+        "routing_source": {
+          "repo": "ashleybrookeugc/research-vault",
+          "path": "PROJECT_INDEX.md",
+          "sha": "ff20982dfcebf72db238a6c932a57eec9665d707",
+          "sha_kind": "blob"
+        },
+        "sources": [
+          {
+            "source": {
+              "repo": "ashleybrookeugc/research-vault",
+              "path": "ACTIVE_WORK.md",
+              "sha": "5bf72240e2d6124056d7852ec9f8dcc0c216dacf",
+              "sha_kind": "blob"
+            },
+            "source_characters": 78845,
+            "selected_characters": 6857,
+            "truncated": true,
+            "selection": "query-term overlap; whole paragraphs; source order breaks ties",
+            "excerpt_locations": [
+              {
+                "paragraph": 12,
+                "section": "Current execution priority"
+              },
+              {
+                "paragraph": 15,
+                "section": "Current execution priority"
+              },
+              {
+                "paragraph": 17,
+                "section": "Current execution priority"
+              },
+              {
+                "paragraph": 20,
+                "section": "Current execution priority"
+              },
+              {
+                "paragraph": 21,
+                "section": "Current execution priority"
+              }
+            ]
+          },
+          {
+            "source": {
+              "repo": "ashleybrookeugc/research-vault",
+              "path": "research/ai-workflows/MARY_KATE_TEST_AND_EVALUATION_REGISTRY.md",
+              "sha": "443c38802e185949cd0a9fb0a299bd82a0dae28e",
+              "sha_kind": "blob"
+            },
+            "source_characters": 61957,
+            "selected_characters": 6495,
+            "truncated": true,
+            "selection": "query-term overlap; whole paragraphs; source order breaks ties",
+            "excerpt_locations": [
+              {
+                "paragraph": 0,
+                "section": "Mary Kate \u2014 test and evaluation registry"
+              },
+              {
+                "paragraph": 1,
+                "section": "Mary Kate \u2014 test and evaluation registry"
+              },
+              {
+                "paragraph": 3,
+                "section": "Worker contract"
+              },
+              {
+                "paragraph": 4,
+                "section": "Worker contract"
+              },
+              {
+                "paragraph": 5,
+                "section": "Worker contract"
+              },
+              {
+                "paragraph": 9,
+                "section": "Active queue"
+              },
+              {
+                "paragraph": 68,
+                "section": "2026-10-15 row 12 \u2014 real signed heartbeat partial proof; full live acceptance FAIL"
+              },
+              {
+                "paragraph": 72,
+                "section": "2026-10-15 \u2014 V1 production retrieval trace and knowledge-map audit (requirement-linked acceptance)"
+              }
+            ]
+          }
+        ],
+        "missing": [],
+        "limitations": [
+          "Static indexed routes and lexical paragraph ranking; not semantic proof.",
+          "Blob SHAs identify fetched files; no atomic repository snapshot is claimed.",
+          "Conflicting historical/current notes must remain qualified; source order alone is not freshness."
+        ]
+      },
+      "context_characters": 16435,
+      "estimated_context_tokens": 4109,
+      "selected_proof_checks": {
+        "qualification_present": true,
+        "http_503_present": true,
+        "http_401_present": true,
+        "source_wording_present": false
+      }
+    },
+    {
+      "mode": "current_main_source",
+      "input": "What did we decide about automatic model selection and permissions?",
+      "reads": [
+        "ACTIVE_WORK.md",
+        "PROJECT_INDEX.md",
+        "research/ai-workflows/2026-10-04-mary-kate-founder-intent-decomposition.md"
+      ],
+      "source_versions": [
+        {
+          "path": "ACTIVE_WORK.md",
+          "sha": "5bf72240e2d6124056d7852ec9f8dcc0c216dacf"
+        },
+        {
+          "path": "PROJECT_INDEX.md",
+          "sha": "ff20982dfcebf72db238a6c932a57eec9665d707"
+        },
+        {
+          "path": "research/ai-workflows/2026-10-04-mary-kate-founder-intent-decomposition.md",
+          "sha": "108eaf3caf5111288b5f286cdd0bf2343030f797"
+        }
+      ],
+      "provider_double_calls": 1,
+      "canonical_writes": 0,
+      "queues": {
+        "needs_ashley": [],
+        "ai_can_handle": []
+      },
+      "actual_deterministic_response": null,
+      "evidence": {
+        "version": "indexed-evidence.v1",
+        "authority_kind": "founder",
+        "routing_source": {
+          "repo": "ashleybrookeugc/research-vault",
+          "path": "PROJECT_INDEX.md",
+          "sha": "ff20982dfcebf72db238a6c932a57eec9665d707",
+          "sha_kind": "blob"
+        },
+        "sources": [
+          {
+            "source": {
+              "repo": "ashleybrookeugc/research-vault",
+              "path": "research/ai-workflows/2026-10-04-mary-kate-founder-intent-decomposition.md",
+              "sha": "108eaf3caf5111288b5f286cdd0bf2343030f797",
+              "sha_kind": "blob"
+            },
+            "source_characters": 36814,
+            "selected_characters": 6996,
+            "truncated": true,
+            "selection": "query-term overlap; whole paragraphs; source order breaks ties",
+            "excerpt_locations": [
+              {
+                "paragraph": 7,
+                "section": "Six user-level jobs"
+              },
+              {
+                "paragraph": 12,
+                "section": "What the failure history says must be mechanical"
+              },
+              {
+                "paragraph": 14,
+                "section": "The actual Mary Kate kernel"
+              },
+              {
+                "paragraph": 21,
+                "section": "Separation of responsibilities"
+              },
+              {
+                "paragraph": 51,
+                "section": "2026-10-05 \u2014 Founder direction: automatic capability routing across modalities, with Krea as a bounded proof point"
+              },
+              {
+                "paragraph": 53,
+                "section": "2026-10-05 \u2014 Founder direction: automatic capability routing across modalities, with Krea as a bounded proof point"
+              }
+            ]
+          }
+        ],
+        "missing": [],
+        "limitations": [
+          "Static indexed routes and lexical paragraph ranking; not semantic proof.",
+          "Blob SHAs identify fetched files; no atomic repository snapshot is claimed.",
+          "Conflicting historical/current notes must remain qualified; source order alone is not freshness."
+        ]
+      },
+      "context_characters": 9426,
+      "estimated_context_tokens": 2357,
+      "selected_proof_checks": {
+        "qualification_present": true,
+        "http_503_present": false,
+        "http_401_present": false,
+        "source_wording_present": true
+      }
+    },
+    {
+      "mode": "current_main_source",
+      "input": "Why did Mary Kate previously fail to answer my read-only questions?",
+      "reads": [
+        "ACTIVE_WORK.md"
+      ],
+      "source_versions": [
+        {
+          "path": "ACTIVE_WORK.md",
+          "sha": "5bf72240e2d6124056d7852ec9f8dcc0c216dacf"
+        }
+      ],
+      "error": {
+        "code": "ambiguous_scope"
+      },
+      "provider_double_calls": 0,
+      "canonical_writes": 0,
+      "queues": {
+        "needs_ashley": [],
+        "ai_can_handle": []
+      },
+      "actual_deterministic_response": null,
+      "evidence": null,
+      "context_characters": 0,
+      "estimated_context_tokens": 0
+    },
+    {
+      "mode": "current_main_source",
+      "input": "Which creator workflow findings should inform ContentEase?",
+      "reads": [
+        "ACTIVE_WORK.md"
+      ],
+      "source_versions": [
+        {
+          "path": "ACTIVE_WORK.md",
+          "sha": "5bf72240e2d6124056d7852ec9f8dcc0c216dacf"
+        }
+      ],
+      "provider_double_calls": 1,
+      "canonical_writes": 0,
+      "queues": {
+        "needs_ashley": [],
+        "ai_can_handle": []
+      },
+      "actual_deterministic_response": null,
+      "evidence": {
+        "version": "indexed-evidence.v1",
+        "authority_kind": "current",
+        "routing_source": null,
+        "sources": [
+          {
+            "source": {
+              "repo": "ashleybrookeugc/research-vault",
+              "path": "ACTIVE_WORK.md",
+              "sha": "5bf72240e2d6124056d7852ec9f8dcc0c216dacf",
+              "sha_kind": "blob"
+            },
+            "source_characters": 78845,
+            "selected_characters": 6854,
+            "truncated": true,
+            "selection": "query-term overlap; whole paragraphs; source order breaks ties",
+            "excerpt_locations": [
+              {
+                "paragraph": 2,
+                "section": "Active Work"
+              },
+              {
+                "paragraph": 4,
+                "section": "Current focus"
+              },
+              {
+                "paragraph": 12,
+                "section": "Current execution priority"
+              },
+              {
+                "paragraph": 24,
+                "section": "Current execution priority"
+              },
+              {
+                "paragraph": 38,
+                "section": "Shared video-understanding / evidence engine \u2014 **ACTIVE / PARALLEL**"
+              },
+              {
+                "paragraph": 46,
+                "section": "UGC / creator campaign and editing operations \u2014 **ACTIVE / PARALLEL**"
+              }
+            ]
+          }
+        ],
+        "missing": [],
+        "limitations": [
+          "Static indexed routes and lexical paragraph ranking; not semantic proof.",
+          "Blob SHAs identify fetched files; no atomic repository snapshot is claimed.",
+          "Conflicting historical/current notes must remain qualified; source order alone is not freshness."
+        ]
+      },
+      "context_characters": 10155,
+      "estimated_context_tokens": 2539,
+      "selected_proof_checks": {
+        "qualification_present": true,
+        "http_503_present": false,
+        "http_401_present": false,
+        "source_wording_present": false
+      }
+    },
+    {
+      "mode": "wiki_candidate",
+      "input": "What should I do today?",
+      "reads": [
+        "ACTIVE_WORK.md"
+      ],
+      "source_versions": [
+        {
+          "path": "ACTIVE_WORK.md",
+          "sha": "5bf72240e2d6124056d7852ec9f8dcc0c216dacf"
+        }
+      ],
+      "provider_double_calls": 0,
+      "canonical_writes": 0,
+      "queues": {
+        "needs_ashley": [],
+        "ai_can_handle": []
+      },
+      "actual_deterministic_response": "Video processing is the current focus. Next: Keep improving the video review so it explains what happens across the full recording and gives useful editing or workflow advice. Check the next result with a real video.",
+      "evidence": null,
+      "context_characters": 0,
+      "estimated_context_tokens": 0
+    },
+    {
+      "mode": "wiki_candidate",
+      "input": "What should I prioritize next?",
+      "reads": [
+        "ACTIVE_WORK.md"
+      ],
+      "source_versions": [
+        {
+          "path": "ACTIVE_WORK.md",
+          "sha": "5bf72240e2d6124056d7852ec9f8dcc0c216dacf"
+        }
+      ],
+      "provider_double_calls": 0,
+      "canonical_writes": 0,
+      "queues": {
+        "needs_ashley": [],
+        "ai_can_handle": []
+      },
+      "actual_deterministic_response": "Video processing is the current focus. Next: Keep improving the video review so it explains what happens across the full recording and gives useful editing or workflow advice. Check the next result with a real video.",
+      "evidence": null,
+      "context_characters": 0,
+      "estimated_context_tokens": 0
+    },
+    {
+      "mode": "wiki_candidate",
+      "input": "What's blocking the video analyzer?",
+      "reads": [
+        "ACTIVE_WORK.md",
+        "PROJECT_INDEX.md",
+        "shared-capabilities/video-understanding/V1_IMPLEMENTATION_PLAN.md",
+        "research/video-understanding/2026-10-15-video-session-integration.json",
+        "research/video-understanding/2026-10-15-plain-english-video-review.json"
+      ],
+      "source_versions": [
+        {
+          "path": "ACTIVE_WORK.md",
+          "sha": "5bf72240e2d6124056d7852ec9f8dcc0c216dacf"
+        },
+        {
+          "path": "PROJECT_INDEX.md",
+          "sha": "ff20982dfcebf72db238a6c932a57eec9665d707"
+        },
+        {
+          "path": "shared-capabilities/video-understanding/V1_IMPLEMENTATION_PLAN.md",
+          "sha": "fe6f0c2d7c2ea3d368ec491d58af1b5ca047c5fb"
+        },
+        {
+          "path": "research/video-understanding/2026-10-15-video-session-integration.json",
+          "sha": "747687d31b49b3ab618034379bc977c80912ca4c"
+        },
+        {
+          "path": "research/video-understanding/2026-10-15-plain-english-video-review.json",
+          "sha": "da749a5f57eb307d878b3a248ab522025ce4e75c"
+        }
+      ],
+      "provider_double_calls": 1,
+      "canonical_writes": 0,
+      "queues": {
+        "needs_ashley": [],
+        "ai_can_handle": []
+      },
+      "actual_deterministic_response": null,
+      "evidence": {
+        "version": "indexed-evidence.v2",
+        "authority_kind": "video",
+        "routing_source": {
+          "repo": "ashleybrookeugc/research-vault",
+          "path": "PROJECT_INDEX.md",
+          "sha": "ff20982dfcebf72db238a6c932a57eec9665d707",
+          "sha_kind": "blob"
+        },
+        "sources": [
+          {
+            "source": {
+              "repo": "ashleybrookeugc/research-vault",
+              "path": "ACTIVE_WORK.md",
+              "sha": "5bf72240e2d6124056d7852ec9f8dcc0c216dacf",
+              "sha_kind": "blob"
+            },
+            "role": "current_state_projection",
+            "source_characters": 78845,
+            "selected_characters": 2983,
+            "truncated": true,
+            "selection": "query-term and owning-heading overlap; whole paragraphs; source order breaks ties",
+            "excerpt_locations": [
+              {
+                "paragraph": 0,
+                "section": "Active Work"
+              },
+              {
+                "paragraph": 34,
+                "section": "Current active workstreams"
+              },
+              {
+                "paragraph": 37,
+                "section": "Shared video-understanding / evidence engine \u2014 **ACTIVE / PARALLEL**"
+              },
+              {
+                "paragraph": 40,
+                "section": "Shared video-understanding / evidence engine \u2014 **ACTIVE / PARALLEL**"
+              },
+              {
+                "paragraph": 51,
+                "section": "Video benchmark \u2014 first frozen-media retrieval identity proof (2026-09-23)"
+              }
+            ]
+          },
+          {
+            "source": {
+              "repo": "ashleybrookeugc/research-vault",
+              "path": "shared-capabilities/video-understanding/V1_IMPLEMENTATION_PLAN.md",
+              "sha": "fe6f0c2d7c2ea3d368ec491d58af1b5ca047c5fb",
+              "sha_kind": "blob"
+            },
+            "role": "authority",
+            "source_characters": 52239,
+            "selected_characters": 5980,
+            "truncated": true,
+            "selection": "query-term and owning-heading overlap; whole paragraphs; source order breaks ties",
+            "excerpt_locations": [
+              {
+                "paragraph": 7,
+                "section": "Product boundary"
+              },
+              {
+                "paragraph": 20,
+                "section": "6. Shared evidence package"
+              },
+              {
+                "paragraph": 65,
+                "section": "Code placement and extraction rule"
+              },
+              {
+                "paragraph": 91,
+                "section": "2026-10-10 \u2014 Private analyzer testing implementation checkpoint"
+              },
+              {
+                "paragraph": 101,
+                "section": "2026-10-15 \u2014 Existing analyzer activated locally; deployed testing remains blocked"
+              },
+              {
+                "paragraph": 117,
+                "section": "2026-10-15 founder correction \u2014 Reuse Mary Kate login, keep analyzer private"
+              },
+              {
+                "paragraph": 121,
+                "section": "2026-10-15 founder correction \u2014 Plain English and the full video-review outcome"
+              },
+              {
+                "paragraph": 130,
+                "section": "2026-10-15 \u2014 Local picture descriptions and ordered visible differences"
+              }
+            ]
+          },
+          {
+            "source": {
+              "repo": "ashleybrookeugc/research-vault",
+              "path": "research/video-understanding/2026-10-15-video-session-integration.json",
+              "sha": "747687d31b49b3ab618034379bc977c80912ca4c",
+              "sha_kind": "blob"
+            },
+            "role": "evidence",
+            "omitted_fields": [
+              "production"
+            ],
+            "source_characters": 10164,
+            "selected_characters": 2593,
+            "truncated": true,
+            "selection": "whole JSON fields; outcome/limitations before supporting detail",
+            "excerpt_locations": [
+              {
+                "section": "status"
+              },
+              {
+                "section": "schema"
+              },
+              {
+                "section": "date"
+              },
+              {
+                "section": "founder_decision"
+              },
+              {
+                "section": "implementation"
+              },
+              {
+                "section": "local_verification"
+              },
+              {
+                "section": "analyzer"
+              },
+              {
+                "section": "preservation"
+              },
+              {
+                "section": "historical_activation"
+              },
+              {
+                "section": "observed_at"
+              },
+              {
+                "section": "verification_boundary"
+              }
+            ]
+          },
+          {
+            "source": {
+              "repo": "ashleybrookeugc/research-vault",
+              "path": "research/video-understanding/2026-10-15-plain-english-video-review.json",
+              "sha": "da749a5f57eb307d878b3a248ab522025ce4e75c",
+              "sha_kind": "blob"
+            },
+            "role": "evidence",
+            "omitted_fields": [
+              "preservation",
+              "canonical_for",
+              "canonical_sources"
+            ],
+            "source_characters": 5663,
+            "selected_characters": 3977,
+            "truncated": true,
+            "selection": "whole JSON fields; outcome/limitations before supporting detail",
+            "excerpt_locations": [
+              {
+                "section": "status"
+              },
+              {
+                "section": "acceptance_boundary"
+              },
+              {
+                "section": "full_requirements"
+              },
+              {
+                "section": "schema"
+              },
+              {
+                "section": "observed_at"
+              },
+              {
+                "section": "founder_correction"
+              },
+              {
+                "section": "implementation"
+              },
+              {
+                "section": "tests"
+              },
+              {
+                "section": "live"
+              },
+              {
+                "section": "type"
+              },
+              {
+                "section": "scope"
+              },
+              {
+                "section": "topics"
+              },
+              {
+                "section": "source_scope"
+              }
+            ]
+          }
+        ],
+        "missing": [],
+        "navigation": [
+          {
+            "from": "PROJECT_INDEX.md",
+            "to": "shared-capabilities/video-understanding/V1_IMPLEMENTATION_PLAN.md",
+            "reason": "indexed authority row",
+            "status": "retrieved"
+          },
+          {
+            "from": "shared-capabilities/video-understanding/V1_IMPLEMENTATION_PLAN.md",
+            "to": "research/video-understanding/2026-10-15-video-session-integration.json",
+            "reason": "linked descriptor/query overlap",
+            "score": 4,
+            "status": "retrieved"
+          },
+          {
+            "from": "shared-capabilities/video-understanding/V1_IMPLEMENTATION_PLAN.md",
+            "to": "research/video-understanding/2026-10-15-plain-english-video-review.json",
+            "reason": "linked descriptor/query overlap",
+            "score": 4,
+            "status": "retrieved"
+          }
+        ],
+        "reading_contract": {
+          "entry": "PROJECT_INDEX.md",
+          "maximum_sources": 4,
+          "maximum_depth": 2,
+          "selected_character_limit": 16000,
+          "selected_characters": 15533
+        },
+        "limitations": [
+          "Bounded indexed routes and lexical descriptor/paragraph ranking; not general semantic search.",
+          "Only successfully versioned reads count as evidence; links and model text confer no authority.",
+          "Catalog/instruction text is navigation or governance, not proof that a feature works.",
+          "Blob SHAs are per-file versions, not an atomic repo snapshot or a freshness guarantee.",
+          "Historical/current conflicts and omitted evidence remain qualified; source order is not freshness."
+        ]
+      },
+      "context_characters": 28057,
+      "estimated_context_tokens": 7015,
+      "selected_proof_checks": {
+        "qualification_present": true,
+        "http_503_present": false,
+        "http_401_present": true,
+        "source_wording_present": false
+      }
+    },
+    {
+      "mode": "wiki_candidate",
+      "input": "What happened with the telemetry test?",
+      "reads": [
+        "ACTIVE_WORK.md",
+        "PROJECT_INDEX.md",
+        "research/ai-workflows/MARY_KATE_TEST_AND_EVALUATION_REGISTRY.md",
+        "research/ai-workflows/2026-10-15-mac-studio-telemetry-acceptance.json",
+        "research/ai-workflows/2026-10-15-issue-31-artifact-manifest.json"
+      ],
+      "source_versions": [
+        {
+          "path": "ACTIVE_WORK.md",
+          "sha": "5bf72240e2d6124056d7852ec9f8dcc0c216dacf"
+        },
+        {
+          "path": "PROJECT_INDEX.md",
+          "sha": "ff20982dfcebf72db238a6c932a57eec9665d707"
+        },
+        {
+          "path": "research/ai-workflows/MARY_KATE_TEST_AND_EVALUATION_REGISTRY.md",
+          "sha": "443c38802e185949cd0a9fb0a299bd82a0dae28e"
+        },
+        {
+          "path": "research/ai-workflows/2026-10-15-mac-studio-telemetry-acceptance.json",
+          "sha": "9493108d2554c391438f6e778dd36c95a02fb19b"
+        },
+        {
+          "path": "research/ai-workflows/2026-10-15-issue-31-artifact-manifest.json",
+          "sha": "d23a11932f7e29285e9680945547f13599df6064"
+        }
+      ],
+      "provider_double_calls": 1,
+      "canonical_writes": 0,
+      "queues": {
+        "needs_ashley": [],
+        "ai_can_handle": []
+      },
+      "actual_deterministic_response": null,
+      "evidence": {
+        "version": "indexed-evidence.v2",
+        "authority_kind": "tests",
+        "routing_source": {
+          "repo": "ashleybrookeugc/research-vault",
+          "path": "PROJECT_INDEX.md",
+          "sha": "ff20982dfcebf72db238a6c932a57eec9665d707",
+          "sha_kind": "blob"
+        },
+        "sources": [
+          {
+            "source": {
+              "repo": "ashleybrookeugc/research-vault",
+              "path": "ACTIVE_WORK.md",
+              "sha": "5bf72240e2d6124056d7852ec9f8dcc0c216dacf",
+              "sha_kind": "blob"
+            },
+            "role": "current_state_projection",
+            "source_characters": 78845,
+            "selected_characters": 2929,
+            "truncated": true,
+            "selection": "query-term and owning-heading overlap; whole paragraphs; source order breaks ties",
+            "excerpt_locations": [
+              {
+                "paragraph": 12,
+                "section": "Current execution priority"
+              },
+              {
+                "paragraph": 17,
+                "section": "Current execution priority"
+              }
+            ]
+          },
+          {
+            "source": {
+              "repo": "ashleybrookeugc/research-vault",
+              "path": "research/ai-workflows/MARY_KATE_TEST_AND_EVALUATION_REGISTRY.md",
+              "sha": "443c38802e185949cd0a9fb0a299bd82a0dae28e",
+              "sha_kind": "blob"
+            },
+            "role": "catalog",
+            "source_characters": 61957,
+            "selected_characters": 5904,
+            "truncated": true,
+            "selection": "query-term and owning-heading overlap; whole paragraphs; source order breaks ties",
+            "excerpt_locations": [
+              {
+                "paragraph": 0,
+                "section": "Mary Kate \u2014 test and evaluation registry"
+              },
+              {
+                "paragraph": 1,
+                "section": "Mary Kate \u2014 test and evaluation registry"
+              },
+              {
+                "paragraph": 3,
+                "section": "Worker contract"
+              },
+              {
+                "paragraph": 4,
+                "section": "Worker contract"
+              },
+              {
+                "paragraph": 5,
+                "section": "Worker contract"
+              },
+              {
+                "paragraph": 21,
+                "section": "2026-10-08 \u2014 Pre-routing ambiguity and real-language generalization gate"
+              },
+              {
+                "paragraph": 68,
+                "section": "2026-10-15 row 12 \u2014 real signed heartbeat partial proof; full live acceptance FAIL"
+              },
+              {
+                "paragraph": 72,
+                "section": "2026-10-15 \u2014 V1 production retrieval trace and knowledge-map audit (requirement-linked acceptance)"
+              }
+            ]
+          },
+          {
+            "source": {
+              "repo": "ashleybrookeugc/research-vault",
+              "path": "research/ai-workflows/2026-10-15-mac-studio-telemetry-acceptance.json",
+              "sha": "9493108d2554c391438f6e778dd36c95a02fb19b",
+              "sha_kind": "blob"
+            },
+            "role": "evidence",
+            "omitted_fields": [
+              "authorization",
+              "config_reconciliation",
+              "cloudflare",
+              "security",
+              "validation",
+              "artifact_manifest",
+              "github_source_of_truth",
+              "runtime",
+              "writeback"
+            ],
+            "source_characters": 10432,
+            "selected_characters": 3996,
+            "truncated": true,
+            "selection": "whole JSON fields; outcome/limitations before supporting detail",
+            "excerpt_locations": [
+              {
+                "section": "stop"
+              },
+              {
+                "section": "evidence"
+              },
+              {
+                "section": "attempts"
+              },
+              {
+                "section": "version"
+              },
+              {
+                "section": "report_first_line"
+              },
+              {
+                "section": "scope"
+              },
+              {
+                "section": "product_commit_used"
+              },
+              {
+                "section": "product_pr"
+              },
+              {
+                "section": "project_truth_commits_used"
+              },
+              {
+                "section": "unchanged_runner_blob"
+              },
+              {
+                "section": "device"
+              }
+            ]
+          },
+          {
+            "source": {
+              "repo": "ashleybrookeugc/research-vault",
+              "path": "research/ai-workflows/2026-10-15-issue-31-artifact-manifest.json",
+              "sha": "d23a11932f7e29285e9680945547f13599df6064",
+              "sha_kind": "blob"
+            },
+            "role": "evidence",
+            "omitted_fields": [
+              "files"
+            ],
+            "source_characters": 4746,
+            "selected_characters": 611,
+            "truncated": true,
+            "selection": "whole JSON fields; outcome/limitations before supporting detail",
+            "excerpt_locations": [
+              {
+                "section": "version"
+              },
+              {
+                "section": "scope"
+              },
+              {
+                "section": "verification"
+              },
+              {
+                "section": "source_of_truth"
+              }
+            ]
+          }
+        ],
+        "missing": [],
+        "navigation": [
+          {
+            "from": "PROJECT_INDEX.md",
+            "to": "research/ai-workflows/MARY_KATE_TEST_AND_EVALUATION_REGISTRY.md",
+            "reason": "indexed authority row",
+            "status": "retrieved"
+          },
+          {
+            "from": "research/ai-workflows/MARY_KATE_TEST_AND_EVALUATION_REGISTRY.md",
+            "to": "research/ai-workflows/2026-10-15-mac-studio-telemetry-acceptance.json",
+            "reason": "linked descriptor/query overlap",
+            "score": 7,
+            "status": "retrieved"
+          },
+          {
+            "from": "research/ai-workflows/MARY_KATE_TEST_AND_EVALUATION_REGISTRY.md",
+            "to": "research/ai-workflows/2026-10-15-issue-31-artifact-manifest.json",
+            "reason": "linked descriptor/query overlap",
+            "score": 2,
+            "status": "retrieved"
+          }
+        ],
+        "reading_contract": {
+          "entry": "PROJECT_INDEX.md",
+          "maximum_sources": 4,
+          "maximum_depth": 2,
+          "selected_character_limit": 16000,
+          "selected_characters": 13440
+        },
+        "limitations": [
+          "Bounded indexed routes and lexical descriptor/paragraph ranking; not general semantic search.",
+          "Only successfully versioned reads count as evidence; links and model text confer no authority.",
+          "Catalog/instruction text is navigation or governance, not proof that a feature works.",
+          "Blob SHAs are per-file versions, not an atomic repo snapshot or a freshness guarantee.",
+          "Historical/current conflicts and omitted evidence remain qualified; source order is not freshness."
+        ]
+      },
+      "context_characters": 19226,
+      "estimated_context_tokens": 4807,
+      "selected_proof_checks": {
+        "qualification_present": true,
+        "http_503_present": true,
+        "http_401_present": true,
+        "source_wording_present": false
+      }
+    },
+    {
+      "mode": "wiki_candidate",
+      "input": "What did we decide about automatic model selection and permissions?",
+      "reads": [
+        "ACTIVE_WORK.md",
+        "PROJECT_INDEX.md",
+        "research/ai-workflows/2026-10-04-mary-kate-founder-intent-decomposition.md"
+      ],
+      "source_versions": [
+        {
+          "path": "ACTIVE_WORK.md",
+          "sha": "5bf72240e2d6124056d7852ec9f8dcc0c216dacf"
+        },
+        {
+          "path": "PROJECT_INDEX.md",
+          "sha": "ff20982dfcebf72db238a6c932a57eec9665d707"
+        },
+        {
+          "path": "research/ai-workflows/2026-10-04-mary-kate-founder-intent-decomposition.md",
+          "sha": "108eaf3caf5111288b5f286cdd0bf2343030f797"
+        }
+      ],
+      "provider_double_calls": 1,
+      "canonical_writes": 0,
+      "queues": {
+        "needs_ashley": [],
+        "ai_can_handle": []
+      },
+      "actual_deterministic_response": null,
+      "evidence": {
+        "version": "indexed-evidence.v2",
+        "authority_kind": "founder",
+        "routing_source": {
+          "repo": "ashleybrookeugc/research-vault",
+          "path": "PROJECT_INDEX.md",
+          "sha": "ff20982dfcebf72db238a6c932a57eec9665d707",
+          "sha_kind": "blob"
+        },
+        "sources": [
+          {
+            "source": {
+              "repo": "ashleybrookeugc/research-vault",
+              "path": "research/ai-workflows/2026-10-04-mary-kate-founder-intent-decomposition.md",
+              "sha": "108eaf3caf5111288b5f286cdd0bf2343030f797",
+              "sha_kind": "blob"
+            },
+            "role": "authority",
+            "source_characters": 36814,
+            "selected_characters": 6979,
+            "truncated": true,
+            "selection": "query-term and owning-heading overlap; whole paragraphs; source order breaks ties",
+            "excerpt_locations": [
+              {
+                "paragraph": 12,
+                "section": "What the failure history says must be mechanical"
+              },
+              {
+                "paragraph": 21,
+                "section": "Separation of responsibilities"
+              },
+              {
+                "paragraph": 51,
+                "section": "2026-10-05 \u2014 Founder direction: automatic capability routing across modalities, with Krea as a bounded proof point"
+              },
+              {
+                "paragraph": 53,
+                "section": "2026-10-05 \u2014 Founder direction: automatic capability routing across modalities, with Krea as a bounded proof point"
+              },
+              {
+                "paragraph": 55,
+                "section": "2026-10-05 \u2014 Founder direction: automatic capability routing across modalities, with Krea as a bounded proof point"
+              },
+              {
+                "paragraph": 75,
+                "section": "2026-10-06 \u2014 Current-tool boundary: local model hosts and event provenance can help; broad agent autonomy cannot replace V1"
+              },
+              {
+                "paragraph": 78,
+                "section": "2026-10-09 \u2014 Deferred provider-failover workflow (founder decision)"
+              }
+            ]
+          }
+        ],
+        "missing": [],
+        "navigation": [
+          {
+            "from": "PROJECT_INDEX.md",
+            "to": "research/ai-workflows/2026-10-04-mary-kate-founder-intent-decomposition.md",
+            "reason": "indexed authority row",
+            "status": "retrieved"
+          }
+        ],
+        "reading_contract": {
+          "entry": "PROJECT_INDEX.md",
+          "maximum_sources": 4,
+          "maximum_depth": 2,
+          "selected_character_limit": 16000,
+          "selected_characters": 6979
+        },
+        "limitations": [
+          "Bounded indexed routes and lexical descriptor/paragraph ranking; not general semantic search.",
+          "Only successfully versioned reads count as evidence; links and model text confer no authority.",
+          "Catalog/instruction text is navigation or governance, not proof that a feature works.",
+          "Blob SHAs are per-file versions, not an atomic repo snapshot or a freshness guarantee.",
+          "Historical/current conflicts and omitted evidence remain qualified; source order is not freshness."
+        ]
+      },
+      "context_characters": 10285,
+      "estimated_context_tokens": 2572,
+      "selected_proof_checks": {
+        "qualification_present": true,
+        "http_503_present": false,
+        "http_401_present": false,
+        "source_wording_present": true
+      }
+    },
+    {
+      "mode": "wiki_candidate",
+      "input": "Why did Mary Kate previously fail to answer my read-only questions?",
+      "reads": [
+        "ACTIVE_WORK.md",
+        "PROJECT_INDEX.md",
+        "shared-capabilities/ai-workflows/SESSION_AND_FAILURE_PROTOCOL.md",
+        "shared-capabilities/ai-workflows/failures/2026-10-15-read-only-priority-advice-422.md"
+      ],
+      "source_versions": [
+        {
+          "path": "ACTIVE_WORK.md",
+          "sha": "5bf72240e2d6124056d7852ec9f8dcc0c216dacf"
+        },
+        {
+          "path": "PROJECT_INDEX.md",
+          "sha": "ff20982dfcebf72db238a6c932a57eec9665d707"
+        },
+        {
+          "path": "shared-capabilities/ai-workflows/SESSION_AND_FAILURE_PROTOCOL.md",
+          "sha": "4d41b44a7c8e146c0d31cf257afc90a6a103697a"
+        },
+        {
+          "path": "shared-capabilities/ai-workflows/failures/2026-10-15-read-only-priority-advice-422.md",
+          "sha": "be047b195d6fe0a25da3e1c36389157dfc542815"
+        }
+      ],
+      "provider_double_calls": 1,
+      "canonical_writes": 0,
+      "queues": {
+        "needs_ashley": [],
+        "ai_can_handle": []
+      },
+      "actual_deterministic_response": null,
+      "evidence": {
+        "version": "indexed-evidence.v2",
+        "authority_kind": "failure",
+        "routing_source": {
+          "repo": "ashleybrookeugc/research-vault",
+          "path": "PROJECT_INDEX.md",
+          "sha": "ff20982dfcebf72db238a6c932a57eec9665d707",
+          "sha_kind": "blob"
+        },
+        "sources": [
+          {
+            "source": {
+              "repo": "ashleybrookeugc/research-vault",
+              "path": "shared-capabilities/ai-workflows/SESSION_AND_FAILURE_PROTOCOL.md",
+              "sha": "4d41b44a7c8e146c0d31cf257afc90a6a103697a",
+              "sha_kind": "blob"
+            },
+            "role": "instruction",
+            "source_characters": 58697,
+            "selected_characters": 2949,
+            "truncated": true,
+            "selection": "query-term and owning-heading overlap; whole paragraphs; source order breaks ties",
+            "excerpt_locations": [
+              {
+                "paragraph": 22,
+                "section": "Authority-first retrieval for prior decisions"
+              },
+              {
+                "paragraph": 26,
+                "section": "Failure-log rule"
+              },
+              {
+                "paragraph": 54,
+                "section": "Chat-only competitor conclusion despite an existing research artifact"
+              },
+              {
+                "paragraph": 93,
+                "section": "Thin-wrapper regression around a working primitive"
+              },
+              {
+                "paragraph": 124,
+                "section": "Rendered-output mistaken for stored structured data"
+              },
+              {
+                "paragraph": 134,
+                "section": "GitHub App / Cloudflare integration preflight and monotonic-debugging failure"
+              },
+              {
+                "paragraph": 156,
+                "section": "Read-only advice, priority retrieval, and repeated chat failures"
+              },
+              {
+                "paragraph": 157,
+                "section": "Read-only advice, priority retrieval, and repeated chat failures"
+              }
+            ]
+          },
+          {
+            "source": {
+              "repo": "ashleybrookeugc/research-vault",
+              "path": "shared-capabilities/ai-workflows/failures/2026-10-15-read-only-priority-advice-422.md",
+              "sha": "be047b195d6fe0a25da3e1c36389157dfc542815",
+              "sha_kind": "blob"
+            },
+            "role": "evidence",
+            "source_characters": 19123,
+            "selected_characters": 3961,
+            "truncated": true,
+            "selection": "query-term and owning-heading overlap; whole paragraphs; source order breaks ties",
+            "excerpt_locations": [
+              {
+                "paragraph": 3,
+                "section": "What happened"
+              },
+              {
+                "paragraph": 11,
+                "section": "Prevention rule"
+              },
+              {
+                "paragraph": 13,
+                "section": "Production audit follow-up \u2014 2026-10-15"
+              },
+              {
+                "paragraph": 26,
+                "section": "Failure fingerprints confirmed by the production retrieval audit \u2014 2026-10-15"
+              },
+              {
+                "paragraph": 39,
+                "section": "Remaining failure after release \u2014 current priority ignored (2026-10-15 evening America/New_York)"
+              }
+            ]
+          }
+        ],
+        "missing": [],
+        "navigation": [
+          {
+            "from": "PROJECT_INDEX.md",
+            "to": "shared-capabilities/ai-workflows/SESSION_AND_FAILURE_PROTOCOL.md",
+            "reason": "indexed authority row",
+            "status": "retrieved"
+          },
+          {
+            "from": "shared-capabilities/ai-workflows/SESSION_AND_FAILURE_PROTOCOL.md",
+            "to": "shared-capabilities/ai-workflows/failures/2026-10-15-read-only-priority-advice-422.md",
+            "reason": "linked descriptor/query overlap",
+            "score": 10,
+            "status": "retrieved"
+          }
+        ],
+        "reading_contract": {
+          "entry": "PROJECT_INDEX.md",
+          "maximum_sources": 4,
+          "maximum_depth": 2,
+          "selected_character_limit": 16000,
+          "selected_characters": 6910
+        },
+        "limitations": [
+          "Bounded indexed routes and lexical descriptor/paragraph ranking; not general semantic search.",
+          "Only successfully versioned reads count as evidence; links and model text confer no authority.",
+          "Catalog/instruction text is navigation or governance, not proof that a feature works.",
+          "Blob SHAs are per-file versions, not an atomic repo snapshot or a freshness guarantee.",
+          "Historical/current conflicts and omitted evidence remain qualified; source order is not freshness."
+        ]
+      },
+      "context_characters": 11288,
+      "estimated_context_tokens": 2822,
+      "selected_proof_checks": {
+        "qualification_present": true,
+        "http_503_present": false,
+        "http_401_present": false,
+        "source_wording_present": true
+      }
+    },
+    {
+      "mode": "wiki_candidate",
+      "input": "Which creator workflow findings should inform ContentEase?",
+      "reads": [
+        "ACTIVE_WORK.md",
+        "PROJECT_INDEX.md",
+        "evidence/creator-workflows/README.md",
+        "evidence/creator-workflows/2026-10-13-cross-campaign-kale-retrospective.md",
+        "evidence/creator-workflows/2026-10-07-paid-ugc-brief-completion-rejection.md",
+        "evidence/creator-workflows/2026-10-06-ugc-source-language-fidelity-correction-loop.md"
+      ],
+      "source_versions": [
+        {
+          "path": "ACTIVE_WORK.md",
+          "sha": "5bf72240e2d6124056d7852ec9f8dcc0c216dacf"
+        },
+        {
+          "path": "PROJECT_INDEX.md",
+          "sha": "ff20982dfcebf72db238a6c932a57eec9665d707"
+        },
+        {
+          "path": "evidence/creator-workflows/README.md",
+          "sha": "a26b69e6decf831309d53a6061d59181c15b22a0"
+        },
+        {
+          "path": "evidence/creator-workflows/2026-10-13-cross-campaign-kale-retrospective.md",
+          "sha": "389cbd7f6983cbced21bc5dd7351fa03a790b262"
+        },
+        {
+          "path": "evidence/creator-workflows/2026-10-07-paid-ugc-brief-completion-rejection.md",
+          "sha": "1a82940bbffe4edbe084522f541af8e15c2c0141"
+        },
+        {
+          "path": "evidence/creator-workflows/2026-10-06-ugc-source-language-fidelity-correction-loop.md",
+          "sha": "ed2e61761d604fb43342e7a733deee18a8dd0d37"
+        }
+      ],
+      "provider_double_calls": 1,
+      "canonical_writes": 0,
+      "queues": {
+        "needs_ashley": [],
+        "ai_can_handle": []
+      },
+      "actual_deterministic_response": null,
+      "evidence": {
+        "version": "indexed-evidence.v2",
+        "authority_kind": "creator",
+        "routing_source": {
+          "repo": "ashleybrookeugc/research-vault",
+          "path": "PROJECT_INDEX.md",
+          "sha": "ff20982dfcebf72db238a6c932a57eec9665d707",
+          "sha_kind": "blob"
+        },
+        "sources": [
+          {
+            "source": {
+              "repo": "ashleybrookeugc/research-vault",
+              "path": "evidence/creator-workflows/README.md",
+              "sha": "a26b69e6decf831309d53a6061d59181c15b22a0",
+              "sha_kind": "blob"
+            },
+            "role": "catalog",
+            "source_characters": 6264,
+            "selected_characters": 1898,
+            "truncated": true,
+            "selection": "query-term and owning-heading overlap; whole paragraphs; source order breaks ties",
+            "excerpt_locations": [
+              {
+                "paragraph": 0,
+                "section": "Creator Workflow Evidence"
+              },
+              {
+                "paragraph": 1,
+                "section": "Creator Workflow Evidence"
+              },
+              {
+                "paragraph": 5,
+                "section": "Purpose"
+              },
+              {
+                "paragraph": 8,
+                "section": "Avoiding confusion"
+              },
+              {
+                "paragraph": 9,
+                "section": "Avoiding confusion"
+              },
+              {
+                "paragraph": 10,
+                "section": "Retroactive conformance rule"
+              },
+              {
+                "paragraph": 27,
+                "section": "ContentEase product and conversational workflow findings"
+              },
+              {
+                "paragraph": 28,
+                "section": "ContentEase product and conversational workflow findings"
+              }
+            ]
+          },
+          {
+            "source": {
+              "repo": "ashleybrookeugc/research-vault",
+              "path": "evidence/creator-workflows/2026-10-13-cross-campaign-kale-retrospective.md",
+              "sha": "389cbd7f6983cbced21bc5dd7351fa03a790b262",
+              "sha_kind": "blob"
+            },
+            "role": "evidence",
+            "source_characters": 23466,
+            "selected_characters": 3935,
+            "truncated": true,
+            "selection": "query-term and owning-heading overlap; whole paragraphs; source order breaks ties",
+            "excerpt_locations": [
+              {
+                "paragraph": 0,
+                "section": "Ashley UGC / Kale cross-campaign retrospective \u2014 evidence and decisions"
+              },
+              {
+                "paragraph": 1,
+                "section": "Ashley UGC / Kale cross-campaign retrospective \u2014 evidence and decisions"
+              },
+              {
+                "paragraph": 11,
+                "section": "Findings, graded"
+              },
+              {
+                "paragraph": 17,
+                "section": "Missing evidence and bounded continuation"
+              },
+              {
+                "paragraph": 19,
+                "section": "2026-10-13 public Instagram cohort retrieval (vidIQ)"
+              },
+              {
+                "paragraph": 35,
+                "section": "2026-10-13 continuation \u2014 recovered older Wilhelm insights and protein-candy provenance"
+              }
+            ]
+          },
+          {
+            "source": {
+              "repo": "ashleybrookeugc/research-vault",
+              "path": "evidence/creator-workflows/2026-10-07-paid-ugc-brief-completion-rejection.md",
+              "sha": "1a82940bbffe4edbe084522f541af8e15c2c0141",
+              "sha_kind": "blob"
+            },
+            "role": "evidence",
+            "source_characters": 9754,
+            "selected_characters": 2695,
+            "truncated": true,
+            "selection": "query-term and owning-heading overlap; whole paragraphs; source order breaks ties",
+            "excerpt_locations": [
+              {
+                "paragraph": 0,
+                "section": "document"
+              },
+              {
+                "paragraph": 24,
+                "section": "ContentEase implication"
+              },
+              {
+                "paragraph": 31,
+                "section": "Founder clarification: verification receipts throughout the workflow"
+              },
+              {
+                "paragraph": 33,
+                "section": "Founder clarification: verification receipts throughout the workflow"
+              },
+              {
+                "paragraph": 34,
+                "section": "Founder clarification: verification receipts throughout the workflow"
+              },
+              {
+                "paragraph": 36,
+                "section": "Founder clarification: receipts must prove the creative method executed"
+              },
+              {
+                "paragraph": 39,
+                "section": "Founder clarification: receipts must prove the creative method executed"
+              },
+              {
+                "paragraph": 40,
+                "section": "Founder clarification: receipts must prove the creative method executed"
+              }
+            ]
+          },
+          {
+            "source": {
+              "repo": "ashleybrookeugc/research-vault",
+              "path": "evidence/creator-workflows/2026-10-06-ugc-source-language-fidelity-correction-loop.md",
+              "sha": "ed2e61761d604fb43342e7a733deee18a8dd0d37",
+              "sha_kind": "blob"
+            },
+            "role": "evidence",
+            "source_characters": 11564,
+            "selected_characters": 3619,
+            "truncated": true,
+            "selection": "query-term and owning-heading overlap; whole paragraphs; source order breaks ties",
+            "excerpt_locations": [
+              {
+                "paragraph": 0,
+                "section": "UGC source-language fidelity and correction-loop evidence"
+              },
+              {
+                "paragraph": 1,
+                "section": "UGC source-language fidelity and correction-loop evidence"
+              },
+              {
+                "paragraph": 2,
+                "section": "What happened"
+              },
+              {
+                "paragraph": 3,
+                "section": "What happened"
+              },
+              {
+                "paragraph": 6,
+                "section": "Reference-research preflight failure"
+              },
+              {
+                "paragraph": 9,
+                "section": "Reference-research preflight failure"
+              },
+              {
+                "paragraph": 20,
+                "section": "Durable product implication"
+              },
+              {
+                "paragraph": 26,
+                "section": "Cross-project note"
+              }
+            ]
+          }
+        ],
+        "missing": [],
+        "navigation": [
+          {
+            "from": "PROJECT_INDEX.md",
+            "to": "evidence/creator-workflows/README.md",
+            "reason": "indexed authority row",
+            "status": "retrieved"
+          },
+          {
+            "from": "evidence/creator-workflows/README.md",
+            "to": "evidence/creator-workflows/2026-10-13-cross-campaign-kale-retrospective.md",
+            "reason": "linked descriptor/query overlap",
+            "score": 18,
+            "status": "retrieved"
+          },
+          {
+            "from": "evidence/creator-workflows/README.md",
+            "to": "evidence/creator-workflows/2026-10-07-paid-ugc-brief-completion-rejection.md",
+            "reason": "linked descriptor/query overlap",
+            "score": 15,
+            "status": "retrieved"
+          },
+          {
+            "from": "evidence/creator-workflows/README.md",
+            "to": "evidence/creator-workflows/2026-10-06-ugc-source-language-fidelity-correction-loop.md",
+            "reason": "linked descriptor/query overlap",
+            "score": 13,
+            "status": "retrieved"
+          }
+        ],
+        "reading_contract": {
+          "entry": "PROJECT_INDEX.md",
+          "maximum_sources": 4,
+          "maximum_depth": 2,
+          "selected_character_limit": 16000,
+          "selected_characters": 12147
+        },
+        "limitations": [
+          "Bounded indexed routes and lexical descriptor/paragraph ranking; not general semantic search.",
+          "Only successfully versioned reads count as evidence; links and model text confer no authority.",
+          "Catalog/instruction text is navigation or governance, not proof that a feature works.",
+          "Blob SHAs are per-file versions, not an atomic repo snapshot or a freshness guarantee.",
+          "Historical/current conflicts and omitted evidence remain qualified; source order is not freshness."
+        ]
+      },
+      "context_characters": 20054,
+      "estimated_context_tokens": 5014,
+      "selected_proof_checks": {
+        "qualification_present": true,
+        "http_503_present": false,
+        "http_401_present": false,
+        "source_wording_present": true
+      }
+    }
+  ],
+  "checks": {
+    "full_tests": {
+      "total": 201,
+      "passed": 199,
+      "skipped": 2,
+      "failed": 0
+    },
+    "skip_reason": "Two existing analyzer-checkout tests, no substitute analyzer",
+    "my_work_requirements": "14/14",
+    "packaging": "Wrangler4.151.0 dry-run PASS",
+    "diff_check": "PASS",
+    "new_regression_groups": 6
+  },
+  "failures_and_corrections": [
+    "Reproduced current-main omission of video/creator wiki routes and linked receipts.",
+    "New real-source walk exposed product-relative prose paths falsely resolved as vault paths; only explicit local links or vault-root backticked references now traverse.",
+    "Section headings were selected without their explanatory paragraph; owning-heading relevance now retains whole paragraphs.",
+    "Same-MK state projections blocked a historical read-only failure lookup; narrowly allow indexed-authority reading with no explicit required facts; distinct projects/actions remain gated."
+  ],
+  "combined_current_main": {
+    "base": "3a72c8d01c6957b12840e5b2cba5bcc9d1582d40",
+    "tests": {
+      "total": 202,
+      "passed": 200,
+      "skipped": 2,
+      "failed": 0
+    },
+    "requirements": "14/14",
+    "packaging": "PASS",
+    "current_focus_conversation_and_local_vision_work_preserved": true
+  }
+}
