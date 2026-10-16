@@ -1,4 +1,4 @@
-# Conversation triage — development candidate
+# Conversation triage — live repair (2026-10-16)
 
 Founder request, 2026-10-15: make Mary Kate understand normal questions without
 mistaking them for difficult jobs, wasting calls, or granting mutation permission.
@@ -77,5 +77,9 @@ This remains application heuristics with an inexpensive read-only fallback, not
 a general semantic-understanding guarantee. Unknown action paraphrases may ask
 for clarification rather than execute. Arbitrary multi-topic continuity, indexed
 deep-document retrieval and useful authenticated production answers require their
-own acceptance evidence. The separate production retrieval audit must be
-reconciled before any integration/promotion. No production deployment authorized.
+own acceptance evidence. The indexed retrieval repair was integrated with triage in product PR #44 and released through the normal main-to-Cloudflare path. The authenticated production check returned a current-priority answer, but its wording remains too technical for Ashley's acceptance.
+
+
+## Production release check
+
+Product PR [#44](https://github.com/ashleybrookeugc/Ashley-brooke-cohen/pull/44) merged to `main` at `dcce6e99e22f4d73d26893f3e3ae5c41515f450b`. GitHub's regression workflow #130 passed the full 185-test suite, requirement mapping and Worker packaging. An authenticated production Command Center session asked “What should I do today?” and received current saved-work priorities rather than the former 422. The visible answer is long and technical. The page did not expose the Worker version ID or actual inference counter, so the UI check does not independently prove exact runtime commit lineage or the live zero-call count. Live answer quality remains open.
