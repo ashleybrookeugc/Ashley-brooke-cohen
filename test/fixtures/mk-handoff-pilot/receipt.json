@@ -1,0 +1,14 @@
+{
+  "schema": "mk-handoff-pilot.v1",
+  "action": "documentation_only",
+  "target_repo": "ashleybrookeugc/Ashley-brooke-cohen",
+  "target_path": "test/fixtures/mk-handoff-pilot/worker-output.md",
+  "authorization": "pilot_explicitly_authorized",
+  "artifact_commit_sha": "39c7b3d98cdd312cd7dafe54f3e1d4bc52523a71",
+  "artifact_blob_sha": "4989bd14e0bef7b052ddcf4a9d6eed45f13036ef",
+  "verification": {
+    "status": "readback_verified",
+    "blob_sha": "4989bd14e0bef7b052ddcf4a9d6eed45f13036ef",
+    "method": "independent GitHub fetch_file + commit existence lookup"
+  }
+}
