@@ -1,7 +1,7 @@
-import {buildReview, timeLabel} from './review.js?v=20261016-plain';
+import {buildReview, timeLabel} from './review.js?v=20261015-vision';
 const $=id=>document.getElementById(id);
-const ui=Object.fromEntries(['access','status','file','video','selected','analyze','progress','refresh','runs','storage','review','boundary','overview','checks','capabilities','coverage','frames','lanes','correction','observation','time','text','feedback-status','feedback'].map(id=>[id,$(id)]));
-let selected=null,objectURL=null,current=null,connected=false,authenticated=false,busy=false,poll=0,db=null;
+const ui=Object.fromEntries(['access','status','file','video','selected','analyze','progress','refresh','runs','storage','review','boundary','overview','checks','capabilities','coverage','frames','lanes','describe','picture-status','correction','observation','time','text','feedback-status','feedback'].map(id=>[id,$(id)]));
+let selected=null,objectURL=null,current=null,connected=false,authenticated=false,busy=false,pictures=false,poll=0,db=null;
 const cache=new Map();
 function message(text){ui.status.textContent=text;}
 function element(tag,text,className){const e=document.createElement(tag);if(text!==undefined)e.textContent=text;if(className)e.className=className;return e;}
@@ -17,7 +17,7 @@ async function api(path,options={}){
   const response=await fetch('/api/video-test'+path,{credentials:'same-origin',...options});
   const data=await response.json();if(!response.ok)throw Error(data.error||'Request failed');return data;
 }
-function updateAnalyze(){ui.analyze.disabled=!selected||!connected||busy;ui.file.disabled=busy;}
+function updateAnalyze(){ui.analyze.disabled=!selected||!connected||busy;ui.file.disabled=busy;ui.describe.disabled=!current?.result||!connected||!pictures||busy;}
 function playback(file){if(objectURL)URL.revokeObjectURL(objectURL);objectURL=URL.createObjectURL(file);ui.video.src=objectURL;}
 ui.video.addEventListener('error',()=>{ui.selected.textContent='This browser cannot play the selected codec. The analyzer may still support it; no preview or understanding is claimed.';});
 ui.file.onchange=async()=>{
@@ -38,13 +38,14 @@ function showRuns(jobs=[]){
 function decodeName(name){try{return decodeURIComponent(name)}catch{return name||'Video'}}
 async function refresh(){
   connected=false;try{const session=await api('/session');if(!session.configured){authenticated=false;ui.access.hidden=true;message('Mary Kate sign-in is not configured. Analysis is unavailable.');showRuns();return;}authenticated=session.authenticated;ui.access.hidden=authenticated;if(!authenticated){message('Sign in to Mary Kate to analyze videos. Your selected video stays on this device.');showRuns();return;}
-    const health=await api('/health');connected=health.state==='available';message(connected?'Analyzer connected. Ready to upload a test video.':'Analyzer unavailable. No analysis will run; local playback and cached review remain available.');
+    const health=await api('/health');connected=health.state==='available';pictures=health.picture_descriptions==='available';message(connected?'Analyzer connected. Ready to upload a test video.':'Analyzer unavailable. No analysis will run; local playback and cached review remain available.');
     const jobs=(await api('/jobs')).jobs;showRuns(jobs);
     if(current)await syncFeedback(current);
     else if(connected&&!selected&&!busy){const latest=jobs.filter(job=>job.state==='completed').sort((a,b)=>(b.created_at||'').localeCompare(a.created_at||''))[0];if(latest)await openRun(latest);}
   }catch(error){message(error.message+' Cached evidence and corrections remain on this browser.');showRuns();}finally{updateAnalyze();}
 }
 ui.refresh.onclick=refresh;
+ui.describe.onclick=async()=>{if(!current?.result||!pictures||busy||!connected)return;const run=current;busy=true;updateAnalyze();ui['picture-status'].textContent='Your Mac is describing the selected pictures and checking what changed. Your saved video is being reused; no upload is needed.';try{const job=await api('/jobs/'+run.id+'/describe',{method:'POST'});if(current?.id===run.id)await openRun(job,true);}catch(error){busy=false;updateAnalyze();ui['picture-status'].textContent=error.message;}};
 ui.analyze.onclick=()=>{
   if(!selected||busy||!connected)return;
   if(selected.size>64*1048576){ui.progress.textContent='This test supports files up to 64 MiB. Choose a shorter clip.';return;}
@@ -59,19 +60,20 @@ async function openRun(job,keepPlayback=false){
   if(!keepPlayback){if(objectURL){URL.revokeObjectURL(objectURL);objectURL=null;}ui.video.removeAttribute('src');ui.video.load();selected=null;updateAnalyze();if(connected)ui.video.src='/api/video-test/jobs/'+job.id+'/media';ui.selected.textContent=decodeName(job.name)+(connected?' · saved video on your Mac':' · source offline; select the original again for playback');}
   try{
     if(!connected){if(current.result)render(current);return;}
-    const latest=await api('/jobs/'+job.id);if(current?.id!==job.id)return;run.job=latest;busy=['running','uploading'].includes(latest.state);updateAnalyze();
+    const latest=await api('/jobs/'+job.id);if(current?.id!==job.id)return;run.job=latest;busy=['running','uploading'].includes(latest.state)||latest.visual_state==='running';updateAnalyze();
     ui.progress.textContent=latest.state==='completed'?'Basic video notes are ready. The full creative and workflow review is still unfinished.':latest.error||'Analyzer '+latest.state+' · last checked '+new Date().toLocaleTimeString();
     if(latest.state==='completed'){
       run.result=await api('/jobs/'+job.id+'/result');if(current?.id!==job.id)return;
       try{await persist(run);}catch(error){ui.storage.textContent=error.message;}
-      render(run);await syncFeedback(run);
+      if(current?.id!==job.id)return;render(run);await syncFeedback(run);if(latest.visual_state==='running')poll=setTimeout(()=>openRun(latest,true),2000);
     }else if(latest.state==='running'||latest.state==='uploading')poll=setTimeout(()=>openRun(latest,true),2000);
   }catch(error){busy=false;updateAnalyze();ui.progress.textContent=error.message;if(current?.id===job.id&&current.result)render(current);}
 }
 function seek(time){if(Number.isFinite(time)){ui.video.currentTime=time;ui.time.value=time;}}
 function render(run){
   ui.review.hidden=false;const {manifest}=run.result;const report=buildReview(run.result);
-  ui.boundary.textContent='These are basic video notes, not a creative verdict. Keep your original video. A full review of the story, actions and editing choices is still unfinished.';
+  ui.boundary.textContent='Read the notes alongside the video. Automatic picture descriptions can make mistakes and cover selected moments. A full review of the story, actions and editing choices is still unfinished.';
+  const pictureState=run.result.visual_review?.state;ui.describe.hidden=pictureState==='available';ui['picture-status'].textContent=pictureState==='available'?'Picture descriptions were created on your Mac. Check them against the pictures and correct anything wrong.':pictureState==='running'?'Your Mac is describing the selected pictures and checking what changed…':pictureState==='failed'||pictureState==='unreliable'?'Reliable picture descriptions could not be completed. Your saved video and basic notes remain available.':pictures?'This older run has basic change signals. Add picture descriptions using the saved video on your Mac.':'Picture descriptions are unavailable while the local vision component is disconnected.';updateAnalyze();
   ui.overview.replaceChildren();for(const text of report.overview)ui.overview.append(element('p',text));
   ui.checks.replaceChildren();for(const check of report.checks){const p=element('article');if(Number.isFinite(check.time)){const b=element('button','Watch '+timeLabel(check.time));b.onclick=()=>seek(check.time);p.append(b);}p.append(element('p',check.text));ui.checks.append(p);}
   ui.capabilities.replaceChildren();for(const text of report.limits)ui.capabilities.append(element('p',text));
