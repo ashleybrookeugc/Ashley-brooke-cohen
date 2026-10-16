@@ -1,0 +1,243 @@
+{
+  "schema": "mary-kate-video-session-integration.v1",
+  "date": "2026-10-15",
+  "status": "LIVE_EXISTING_LOGIN_AND_ANALYSIS_PASS_FINAL_REVIEW_PENDING",
+  "founder_decision": "Reuse the existing Mary Kate authenticated session. No separate testing token or second login. Keep the Mac connection private.",
+  "implementation": {
+    "base_main": "fb384d5d9270126916e5c932d295bbd9022750c6",
+    "commit": "a2b614e2627a7e865f00336c5968a7446219452d",
+    "merged_main": "141d95e58bad21d957cb24915089ae821d206aa0",
+    "pull_request": "https://github.com/ashleybrookeugc/Ashley-brooke-cohen/pull/40",
+    "latest_main_reread": "b1feeac424b63adb9e609e423dace8d50a104fd9",
+    "all_11_implementation_files_exact": true,
+    "authentication": "Existing abc_admin HMAC session; same 8-hour expiry and normal logout; same shared validator for control/moderation/video",
+    "legacy_video_cookie": "rejected",
+    "video_access_token": "obsolete/ignored; retained unused for rollback",
+    "worker_token": "server-only, unchanged; never forwarded from or to browser",
+    "new_credentials": false,
+    "config_changes": false
+  },
+  "local_verification": {
+    "website": {
+      "pass": 148,
+      "fail": 0,
+      "skipped": 0
+    },
+    "requirements": 14,
+    "packaging": "PASS",
+    "actual_wrangler_login_cookie_session_logout": "PASS",
+    "return_destination_allowlist": "PASS",
+    "signed_in_ui_analyze_enabled_without_token": "PASS",
+    "expired_forged_legacy_session_and_csrf_rejection": "PASS",
+    "private_fixed_transport_no_cookie_forwarding_no_public_fallback": "PASS",
+    "unchanged_analyzer_integration": "PASS"
+  },
+  "production": {
+    "assets": [
+      {
+        "path": "/video-test/",
+        "status": 200,
+        "sha256": "f28bd2888463491c168910a5b15137ce856e75f225cd92b7b9a3d9e0eea4a45c",
+        "exact_local_bytes": true
+      },
+      {
+        "path": "/video-test/app.js?v=20261015-session",
+        "status": 200,
+        "sha256": "01b187aefad95cd76bf1b483262cdbc73d0f96a42b2cce272f2dab5fea512f30",
+        "exact_local_bytes": true
+      }
+    ],
+    "pr_and_merged_main_ci": "SUCCESS",
+    "transport": {
+      "observed_at": "2026-10-15T23:55:39.036Z",
+      "active_version": "d99cd306-fdb2-4c21-98d5-0184c8a72d57",
+      "version_metadata": {
+        "created_on": "2026-10-15T23:54:08.197446Z",
+        "source": "wrangler",
+        "author_id": "c9101a69c56f1465a296b13c4c95e43a",
+        "author_email": "ashleybrookeco@gmail.com",
+        "has_preview": true
+      },
+      "bindings": [
+        {
+          "name": "ADMIN_PASSWORD",
+          "type": "secret_text"
+        },
+        {
+          "name": "ADMIN_SESSION_SECRET",
+          "type": "secret_text"
+        },
+        {
+          "name": "AI",
+          "type": "ai"
+        },
+        {
+          "name": "ASSETS",
+          "type": "assets"
+        },
+        {
+          "name": "CONTROL_GITHUB_APP_ID",
+          "type": "plain_text"
+        },
+        {
+          "name": "CONTROL_GITHUB_APP_PRIVATE_KEY",
+          "type": "secret_text"
+        },
+        {
+          "name": "CONTROL_GITHUB_INSTALLATION_ID",
+          "type": "plain_text"
+        },
+        {
+          "name": "CONTROL_WORKER_TELEMETRY_SECRET",
+          "type": "secret_text"
+        },
+        {
+          "name": "DB",
+          "type": "d1"
+        },
+        {
+          "name": "VIDEO_TEST_ACCESS_TOKEN",
+          "type": "secret_text"
+        },
+        {
+          "name": "VIDEO_TEST_PRIVATE_SERVICE",
+          "type": "vpc_service",
+          "service_id": "01a141ad-d6e8-7ae0-804c-0f98e58320ad"
+        },
+        {
+          "name": "VIDEO_TEST_WORKER_TOKEN",
+          "type": "secret_text"
+        },
+        {
+          "name": "VIDEO_TEST_WORKER_URL",
+          "type": "secret_text"
+        }
+      ],
+      "private_ingress": [
+        {
+          "service": "http_status:404"
+        }
+      ],
+      "service": {
+        "service_id": "01a141ad-d6e8-7ae0-804c-0f98e58320ad",
+        "type": "http",
+        "name": "mk-video-test-loopback",
+        "http_port": 8789,
+        "https_port": null,
+        "host": {
+          "ipv4": "127.0.0.1",
+          "ipv6": null,
+          "hostname": null,
+          "network": {
+            "tunnel_id": "421e73e9-0364-4775-a0ca-6b27c9c3164b"
+          },
+          "resolver_network": null
+        },
+        "created_at": "2026-10-15T22:27:54Z",
+        "updated_at": "2026-10-15T22:27:54Z"
+      }
+    },
+    "browser": {
+      "browser": "Existing native Brave tab",
+      "before": "Signed-in Mary Kate Command Center, but Video Testing required a token and Analyze was disabled",
+      "after": "Same existing Mary Kate session recognized automatically; Analyzer connected; token prompt absent",
+      "new_login_or_token_entry": false,
+      "fixture_selected": true,
+      "analyze_enabled": true,
+      "analyze_clicked": true,
+      "job_id": "67281538-0100-4b3b-a5b6-0d45a8e213d9",
+      "completed_evidence_displayed": true,
+      "frame_times_displayed": [
+        0,
+        5
+      ],
+      "timestamp_seek": "PENDING: active user tab changes interrupted native UI",
+      "correction_save_and_reload": "PENDING: active user tab changes interrupted native UI"
+    },
+    "job_proof": {
+      "observed_at": "2026-10-15T23:56:51.552Z",
+      "security": [
+        {
+          "label": "anonymous",
+          "path": "/api/video-test/jobs",
+          "status": 401
+        },
+        {
+          "label": "valid_legacy_video_cookie",
+          "path": "/api/video-test/jobs",
+          "status": 401
+        },
+        {
+          "label": "forged_mary_kate_cookie",
+          "path": "/api/video-test/jobs",
+          "status": 401
+        },
+        {
+          "label": "cross_origin_write",
+          "path": "/api/video-test/jobs",
+          "status": 403
+        },
+        {
+          "label": "retired_token_exchange",
+          "path": "/api/video-test/session",
+          "status": 405
+        }
+      ],
+      "job": {
+        "id": "67281538-0100-4b3b-a5b6-0d45a8e213d9",
+        "state": "completed",
+        "name": "non-private-dialogue.mp4",
+        "created_at": "2026-10-15T23:53:38.183Z",
+        "bytes": 52236,
+        "started_at": "2026-10-15T23:53:38.184Z",
+        "completed_at": "2026-10-15T23:53:39.077Z"
+      },
+      "source": {
+        "bytes": 52236,
+        "sha256": "c48f66d57aff8697302e6e2c4b7ae143ebe738d3a3c82b10de2a2685e0440c6d",
+        "duration_seconds": 5.185805,
+        "retained": true
+      },
+      "decode": {
+        "state": "complete",
+        "method": "ffmpeg_full_stream_decode",
+        "duration_seconds": 5.185805,
+        "decoded_through_seconds": 5.185805,
+        "tolerance_seconds": 0.5,
+        "ffmpeg_exit_code": 0,
+        "verified_at": "2026-10-15T23:53:38.307Z"
+      },
+      "readback": {
+        "verified": true,
+        "verified_at": "2026-10-15T23:53:39.074Z"
+      },
+      "frame_source_times": [
+        0,
+        5
+      ],
+      "feedback": [],
+      "worker_source_retained": true
+    }
+  },
+  "analyzer": {
+    "checkout": "e5dfe3e4d3967615f23eb064896de1303f86ded9",
+    "core_sha256": "1b2f52b6804c3a28927bee84c8450edd95b647a34433887d5dcb5bf079be00a7",
+    "understanding_sha256": "389463b526930caaf0bd9763e5e093ef218a96350bfb119a65fbc34828a89177",
+    "server_sha256": "bf303780e70d6902cea20a7559d995c9b6a0648e04b0b8e79ba54777e6a1b259",
+    "changed": false,
+    "prior_frozen_suite": "17/18; this is fair -> is is there ASR error remains",
+    "semantic_vision": "unavailable",
+    "creator_acceptance": "NOT_RUN",
+    "physical_iPhone": "NOT_RUN"
+  },
+  "preservation": {
+    "public_hostname_or_dns": false,
+    "paid_services": false,
+    "external_ai_video_services": false,
+    "footage_deleted": false,
+    "worker_and_connector_running": true,
+    "autostart": false,
+    "remote_archival": false
+  },
+  "historical_activation": "docs/test-receipts/2026-10-15-video-analyzer-mac-activation.json"
+}
