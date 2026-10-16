@@ -53,7 +53,10 @@ test('exact founder follow-ups retain page-resolved V1 context and use a read-on
  assert.match(JSON.stringify(outcome.retrieval_evidence),/desired outcome is natural conversation/);
  assert.ok(reads.includes(failure),'chatbot synonym follows a real incident link in the indexed hub');
  assert.equal(evidencePacket(requests[1]).retrieval_evidence.authority_kind,'failure','a scoped development-delay question needs failure evidence, not the completion backlog');
- assert.match(JSON.stringify(evidencePacket(requests[2]).retrieval_evidence),/product failure, not a missing setup step/);
+ const failureEvidence=evidencePacket(requests[2]).retrieval_evidence;
+ assert.equal(failureEvidence.current_failure_verified,false);
+ assert.ok(failureEvidence.historical_references.some(reference=>reference.source.path===failure));
+ assert.doesNotMatch(JSON.stringify(failureEvidence),/product failure, not a missing setup step/,'archived details do not become present-status model evidence');
  assert.equal(writes,0);
  assert.deepEqual(await store.listQueues(),{needs_ashley:[],ai_can_handle:[]});
 });

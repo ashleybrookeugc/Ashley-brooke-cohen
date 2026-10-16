@@ -3,6 +3,7 @@ import {routingDiagnostic} from './diagnostics.js';
 import {applyProposal,normalizeFactKey,parseActiveWork,parseCanonicalFacts,RouteValidationError,validateRoute,WRITE_REPO} from './contracts.js';
 import {buildMyWorkProjection} from './my-work.js';
 import {triageRequest} from './triage.js';
+import {enforceConversationAnswer} from './conversation-contract.js';
 const markerStart='<!-- mary-kate-control-write:';
 const markerEnd='-->';
 const encodeMarker=value=>btoa(unescape(encodeURIComponent(JSON.stringify(value)))).replaceAll('+','-').replaceAll('/','_').replaceAll('=','');
@@ -470,6 +471,13 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
         const error=new RouteValidationError('proposal','Read-only assessment cannot propose or authorize an action');
         error.code='read_only_route_violation';error.status=422;error.message='Routing proposed an action for a read-only question. No approval or change was saved.';
         throw error;
+      }
+      if(readOnly) {
+        const checked=enforceConversationAnswer(candidate.plain_summary,createControlTaskPacket(snapshot),text);
+        const guard=checked.guard.status==='abstained'?checked.guard:candidate.answer_guard||checked.guard;
+        candidate={...candidate,plain_summary:checked.text,answer_guard:guard,...(guard.status==='abstained'?{confidence:'low'}:{})};
+        mark('answer_contract',{status:guard.status,reasons:guard.reasons||[]});
+        if(guard.status==='abstained')technicalSummary='Answer guard: abstained · '+(guard.reasons||[]).join(', ');
       }
       const route=enforceResolvedWriteTarget({...candidate,triage,prior_state:snapshot.prior_state,...(snapshot.completion_authority?{retrieval_authority:{source:snapshot.completion_authority.source,routing_source:snapshot.completion_authority.routing_source}}:{})},snapshot.prior_state,ambiguity_gate);
       if(route.proposal) {

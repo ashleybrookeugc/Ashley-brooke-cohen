@@ -1,0 +1,437 @@
+{
+  "schema": "mary-kate-local-picture-descriptions.v1",
+  "observed_at": "2026-10-16T01:43:29.491Z",
+  "user_date": "2026-10-15 America/New_York",
+  "founder_request": "Explain what is visibly shown and what changed, beyond a generic picture or screen change label.",
+  "status": "BOUNDED_LOCAL_PICTURE_DESCRIPTIONS_LIVE_PASS_FULL_VIDEO_UNDERSTANDING_UNFINISHED",
+  "implementation": {
+    "pr": 52,
+    "commit": "14c29ff46adfe09fad61977445a9d9cb088f1bbb",
+    "merge": "9d2e7a7faab886e627ab1466dff607f4f9539f88",
+    "claim_separation_pr": 53,
+    "claim_separation_commit": "6dc599639997998358ac139d29aa44bb4f64d07b",
+    "final_code_main": "76016c2d19ac8833e99a09ab38a93545177cf8a1",
+    "unchanged_extractor": "e5dfe3e4d3967615f23eb064896de1303f86ded9",
+    "method": "Separate offline consumer of the existing verified semantic-input contract; original extractor/packages remain immutable.",
+    "runtime_process": 73610,
+    "private_route_auth_secrets": "Preserved; only existing authenticated same-origin describe endpoint added; no public route or new credential."
+  },
+  "component": {
+    "id": "mlx-community/Qwen3-VL-8B-Instruct-4bit",
+    "revision": "defcdea7cc7a4b0858fea563cbbce171d328e457",
+    "license": "apache-2.0",
+    "verified": true,
+    "files": [
+      {
+        "path": "model-00001-of-00002.safetensors",
+        "bytes": 5353972197,
+        "sha256": "7c637158b2203e321d83596d3661f33b7b98a72beddfaaaa0eddc512acbdd1fb"
+      },
+      {
+        "path": "model-00002-of-00002.safetensors",
+        "bytes": 406693049,
+        "sha256": "77190cd1dcf244522869bf923558340112b26d7db2ef3692f88407dd9b33c25d"
+      }
+    ],
+    "framework": "MLX-VLM 0.7.8 (MIT)",
+    "mlx": "0.32.4",
+    "python": "3.11",
+    "hardware": {
+      "model": "Mac17,14",
+      "memory_bytes": 137438953472
+    },
+    "disk_observed": {
+      "model": "5.4 GiB by du",
+      "isolated_environment": "1.0 GiB by du"
+    },
+    "prototype_resources": {
+      "wall_seconds": 6.36,
+      "maximum_resident_set_bytes": 6206521344,
+      "peak_memory_footprint_bytes": 8326485632,
+      "scope": "Initial three-call synthetic prototype; not full-video/GPU-memory benchmark"
+    },
+    "offline": true,
+    "external_video_inference": false,
+    "distribution": "Weights downloaded locally from pinned Apache-2.0 artifact; no weights/media committed; transitive package versions retained in ignored local runtime."
+  },
+  "release": {
+    "version": "image-and-comparison-v2",
+    "constraints": [
+      "Exact verified source hash, eligible observation ID, source timestamp, actual frame digest and pair order",
+      "Image description checked against the current image; previous description separately checked against the previous image",
+      "Comparison checked against ordered grounded descriptions; no claim of unseen actions between frames",
+      "Image and comparison released separately; rejected comparisons do not suppress separately supported image detail",
+      "Raw candidates remain private; append-only revision receipts and digest-checked current pointer; reread image digests",
+      "At most 24 selected moments, spread across eligible events; sampled coverage never becomes exhaustive absence or action coverage"
+    ],
+    "verification_limit": "Same model generation/rechecks, not independent human verification or a universal semantic guarantee."
+  },
+  "tests": {
+    "initial_branch_full": {
+      "pass": 192,
+      "fail": 0,
+      "skipped": 0
+    },
+    "combined_final_main": {
+      "pass": 195,
+      "fail": 0,
+      "skipped": 0
+    },
+    "requirement_gate": 14,
+    "worker_packaging": "PASS",
+    "pr52": [
+      {
+        "name": "Workers Builds: ashley-brooke-cohen",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "test",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ],
+    "main52": [
+      {
+        "name": "Workers Builds: ashley-brooke-cohen",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "test",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ],
+    "pr53": [
+      {
+        "name": "Workers Builds: ashley-brooke-cohen",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "test",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ],
+    "main53": [
+      {
+        "name": "Workers Builds: ashley-brooke-cohen",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "test",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ],
+    "source_regressions": [
+      "wrong source/time/observation/pair rejected",
+      "corrupt frame and symlink escape rejected before inference",
+      "receipt tamper/restart readback",
+      "unsupported or malformed candidate withheld",
+      "supported description survives unsupported comparison",
+      "existing login/private transport/CSRF guard and no second upload",
+      "uninspected generic visual notes excluded from enriched timeline while old correction IDs remain available"
+    ]
+  },
+  "quality": {
+    "baseline": "Existing extractor produced pixel differences and empty subject/object fields, with no semantic image description.",
+    "prototype_failure": "Two-image critic accepted a deliberately reversed mug/bottle comparison. Not deployed.",
+    "intermediate_parser_limit": "One prototype checker omitted an optional empty unsupported-details list, so supported positives were withheld; normalization retains the explicit support boolean and contradictions.",
+    "reproducible_component": {
+      "positive_accepted": 2,
+      "positive_total": 2,
+      "unsupported_packets_released": 0,
+      "negative_total": 7,
+      "seconds": 9.49
+    },
+    "unseen_holdout": {
+      "unsafe_claims_released": 0,
+      "unsafe_total": 5,
+      "valid_comparisons_accepted": 0,
+      "valid_total": 1,
+      "false_rejections": 1,
+      "cases": [
+        {
+          "name": "count",
+          "expected": false,
+          "accepted": false,
+          "check": {
+            "description_supported": false,
+            "change_supported": true,
+            "unsupported_details": [
+              "Three computer monitors stand on the desk."
+            ],
+            "previous_description": ""
+          }
+        },
+        {
+          "name": "wrong-color",
+          "expected": false,
+          "accepted": false,
+          "check": {
+            "description_supported": false,
+            "change_supported": true,
+            "unsupported_details": [
+              "A green bottle stands next to a monitor."
+            ],
+            "previous_description": ""
+          }
+        },
+        {
+          "name": "missing-label",
+          "expected": false,
+          "accepted": false,
+          "check": {
+            "description_supported": false,
+            "change_supported": true,
+            "unsupported_details": [
+              "The monitor displays EXPORT READY."
+            ],
+            "previous_description": ""
+          }
+        },
+        {
+          "name": "hidden-application",
+          "expected": false,
+          "accepted": false,
+          "check": {
+            "description_supported": false,
+            "change_supported": true,
+            "unsupported_details": [
+              "Adobe Premiere Pro",
+              "exporting a finished movie"
+            ],
+            "previous_description": ""
+          }
+        },
+        {
+          "name": "reverse-input-correct",
+          "expected": true,
+          "accepted": false,
+          "check": {
+            "description_supported": true,
+            "change_supported": false,
+            "unsupported_details": [
+              "Change not supported by the ordered image descriptions"
+            ],
+            "previous_description": "A computer monitor displays 'VIDEO EDITOR' and 'EXPORT READY' in a green box. To the left sits a blue water bottle on a brown desk, with a window in the background."
+          }
+        },
+        {
+          "name": "reverse-input-wrong",
+          "expected": false,
+          "accepted": false,
+          "check": {
+            "description_supported": true,
+            "change_supported": false,
+            "unsupported_details": [
+              "Change not supported by the ordered image descriptions"
+            ],
+            "previous_description": "A computer monitor displays 'VIDEO EDITOR' and 'EXPORT READY' in a green box. To the left sits a blue water bottle on a brown desk, with a window in the background."
+          }
+        }
+      ]
+    },
+    "live_first_run_limit": "Initial all-or-nothing claim packet released 2/9 image descriptions. Five other supported image descriptions were suppressed only because their comparisons were uncertain; PR53 separates the claims."
+  },
+  "live": {
+    "url": "https://ashleybrookecohen.com/video-test/",
+    "assets": [
+      {
+        "path": "/video-test/",
+        "status": 200,
+        "exact": true,
+        "sha256": "7e9de8059ebe98aba36eb65c1bca8f243362f1f49d27b43165a00d57d325002e"
+      },
+      {
+        "path": "/video-test/app.js?v=20261015-vision",
+        "status": 200,
+        "exact": true,
+        "sha256": "ffd67a5bcca04867631ba0509b9685c35c2d4192ab35d683eb11bee3f84c1d8a"
+      },
+      {
+        "path": "/video-test/style.css?v=20261015-vision",
+        "status": 200,
+        "exact": true,
+        "sha256": "439d7940dbe80d4309afdbbad039a447b5286201501e15a6ec6dc3f181098a79"
+      },
+      {
+        "path": "/video-test/review.js?v=20261015-vision",
+        "status": 200,
+        "exact": true,
+        "sha256": "723a5d984060a84773d7045eb81625e1d9ecf7fd5ec370235699f30371dba2e6"
+      }
+    ],
+    "ordinary_existing_login": "Recognized; no token or new login entry",
+    "non_private_fixture": {
+      "job": {
+        "id": "fd995e62-0a5a-4109-9f9f-35b7e2d5fc54",
+        "state": "completed",
+        "name": "non-private-picture-change.mp4",
+        "created_at": "2026-10-16T01:36:03.790Z",
+        "bytes": 16843,
+        "started_at": "2026-10-16T01:36:03.791Z",
+        "completed_at": "2026-10-16T01:36:10.253Z",
+        "visual_state": "available"
+      },
+      "source": {
+        "sha256": "2cae77826fbcedfe5941b0d55221abda36bb7c0c7080c1b6f4fe90d8dd8aa949",
+        "duration_seconds": 11.166667,
+        "decode": "complete",
+        "readback": {
+          "verified": true,
+          "verified_at": "2026-10-16T01:36:04.240Z"
+        }
+      },
+      "visual_review": {
+        "schema": "local-picture-review.v1",
+        "release_version": "image-and-comparison-v2",
+        "source_sha256": "2cae77826fbcedfe5941b0d55221abda36bb7c0c7080c1b6f4fe90d8dd8aa949",
+        "state": "available",
+        "model": {
+          "id": "mlx-community/Qwen3-VL-8B-Instruct-4bit",
+          "revision": "defcdea7cc7a4b0858fea563cbbce171d328e457",
+          "license": "Apache-2.0",
+          "runtime": "mlx-vlm 0.7.8"
+        },
+        "created_at": "2026-10-16T01:36:10.249Z",
+        "coverage": {
+          "selected_total": 2,
+          "inspected": 2,
+          "accepted": 2,
+          "sampled_not_exhaustive": true
+        },
+        "notes": [
+          {
+            "observation_id": "visual-000001",
+            "source_timestamp_seconds": 0,
+            "description": "A computer monitor displays the text 'VIDEO EDITOR' with a progress bar. A red mug sits on a brown desk to the left of the monitor. A window with four panes is visible on the wall in the background. The scene is minimalist with flat colors.",
+            "change": "",
+            "frame_refs": [
+              {
+                "frame_id": "frame-000001",
+                "source_timestamp_seconds": 0,
+                "sha256": "6e87a22a86f00537d522bd788745adb08005dd1af4f7c0e324c4947cd212804c"
+              }
+            ],
+            "release": {
+              "decision": "supported",
+              "source_time_image_checks": true,
+              "description_supported": true,
+              "change_supported": null,
+              "method": "local_image_recheck_same_model_not_independent_human_verification"
+            }
+          },
+          {
+            "observation_id": "visual-000003",
+            "source_timestamp_seconds": 10,
+            "description": "A computer monitor displays 'VIDEO EDITOR' with a green box reading 'EXPORT READY'. Next to it on a desk is a blue water bottle. A window is visible in the background. The scene is set in a minimalist room with a brown desk and light gray walls.",
+            "change": "The red mug from the previous image has been replaced by a blue water bottle.",
+            "frame_refs": [
+              {
+                "frame_id": "frame-000002",
+                "source_timestamp_seconds": 5,
+                "sha256": "a4cb1ff526f1147ec5d69e6a79979962fbb0024f48fdd0336ffed8aba616a014"
+              },
+              {
+                "frame_id": "frame-000003",
+                "source_timestamp_seconds": 10,
+                "sha256": "a5c8c39f1fec4b488782589eb537b8645e9b0d86a624803258dbcc9560249669"
+              }
+            ],
+            "release": {
+              "decision": "supported",
+              "source_time_image_checks": true,
+              "description_supported": true,
+              "change_supported": true,
+              "method": "local_image_recheck_same_model_not_independent_human_verification"
+            }
+          }
+        ]
+      },
+      "feedback": [
+        {
+          "id": "d3265959-53e3-48c4-8119-20315d1198c9",
+          "job_id": "fd995e62-0a5a-4109-9f9f-35b7e2d5fc54",
+          "source_sha256": "2cae77826fbcedfe5941b0d55221abda36bb7c0c7080c1b6f4fe90d8dd8aa949",
+          "observation_id": "visual-000003",
+          "timestamp_seconds": 10,
+          "text": "Non-private picture-review test: this is an illustration, not a photograph. The later picture shows a blue bottle beside a monitor with a green EXPORT READY panel. Keep this note separate from the original automatic description.",
+          "kind": "creator_correction",
+          "created_at": "2026-10-16T01:36:49.721Z",
+          "analyzer_version": "synchronized-evidence-2.0.0"
+        }
+      ],
+      "bytes": 16843,
+      "frames_loaded_natural_widths": [
+        720,
+        720,
+        720
+      ],
+      "seek_seconds": 10,
+      "player_ready_state": 4,
+      "correction_observation": "visual-000003",
+      "correction_timestamp": 10,
+      "reopened_after_worker_restart": "PASS: descriptions, correction and remote-source playback retrieved in fresh ordinary-session tab",
+      "raw_panels": 0
+    },
+    "existing_saved_reviews": [
+      {
+        "id": "27a02482-825b-41b1-b425-52d8ebc35d40",
+        "visual_state": "available",
+        "release_version": "image-and-comparison-v2",
+        "source_sha256": "6dd48cee55f394e20558f21ea5815c76385946babca4a10ba44b93635b18a8fc",
+        "coverage": {
+          "selected_total": 9,
+          "inspected": 9,
+          "accepted": 7,
+          "sampled_not_exhaustive": true
+        },
+        "comparisons": 1
+      },
+      {
+        "id": "2ee77206-d5e2-48b3-8a8b-367c381a6294",
+        "visual_state": "available",
+        "release_version": "image-and-comparison-v2",
+        "source_sha256": "c48f66d57aff8697302e6e2c4b7ae143ebe738d3a3c82b10de2a2685e0440c6d",
+        "coverage": {
+          "selected_total": 1,
+          "inspected": 1,
+          "accepted": 1,
+          "sampled_not_exhaustive": true
+        },
+        "comparisons": 0
+      }
+    ],
+    "creator_visible_saved_review": {
+      "job_id": "27a02482-825b-41b1-b425-52d8ebc35d40",
+      "descriptions": 7,
+      "comparisons": 1,
+      "withheld_descriptions": 2,
+      "source_reuploaded": false,
+      "source_redecoded": false,
+      "verified_in_browser": true
+    },
+    "privacy": "No private frame, transcript, raw candidate or filename copied into this receipt. Existing saved-review metadata/counts only."
+  },
+  "retained_limits": [
+    "Sampled/selective image detail; no complete action or workflow reconstruction",
+    "Same-model rechecks can err; one valid holdout comparison was withheld",
+    "M4 Pro 24GB compatibility/performance not qualified by this Mac run",
+    "Original frozen ASR wording error remains",
+    "Full V1 component comparison, enforced broad semantic claim gate, workflow/UGC/edit/B-roll/B-Paid/performance/conversational lenses and physical iPhone/creator acceptance remain unpassed",
+    "Mac/connector must stay online; no autostart or remote archive added"
+  ],
+  "preservation": {
+    "source_deleted": false,
+    "source_footage_transferred_to_external_ai": false,
+    "paid_service": false,
+    "public_tunnel": false,
+    "new_model_or_vision_dependency_only_if_absent": true,
+    "original_source_and_extractor_packages": "Retained unchanged; visual sidecar versions added separately."
+  }
+}

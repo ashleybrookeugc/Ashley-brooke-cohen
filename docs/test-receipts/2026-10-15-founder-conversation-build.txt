@@ -6,7 +6,7 @@
  ⛅️ wrangler 4.151.0
 ────────────────────
 ✨ Read 458 files from the assets directory /private/tmp/mk-chat-followup.OgFc8f/repo/public
-Total Upload: 252.74 KiB / gzip: 68.04 KiB
+Total Upload: 262.60 KiB / gzip: 71.33 KiB
 Your Worker has access to the following bindings:
 Binding                                                                        Resource                     
 env.DB (events-production)                                                     D1 Database                  

@@ -30,6 +30,7 @@ test('unsupported, ambiguous or malformed model observations fail closed; no raw
  const review=await describeFrames(result,{inferImpl:async tasks=>supported(tasks).map(x=>({...x,check:{...x.check,change_supported:false}}))});assert.equal(review.notes[1].change,'');
  const wrong={...review,source_sha256:'other'};assert.equal(buildReview({...result,visual_review:wrong}).timeline[0].title,'Picture or screen change');
  const subset={...review,notes:review.notes.slice(1)};const partial=buildReview({...result,visual_review:subset});assert.equal(partial.timeline.length,1);assert.equal(partial.byId.has('visual-0'),true);
+ const separate=await describeFrames(result,{inferImpl:async tasks=>supported(tasks).map(x=>({...x,check:{description_supported:true,description_unsupported_details:[],change_supported:false,unsupported_details:['Comparison is uncertain']}}))});assert.equal(separate.notes.length,2);assert.equal(separate.notes[1].change,'');
 });
 test('corrupt, cross-file and escaped image artifacts are refused before any inference',async()=>{
  const {root,result}=await fixture();let calls=0;const options={inferImpl:async()=>{calls++;return []}};

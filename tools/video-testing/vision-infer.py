@@ -60,10 +60,12 @@ reversed direction, a hidden cause/action, or missing evidence. Return JSON only
         details = description_check.get("unsupported_details", [] if description_check.get("supported") is True else ["Description not supported"])
         if not isinstance(details, list):
             raise ValueError("Invalid evidence check")
+        description_details = list(details)
         if not change_supported:
             details = details + ["Change not supported by the ordered image descriptions"]
         return {"description_supported": description_check.get("supported") is True,
                 "change_supported": change_supported, "unsupported_details": details,
+                "description_unsupported_details": description_details,
                 "previous_description": previous}
 
     def describe(self, images):

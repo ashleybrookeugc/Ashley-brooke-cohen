@@ -4,6 +4,7 @@ import {spawn} from 'node:child_process';
 import {createHash,randomUUID} from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 export const MODEL={id:'mlx-community/Qwen3-VL-8B-Instruct-4bit',revision:'defcdea7cc7a4b0858fea563cbbce171d328e457',license:'Apache-2.0',runtime:'mlx-vlm 0.7.8'};
+export const RELEASE_VERSION='image-and-comparison-v2';
 const hash=value=>createHash('sha256').update(value).digest('hex');
 const text=value=>typeof value==='string'&&value.trim().length>0&&value.length<=900;
 export function visionConfig(env=process.env){return env.VIDEO_VISION_PYTHON&&env.VIDEO_VISION_MODEL?{python:resolve(env.VIDEO_VISION_PYTHON),model:resolve(env.VIDEO_VISION_MODEL)}:null;}
@@ -45,11 +46,12 @@ export async function describeFrames(result,{config=visionConfig(),inferImpl=inf
   for(const event of selected){
     const candidate=candidates.find(x=>x.observation_id===event.observation_id),check=candidate?.check;
     const frames=eventFrames(result,event);for(const frame of frames)await checkedImage(result,frame);
-    if(!text(candidate?.description)||check?.description_supported!==true||!Array.isArray(check.unsupported_details)||check.unsupported_details.length)continue;
+    const descriptionDetails=check?.description_unsupported_details??check?.unsupported_details;
+    if(!text(candidate?.description)||check?.description_supported!==true||!Array.isArray(descriptionDetails)||descriptionDetails.length)continue;
     const change=frames.length===2&&text(candidate.change)&&check.change_supported===true?candidate.change:'';
     notes.push({observation_id:event.observation_id,source_timestamp_seconds:event.source_timestamp_seconds,description:candidate.description,change,frame_refs:refs(frames),release:{decision:'supported',source_time_image_checks:true,description_supported:true,change_supported:change?true:null,method:'local_image_recheck_same_model_not_independent_human_verification'}});
   }
-  return {schema:'local-picture-review.v1',source_sha256:result.manifest.content_sha256,state:notes.length?'available':'unreliable',model:MODEL,created_at:new Date().toISOString(),coverage:{selected_total:events.length,inspected:selected.length,accepted:notes.length,sampled_not_exhaustive:true},notes,candidates};
+  return {schema:'local-picture-review.v1',release_version:RELEASE_VERSION,source_sha256:result.manifest.content_sha256,state:notes.length?'available':'unreliable',model:MODEL,created_at:new Date().toISOString(),coverage:{selected_total:events.length,inspected:selected.length,accepted:notes.length,sampled_not_exhaustive:true},notes,candidates};
 }
 export function validateVisualReview(result,review){
   if(review.schema!=='local-picture-review.v1'||review.source_sha256!==result.manifest.content_sha256||!['available','unreliable'].includes(review.state)||review.model?.id!==MODEL.id||review.model?.revision!==MODEL.revision||!Array.isArray(review.notes)||review.notes.length>24)throw Error('Visual review source/model mismatch');

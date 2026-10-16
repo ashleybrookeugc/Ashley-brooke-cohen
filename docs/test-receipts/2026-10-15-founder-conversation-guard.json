@@ -1,0 +1,49 @@
+{
+  "version": "founder-conversation-acceptance.v1",
+  "recorded_at_utc": "2026-10-16T02:14:13.819Z",
+  "objective": "Prevent historical failures from becoming current status; Ashley is founder/user, not developer in ordinary conversation.",
+  "approved_evidence_merge": {
+    "pr": 22,
+    "repo": "ashleybrookeugc/research-vault",
+    "sha": "2cb5864d38fb972ffb8047f38c930c4bcd10d005",
+    "readback": "PASS",
+    "initial_failure": "405 conflict after concurrent main update; resolved without widening approved scope"
+  },
+  "base_product_main": "3a72c8d01c6957b12840e5b2cba5bcc9d1582d40",
+  "scope": [
+    "Current saved fields separated from historical reference bodies",
+    "Explicit history retains qualified excerpts",
+    "Founder identity is not permission authority",
+    "Provider and independent service output guards",
+    "Content-free guard traces and optional technical reasons"
+  ],
+  "local": {
+    "tests": 216,
+    "passed": 214,
+    "skipped": 2,
+    "failed": 0,
+    "requirement_mappings": 14,
+    "wrangler": "4.151.0",
+    "packaging": "PASS",
+    "diff": "PASS",
+    "frozen_prior_failed_runs": 5
+  },
+  "failures_and_solutions": [
+    "First target assertion expected historical text in a present packet; new contract preserves reference and explicitly excludes that body.",
+    "The frozen second preview exposed missed implementation homework; covered by guard and a positive requested-technical-explanation control.",
+    "Concurrent main log insertion conflicted; both incident records retained."
+  ],
+  "live": {
+    "status": "NOT RUN"
+  },
+  "limits": [
+    "Finite tested output forms; not general semantic correctness",
+    "Saved current assertions are not live observations",
+    "Abstention prevents an unsupported answer; it does not repair the underlying feature",
+    "No software merge or production promotion approved"
+  ],
+  "artifacts": {
+    "tests": "docs/test-receipts/2026-10-15-founder-conversation-tests.txt",
+    "build": "docs/test-receipts/2026-10-15-founder-conversation-build.txt"
+  }
+}

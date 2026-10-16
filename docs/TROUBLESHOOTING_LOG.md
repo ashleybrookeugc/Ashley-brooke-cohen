@@ -1,5 +1,15 @@
 # Ashley Brooke Cohen Website — Troubleshooting & Recovery Log
 
+## 2026-10-15 — Focused conversation repair: historical evidence and founder role
+
+**Observed failures:** five actual previews stored in the frozen natural-followups receipt presented archived422/priority/chat defects as current and treated Ashley as a chatbot developer. More prompt text and a larger-model trial did not establish acceptance. Evidence-only vault PR22 was explicitly approved; its initial405 merge conflict was resolved against current main without losing either record, merged at2cb5864d38fb972ffb8047f38c930c4bcd10d005 and read back from main.
+
+**Focused repair:** a versioned conversation contract identifies Ashley as founder/user and the assistant as Mary Kate; it grants no permission. Ordinary present-status model inputs contain bounded current saved fields and archival source references without historical error-body detail. Explicit history questions retain qualified historical excerpts. Previous assistant replies with the observed bad claims are sanitized. Provider and service output guards reject developer-role attribution, unsolicited implementation homework and unverified present diagnostic/legacy claims, returning a concise read-only abstention. Guard reasons are content-free in the trace and secondary technical details; no retry, proposal, worker task or canonical write is created. Explicit technical explanations and correctly attributed user reports remain allowed. Original model/provider and all approval gates remain.
+
+**Red/green:** the first targeted run caught an existing test still expecting archived detail in present evidence; update that assertion to require history references and no current-failure proof. The frozen real-answer corpus then exposed a missed implementation-homework paraphrase; add the narrow guard and a positive requested-explanation control. All five recorded developer-role failures now reject, as do independent paraphrases; past-tense/uncertain/current-user-report controls pass. Combined current main3a72c8d suite216 total:214 PASS,2 analyzer-dependent skips,0 FAIL; requirements14, Wrangler4.151.0 packaging and diff checks PASS. Preserve concurrent video/worker changes; only top-of-log insertion collided, with both entries retained.
+
+**Boundary / next proof:** guards cover the frozen and independent tested failure forms; they are not a general semantic correctness proof. Historical saved records are not live runtime verification. A safe abstention is not a repaired underlying capability. Real same-host preview replay and independent negative cases remain to run. No software merge/deployment approval is inferred from evidence PR22 approval; PR36 remains untouched.
+
 ## 2026-10-15 — V1 conversation loses its project and desired outcome
 
 **Symptom:** Ashley supplied the exact four-turn sequence frozen in `test/control-natural-followups.test.js`: V1 status answers, “what is my desired outcome” loses scope, “for this site. for mk…” remains ambiguous, and “where am i going wrong” fails the routing contract. This is a product defect; it is not evidence that Ashley failed to set up a chatbot.
@@ -22,6 +32,28 @@
 
 **Historical access boundary:** a single bounded direct model probe through the already-authorized Cloudflare MCP returned API error 10000, Authentication error. No credential/scope/provider change was made. The candidate has not been deployed and live semantic acceptance is not claimed. Next: review this exact narrow PR, obtain explicit merge/deployment approval, then replay the same four turns through the authenticated normal interface and record source/version, grounded answers and unchanged queues. PR #36 remains untouched.
 
+
+## 2026-10-15 — Generic picture-change labels contain no visual meaning
+
+**Symptom:** Ashley sees “picture or screen change” without image detail or an explanation of the difference.
+
+**Confirmed cause / failed approaches:** the unchanged extractor measures sampled pixel differences and leaves subjects/objects unrecovered; rephrasing its labels cannot create semantic detail. The existing V1 plan already requires a selective local semantic consumer. An initial MLX/Qwen prototype describes the fixture correctly but its two-image critic accepts a deliberately reversed comparison. A parser intermediate conservatively withholds positives when an optional empty detail list is missing. The first live release then hides5 supported still-image descriptions because their comparisons are uncertain. These are preserved failures, not successful analyzer acceptance.
+
+**Verified bounded repair:** PR52/53 add the local consumer over the existing verified frame contract, ground each image separately, check ordered comparison meaning, and release image/comparison claims independently. Exact source/time/frame/digest/path/restart gates remain enforced; candidates and append-only visual revisions stay private. Existing auth, private route, bearer and original extractor/packages are unchanged. Frozen positive packets2/2, unsafe0/7; unseen holdout unsafe0/5, valid0/1 (one false rejection). Same-model critique is explicitly fallible and not independent verification.
+
+Combined website195/195 zero skips, requirements14, packaging and both PR/main CI/normal Builds pass. Four live assets exact200. Actual non-private upload yields two object descriptions and a specific mug/bottle difference, three720px frames, 10s seek at readyState4, a visual correction bound to visual-000003/time10 and worker/fresh-tab retrieval after restart. Existing saved review now shows7/9 descriptions,1 comparison and2 explicit omissions, without re-upload/re-decode. Full action/workflow/creative lenses, arbitrary-video/M4-Pro qualification and physical-iPhone/creator usefulness remain unpassed. Exact receipt: `docs/test-receipts/2026-10-15-local-picture-descriptions.json`.
+
+**Prevention:** freeze wrong-meaning/reversed-order controls before release; check meaning against actual frames, not just valid references. Preserve false rejections separately. Gate at the smallest useful claim; do not discard supported image detail because a comparison is uncertain. Reuse retained evidence for enrichment, disclose sparse coverage, and never promote this bounded picture feature into whole-video understanding.
+
+## 2026-10-16 — Video priority does not show current agent work
+
+**Symptom:** Today named video processing as the current priority but gave no answer about whether an agent was working on it or what step the agent was doing.
+
+**Failed approach / root cause:** A saved priority and the separate Herdr worker section were displayed independently. A priority is an intention; it is not evidence of a running worker. Herdr only reports its own adapter-owned workers through signed short-lived check-ins, and a stale connection cannot prove present activity.
+
+**Repair:** Today now reads the existing private worker projection on the same five-second refresh. A fresh running worker whose assigned task clearly names video work shows its current and next plan steps. Offline, unavailable, blocked and no matching worker states receive distinct plain-language messages. The saved next step remains visible. No worker is launched or falsely attached to the priority.
+
+**Prevention / proof:** UI regressions cover a fresh video plan, unrelated worker, completed worker, missing plan, unavailable telemetry and stale Herdr check-in. Local suite 194 passed, 2 skipped; Worker dry-run packaging and 14-requirement gate pass. CI and live readback are still required before production claims.
 
 ## 2026-10-16 — Current video priority displaced by historical notes and AI suggestions
 
