@@ -20,3 +20,11 @@ test('research not material does not demand comparator evidence',()=>{
 test('unrelated stages remain untouched',()=>{
  assert.equal(evaluateUgcConceptGate({requestStage:'intake',requiresCurrentResearch:true}).allowed,true);
 });
+
+test('actual control service rejects explicit concept approval before any routing',async()=>{
+ const {createControlService,createMemoryStore}=await import('../src/control/service.js');
+ let routed=false;
+ const service=createControlService({github:{readFile:async()=>{throw new Error('should not read');}},router:{route:async()=>{routed=true;}},store:createMemoryStore()});
+ await assert.rejects(()=>service.capture('Approve Knicks in four',{ugcConceptApproval:{requested:true,requiresCurrentResearch:true,receipts:[]}}),/UGC concept approval blocked/);
+ assert.equal(routed,false);
+});
