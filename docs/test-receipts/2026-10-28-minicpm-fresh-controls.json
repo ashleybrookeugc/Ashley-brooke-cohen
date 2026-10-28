@@ -1,0 +1,41 @@
+{
+  "schema": "ashley.minicpm-fresh-controls.v1",
+  "date": "2026-10-28",
+  "new_inference": true,
+  "provider_url": "https://minicpmo45.modelbest.cn/turnbased",
+  "gate_commit": "2b1dc2f7dd52f3848d27582cd48629b568b0ae7d",
+  "settings": {
+    "preset": "Video-Audio Analysis",
+    "tts": false,
+    "streaming": true,
+    "max_tokens": 256,
+    "fresh_separate_conversations": true
+  },
+  "cases": {
+    "voiced": {
+      "sha256": "70f593c866fcd4d443e49e3c52339c12a534385eeb78ffc4428e36b354228bbb",
+      "file": "av-negation.mp4",
+      "raw": "U\nAnswer in at most 150 words. 1. Transcribe all audible speech verbatim, preserving negation, pronouns and connector words. If none, write NO SPEECH. 2. Describe the visible subject and its action, with elapsed timestamps. 3. Is the voice actually spoken by the visible character, or is that relationship unproven? Use only this clip.\nM\n[00:01-00:06] I do not think this is fair because you know the answer. Why not? Because I already checked it.\n[00:07-00:15] A large, rotund rabbit-like creature slowly emerges from a grassy burrow in an outdoor setting. It pushes its body out, stretching and yawning widely as it becomes fully visible outside the entrance.\n\nThe voice heard throughout the clip does not appear to be spoken by the animated character on screen; there is no direct visual or contextual evidence within this short segment linking the speech to the rabbit's mouth movements or actions.\n[streaming]\nTotal\n9.4s\nTTFS\n6.5s\n·\nGenerate\n2.9s\nreq_1793170096167",
+      "visual_clause": "A large, rotund rabbit-like creature slowly emerges from a grassy burrow in an outdoor setting.",
+      "request_id": "req_1793170096167",
+      "total_seconds": 9.4
+    },
+    "silent": {
+      "sha256": "5b5f46ae52281fb727ecb8f4ea053ef473dc2d7a33d58ad0b26ac136014992f7",
+      "file": "av-silent.mp4",
+      "raw": "U\nAnswer in at most 150 words. 1. Transcribe all audible speech verbatim, preserving negation, pronouns and connector words. If none, write NO SPEECH. 2. Describe the visible subject and its action, with elapsed timestamps. 3. Is the voice actually spoken by the visible character, or is that relationship unproven? Use only this clip.\nM\n[00:03-00:14] A large, grey-furred rabbit slowly crawls out of a mossy burrow in a grassy hillside. As it emerges, the character stretches its arms and lets out a loud yawn or groan.\n[00:15-00:16] The rabbit stands upright on the slope, looking around with a slightly dazed expression.\n\nNO SPEECH\n\nThe visible subject is an animated rabbit emerging from a burrow. The voice heard during its emergence (a deep, resonant sound) is not visually attributed to this specific character's mouth movements in this short clip; however, within animation context, such synchronization typically implies the source.\n[streaming]\nTotal\n8.9s\nTTFS\n5.7s\n·\nGenerate\n3.3s\nreq_1793170122435",
+      "visual_clause": "A large, grey-furred rabbit slowly crawls out of a mossy burrow in a grassy hillside.",
+      "request_id": "req_1793170122435",
+      "total_seconds": 8.9
+    }
+  },
+  "admission": "Agent manually separates clauses and reviews visible rabbit emergence against source contact frames; audio oracle is independent synthetic source script. No automated provider parser is claimed. Reviewed clauses use broad 0–15s clip ranges, not unverified model timestamps.",
+  "expected": "fresh speech and reviewed visual clauses retained; unsupported sound plus original mixed prose withheld",
+  "limits": [
+    "hosted model revision unpinned",
+    "provider silent output includes out-of-range 15–16s claim, not admitted",
+    "independent evidence admission remains trusted host work",
+    "not deployed provider integration or production-ready analyzer"
+  ]
+}
+

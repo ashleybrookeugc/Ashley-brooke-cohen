@@ -1,5 +1,13 @@
 # Ashley Brooke Cohen Website — Troubleshooting & Recovery Log
 
+## 2026-10-28 — Fresh MiniCPM runs followed by independent gate: bounded PASS
+
+Two new separate browser conversations used the same hash-verified speech/silent twins, identical prompt, Video-Audio Analysis preset,256tokens, voice output off. Actual fresh requests req_1793170096167 and req_1793170122435 completed (UI9.4s/8.9s). Speech again recovers the complete negation/fair/connector sentence. Silent output again hallucinates a loud yawn/groan and deep resonant voice, including a sound clause inside a visual paragraph; it also proposes an unadmitted15–16s interval beyond this15s clip.
+
+The unchanged gate from2b1dc2f operates on independent actual PCM analysis. Host review explicitly partitions pure visual clauses from mixed/audio prose; this is manual fixture admission, NOT an automated provider-to-claim parser. The independently scripted exact speech and reviewed emergence clauses survive byte-for-byte. All original mixed prose and unsupported sound claims are withheld, including when real audio activity exists but sound identity lacks independent evidence. No provider-returned verification flag is trusted; no exact provider timestamp is accepted as independently proven.
+
+Actual fresh-output gate test plus prior real-media replay and focused preservation:30total/28PASS/0FAIL/2existing native-checkout skips. Both real-media gate tests executed locally; CI without the controls will explicitly skip them, so CI alone is insufficient evidence. [Fresh raw results and settings](test-receipts/2026-10-28-minicpm-fresh-controls.json); executable test `test/minicpm-fresh-controls.test.js`. This supports bounded helper merge review; no automatic integration, new model-wide quality claim, Cloudflare deployment or full-analyzer readiness. Keep the model; next verify trusted provider claim admission and actual integration before deployment.
+
 ## 2026-10-28 — MiniCPM independent audio gate: bounded real-media replay PASS
 
 **Founder correction:** retain the promising MiniCPM model and existing architecture; next step is a small independent-audio/unsupported-sound regression, not replacing the model or requiring new credentials before testing this failure.
