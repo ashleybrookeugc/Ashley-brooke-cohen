@@ -6,6 +6,8 @@ The helper previously ran only in tests. Existing createUsefulReview now indepen
 
 Actual ordinary saved-report readback against the original voiced/silent real-footage twins preserves the independently scripted voiced sentence and previously reviewed rabbit clauses. Injected speech and dependent summary on the silent source are removed. Focused32total/30pass/0fail/2existing native-checkout skips. Artifact validation tests now use real generated audio bytes. No full model generation or fresh inference ran. This implements an activity veto only: energy cannot prove words or sound identity, and visual/mixed prose does not acquire independent semantic verification. Quiet/long-source coverage remains unqualified.
 
+CI initially failed two actual-audio binding tests because the runner lacked FFmpeg (`spawnSync ffmpeg ENOENT`, run40675307960). Add the media runtime before npm test rather than skip or mock decoding; include local video-tool changes in workflow triggers.
+
 Live site browser check shows the usual Mary Kate sign-in wall. This cloud session has no native Mac update/restart surface; the running processor is NOT updated or live verified. A GitHub merge/Cloudflare Worker build cannot restart the private Mac processor. Preserve the private transport and continue on a genuine local execution surface. [Receipt](test-receipts/2026-10-28-audio-veto-integration.json).
 
 ## 2026-10-28 — Prevent MiniCPM claims beyond source duration

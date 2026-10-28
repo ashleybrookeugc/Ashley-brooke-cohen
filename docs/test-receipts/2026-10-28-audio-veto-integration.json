@@ -20,5 +20,11 @@
     "No MiniCPM API integration, credential change or external private-media upload"
   ],
   "live_site": "https://ashleybrookecohen.com/video-test/",
-  "live_status": "BLOCKED"
+  "live_status": "BLOCKED",
+  "ci_setup_failure": {
+    "run_id": 40675307960,
+    "result": "205pass/2fail/6skip",
+    "cause": "ffmpeg ENOENT on GitHub test runner",
+    "repair": "Install ffmpeg from runner's Ubuntu package repository before npm test; preserve actual decoding rather than mock or skip the new binding checks"
+  }
 }
