@@ -1,0 +1,17 @@
+
+        U
+        
+            Answer in at most 150 words. 1. Transcribe all audible speech verbatim, preserving negation, pronouns and connector words. If none, write NO SPEECH. 2. Describe the visible subject and its action, with elapsed timestamps. 3. Is the voice actually spoken by the visible character, or is that relationship unproven? Use only this clip.
+            
+        
+    
+        M
+        [00:01-00:08] "I do not think this is fair because you know the answer. Why not? Because I already checked it." - off-screen voice.
+
+[00:03-00:10] A large, grey-furred creature with rabbit ears slowly crawls out of a grassy burrow entrance and looks around with a slightly smug expression.
+
+The audio appears to be coming from an unseen party addressing the character, as the character's mouth movements don't align perfectly with the specific spoken words heard during its emergence.
+            
+            
+        [streaming] Total 11.1sTTFS 5.1s · Generate 6.1sreq_1793160062028
+    

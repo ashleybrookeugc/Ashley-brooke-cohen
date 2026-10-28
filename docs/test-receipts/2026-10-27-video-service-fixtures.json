@@ -1,0 +1,37 @@
+{
+  "schema": "ashley.public-av-controls.v1",
+  "created_at": "2026-10-28T04:04:28.069Z",
+  "ffmpeg_version": "ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers",
+  "source": {
+    "url": "https://github.com/mediaelement/mediaelement-files/raw/master/big_buck_bunny.mp4",
+    "sha256": "543a4ad9fef4c9e0004ec9482cb7225c2574b0f889291e8270b1c4d61dbc1ab8",
+    "full_decode": "PASS"
+  },
+  "derivation": {
+    "source_start_seconds": 38,
+    "duration_seconds": 15,
+    "speech": "I do not think this is fair because you know the answer. Why not? Because I already checked it.",
+    "speech_kind": "synthetic FFmpeg/libflite slt; original audio replaced",
+    "source_time_rule": "source_seconds = clip_seconds + 38"
+  },
+  "voiced": {
+    "file": "av-negation.mp4",
+    "sha256": "70f593c866fcd4d443e49e3c52339c12a534385eeb78ffc4428e36b354228bbb"
+  },
+  "silent": {
+    "file": "av-silent.mp4",
+    "sha256": "5b5f46ae52281fb727ecb8f4ea053ef473dc2d7a33d58ad0b26ac136014992f7",
+    "peak_db": -91
+  },
+  "decoded_video_frames_identical": true,
+  "frame_manifest_sha256": "a9c01aa6eddbc86558e739d534c80c4e7fa958f63e2a1e8bd9765d64285bf1be",
+  "acceptance": {
+    "exact_speech": "NOT_RUN",
+    "silent_no_speech": "NOT_RUN",
+    "visible_action": "NOT_RUN",
+    "voice_attribution": "NOT_RUN",
+    "timestamps": "NOT_RUN",
+    "deployed_integration": "NOT_RUN"
+  },
+  "limits": "Public animated footage plus controlled synthetic speech; not private creator/iPhone acceptance. A fixture build is not model success."
+}

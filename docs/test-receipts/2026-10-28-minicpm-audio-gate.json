@@ -1,0 +1,35 @@
+{
+  "schema": "ashley.minicpm-audio-gate-regression.v1",
+  "date": "2026-10-28",
+  "original_provider_receipt": "2026-10-27-video-service-qualification.json",
+  "mode": "real media decoding plus frozen actual MiniCPM response replay",
+  "new_model_inference": false,
+  "source_hashes": {
+    "voiced": "70f593c866fcd4d443e49e3c52339c12a534385eeb78ffc4428e36b354228bbb",
+    "silent": "5b5f46ae52281fb727ecb8f4ea053ef473dc2d7a33d58ad0b26ac136014992f7"
+  },
+  "checks": {
+    "independent_activity_vs_silence": "PASS",
+    "silent_grunting_withheld": "PASS",
+    "activity_does_not_prove_named_sound": "PASS",
+    "known_exact_speech_preserved": "PASS against independent synthetic source script",
+    "reviewed_visual_text_preserved": "PASS",
+    "mixed_raw_prose_withheld": "PASS",
+    "wrong_source_or_missing_audio_denied": "PASS"
+  },
+  "tests": {
+    "total": 29,
+    "pass": 27,
+    "fail": 0,
+    "skipped": 2,
+    "skips": "existing native analyzer checkout absent"
+  },
+  "limits": [
+    "not a perceptual meaningful-sound/VAD qualification",
+    "quiet audio uncertain; thresholds require wider calibration",
+    "trusted-host claim verification is not a model-set flag",
+    "replay not new provider inference",
+    "gate not yet integrated with deployed service",
+    "no new analyzer or architecture"
+  ]
+}

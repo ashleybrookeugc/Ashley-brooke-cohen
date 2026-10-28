@@ -1,0 +1,103 @@
+{
+  "schema": "ashley.video-service-qualification.v1",
+  "session_date": "2026-10-27",
+  "scope": "public service research and real-media regressions; no provider deployment",
+  "website_base_commit": "7048aca8d9979101dd2bfce4b1c8b76e10097503",
+  "source_sha256": "543a4ad9fef4c9e0004ec9482cb7225c2574b0f889291e8270b1c4d61dbc1ab8",
+  "source_bytes": 5510872,
+  "source_full_decode": "PASS",
+  "prior_source": "ugc-creator-app/docs/test-receipts/2026-10-14-video-analyzer-github-actions.json",
+  "qwen": {
+    "demo": "https://huggingface.co/spaces/Qwen/Qwen3-Omni-Demo",
+    "actual_video_upload": "accepted via advertised Gradio API",
+    "call": "chat_predict",
+    "inference": "UNPROVEN; only SSE heartbeat events within 90-second read deadline; curl exit 28",
+    "browser_file_chooser": "two timeouts; not evidence provider inference failed",
+    "source_runtime": "app.py uses hosted qwen3-omni-flash-2025-12-01 and OSS uploads, not local open weights",
+    "eligible": false
+  },
+  "minicpm": {
+    "demo": "https://minicpmo45.modelbest.cn/turnbased",
+    "served_label": "MiniCPM-o 4.5; exact weights/revision not exposed or verified",
+    "settings": {
+      "preset": "Video-Audio Analysis",
+      "streaming": true,
+      "tts": false,
+      "max_new_tokens": 256,
+      "conversation_reset_between_controls": true
+    },
+    "full_duplex": {
+      "source_seconds": 60.095011,
+      "padding_seconds": 2,
+      "observed_playback_chunks": 62,
+      "model_output": "A bird chirps.",
+      "verdict": "does not satisfy complete review; not a model-wide capability judgment"
+    },
+    "whole_video": {
+      "state": "partial response intentionally stopped",
+      "observed": "Correctly describes forest, title and rabbit emerging; lengthy repetition; no requested chronological timestamp map",
+      "verdict": "bounded visible-content evidence only"
+    },
+    "voiced": {
+      "source_start_seconds": 38,
+      "duration_seconds": 15,
+      "sha256": "70f593c866fcd4d443e49e3c52339c12a534385eeb78ffc4428e36b354228bbb",
+      "speech_kind": "controlled synthetic flite slt speech replacing original audio",
+      "output": "[00:01-00:08] \"I do not think this is fair because you know the answer. Why not? Because I already checked it.\" - off-screen voice.\n\n[00:03-00:10] A large, grey-furred creature with rabbit ears slowly crawls out of a grassy burrow entrance and looks around with a slightly smug expression.\n\nThe audio appears to be coming from an unseen party addressing the character, as the character's mouth movements don't align perfectly with the specific spoken words heard during its emergence.",
+      "ui_reported_seconds": {
+        "total": 11.1,
+        "ttfs": 5.1,
+        "generation": 6.1
+      },
+      "checks": {
+        "exact_tested_words": "PASS",
+        "rabbit_emergence": "SUPPORTED in inspected source frames",
+        "exact_timestamps": "NOT_INDEPENDENTLY_VERIFIED",
+        "addressing_character": "UNSUPPORTED; voice is synthetic unrelated narration"
+      }
+    },
+    "silent": {
+      "sha256": "5b5f46ae52281fb727ecb8f4ea053ef473dc2d7a33d58ad0b26ac136014992f7",
+      "decoded_video_identical_to_voiced": true,
+      "audio_peak_db": -91,
+      "output": "[00:01-00:15] A large, rotund animated rabbit slowly crawls out of a mossy burrow entrance. It initially emerges with its head and upper body visible, then pushes the rest of its bulky frame through the opening. As it fully exits, it stretches its arms wide against the grassy slope, appearing slightly strained or surprised by its size.\nNO SPEECH\nThe character's movements are synchronized with subtle grunting sounds that suggest physical exertion, but no clear dialogue is present in the clip. The voice characteristics cannot be definitively attributed to the visible rabbit without further context.",
+      "ui_reported_seconds": {
+        "total": 7.2,
+        "ttfs": 4.4,
+        "generation": 2.8
+      },
+      "checks": {
+        "no_transcribed_speech": "PASS",
+        "no_invented_sound": "FAIL: explicitly claims grunting sounds despite silence floor"
+      }
+    },
+    "verdict": "PARTIAL candidate; raw whole-video output fails audio-grounding qualification",
+    "eligible": false,
+    "api_boundary": "Official public integration API requires own MAP key. Demo shared key must not be used as application credential. No key configured; free recurring API quota not verified."
+  },
+  "gemini": {
+    "status": "official video-input/free-tier documentation reviewed; NO inference run; no Google/Gemini key in website secret-name inventory",
+    "eligible": false
+  },
+  "preservation": {
+    "focused_tests": {
+      "total": 28,
+      "pass": 26,
+      "fail": 0,
+      "skipped": 2,
+      "skip_reason": "exact native analyzer checkout absent; no substitute built"
+    },
+    "live_deployed_upload_review_correction": "NOT_RUN; cloud browser is signed out of Mary Kate",
+    "existing_worker_admin_auth": "unchanged",
+    "private_source_uploads": 0,
+    "production_changes": 0
+  },
+  "decision": "DEFER integration; no newly evaluated provider qualified",
+  "next_gate": "Obtain supported personal service credentials with verified free allowance OR access existing Mac runtime; qualify timestamp accuracy, silent/audio mismatch and claim release before isolated-site integration test. Do not recycle demo credentials.",
+  "limits": [
+    "single public animated source with controlled synthetic derivatives, not Ashley footage",
+    "hosted version and sampling policy unpinned",
+    "fixture success is not creator usefulness",
+    "no production or whole-analyzer success claimed"
+  ]
+}
