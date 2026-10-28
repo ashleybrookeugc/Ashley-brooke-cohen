@@ -1,5 +1,13 @@
 # Ashley Brooke Cohen Website — Troubleshooting & Recovery Log
 
+## 2026-10-28 — Integrate independent audio-activity veto into local content review; live blocked
+
+The helper previously ran only in tests. Existing createUsefulReview now independently inspects source-bound PCM before accepting ASR segments: inactive, uncertain-only, invalid and beyond-duration candidates are withheld before report synthesis; timestamps are no longer clipped into eligibility. Existing readUsefulReview rechecks actual source audio before browser release, removes disallowed transcript segments and summary/moment claims depending on them, and preserves unrelated reviewed visual material. Existing configured FFmpeg/ffprobe paths are honored. Decoder failures withhold the content report.
+
+Actual ordinary saved-report readback against the original voiced/silent real-footage twins preserves the independently scripted voiced sentence and previously reviewed rabbit clauses. Injected speech and dependent summary on the silent source are removed. Focused32total/30pass/0fail/2existing native-checkout skips. Artifact validation tests now use real generated audio bytes. No full model generation or fresh inference ran. This implements an activity veto only: energy cannot prove words or sound identity, and visual/mixed prose does not acquire independent semantic verification. Quiet/long-source coverage remains unqualified.
+
+Live site browser check shows the usual Mary Kate sign-in wall. This cloud session has no native Mac update/restart surface; the running processor is NOT updated or live verified. A GitHub merge/Cloudflare Worker build cannot restart the private Mac processor. Preserve the private transport and continue on a genuine local execution surface. [Receipt](test-receipts/2026-10-28-audio-veto-integration.json).
+
 ## 2026-10-28 — Prevent MiniCPM claims beyond source duration
 
 The fresh silent model response included a 15–16s event on a 15s clip. A new regression over the original real-footage control reproduced the helper accepting that out-of-range visual claim. The helper now obtains source duration from the hash-verified file and requires matching source metadata and a positive claim range wholly within it for every modality. Missing duration or wrong-source metadata fails closed, including for trusted visual flags. The no-audio-track route also rechecks source identity and preserves duration so reviewed visual evidence can survive without speech authorization.

@@ -14,7 +14,7 @@ function command(name,args,limit=64*1024*1024){return new Promise((ok,no)=>{
 // Conservative thresholds leave quiet signals uncertain rather than calling them silence.
 export async function inspectAudio(path,expectedSha){
   if(sha(await readFile(path))!==expectedSha)throw Error('SOURCE_HASH_MISMATCH');
-  const probe=JSON.parse(await command('ffprobe',['-v','error','-show_streams','-show_format','-of','json',path]));
+  const probe=JSON.parse(await command(process.env.FFPROBE_PATH||'ffprobe',['-v','error','-show_streams','-show_format','-of','json',path]));
   const duration_seconds=Number(probe.format.duration);
   if(!Number.isFinite(duration_seconds)||duration_seconds<=0)throw Error('Source duration unavailable');
   const track=probe.streams.find(x=>x.codec_type==='audio');
@@ -24,7 +24,7 @@ export async function inspectAudio(path,expectedSha){
   }
   const offset=Number(track.start_time||0)-Number(probe.format.start_time||0);
   if(!Number.isFinite(offset))throw Error('Audio time unavailable');
-  const pcm=await command('ffmpeg',['-v','error','-xerror','-i',path,'-map','0:a:0','-vn','-ac','1','-ar','16000','-f','f32le','-']);
+  const pcm=await command(process.env.FFMPEG_PATH||'ffmpeg',['-v','error','-xerror','-i',path,'-map','0:a:0','-vn','-ac','1','-ar','16000','-f','f32le','-']);
   if(!pcm.length||pcm.length%4)throw Error('Audio decode incomplete');
   if(sha(await readFile(path))!==expectedSha)throw Error('SOURCE_HASH_MISMATCH');
   const windows=[];
