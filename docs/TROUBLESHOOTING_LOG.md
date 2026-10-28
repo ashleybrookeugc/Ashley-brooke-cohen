@@ -1,5 +1,17 @@
 # Ashley Brooke Cohen Website — Troubleshooting & Recovery Log
 
+## 2026-10-28 — MiniCPM independent audio gate: bounded real-media replay PASS
+
+**Founder correction:** retain the promising MiniCPM model and existing architecture; next step is a small independent-audio/unsupported-sound regression, not replacing the model or requiring new credentials before testing this failure.
+
+**Symptom / pre-fix evidence:** captured MiniCPM silent-twin output claims grunting, although its original decoded audio is at the silence floor. Preserve that exact failing output; do not rewrite it as fixed model behavior.
+
+**Bounded implementation:** `tools/video-testing/audio-evidence-gate.mjs` independently decodes source-hash-verified audio with FFmpeg into mono16k PCM and100ms windows. Silence, activity, uncertain and missing-track outcomes stay distinct. Conservative energy thresholds are an engineering policy, not a validated perceptual/VAD classifier: quiet nonzero audio can remain uncertain. Energy cannot identify grunts, music, speech wording or intent. Audio claims require activity in their own interval plus independently sourced exact-claim support; unknown/mixed raw prose is withheld. Separately reviewed visual claims are preserved. Verification flags are trusted-host inputs, never model-returned self-certification. Detector failures propagate; missing/wrong-source evidence cannot authorize audio claims.
+
+**Actual regression:** `AV_CONTROLS_DIR=/absolute/public-controls node --test test/minicpm-audio-regression.test.js` reads the original15s real-footage twins, verifies their frozen hashes, detects voiced activity versus silence, and replays captured MiniCPM results. Invented sound is suppressed on both silent and active sources without independent sound evidence. Exact negation/fair transcript stays released against the independent synthetic source script; reviewed rabbit-emergence text stays byte-for-byte. Wrong-source/missing-audio controls fail closed. This is captured-model-output replay against actual media, NOT new MiniCPM inference or automatic verification of arbitrary visual prose. Full focused preservation:29tests/27PASS/0FAIL/2existing native-checkout skips. Fixture-dependent new replay skips explicitly without AV_CONTROLS_DIR; local run above did execute it.
+
+**Boundary / next:** small gate validated, not yet called by the hosted-provider or deployed review path. Existing extractor, local consumers, auth and Cloudflare deployment are unchanged. Broader threshold calibration, sound identity, timestamp accuracy, provider-side structured claim extraction and live upload→review→correction remain unproven. Keep MiniCPM as candidate; do not call full V1 or model grounding fixed. [Original counterexample](test-receipts/2026-10-27-video-service-qualification.json).
+
 ## 2026-10-27 — Public audiovisual service qualification; no replacement released
 
 **Observed facts:** recovered main `7048aca8d9979101dd2bfce4b1c8b76e10097503`, the existing private gateway, local Whisper/Qwen consumers and creator-acceptance failures. Reused the earlier public-video SHA from the ContentEase cloud receipt. An initial local download was truncated (2,785,280 bytes) despite its transfer label; the known SHA gate rejected it. The complete 5,510,872-byte copy matches the prior SHA and decodes fully.
