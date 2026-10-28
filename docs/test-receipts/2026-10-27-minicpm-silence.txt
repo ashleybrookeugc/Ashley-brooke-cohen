@@ -1,0 +1,15 @@
+
+        U
+        
+            Answer in at most 150 words. 1. Transcribe all audible speech verbatim, preserving negation, pronouns and connector words. If none, write NO SPEECH. 2. Describe the visible subject and its action, with elapsed timestamps. 3. Is the voice actually spoken by the visible character, or is that relationship unproven? Use only this clip.
+            
+        
+    
+        M
+        [00:01-00:15] A large, rotund animated rabbit slowly crawls out of a mossy burrow entrance. It initially emerges with its head and upper body visible, then pushes the rest of its bulky frame through the opening. As it fully exits, it stretches its arms wide against the grassy slope, appearing slightly strained or surprised by its size.
+NO SPEECH
+The character's movements are synchronized with subtle grunting sounds that suggest physical exertion, but no clear dialogue is present in the clip. The voice characteristics cannot be definitively attributed to the visible rabbit without further context.
+            
+            
+        [streaming] Total 7.2sTTFS 4.4s · Generate 2.8sreq_1793160141382
+    

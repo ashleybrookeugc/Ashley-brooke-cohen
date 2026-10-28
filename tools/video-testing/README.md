@@ -1,5 +1,9 @@
 # Private video testing — implementation and activation
 
+## 2026-10-27 external-service qualification — not integrated
+
+No replacement provider qualified. MiniCPM's dedicated video mode recovers the known negation/fair speech and real visible action, but its silent twin invents sound. Qwen's real API attempt timed out without analysis. Own MAP credentials/free quota and hosted version remain unverified; never use the demo shared key. Existing local pipeline stays authoritative. See [qualification receipt](../../docs/test-receipts/2026-10-27-video-service-qualification.json) and the current troubleshooting entry. Recreate only the public regression controls with `node scripts/acceptance/video-service-fixtures.mjs SOURCE_MP4 OUTPUT_DIRECTORY`; FFmpeg needs libflite. This is a fixture builder, not a replacement analyzer or release proof.
+
 Status: deployed Mary Kate session integration; existing authorized sessions connect, analyze, review, correct and retrieve after reload without a testing token. Actual non-private live technical flow PASS; physical iPhone/creator/semantic acceptance remains unpassed. 
 
 ## Current content-review repair — 2026-10-15
