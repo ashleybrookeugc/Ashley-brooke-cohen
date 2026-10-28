@@ -3,6 +3,7 @@ import {join,resolve,sep} from 'node:path';
 import {spawn} from 'node:child_process';
 import {createHash,randomUUID} from 'node:crypto';
 import {fileURLToPath} from 'node:url';
+import {inspectAudio} from './audio-evidence-gate.mjs';
 import {visionConfig,visionReady} from './visual-review.mjs';
 export const REPORT_VERSION='content-transcript-readable-text-v1';
 export const SPEECH_MODEL={id:'mlx-community/whisper-large-v3-turbo-fp16',revision:'258e98b1f53da60a0a51c1e45e480ffa3ec71e23',license:'Apache-2.0',runtime:'mlx-audio 0.5.9'};
@@ -27,10 +28,25 @@ export function validateUsefulReview(result,report,pictures){
   if((report.state==='available')!==Boolean(report.summary.length))throw Error('Report state mismatch');
   return report;
 }
+// Independent signal activity is a veto, never proof of a transcript's wording.
+export function applyAudioActivityVeto(report,activity){
+  if(activity.source_sha256!==report.source_sha256||!Number.isFinite(activity.duration_seconds))throw Error('Audio source mismatch');
+  const copy=structuredClone(report),removed=new Set();
+  copy.transcript.segments=copy.transcript.segments.filter(s=>{
+    const valid=s.time>=0&&s.end>s.time&&s.end<=activity.duration_seconds&&activity.windows.some(w=>w.state==='activity'&&w.end>s.time&&w.start<s.end);
+    if(!valid)removed.add(s.id);return valid;
+  });
+  for(const kind of ['summary','moments'])copy[kind]=copy[kind].filter(c=>!c.refs.some(ref=>removed.has(ref)));
+  copy.transcript.withheld=(copy.transcript.withheld||0)+removed.size;
+  copy.transcript.state=copy.transcript.segments.length?'available':activity.state==='no_audio_track'?'no_audio_track':'unreliable';
+  copy.state=copy.summary.length?'available':'unreliable';
+  return copy;
+}
 export async function createUsefulReview(dir,result,pictures){
   if(!await usefulReady())throw Error('Local content review unavailable');
   const source=await checkedFile(dir,'source.bin',result.manifest.content_sha256),config=visionConfig();
   const probe=JSON.parse(await run(process.env.FFPROBE_PATH||'ffprobe',['-v','error','-show_streams','-show_format','-of','json',source]));
+  const activity=await inspectAudio(source,result.manifest.content_sha256);
   const stream=probe.streams.find(s=>s.codec_type==='audio');let audio=null,segments=[],withheld=0,language=null;
   if(stream){
     const audioDir=join(dir,'review-audio');await mkdir(audioDir,{recursive:true,mode:0o700});
@@ -41,8 +57,8 @@ export async function createUsefulReview(dir,result,pictures){
     audio={relative_path:relative,sha256:digest,sample_rate:16000,source_offset_seconds:offset};
     const output=JSON.parse(await run(config.python,[join(here,'speech-infer.py'),speechConfig()],{audio:path}));language=output.language;
     for(const [index,s] of (output.segments||[]).entries()){
-      const time=Math.max(0,s.start+offset),end=Math.min(result.manifest.duration_seconds,s.end+offset);
-      if(!validText(s.text)||!at(time,result)||!at(end,result)||end<time||!Number.isFinite(s.avg_logprob)||s.avg_logprob< -1||s.no_speech_prob>0.6||s.compression_ratio>2.4){withheld++;continue;}
+      const time=s.start+offset,end=s.end+offset;
+      if(!validText(s.text)||!at(time,result)||!at(end,result)||end<=time||end>activity.duration_seconds||!activity.windows.some(w=>w.state==='activity'&&w.end>time&&w.start<end)||!Number.isFinite(s.avg_logprob)||s.avg_logprob< -1||s.no_speech_prob>0.6||s.compression_ratio>2.4){withheld++;continue;}
       segments.push({id:'speech-'+index,time,end,text:s.text.trim(),checked:true,avg_logprob:s.avg_logprob,no_speech_prob:s.no_speech_prob});
     }
     await checkedFile(dir,relative,digest);await checkedFile(dir,'source.bin',result.manifest.content_sha256);
@@ -56,4 +72,5 @@ export async function createUsefulReview(dir,result,pictures){
   validateUsefulReview(result,report,pictures);
   const envelope=JSON.stringify({sha256:hash(JSON.stringify(report)),report});await mkdir(join(dir,'content-reviews'),{recursive:true,mode:0o700});await writeFile(join(dir,'content-reviews',randomUUID()+'.json'),envelope,{mode:0o600,flag:'wx'});const temp=join(dir,'content-review.'+randomUUID()+'.tmp');await writeFile(temp,envelope,{mode:0o600});await rename(temp,join(dir,'content-review.json'));return report;
 }
-export async function readUsefulReview(dir,result,pictures){try{const {sha256,report}=JSON.parse(await readFile(join(dir,'content-review.json'),'utf8'));if(hash(JSON.stringify(report))!==sha256)throw Error('Content receipt mismatch');validateUsefulReview(result,report,pictures);if(report.audio)await checkedFile(dir,report.audio.relative_path,report.audio.sha256);await checkedFile(dir,'source.bin',result.manifest.content_sha256);for(const item of report.screen_text){const frame=result.manifest.coverage.visual_sampling.frames.find(f=>f.frame_id===item.frame_ref.frame_id);await checkedFile(result.package_directory,frame.relative_path,frame.sha256);}const {audio,audit,...publicReport}=report;return publicReport;}catch(error){return{state:error.code==='ENOENT'?'not_run':'failed'};}}
+export async function readUsefulReview(dir,result,pictures){try{const {sha256,report}=JSON.parse(await readFile(join(dir,'content-review.json'),'utf8'));if(hash(JSON.stringify(report))!==sha256)throw Error('Content receipt mismatch');validateUsefulReview(result,report,pictures);if(report.audio)await checkedFile(dir,report.audio.relative_path,report.audio.sha256);await checkedFile(dir,'source.bin',result.manifest.content_sha256);for(const item of report.screen_text){const frame=result.manifest.coverage.visual_sampling.frames.find(f=>f.frame_id===item.frame_ref.frame_id);await checkedFile(result.package_directory,frame.relative_path,frame.sha256);}const source=await checkedFile(dir,'source.bin',result.manifest.content_sha256);const gated=applyAudioActivityVeto(report,await inspectAudio(source,result.manifest.content_sha256));const {audio,audit,...publicReport}=gated;return publicReport;}catch(error){return{state:error.code==='ENOENT'?'not_run':'failed'};}}
+

@@ -1,5 +1,21 @@
 # Ashley Brooke Cohen Website — Troubleshooting & Recovery Log
 
+## 2026-10-28 — Integrate independent audio-activity veto into local content review; live blocked
+
+The helper previously ran only in tests. Existing createUsefulReview now independently inspects source-bound PCM before accepting ASR segments: inactive, uncertain-only, invalid and beyond-duration candidates are withheld before report synthesis; timestamps are no longer clipped into eligibility. Existing readUsefulReview rechecks actual source audio before browser release, removes disallowed transcript segments and summary/moment claims depending on them, and preserves unrelated reviewed visual material. Existing configured FFmpeg/ffprobe paths are honored. Decoder failures withhold the content report.
+
+Actual ordinary saved-report readback against the original voiced/silent real-footage twins preserves the independently scripted voiced sentence and previously reviewed rabbit clauses. Injected speech and dependent summary on the silent source are removed. Focused32total/30pass/0fail/2existing native-checkout skips. Artifact validation tests now use real generated audio bytes. No full model generation or fresh inference ran. This implements an activity veto only: energy cannot prove words or sound identity, and visual/mixed prose does not acquire independent semantic verification. Quiet/long-source coverage remains unqualified.
+
+CI initially failed two actual-audio binding tests because the runner lacked FFmpeg (`spawnSync ffmpeg ENOENT`, run40675307960). Add the media runtime before npm test rather than skip or mock decoding; include local video-tool changes in workflow triggers.
+
+Live site browser check shows the usual Mary Kate sign-in wall. This cloud session has no native Mac update/restart surface; the running processor is NOT updated or live verified. A GitHub merge/Cloudflare Worker build cannot restart the private Mac processor. Preserve the private transport and continue on a genuine local execution surface. [Receipt](test-receipts/2026-10-28-audio-veto-integration.json).
+
+## 2026-10-28 — Prevent MiniCPM claims beyond source duration
+
+The fresh silent model response included a 15–16s event on a 15s clip. A new regression over the original real-footage control reproduced the helper accepting that out-of-range visual claim. The helper now obtains source duration from the hash-verified file and requires matching source metadata and a positive claim range wholly within it for every modality. Missing duration or wrong-source metadata fails closed, including for trusted visual flags. The no-audio-track route also rechecks source identity and preserves duration so reviewed visual evidence can survive without speech authorization.
+
+Verified focused result: 31 total, 29 passed, 0 failed, 2 existing native-analyzer skips. The new real-media test also creates an actual no-audio-track derivative, preserves reviewed visuals and blocks speech. Existing exact-script speech and silent-twin hallucination suppression still pass. No fresh inference; replay uses preserved browser responses. No deployed integration, timestamp precision or viral/UX lens acceptance is claimed. [Receipt](test-receipts/2026-10-28-minicpm-time-boundary.json).
+
 ## 2026-10-28 — Fresh MiniCPM runs followed by independent gate: bounded PASS
 
 Two new separate browser conversations used the same hash-verified speech/silent twins, identical prompt, Video-Audio Analysis preset,256tokens, voice output off. Actual fresh requests req_1793170096167 and req_1793170122435 completed (UI9.4s/8.9s). Speech again recovers the complete negation/fair/connector sentence. Silent output again hallucinates a loud yawn/groan and deep resonant voice, including a sound clause inside a visual paragraph; it also proposes an unadmitted15–16s interval beyond this15s clip.

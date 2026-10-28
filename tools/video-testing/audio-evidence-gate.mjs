@@ -14,12 +14,17 @@ function command(name,args,limit=64*1024*1024){return new Promise((ok,no)=>{
 // Conservative thresholds leave quiet signals uncertain rather than calling them silence.
 export async function inspectAudio(path,expectedSha){
   if(sha(await readFile(path))!==expectedSha)throw Error('SOURCE_HASH_MISMATCH');
-  const probe=JSON.parse(await command('ffprobe',['-v','error','-show_streams','-show_format','-of','json',path]));
+  const probe=JSON.parse(await command(process.env.FFPROBE_PATH||'ffprobe',['-v','error','-show_streams','-show_format','-of','json',path]));
+  const duration_seconds=Number(probe.format.duration);
+  if(!Number.isFinite(duration_seconds)||duration_seconds<=0)throw Error('Source duration unavailable');
   const track=probe.streams.find(x=>x.codec_type==='audio');
-  if(!track)return{source_sha256:expectedSha,state:'no_audio_track',windows:[]};
+  if(!track){
+    if(sha(await readFile(path))!==expectedSha)throw Error('SOURCE_HASH_MISMATCH');
+    return{source_sha256:expectedSha,duration_seconds,state:'no_audio_track',windows:[]};
+  }
   const offset=Number(track.start_time||0)-Number(probe.format.start_time||0);
   if(!Number.isFinite(offset))throw Error('Audio time unavailable');
-  const pcm=await command('ffmpeg',['-v','error','-xerror','-i',path,'-map','0:a:0','-vn','-ac','1','-ar','16000','-f','f32le','-']);
+  const pcm=await command(process.env.FFMPEG_PATH||'ffmpeg',['-v','error','-xerror','-i',path,'-map','0:a:0','-vn','-ac','1','-ar','16000','-f','f32le','-']);
   if(!pcm.length||pcm.length%4)throw Error('Audio decode incomplete');
   if(sha(await readFile(path))!==expectedSha)throw Error('SOURCE_HASH_MISMATCH');
   const windows=[];
@@ -29,7 +34,7 @@ export async function inspectAudio(path,expectedSha){
     const peakDb=peak?20*Math.log10(peak):-Infinity,rmsDb=sum?10*Math.log10(sum/n):-Infinity;
     windows.push({start:offset+pos/64000,end:offset+(pos+n*4)/64000,state:peakDb<=-90?'silence':rmsDb>=-50&&peakDb>=-40?'activity':'uncertain',peak_db:Math.max(-160,peakDb),rms_db:Math.max(-160,rmsDb)});
   }
-  return{source_sha256:expectedSha,state:windows.every(w=>w.state==='silence')?'silence':windows.some(w=>w.state==='activity')?'activity':'uncertain',windows,method:'FFmpeg mono16k PCM;100ms windows; energy only, not sound recognition'};
+  return{source_sha256:expectedSha,duration_seconds,state:windows.every(w=>w.state==='silence')?'silence':windows.some(w=>w.state==='activity')?'activity':'uncertain',windows,method:'FFmpeg mono16k PCM;100ms windows; energy only, not sound recognition'};
 }
 // This is a trusted-host boundary: verification flags/verifiedAudio must come from
 // source review or independent evidence, NEVER from provider-returned JSON.
@@ -39,7 +44,7 @@ export function releaseClaims({source_sha256,audio,claims,verifiedAudio=[]}){
   const released=[],withheld=[];
   for(const c of claims){
     let reason='unsupported claim';
-    if(c.source_sha256!==source_sha256||typeof c.text!=='string'||!c.text.trim()||!Number.isFinite(c.start)||!Number.isFinite(c.end)||c.start<0||c.end<c.start)reason='invalid source or range';
+    if(!c||audio?.source_sha256!==source_sha256||!Number.isFinite(audio?.duration_seconds)||audio.duration_seconds<=0||c.source_sha256!==source_sha256||typeof c.text!=='string'||!c.text.trim()||!Number.isFinite(c.start)||!Number.isFinite(c.end)||c.start<0||c.end<=c.start||c.end>audio.duration_seconds)reason='invalid source or range';
     else if(c.modality==='visual'&&c.visual_evidence_verified===true){released.push(c);continue;}
     else if(['speech','sound'].includes(c.modality)){
       const windows=audio?.source_sha256===source_sha256?audio.windows?.filter(w=>w.end>c.start&&w.start<c.end):[];

@@ -1,0 +1,30 @@
+{
+  "scope": "existing local report generation/readback integration; NOT live verified",
+  "tests": {
+    "total": 32,
+    "pass": 30,
+    "fail": 0,
+    "skip": 2,
+    "skips": "existing native analyzer checkout absent"
+  },
+  "actual_media": "Original hash-verified 15s voiced/silent real-footage twins; existing captured fresh-model output and independently scripted speech",
+  "ordinary_path": "readUsefulReview reads source.bin, validates saved report artifacts, independently decodes source audio, removes inactive/out-of-range transcript segments and summary/moment claims referencing them; reviewed visual summary preserved",
+  "generation_path": "createUsefulReview inspects source audio before ASR acceptance; ASR candidate ranges are rejected rather than clipped and must overlap detected activity before reaching the report model",
+  "limitations": [
+    "No new model inference or full createUsefulReview model invocation",
+    "Sound activity does not independently validate ASR wording",
+    "Visual-only or mixed model prose can still invent sound; this is not full semantic releaseClaims integration",
+    "quiet audio can be conservatively withheld; max64MiB decoded PCM and60s helper limit may block long sources",
+    "Cloud browser shows usual sign-in wall; no authenticated live test",
+    "No native Mac update/restart/control surface; running private processor not updated",
+    "No MiniCPM API integration, credential change or external private-media upload"
+  ],
+  "live_site": "https://ashleybrookecohen.com/video-test/",
+  "live_status": "BLOCKED",
+  "ci_setup_failure": {
+    "run_id": 40675307960,
+    "result": "205pass/2fail/6skip",
+    "cause": "ffmpeg ENOENT on GitHub test runner",
+    "repair": "Install ffmpeg from runner's Ubuntu package repository before npm test; preserve actual decoding rather than mock or skip the new binding checks"
+  }
+}

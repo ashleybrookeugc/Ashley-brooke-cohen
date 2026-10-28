@@ -1,0 +1,32 @@
+{
+  "scope": "bounded helper hardening; no new model inference or deployed integration",
+  "base_commit": "dd3ae117afbd0dfc81e31f8791bd8531423260a0",
+  "pre_fix": {
+    "test": "real footage: reject times past the clip",
+    "result": "FAIL",
+    "observed": "15–16 second visual claim was released on original 15-second control"
+  },
+  "post_fix": {
+    "result": "PASS",
+    "tests": 31,
+    "passed": 29,
+    "failed": 0,
+    "skipped": 2,
+    "existing_skips": "native analyzer checkout required",
+    "cases": [
+      "valid source-reviewed visual 0–15 retained",
+      "visual 15–16 withheld",
+      "speech 0–16 withheld despite trusted independent wording support",
+      "wrong-source metadata cannot authorize visual claim",
+      "actual no-audio-track derivative retains reviewed visual and blocks speech"
+    ],
+    "command": "AV_CONTROLS_DIR=/workspace/scratch/0087c049ad12/regression-controls node --test test/minicpm-time-boundary.test.js test/minicpm-fresh-controls.test.js test/minicpm-audio-regression.test.js test/video-service-fixtures.test.js test/video-content-review.test.js test/video-review.test.js test/video-testing.test.js test/video-testing-ui.test.js test/video-visual-review.test.js"
+  },
+  "controls": "Original frozen public real-footage controls; no-track derivative strips audio with video stream copy. Hash checked by inspectAudio.",
+  "limits": [
+    "container duration establishes maximum timestamp, not accuracy of claims within it",
+    "manual trusted admission still required",
+    "energy is not sound recognition",
+    "viral diagnosis and real UX-session understanding remain untested"
+  ]
+}
