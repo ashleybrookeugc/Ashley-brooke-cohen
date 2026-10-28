@@ -1,5 +1,11 @@
 # Ashley Brooke Cohen Website — Troubleshooting & Recovery Log
 
+## 2026-10-28 — Prevent MiniCPM claims beyond source duration
+
+The fresh silent model response included a 15–16s event on a 15s clip. A new regression over the original real-footage control reproduced the helper accepting that out-of-range visual claim. The helper now obtains source duration from the hash-verified file and requires matching source metadata and a positive claim range wholly within it for every modality. Missing duration or wrong-source metadata fails closed, including for trusted visual flags. The no-audio-track route also rechecks source identity and preserves duration so reviewed visual evidence can survive without speech authorization.
+
+Verified focused result: 31 total, 29 passed, 0 failed, 2 existing native-analyzer skips. The new real-media test also creates an actual no-audio-track derivative, preserves reviewed visuals and blocks speech. Existing exact-script speech and silent-twin hallucination suppression still pass. No fresh inference; replay uses preserved browser responses. No deployed integration, timestamp precision or viral/UX lens acceptance is claimed. [Receipt](test-receipts/2026-10-28-minicpm-time-boundary.json).
+
 ## 2026-10-28 — Fresh MiniCPM runs followed by independent gate: bounded PASS
 
 Two new separate browser conversations used the same hash-verified speech/silent twins, identical prompt, Video-Audio Analysis preset,256tokens, voice output off. Actual fresh requests req_1793170096167 and req_1793170122435 completed (UI9.4s/8.9s). Speech again recovers the complete negation/fair/connector sentence. Silent output again hallucinates a loud yawn/groan and deep resonant voice, including a sound clause inside a visual paragraph; it also proposes an unadmitted15–16s interval beyond this15s clip.
