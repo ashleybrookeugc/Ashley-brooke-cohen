@@ -353,3 +353,60 @@ The goal is to prevent a session from spending multiple turns rediscovering a so
 - **Observed result:** `npm run test:video-analyzer` completed 14 tests: 13 passed and 1 failed. F-003 source-timestamp fidelity, OCR, semantic screen-state, decode, persistence, and remote-store controls passed.
 - **Failure:** the ASR connector-word test expected `i do not think this is fair because you know the answer` but decoded `i do not think this is there because you know the answer`.
 - **Disposition:** preserved as a counterexample. This archived branch does not claim the previously blocked analyzer suite is fully passing and is not authorized for production integration.
+
+---
+
+## 2026-10-31 — faster-whisper 1.2.1 crashes on PyAV 19
+
+### Symptom
+`WhisperModel.transcribe` raised `TypeError: open() got an unexpected keyword argument 'metadata_errors'` before any audio was decoded.
+
+### Failed / looping attempts
+Installing the newest `av` wheel (19.0.2), which is what an unpinned `av>=11` requirement resolves to.
+
+### Root cause
+faster-whisper 1.2.1 opens audio with `av.open(..., metadata_errors="ignore")`. PyAV 19 removed that argument. PyAV 16.1.0 still accepts it and publishes Linux x86_64 and macOS arm64 wheels.
+
+### Verified fix
+Pin `av==16.1.0` next to `faster-whisper==1.2.1`. With that pin, `base.en` revision `3d3d5dee26484f91867d81cb899cfcf72b96be6c` on CPU int8 transcribed the frozen fixture as `i do not think this is fair because you know the answer`.
+
+### Prevention rule
+Do not float PyAV. A newer `av` wheel is not evidence that faster-whisper can open audio. Re-run one transcribe of the frozen speech fixture after any audio-decoder bump.
+
+---
+
+## 2026-10-31 — PySceneDetect 0.7.2 breaks on the OpenCV 5 wheel pip selects
+
+### Symptom
+`import scenedetect` raised `AttributeError: module 'cv2' has no attribute 'INTER_NEAREST'` immediately after `pip install scenedetect`.
+
+### Failed / looping attempts
+Letting scenedetect's dependency on `opencv-python` resolve on its own. That installed `opencv-python==5.0.0.93` beside `opencv-python-headless`.
+
+### Root cause
+PySceneDetect 0.7.2 reads `cv2.INTER_NEAREST` at import. The OpenCV 5 wheel no longer exposes that attribute. `opencv-python-headless==4.12.0.88` does, and it has Linux x86_64 and macOS arm64 wheels.
+
+### Verified fix
+Install the headless 4.12 wheel from `requirements-runtime.txt`, then `pip install --no-deps scenedetect==0.7.2`. The runtime self-check refuses a `cv2` module without `INTER_NEAREST`.
+
+### Prevention rule
+Do not put `scenedetect` in the resolved requirements file. An ordinary pip install will pull OpenCV 5 and the import will fail again.
+
+---
+
+## 2026-10-31 — PaddleOCR's default CPU pipeline crashes on paddlepaddle 3.3.1
+
+### Symptom
+`PaddleOCR().predict(...)` with no arguments (the default PP-OCRv6 medium CPU pipeline, including document orientation and unwarping) died inside oneDNN with `NotImplementedError: ConvertPirAttribute2RuntimeAttribute not support [pir::ArrayAttribute<pir::DoubleAttribute>]` at `onednn_instruction.cc:116`.
+
+### What was compared
+The same `paddleocr==3.7.0` install and the same already-downloaded official models were rerun after downgrading only the runtime to `paddlepaddle==3.2.0`.
+
+### Root cause
+paddlepaddle 3.3.1's oneDNN executor cannot convert a PIR double-array attribute used by the default static graph. This is the runtime, not the fixture image. `paddlepaddle==3.2.0` completed the same call and returned `EXPORT` and `I think this is fair`.
+
+### Verified fix
+The reported pin is real: `paddlepaddle==3.2.0` runs this pipeline and 3.3.1 does not. The analyzer does not ship that stack. RapidOCR 3.10.0 runs the PP-OCRv6 small models through ONNX Runtime 1.31.1, which does not enter the oneDNN executor, and those wheels exist for Linux x86_64 and macOS arm64.
+
+### Prevention rule
+Do not upgrade paddlepaddle past 3.2.0 for the default PaddleOCR CPU pipeline without rerunning `PaddleOCR().predict` on a CPU host. A successful `import paddle` is not a successful OCR call. Prefer the pinned RapidOCR ONNX path unless a new paddle pin is proven the same way.

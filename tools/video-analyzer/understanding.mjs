@@ -221,9 +221,9 @@ export function buildSpeakerTurns(speechSpans) {
     speaker_label: 'speaker_unknown',
     spoken_observation_id: span.observation_id,
     text: span.text,
-    boundary_method: 'silence_bounded_asr_utterance',
+    boundary_method: 'silero_vad_asr_utterance',
     speaker_identity_state: 'not_determined',
-    uncertainty: 'A turn boundary was recovered, but no voice-clustering diarization or identity evidence is available.'
+    uncertainty: 'A turn boundary was recovered from a Silero VAD speech segment, but no voice-clustering diarization or identity evidence is available.'
   }));
 }
 

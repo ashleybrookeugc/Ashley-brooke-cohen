@@ -26,8 +26,7 @@ const resolvedInput = resolve(input);
 const toolVersions = {};
 for (const [name, command, commandArgs] of [
   ['ffmpeg', 'ffmpeg', ['-version']],
-  ['ffprobe', 'ffprobe', ['-version']],
-  ['tesseract', 'tesseract', ['--version']]
+  ['ffprobe', 'ffprobe', ['-version']]
 ]) {
   const result = await runCommand(command, commandArgs, { allowFailure: true });
   toolVersions[name] = (result.stdout || result.stderr).split(/\r?\n/, 1)[0].trim();
@@ -77,7 +76,10 @@ const receipt = {
     version_probe_count: versionProbe ? 1 : 0,
     version_probe_elapsed_ms: versionProbe?.elapsed_ms ?? null,
     frame_occurrence_count: frameInvocations.length,
+    engine: ocrSummary.engine,
+    ocr_version: ocrSummary.ocr_version,
     tesseract_invocation_count: ocrSummary.tesseract_invocation_count,
+    ocr_engine_invocation_count: ocrSummary.ocr_engine_invocation_count,
     cache_hit_count: ocrSummary.cache_hit_count,
     cache_miss_count: ocrSummary.cache_miss_count,
     total_stage_elapsed_ms: ocrSummary.elapsed_ms,

@@ -1,0 +1,164 @@
+{
+  "schema_version": "video-analyzer-test-receipt.v1",
+  "receipt_id": "video-analyzer-oss-extractors-2026-10-31T22:20:00Z",
+  "observed_at": "2026-10-31T22:20:00Z",
+  "scope": "Replace PocketSphinx, Tesseract, and the ffmpeg scene score with pinned local open-source extractors. Frozen tests were not edited.",
+  "status": "PARTIAL_FAIL",
+  "production_change": false,
+  "source": {
+    "repository": "ashleybrookeugc/Ashley-brooke-cohen",
+    "branch": "cursor/oss-video-extractors-8f87",
+    "parent_commit": "e5dfe3e4d3967615f23eb064896de1303f86ded9",
+    "base_branch": "video-analyzer/f003-source-time-fidelity",
+    "suite_ran_on": "the extractor swap in this working tree, before this receipt file was added",
+    "self_check_rerun_after_suite": "runtime-self-check.py printed rapidocr 3.10.0 from package metadata and exited 0"
+  },
+  "environment": {
+    "computer": "cloud agent Linux VM",
+    "architecture": "x86_64",
+    "cpu_cores": 4,
+    "operating_system": "linux 6.12.94+",
+    "node": "v22.23.4",
+    "npm": "10.9.9",
+    "python": "3.12.3",
+    "ffmpeg": "6.1.1-3ubuntu5",
+    "tesseract_used_by_analyzer": false,
+    "tesseract_present_for_baseline_only": "5.3.4",
+    "apple_silicon_execution": "UNTESTED — this host is Linux x86_64. Pinned native wheels were confirmed on PyPI for macosx arm64 or universal2: ctranslate2 4.8.4, onnxruntime 1.31.1, av 16.1.0, opencv-python-headless 4.12.0.88, numpy 2.2.6, pillow 11.3.0, scipy 1.18.1, PyWavelets 1.10.0, tokenizers 0.23.3, hf-xet 1.8.0, shapely 2.2.0, pyclipper 1.4.0.",
+    "runtime_marker": "faster-whisper-1.2.1+av-16.1.0+rapidocr-3.10.0-ppocrv6+scenedetect-0.7.2+imagehash-4.3.2-v1"
+  },
+  "pinned_extractors": {
+    "speech": {
+      "package": "faster-whisper==1.2.1",
+      "ctranslate2": "4.8.4",
+      "av": "16.1.0",
+      "onnxruntime": "1.31.1",
+      "device": "cpu",
+      "compute_type": "int8, with float32 fallback if int8 is rejected",
+      "model": "base.en",
+      "model_revision": "3d3d5dee26484f91867d81cb899cfcf72b96be6c",
+      "vad": "silero_vad_v6.onnx bundled with faster-whisper",
+      "network_at_inference": false
+    },
+    "ocr": {
+      "chosen": "rapidocr==3.10.0",
+      "engine": "onnxruntime",
+      "models": "PP-OCRv6 small det/rec shipped in the rapidocr package",
+      "text_score": 0.5,
+      "paddle_decision": "not shipped"
+    },
+    "shots": {
+      "package": "scenedetect==0.7.2 installed with --no-deps",
+      "opencv": "opencv-python-headless==4.12.0.88",
+      "detectors": [
+        {"name": "ContentDetector", "threshold": 27.0, "min_scene_len_seconds": 0.2},
+        {"name": "HashDetector", "threshold": 0.2, "min_scene_len_seconds": 0.2}
+      ],
+      "near_duplicate_suppression": {"library": "imagehash==4.3.2", "method": "phash", "max_hamming_distance": 4}
+    },
+    "kept": "Sampled 64x64 global and 8x8 regional pixel comparison in understanding.mjs. F-004 and F-005 call that function directly. PySceneDetect does not see an 8x8 change whose whole-frame mean stays under 0.025."
+  },
+  "paddleocr_verification": {
+    "paddleocr": "3.7.0",
+    "call": "PaddleOCR() with no arguments, then predict on .fixture-assets/dialogue-base.png",
+    "default_models": ["PP-LCNet_x1_0_doc_ori", "UVDoc", "PP-LCNet_x1_0_textline_ori", "PP-OCRv6_medium_det", "PP-OCRv6_medium_rec"],
+    "paddlepaddle_3.3.1": {
+      "result": "CRASH",
+      "error": "NotImplementedError: (Unimplemented) ConvertPirAttribute2RuntimeAttribute not support [pir::ArrayAttribute<pir::DoubleAttribute>] at onednn_instruction.cc:116"
+    },
+    "paddlepaddle_3.2.0": {
+      "result": "COMPLETED",
+      "texts": ["EXPORT", "I think this is fair"],
+      "scores": [0.9999720454216003, 0.9999562501907349],
+      "stderr_note": "repeated ReduceMeanCheckIfOneDNNSupport lines"
+    },
+    "decision": "The reported pin is true on this CPU host. The analyzer uses RapidOCR PP-OCRv6 small ONNX instead, because that path already read the fixture text, does not enter the oneDNN executor, and does not download the default Paddle orientation/unwarp models at runtime."
+  },
+  "baseline": {
+    "command": "/usr/bin/time -v npm run test:video-analyzer",
+    "commit": "e5dfe3e4d3967615f23eb064896de1303f86ded9",
+    "engines": "PocketSphinx 5.0.4 and Tesseract 5.3.4 --psm 11",
+    "exit_code": 1,
+    "wall_seconds": 22.56,
+    "node_test_duration_ms": 18438.691563,
+    "maximum_resident_set_size_kib": 206372,
+    "tests": 18,
+    "passed": 17,
+    "failed": 1,
+    "failure": {
+      "test": "ASR preserves tested connector words and negation with versioned word timestamps",
+      "expected": "i do not think this is fair because you know the answer",
+      "actual": "i do not think this is there because you know the answer"
+    }
+  },
+  "execution": {
+    "command": "/usr/bin/time -v npm run test:video-analyzer",
+    "exit_code": 1,
+    "wall_seconds": 86.44,
+    "wall_includes": "runtime rebuild (pip install of the pinned stack plus the base.en download) and the test run",
+    "node_test_duration_ms": 68909.375455,
+    "maximum_resident_set_size_kib": 387996,
+    "user_cpu_seconds": 207.97,
+    "system_cpu_seconds": 19.95,
+    "cpu_percent": 263,
+    "swaps": 0
+  },
+  "aggregate": {
+    "tests": 20,
+    "passed": 19,
+    "failed": 1,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0,
+    "frozen_tests_edited": false,
+    "new_tests": 2
+  },
+  "tests": [
+    {"name": "direct-file intake decodes completely and persists a verified evidence package", "status": "PASS", "duration_ms": 2145.105388},
+    {"name": "incomplete/truncated input fails complete-source decode", "status": "PASS", "duration_ms": 93.834255},
+    {"name": "failed persistence/read-back is detected after a successful write", "status": "PASS", "duration_ms": 1490.421437},
+    {"name": "evidence package missing a required lane is rejected", "status": "PASS", "duration_ms": 1.546978},
+    {"name": "URL intake distinguishes access-blocked, unavailable, temporary, and unsupported sources", "status": "PASS", "duration_ms": 21.509364},
+    {"name": "retrievable direct-media URL is processed as real media", "status": "PASS", "duration_ms": 3457.485447},
+    {"name": "safe-delete gate requires completed lanes, write, read-back, and retention state", "status": "PASS", "duration_ms": 0.282354},
+    {"name": "ASR preserves tested connector words and negation with versioned word timestamps", "status": "FAIL", "duration_ms": 8782.027683},
+    {"name": "ASR unavailable and ASR failure remain explicit when audio requires a transcript", "status": "PASS", "duration_ms": 6712.933314},
+    {"name": "OCR classifies caption-like and unrelated UI text, retains transient text, and preserves disagreement", "status": "PASS", "duration_ms": 9180.37517},
+    {"name": "semantic sampled screen states distinguish workflow candidate, unrelated browsing candidate, and disclose limits", "status": "PASS", "duration_ms": 3210.941291},
+    {"name": "F-004: meaningful regional visual change survives a globally stable frame decision", "status": "PASS", "duration_ms": 1.240068},
+    {"name": "F-005: unchanged OCR cannot discard qualifying visual activity and static duplicates stay suppressed", "status": "PASS", "duration_ms": 0.862805},
+    {"name": "F-006: ordinary analyzer path binds selected events to semantic-consumer frame evidence", "status": "PASS", "duration_ms": 3173.349944},
+    {"name": "P-002: exact-frame-SHA OCR memoization preserves occurrence-specific evidence", "status": "PASS", "duration_ms": 5707.284304},
+    {"name": "corrupted synchronized timeline and missing semantic evidence are rejected", "status": "PASS", "duration_ms": 4147.351507},
+    {"name": "remote-store contract rejects corrupted remote read-back and local-only packages stay non-deletable", "status": "PASS", "duration_ms": 3217.40491},
+    {"name": "F-003: sampled evidence carries source timestamps, not sampling-cadence timestamps", "status": "PASS", "duration_ms": 3410.763433},
+    {"name": "faster-whisper recovers the connector-word counterexample with versioned word timestamps", "status": "PASS", "duration_ms": 8693.024248},
+    {"name": "PySceneDetect keeps a screen-layout cut and does not cut a static frame", "status": "PASS", "duration_ms": 5397.226345}
+  ],
+  "counterexample": {
+    "test_left_unchanged": "ASR preserves tested connector words and negation with versioned word timestamps",
+    "baseline_failure": "wording: expected 'i do not think this is fair because you know the answer', PocketSphinx returned 'i do not think this is there because you know the answer'",
+    "after_failure": "identity: the unchanged assertion expected extractor.name 'PocketSphinx' and stopped at actual 'faster-whisper' before the wording line",
+    "wording_with_faster_whisper": "fixed. The new test asserts both spoken lines exactly: 'i do not think this is fair because you know the answer' and 'why not because i already checked it', with finite word start, end, and confidence, Silero turn boundaries, and direct_audio_audition false.",
+    "faster_whisper_fixes_the_wording": true
+  },
+  "scene_score_comparison": {
+    "ffmpeg_gt_scene_0.30_on_screen_layout_cut": 0.052568,
+    "ffmpeg_gt_scene_0.30_on_flash_overlay": 0.014996,
+    "ffmpeg_would_emit_either_cut": false,
+    "pyscenedetect_screen_cut_timestamp_seconds": 1.416667,
+    "pyscenedetect_screen_cut_phash_distance": 16,
+    "static_and_recompressed_still_cuts": 0
+  },
+  "what_got_worse": [
+    "The test process is slower and larger. Node test duration rose from 18.44s to 68.91s. GNU time maximum resident set size on the npm command rose from 206372 KiB to 387996 KiB. Wall clock rose from 22.56s to 86.44s, and that wall clock also includes the one-time runtime install and base.en download.",
+    "The unchanged frozen ASR test still fails. It now fails on the engine name PocketSphinx instead of the word 'fair'. That assertion was not edited.",
+    "tools/video-testing on main still treats a missing tesseract binary as analyzer-unavailable in its own health check. This module no longer calls tesseract."
+  ],
+  "what_stayed": [
+    "Package schema 2.0.0, evidence lanes, source-timestamp binding, coverage, extractor_unavailable / extractor_failed, and word timestamp fields.",
+    "Caption versus other-text classification, transient FLASH NOTICE retention, and unresolved spoken/caption disagreement.",
+    "F-003, F-004, F-005, F-006, and P-002 passed. P-002 still reads tesseract_invocation_count; that field now counts RapidOCR passes (6 uncached, 4 cached, 2 hits)."
+  ],
+  "conclusion": "faster-whisper base.en fixes the frozen wording counterexample. The frozen test file still expects PocketSphinx 5.0.4, so the suite is 19 passed and 1 failed out of 20. RapidOCR PP-OCRv6 replaced Tesseract. PySceneDetect plus imagehash replaced the ffmpeg scene score and now records the screen-layout cut that score 0.30 missed. Apple Silicon was not executed on this machine."
+}

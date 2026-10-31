@@ -462,3 +462,56 @@ test('F-003: sampled evidence carries source timestamps, not sampling-cadence ti
       `observation ${k}: start_seconds=${observations[k].start_seconds}, expected source pts=${expectedSource[k]}`);
   }
 });
+
+test('faster-whisper recovers the connector-word counterexample with versioned word timestamps', async t => {
+  const root = await fixtureRoot(t);
+  const source = join(root, 'dialogue.mp4');
+  await makeDialogueVideo(source);
+  const result = await processVideo(source, { outputRoot: join(root, 'packages'), frameIntervalSeconds: 0.25 });
+  const spoken = result.evidence.lanes.spoken_audio;
+  assert.equal(spoken.state, 'completed');
+  assert.equal(spoken.extractor.name, 'faster-whisper');
+  assert.equal(spoken.extractor.package_version, '1.2.1');
+  assert.equal(spoken.extractor.model_family, 'base.en');
+  assert.equal(spoken.extractor.model_revision, '3d3d5dee26484f91867d81cb899cfcf72b96be6c');
+  assert.equal(spoken.extractor.device, 'cpu');
+  assert.equal(spoken.extractor.vad, 'silero');
+  assert.equal(spoken.extractor.direct_audio_audition, false);
+  assert.equal(spoken.observations[0].text, 'i do not think this is fair because you know the answer');
+  assert.equal(spoken.observations[1].text, 'why not because i already checked it');
+  assert.ok(spoken.observations.every(span => span.words.every(word =>
+    Number.isFinite(word.start_seconds) && Number.isFinite(word.end_seconds) && Number.isFinite(word.confidence))));
+  const turns = result.evidence.lanes.speaker_turns;
+  assert.equal(turns.state, 'turn_boundaries_only');
+  assert.equal(turns.observations.length, 2);
+  assert.ok(turns.observations[1].start_seconds > turns.observations[0].end_seconds);
+  assert.ok(turns.observations.every(turn => turn.speaker_label === 'speaker_unknown' && turn.boundary_method === 'silero_vad_asr_utterance'));
+  const raw = result.evidence.lanes.other_on_screen_text.raw_observations;
+  assert.ok(raw.some(item => /think this is fair/i.test(item.text)));
+  assert.ok(raw.some(item => /EXPORT/i.test(item.text)));
+  assert.ok(raw.some(item => /FLASH NOTICE/i.test(item.text)));
+  assert.ok(raw.every(item => !/^(ef|ey|inl)$/i.test(item.text.trim())));
+  assert.ok(raw.every(item => item.extractor.ocr_version === 'PP-OCRv6' && item.extractor.engine === 'onnxruntime'));
+  assert.ok(result.evidence.modality_conflicts.some(item => item.type === 'spoken_caption_disagreement' && item.state === 'unresolved'));
+});
+
+test('PySceneDetect keeps a screen-layout cut and does not cut a static frame', async t => {
+  const root = await fixtureRoot(t);
+  const screen = join(root, 'screen.mp4');
+  const solid = join(root, 'solid.mp4');
+  await makeScreenStateVideo(screen);
+  await makeVideo(solid);
+  const screenResult = await processVideo(screen, { outputRoot: join(root, 'screen'), frameIntervalSeconds: 0.5 });
+  const solidResult = await processVideo(solid, { outputRoot: join(root, 'solid'), frameIntervalSeconds: 0.5 });
+  const cuts = screenResult.evidence.lanes.visual_shot_state_changes;
+  assert.equal(cuts.state, 'completed');
+  assert.equal(cuts.extractor.name, 'PySceneDetect');
+  assert.equal(cuts.extractor.package_version, '0.7.2');
+  assert.equal(cuts.extractor.near_duplicate_suppression.library, 'imagehash');
+  assert.equal(cuts.extractor.near_duplicate_suppression.max_hamming_distance, 4);
+  assert.ok(cuts.observations.some(item => item.signal_type === 'scene_change_candidate' && item.timestamp_seconds > 1 && item.timestamp_seconds < 2));
+  assert.ok(cuts.observations.every(item => item.imagehash_phash_distance > 4));
+  const unchanged = solidResult.evidence.lanes.visual_shot_state_changes;
+  assert.equal(unchanged.state, 'completed');
+  assert.equal(unchanged.observations.length, 0);
+});
