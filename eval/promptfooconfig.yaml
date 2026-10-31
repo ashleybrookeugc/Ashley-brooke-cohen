@@ -1,0 +1,20 @@
+description: >
+  Mary Kate routing and triage phrasing. Runs the existing frozen phrases
+  through local functions and the zero-call priority path. This file has one
+  local provider. CI does not run eval/promptfooconfig.paid.yaml, and that
+  file still has no model endpoint.
+prompts:
+  - '{{id}}'
+providers:
+  - id: file://providers/local-routing.js
+    label: local-routing
+    config:
+      network: forbidden
+tests: file://cases/phrasing-suite.js
+evaluateOptions:
+  maxConcurrency: 1
+  cache: false
+  showProgressBar: false
+commandLineOptions:
+  cache: false
+  telemetry: false
