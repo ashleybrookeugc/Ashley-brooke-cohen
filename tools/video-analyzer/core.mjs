@@ -15,9 +15,10 @@ import {
   validateSynchronizedTimeline
 } from './understanding.mjs';
 
-export const ANALYZER_VERSION = 'synchronized-evidence-2.0.0';
+export const ANALYZER_VERSION = 'synchronized-evidence-2.1.0';
 export const PACKAGE_SCHEMA_VERSION = '2.0.0';
 const moduleDirectory = dirname(fileURLToPath(import.meta.url));
+const runtimePython = resolve(moduleDirectory, '../../.video-analysis-runtime/venv/bin/python');
 export const REQUIRED_LANES = [
   'spoken_audio',
   'speaker_turns',
@@ -345,46 +346,32 @@ async function extractFrames(sourcePath, framesDirectory, durationSeconds, inter
   return frames;
 }
 
-function parseTsv(tsv, frame, width, height, firstObservationIndex, extractorVersion) {
-  const rows = tsv.trim().split(/\r?\n/);
-  if (rows.length < 2) return [];
-  const headers = rows[0].split('\t');
-  const groups = new Map();
-  for (const row of rows.slice(1)) {
-    const cells = row.split('\t');
-    const item = Object.fromEntries(headers.map((header, index) => [header, cells[index]]));
-    const text = String(item.text || '').trim();
-    const confidence = Number(item.conf);
-    if (!text || !Number.isFinite(confidence) || confidence < 0) continue;
-    const key = [item.page_num, item.block_num, item.par_num, item.line_num].join(':');
-    if (!groups.has(key)) groups.set(key, []);
-    groups.get(key).push({
-      text,
-      confidence,
-      left: Number(item.left),
-      top: Number(item.top),
-      width: Number(item.width),
-      height: Number(item.height)
-    });
-  }
-  return [...groups.values()].map((items, index) => {
-    const left = Math.min(...items.map(item => item.left));
-    const top = Math.min(...items.map(item => item.top));
-    const right = Math.max(...items.map(item => item.left + item.width));
-    const bottom = Math.max(...items.map(item => item.top + item.height));
-    return {
-      observation_id: `ocr-${String(firstObservationIndex + index + 1).padStart(6, '0')}`,
+function observationsFromOcrLines(lines, frame, width, height, firstObservationIndex, extractor) {
+  return (lines || []).flatMap(line => {
+    const text = String(line.text || '').trim();
+    const confidence = Number(line.confidence);
+    if (!text || !Number.isFinite(confidence) || confidence < 0) return [];
+    return [{
+      observation_id: `ocr-${String(firstObservationIndex + 1).padStart(6, '0')}`,
       start_seconds: frame.timestamp_seconds,
       end_seconds: frame.timestamp_seconds,
-      text: items.map(item => item.text).join(' '),
+      text,
       signal_type: 'raw_ocr',
       source_frame_id: frame.frame_id,
-      confidence: Number((items.reduce((sum, item) => sum + item.confidence, 0) / items.length / 100).toFixed(4)),
-      bounds: { x: left / width, y: top / height, width: (right - left) / width, height: (bottom - top) / height },
-      extractor: { name: 'Tesseract', version: extractorVersion, page_segmentation_mode: 11 },
+      confidence: Number(confidence.toFixed(4)),
+      bounds: {
+        x: Number(line.left) / width,
+        y: Number(line.top) / height,
+        width: Number(line.width) / width,
+        height: Number(line.height) / height
+      },
+      extractor,
       uncertainty: 'OCR is a raw sampled-frame signal; it is not automatically speech or a burned-in caption.'
-    };
-  });
+    }];
+  }).map((observation, index) => ({
+    ...observation,
+    observation_id: `ocr-${String(firstObservationIndex + index + 1).padStart(6, '0')}`
+  }));
 }
 
 async function runOcr(frames, packageDirectory, width, height, performanceObserver = null, memoization = 'none') {
@@ -392,64 +379,113 @@ async function runOcr(frames, packageDirectory, width, height, performanceObserv
   const report = event => {
     if (typeof performanceObserver === 'function') performanceObserver(event);
   };
+  const script = resolve(moduleDirectory, 'ocr-rapidocr.py');
   const versionStarted = performance.now();
-  const versionResult = await runCommand('tesseract', ['--version'], { allowFailure: true });
+  let versionResult = { code: 127, stdout: '', stderr: 'OCR runtime python is missing.' };
+  if (await exists(runtimePython)) {
+    versionResult = await runCommand(runtimePython, [script, '--version'], { allowFailure: true });
+  }
   report({
     stage: 'ocr_version_probe',
     elapsed_ms: Number((performance.now() - versionStarted).toFixed(3)),
     exit_code: versionResult.code
   });
-  const extractorVersion = versionResult.code === 0
-    ? versionResult.stdout.split(/\r?\n/, 1)[0].trim()
-    : 'version_unavailable';
-  const observations = [];
-  const exactFrameCache = new Map();
-  let cacheHits = 0;
-  let tesseractInvocationCount = 0;
-  for (let index = 0; index < frames.length; index++) {
-    const frame = frames[index];
-    const invocationStarted = performance.now();
-    const cached = memoization === 'exact_frame_sha256' ? exactFrameCache.get(frame.sha256) : null;
-    const cacheHit = cached !== undefined && cached !== null;
-    let result;
-    if (cacheHit) {
-      cacheHits += 1;
-      result = { code: 0, stdout: cached, stderr: '' };
-    } else {
-      tesseractInvocationCount += 1;
-      result = await runCommand('tesseract', [join(packageDirectory, frame.relative_path), 'stdout', '--psm', '11', 'tsv'], { allowFailure: true });
-      if (memoization === 'exact_frame_sha256' && result.code === 0) exactFrameCache.set(frame.sha256, result.stdout);
+  let extractor = { name: 'RapidOCR', version: 'version_unavailable', ocr_version: 'PP-OCRv6', engine: 'onnxruntime' };
+  if (versionResult.code === 0) {
+    try {
+      extractor = JSON.parse(versionResult.stdout).extractor || extractor;
+    } catch {
+      extractor = { ...extractor, version: 'version_unparsed' };
     }
-    const parsed = result.code === 0
-      ? parseTsv(result.stdout, frame, width, height, observations.length, extractorVersion)
-      : [];
+  }
+  const scheduledSha = new Set();
+  const jobs = [];
+  const framePlans = frames.map(frame => {
+    if (memoization === 'exact_frame_sha256' && scheduledSha.has(frame.sha256)) {
+      return { frame, cacheHit: true };
+    }
+    const jobId = `ocr-job-${jobs.length + 1}`;
+    jobs.push({ id: jobId, path: join(packageDirectory, frame.relative_path) });
+    if (memoization === 'exact_frame_sha256') scheduledSha.add(frame.sha256);
+    return { frame, cacheHit: false, jobId };
+  });
+  // The placeholder null marks a sha as scheduled. Real lines replace it after the batch.
+  const recognized = new Map();
+  let batchCode = jobs.length ? 1 : 0;
+  if (jobs.length && versionResult.code === 0) {
+    const requestPath = join(packageDirectory, '.ocr-request.json');
+    await writeFile(requestPath, JSON.stringify({ images: jobs }));
+    const batch = await runCommand(runtimePython, [script, '--request', requestPath], { allowFailure: true, maxOutputBytes: 32_000_000 });
+    batchCode = batch.code;
+    if (batch.code === 0) {
+      try {
+        const body = JSON.parse(batch.stdout);
+        if (body.extractor) extractor = body.extractor;
+        for (const image of body.images || []) recognized.set(image.id, image);
+      } catch {
+        batchCode = 1;
+      }
+    }
+    await rm(requestPath, { force: true });
+  }
+  const resolvedPlans = framePlans.map(plan => {
+    if (plan.cacheHit) return plan;
+    const image = recognized.get(plan.jobId);
+    const lines = image?.lines || [];
+    return { ...plan, lines, elapsed_ms: image?.elapsed_ms ?? null, exitCode: image ? 0 : batchCode };
+  });
+  // A memoized sha is stored before later occurrences in this same pass. Replay those now.
+  const linesBySha = new Map();
+  for (const plan of resolvedPlans) {
+    if (!plan.cacheHit && plan.exitCode === 0) linesBySha.set(plan.frame.sha256, plan.lines);
+  }
+  const observations = [];
+  let cacheHits = 0;
+  let invocationCount = 0;
+  for (let index = 0; index < resolvedPlans.length; index++) {
+    const plan = resolvedPlans[index];
+    const invocationStarted = performance.now();
+    let lines = plan.lines;
+    let cacheHit = plan.cacheHit;
+    if (cacheHit) {
+      lines = lines || linesBySha.get(plan.frame.sha256) || [];
+      cacheHits += 1;
+    } else {
+      invocationCount += 1;
+    }
+    const parsed = observationsFromOcrLines(lines, plan.frame, width, height, observations.length, extractor);
     observations.push(...parsed);
     report({
       stage: 'ocr_frame',
       invocation_index: index + 1,
-      frame_id: frame.frame_id,
-      source_frame_index: frame.source_frame_index,
-      source_timestamp_seconds: frame.source_timestamp_seconds,
-      sample_timestamp_seconds: frame.sample_timestamp_seconds,
-      frame_sha256: frame.sha256,
+      frame_id: plan.frame.frame_id,
+      source_frame_index: plan.frame.source_frame_index,
+      source_timestamp_seconds: plan.frame.source_timestamp_seconds,
+      sample_timestamp_seconds: plan.frame.sample_timestamp_seconds,
+      frame_sha256: plan.frame.sha256,
       memoization,
       cache_hit: cacheHit,
+      // P-002's frozen performance event still reads these field names.
       tesseract_invoked: !cacheHit,
-      elapsed_ms: Number((performance.now() - invocationStarted).toFixed(3)),
-      exit_code: result.code,
+      ocr_engine_invoked: !cacheHit,
+      elapsed_ms: plan.elapsed_ms ?? Number((performance.now() - invocationStarted).toFixed(3)),
+      exit_code: cacheHit ? 0 : (plan.exitCode ?? batchCode),
       observation_count: parsed.length
     });
   }
   report({
     stage: 'ocr_summary',
     scheduling: memoization === 'exact_frame_sha256'
-      ? 'one_sequential_tesseract_process_per_unique_exact_frame_sha256'
-      : 'one_sequential_tesseract_process_per_sampled_frame',
+      ? 'one_rapidocr_pass_per_unique_exact_frame_sha256'
+      : 'one_rapidocr_pass_per_sampled_frame',
     memoization,
+    engine: 'RapidOCR',
+    ocr_version: extractor.ocr_version || 'PP-OCRv6',
     frame_occurrence_count: frames.length,
-    tesseract_invocation_count: tesseractInvocationCount,
+    tesseract_invocation_count: invocationCount,
+    ocr_engine_invocation_count: invocationCount,
     cache_hit_count: cacheHits,
-    cache_miss_count: tesseractInvocationCount,
+    cache_miss_count: invocationCount,
     observation_count: observations.length,
     elapsed_ms: Number((performance.now() - stageStarted).toFixed(3))
   });
@@ -460,39 +496,14 @@ async function extractPcmAudio(sourcePath, outputPath) {
   await runCommand('ffmpeg', ['-v', 'error', '-y', '-i', sourcePath, '-vn', '-ar', '16000', '-ac', '1', '-c:a', 'pcm_s16le', outputPath]);
 }
 
-function speechIntervalsFromSilence(stderr, durationSeconds) {
-  const silences = [];
-  let open = null;
-  for (const line of stderr.split(/\r?\n/)) {
-    const start = line.match(/silence_start:\s*([0-9.]+)/);
-    if (start) open = Number(start[1]);
-    const end = line.match(/silence_end:\s*([0-9.]+)/);
-    if (end && open !== null) {
-      silences.push({ start_seconds: open, end_seconds: Number(end[1]) });
-      open = null;
-    }
-  }
-  if (open !== null) silences.push({ start_seconds: open, end_seconds: durationSeconds });
-  const intervals = [];
-  let cursor = 0;
-  for (const silence of silences) {
-    if (silence.start_seconds - cursor >= 0.12) intervals.push({ start_seconds: cursor, end_seconds: silence.start_seconds });
-    cursor = Math.max(cursor, silence.end_seconds);
-  }
-  if (durationSeconds - cursor >= 0.12) intervals.push({ start_seconds: cursor, end_seconds: durationSeconds });
-  return intervals.length ? intervals : [{ start_seconds: 0, end_seconds: durationSeconds }];
-}
-
-async function runAsr(sourcePath, stagingDirectory, durationSeconds, asrPython) {
+async function runAsr(sourcePath, stagingDirectory, _durationSeconds, asrPython) {
   const wavPath = join(stagingDirectory, 'audio-16khz-mono.wav');
   await extractPcmAudio(sourcePath, wavPath);
-  const silence = await runCommand('ffmpeg', ['-hide_banner', '-i', wavPath, '-af', 'silencedetect=noise=-35dB:d=0.4', '-f', 'null', '-'], { allowFailure: true, maxOutputBytes: 8_000_000 });
-  const intervals = speechIntervalsFromSilence(silence.stderr, durationSeconds);
-  const result = await runCommand(asrPython, [resolve(moduleDirectory, 'asr-pocketsphinx.py'), wavPath, '--intervals-json', JSON.stringify(intervals)], { allowFailure: true, maxOutputBytes: 16_000_000 });
-  if (result.code !== 0) throw new IntakeError('ASR_FAILED', 'The configured ASR extractor failed.', { stderr: result.stderr.slice(-4000), extractor: 'PocketSphinx' });
+  const result = await runCommand(asrPython, [resolve(moduleDirectory, 'asr-faster-whisper.py'), wavPath], { allowFailure: true, maxOutputBytes: 16_000_000 });
+  if (result.code !== 0) throw new IntakeError('ASR_FAILED', 'The configured ASR extractor failed.', { stderr: result.stderr.slice(-4000), extractor: 'faster-whisper' });
   let parsed;
   try { parsed = JSON.parse(result.stdout); } catch { throw new IntakeError('ASR_INVALID_OUTPUT', 'The ASR extractor returned invalid JSON.'); }
-  return { ...parsed, speech_intervals: intervals, audio_derivative: { relative_path: 'audio-16khz-mono.wav', retained_in_local_package: true } };
+  return { ...parsed, audio_derivative: { relative_path: 'audio-16khz-mono.wav', retained_in_local_package: true } };
 }
 
 async function extractMotionEvidence(sourcePath, frames) {
@@ -526,15 +537,21 @@ async function extractMotionEvidence(sourcePath, frames) {
 }
 
 async function detectVisualChanges(sourcePath) {
-  const result = await runCommand('ffmpeg', [
-    '-hide_banner', '-i', sourcePath, '-vf', "select='gt(scene,0.30)',showinfo", '-an', '-f', 'null', '-'
-  ], { allowFailure: true, maxOutputBytes: 16_000_000 });
-  if (result.code !== 0) return { state: 'failed', observations: [], error: result.stderr.slice(-2000) };
-  const observations = [];
-  for (const match of result.stderr.matchAll(/pts_time:([0-9.]+)/g)) {
-    observations.push({ timestamp_seconds: Number(match[1]), signal_type: 'scene_change_candidate', threshold: 0.30 });
+  if (!await exists(runtimePython)) {
+    return { state: 'failed', observations: [], extractor: null, error: 'Scene-detection runtime python is missing.' };
   }
-  return { state: 'completed', observations };
+  const result = await runCommand(runtimePython, [resolve(moduleDirectory, 'scene-detect.py'), sourcePath], { allowFailure: true, maxOutputBytes: 16_000_000 });
+  if (result.code !== 0) return { state: 'failed', observations: [], extractor: null, error: result.stderr.slice(-2000) };
+  try {
+    const parsed = JSON.parse(result.stdout);
+    return {
+      state: 'completed',
+      observations: Array.isArray(parsed.observations) ? parsed.observations : [],
+      extractor: parsed.extractor || null
+    };
+  } catch {
+    return { state: 'failed', observations: [], extractor: null, error: 'Scene detector returned invalid JSON.' };
+  }
 }
 
 function makeEvidence({ frames, rawOcr, changes, visualObservations, hasAudio, asr, asrState }) {
@@ -549,24 +566,24 @@ function makeEvidence({ frames, rawOcr, changes, visualObservations, hasAudio, a
       extractor: asr?.extractor || null,
       observations: speechSpans,
       uncertainty: !hasAudio ? null : asrState === 'completed'
-        ? 'Automatic PocketSphinx output with word timestamps/confidence; not direct human/model audio audition.'
+        ? 'Automatic faster-whisper output with Silero VAD word timestamps/confidence; not direct human/model audio audition.'
         : 'Audio exists, but a transcript was not recovered.'
     },
     speaker_turns: {
       state: !hasAudio ? 'not_present' : speakerTurns.length ? 'turn_boundaries_only' : 'not_recovered',
-      verification_modality: speakerTurns.length ? 'silence_bounded_asr_utterances' : null,
+      verification_modality: speakerTurns.length ? 'silero_vad_asr_utterances' : null,
       observations: speakerTurns,
       uncertainty: hasAudio ? 'Turn boundaries are bounded by silence; speaker clustering and identity are not implemented.' : null
     },
     burned_in_captions: {
       state: classified.burnedInCaptions.length ? 'heuristically_classified' : 'none_observed_at_sampling_cadence',
-      verification_modality: 'tesseract_tsv_plus_layout_and_temporal_asr_overlap',
+      verification_modality: 'rapidocr_ppocrv6_plus_layout_and_temporal_asr_overlap',
       observations: classified.burnedInCaptions,
       uncertainty: 'Caption classification is heuristic and sampling can miss transient text.'
     },
     other_on_screen_text: {
       state: 'completed_at_sampling_cadence',
-      verification_modality: 'tesseract_tsv_on_sampled_frames',
+      verification_modality: 'rapidocr_ppocrv6_on_sampled_frames',
       observations: classified.otherText,
       raw_observations: rawOcr,
       uncertainty: 'OCR remains sampled evidence; it is not spoken dialogue reconstruction.'
@@ -585,9 +602,10 @@ function makeEvidence({ frames, rawOcr, changes, visualObservations, hasAudio, a
     },
     visual_shot_state_changes: {
       state: changes.state,
-      verification_modality: 'ffmpeg_scene_score',
+      verification_modality: 'pyscenedetect_content_and_hash_plus_imagehash',
+      extractor: changes.extractor || null,
       observations: changes.observations.map((observation, index) => ({ ...observation, observation_id: `scene-${String(index + 1).padStart(6, '0')}` })),
-      uncertainty: 'Scene-score candidates are not semantic descriptions of the change.'
+      uncertainty: 'Scene candidates are detector cuts that survived near-duplicate suppression. They are not semantic descriptions of the change.'
     }
   };
   const synchronizedTimeline = buildSynchronizedTimeline(lanes, classified.conflicts);

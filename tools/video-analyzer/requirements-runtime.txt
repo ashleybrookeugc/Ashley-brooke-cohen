@@ -1,0 +1,43 @@
+# Pinned runtime for Linux x86_64 and Apple Silicon (macOS arm64), Python 3.11/3.12.
+# scenedetect is intentionally absent: its dependency on opencv-python resolves to
+# OpenCV 5, whose cv2 module no longer exposes INTER_NEAREST and breaks PySceneDetect.
+# setup-runtime.mjs installs scenedetect==0.7.2 with --no-deps onto opencv-python-headless.
+anyio==4.15.1
+av==16.1.0
+certifi==2026.10.23
+charset-normalizer==3.5.2
+click==8.5.0
+colorlog==6.12.0
+ctranslate2==4.8.4
+faster-whisper==1.2.1
+filelock==4.2.6
+flatbuffers==25.12.19
+fsspec==2026.9.0
+h11==0.16.0
+hf-xet==1.8.0
+httpcore2==2.16.0
+httpx2==2.16.0
+huggingface_hub==2.4.0
+idna==3.20
+ImageHash==4.3.2
+numpy==2.2.6
+omegaconf==2.4.0
+onnxruntime==1.31.1
+opencv-python-headless==4.12.0.88
+packaging==26.3
+pillow==11.3.0
+platformdirs==4.14.2
+protobuf==7.36.2
+pyclipper==1.4.0
+PyWavelets==1.10.0
+PyYAML==6.0.3
+rapidocr==3.10.0
+requests==2.34.2
+scipy==1.18.1
+shapely==2.2.0
+six==1.17.0
+tokenizers==0.23.3
+tqdm==4.70.1
+truststore==0.10.5
+typing_extensions==4.16.0
+urllib3==2.8.0
