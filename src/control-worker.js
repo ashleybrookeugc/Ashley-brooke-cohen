@@ -5,7 +5,7 @@ import acceptanceCaseEPage from '../public/control/acceptance-case-e.html';
 import videoBrowserTestPage from '../public/control/video-test/index.html';
 import {createGitHubAdapter,createGitHubAppTokenProvider,createPolicyRoutingAdapter,createWorkersAiRoutingAdapter} from './control/adapters.js';
 import {controlErrorResponse,createControlService,createD1Store} from './control/service.js';
-import {createWorkerTelemetryStore,verifyWorkerTelemetrySignature,WORKER_TELEMETRY_SCHEMA} from './control/worker-telemetry.js';
+import {createWorkerTelemetryStore,handleWorkerTelemetryRequest,WORKER_TELEMETRY_SCHEMA} from './control/worker-telemetry.js';
 
 let schemaReady;
 function ensureSchema(env){return schemaReady ||= env.DB.exec("CREATE TABLE IF NOT EXISTS control_interactions (id TEXT PRIMARY KEY,raw_text TEXT NOT NULL,route_json TEXT NOT NULL,plain_summary TEXT NOT NULL,project_id TEXT,route_kind TEXT NOT NULL CHECK(route_kind IN ('state_update','decision','side_idea','temporary_context')),responsibility TEXT NOT NULL CHECK(responsibility IN ('needs_ashley','ai_can_handle')),confidence TEXT NOT NULL CHECK(confidence IN ('high','medium','low')),created_at TEXT NOT NULL);CREATE INDEX IF NOT EXISTS idx_control_interactions_created ON control_interactions(created_at DESC);CREATE TABLE IF NOT EXISTS control_queue_items (id TEXT PRIMARY KEY,interaction_id TEXT NOT NULL REFERENCES control_interactions(id),responsibility TEXT NOT NULL CHECK(responsibility IN ('needs_ashley','ai_can_handle')),status TEXT NOT NULL CHECK(status IN ('pending','approved','rejected','failed')),plain_summary TEXT NOT NULL,why TEXT,proposal_json TEXT NOT NULL,resolution_note TEXT,technical_receipt_json TEXT,created_at TEXT NOT NULL,resolved_at TEXT);CREATE INDEX IF NOT EXISTS idx_control_queue_pending ON control_queue_items(status,responsibility,created_at DESC);CREATE TABLE IF NOT EXISTS control_context_packets (packet_key TEXT PRIMARY KEY,payload_json TEXT NOT NULL,created_at TEXT NOT NULL,expires_at TEXT NOT NULL,invalidated_at TEXT);"+WORKER_TELEMETRY_SCHEMA)}
@@ -15,24 +15,9 @@ function service(env) {
   return createControlService({github:createGitHubAdapter({tokenProvider:tokens}),router:createPolicyRoutingAdapter(env),store:createD1Store(env.DB),deployment:env.WORKER_VERSION||null,observe:trace=>console.info(JSON.stringify(trace))});
 }
 async function body(request){try{return await request.json()}catch{throw new Error('Valid JSON body required')}}
-async function workerTelemetry(request,env) {
-  if(request.method!=='POST') return json({error:'Method not allowed',code:'read_only'},405);
-  if(!env.CONTROL_WORKER_TELEMETRY_SECRET) return json({error:'Worker telemetry is not configured',code:'worker_telemetry_not_configured'},503);
-  const raw=await request.text();
-  if(raw.length>65536) return json({error:'Worker telemetry payload is too large',code:'worker_telemetry_payload_too_large'},413);
-  const verified=await verifyWorkerTelemetrySignature({secret:env.CONTROL_WORKER_TELEMETRY_SECRET,timestamp:request.headers.get('x-mk-telemetry-timestamp'),signature:request.headers.get('x-mk-telemetry-signature'),body:raw});
-  if(!verified) return json({error:'Unauthorized',code:'worker_telemetry_unauthorized'},401);
-  let payload;
-  try { payload=JSON.parse(raw); } catch { return json({error:'Valid JSON body required',code:'worker_telemetry_invalid'},400); }
-  try { return json(await createWorkerTelemetryStore(env.DB).put(payload),202); }
-  catch { return json({error:'Worker telemetry payload is invalid',code:'worker_telemetry_invalid'},400); }
-}
 async function control(request,env) {
   const path=new URL(request.url).pathname.replace(/\/+$/,'')||'/';
-  if(path==='/api/control/workers/telemetry'){
-    if(request.method!=='POST') return json({error:'Method not allowed',code:'read_only'},405);
-    await ensureSchema(env);return workerTelemetry(request,env);
-  }
+  if(path==='/api/control/workers/telemetry') return handleWorkerTelemetryRequest(request,env,{ensureSchema});
   if(!await isAdmin(request,env)) return new URL(request.url).pathname.startsWith('/api/')?json({error:'Unauthorized'},401):new Response(null,{status:303,headers:{location:'/admin/login','cache-control':'no-store'}});
   if(path==='/api/control/acceptance/case-e'){
     if(request.method!=='POST') return json({error:'Method not allowed'},405);

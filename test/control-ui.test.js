@@ -47,14 +47,20 @@ test('existing control page presents truthful read-only worker telemetry on mobi
 
 test('production worker inventory remains behind admin auth while ingest uses its narrow signature gate', async () => {
   const source=await readFile(new URL('../src/control-worker.js',import.meta.url),'utf8');
+  const telemetry=await readFile(new URL('../src/control/worker-telemetry.js',import.meta.url),'utf8');
   const ingest=source.indexOf("path==='/api/control/workers/telemetry'");
   const admin=source.indexOf('if(!await isAdmin(request,env))');
   const inventory=source.indexOf("path==='/api/control/workers'&&request.method==='GET'");
   assert.ok(ingest>=0&&ingest<admin&&admin<inventory);
-  assert.match(source,/verifyWorkerTelemetrySignature/);
-  assert.match(source,/CONTROL_WORKER_TELEMETRY_SECRET/);
-  assert.match(source,/if\(request\.method!==\'POST\'\) return json\(\{error:\'Method not allowed\',code:\'read_only\'\},405\);\s*await ensureSchema/);
+  assert.match(source,/handleWorkerTelemetryRequest/);
+  assert.doesNotMatch(source.slice(ingest,admin),/await ensureSchema|isAdmin/);
+  const handler=telemetry.slice(telemetry.indexOf('export async function handleWorkerTelemetryRequest'));
+  const authCall=handler.indexOf('await inspectWorkerTelemetrySignature');
+  const schemaCall=handler.indexOf('await ensureSchema');
+  assert.ok(authCall>=0&&schemaCall>=0&&authCall<schemaCall);
+  assert.match(telemetry,/CONTROL_WORKER_TELEMETRY_SECRET/);
   assert.doesNotMatch(source,/console\.(?:log|error).*CONTROL_WORKER_TELEMETRY_SECRET/);
+  assert.doesNotMatch(telemetry,/console\.(?:log|error).*CONTROL_WORKER_TELEMETRY_SECRET/);
 });
 
 test('embedded control-page JavaScript parses before the Worker serves it', () => {

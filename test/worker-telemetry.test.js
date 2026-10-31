@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {createWorkerTelemetryStore,normalizeWorkerTelemetry,signWorkerTelemetry,verifyWorkerTelemetrySignature} from '../src/control/worker-telemetry.js';
+import {readFile} from 'node:fs/promises';
+import {createWorkerTelemetryStore,handleWorkerTelemetryRequest,inspectWorkerTelemetrySignature,normalizeWorkerTelemetry,signWorkerTelemetry,verifyWorkerTelemetrySignature} from '../src/control/worker-telemetry.js';
 import {createCloudflareWorkerTelemetryPublisher} from '../src/local-workers/cloudflare-telemetry.js';
 
 const secret='test-only-telemetry-secret-that-is-never-production';
@@ -83,4 +84,107 @@ test('publisher is disabled by default and sends one bounded signed HTTPS heartb
 test('publisher errors never include a credential or remote response body',async()=>{
   const publisher=createCloudflareWorkerTelemetryPublisher({enabled:true,endpoint:'https://ashleybrookecohen.com/api/control/workers/telemetry',secretProvider:async()=>secret,fetchImpl:async()=>new Response('PRIVATE TOKEN '+secret,{status:401})});
   await assert.rejects(publisher.publish(envelope),error=>error.code==='telemetry_rejected'&&!error.message.includes(secret)&&!error.message.includes('PRIVATE TOKEN'));
+  const coded=createCloudflareWorkerTelemetryPublisher({enabled:true,endpoint:'https://ashleybrookecohen.com/api/control/workers/telemetry',secretProvider:async()=>secret,fetchImpl:async()=>new Response(JSON.stringify({error:'Unauthorized',code:'worker_telemetry_unauthorized',reason:'signature_mismatch',leak:secret}),{status:401})});
+  await assert.rejects(coded.publish(envelope),error=>error.code==='telemetry_rejected'&&error.message.includes('HTTP 401 worker_telemetry_unauthorized signature_mismatch')&&!error.message.includes(secret));
+});
+
+const clock=1791547200000;
+const endpoint='https://ashleybrookecohen.com/api/control/workers/telemetry';
+
+async function capturePublish(snapshot=envelope,secretValue=secret,nowMs=clock) {
+  let captured;
+  const publisher=createCloudflareWorkerTelemetryPublisher({enabled:true,endpoint,secretProvider:async()=>secretValue,now:()=>nowMs,fetchImpl:async(url,options)=>{captured={url:String(url),options};return new Response('{}',{status:202});}});
+  await publisher.publish(snapshot);
+  return captured;
+}
+
+function postedRequest(captured,headers=captured.options.headers) {
+  return new Request(captured.url,{method:'POST',headers,body:captured.options.body});
+}
+
+async function postTelemetry(request,env,ensureSchema=async()=>{},nowMs=clock) {
+  const response=await handleWorkerTelemetryRequest(request,env,{ensureSchema,now:()=>nowMs});
+  return {status:response.status,body:await response.json()};
+}
+
+test('signed publisher bytes are accepted before D1, then expire after 20 seconds',async()=>{
+  const captured=await capturePublish();
+  let schemaCalls=0;
+  const db=memoryDb();
+  const accepted=await postTelemetry(postedRequest(captured),{CONTROL_WORKER_TELEMETRY_SECRET:secret,DB:db,WORKER_VERSION:{id:'version-under-test'}},async()=>{schemaCalls+=1;});
+  assert.equal(accepted.status,202);
+  assert.equal(accepted.body.accepted,true);
+  assert.equal(accepted.body.version_id,'version-under-test');
+  assert.equal(schemaCalls,1);
+  assert.equal(accepted.body.source_id,'m4-herdr');
+  const fresh=await createWorkerTelemetryStore(db,{now:()=>new Date(clock).toISOString(),freshMs:20000}).read();
+  assert.equal(fresh.connection.state,'connected');
+  assert.equal(fresh.workers[0].state,'running');
+  const stale=await createWorkerTelemetryStore(db,{now:()=>new Date(clock+20001).toISOString(),freshMs:20000}).read();
+  assert.equal(stale.connection.state,'disconnected');
+  assert.equal(stale.workers[0].state,'disconnected');
+  assert.equal(stale.workers[0].telemetry.diagnostic_code,'m4_connection_stale');
+});
+
+test('telemetry route separates missing secret, signature mismatch, clock units, and D1 failure',async()=>{
+  const captured=await capturePublish();
+  let schemaCalls=0;
+  const ensureSchema=async()=>{schemaCalls+=1;};
+  const missing=await postTelemetry(postedRequest(await capturePublish()),{DB:memoryDb()},ensureSchema);
+  assert.deepEqual({status:missing.status,code:missing.body.code,reason:missing.body.reason},{status:503,code:'worker_telemetry_not_configured',reason:'missing_secret'});
+  assert.equal(schemaCalls,0);
+  const mismatch=await postTelemetry(postedRequest(captured),{CONTROL_WORKER_TELEMETRY_SECRET:secret+'y'},ensureSchema);
+  assert.equal(mismatch.status,401);
+  assert.equal(mismatch.body.code,'worker_telemetry_unauthorized');
+  assert.equal(mismatch.body.reason,'signature_mismatch');
+  assert.equal(schemaCalls,0);
+  const newline=await postTelemetry(postedRequest(await capturePublish(envelope,secret+'\n')),{CONTROL_WORKER_TELEMETRY_SECRET:secret},ensureSchema);
+  assert.equal(newline.body.reason,'signature_mismatch');
+  const skewed=await postTelemetry(postedRequest(await capturePublish(envelope,secret,clock-91000)),{CONTROL_WORKER_TELEMETRY_SECRET:secret},ensureSchema);
+  assert.equal(skewed.body.reason,'timestamp_skew');
+  const milliseconds=String(clock);
+  const body=JSON.stringify(envelope);
+  const signature=await signWorkerTelemetry(secret,milliseconds,body);
+  const unit=await postTelemetry(new Request(endpoint,{method:'POST',headers:{'X-Mk-Telemetry-Timestamp':milliseconds,'X-Mk-Telemetry-Signature':signature},body}),{CONTROL_WORKER_TELEMETRY_SECRET:secret},ensureSchema);
+  assert.equal(unit.body.reason,'timestamp_unit');
+  const unsigned=await postTelemetry(new Request(endpoint,{method:'POST',headers:{'content-type':'application/json'},body:'{}'}),{CONTROL_WORKER_TELEMETRY_SECRET:secret},ensureSchema);
+  assert.equal(unsigned.body.reason,'missing_timestamp');
+  const short=await postTelemetry(postedRequest(captured),{CONTROL_WORKER_TELEMETRY_SECRET:'x'.repeat(31)},ensureSchema);
+  assert.equal(short.body.reason,'credential_unusable');
+  assert.equal(schemaCalls,0);
+  const sameNewline=await postTelemetry(postedRequest(await capturePublish(envelope,secret+'\n')),{CONTROL_WORKER_TELEMETRY_SECRET:secret+'\n',DB:memoryDb()},ensureSchema);
+  assert.equal(sameNewline.status,202);
+  const boundary=await postTelemetry(postedRequest(await capturePublish(envelope,secret,clock-90000)),{CONTROL_WORKER_TELEMETRY_SECRET:secret,DB:memoryDb()},ensureSchema);
+  assert.equal(boundary.status,202);
+  assert.equal(schemaCalls,2);
+  const invalid=await postTelemetry(postedRequest(await capturePublish({version:'diagnostic-invalid'})),{CONTROL_WORKER_TELEMETRY_SECRET:secret,DB:memoryDb()},ensureSchema);
+  assert.equal(invalid.status,400);
+  assert.equal(invalid.body.code,'worker_telemetry_invalid');
+  assert.equal(schemaCalls,2);
+  const brokenDb={prepare(){return {bind(){return this;},async run(){throw new Error('D1 exploded '+secret);}};}};
+  const stored=await postTelemetry(postedRequest(await capturePublish()),{CONTROL_WORKER_TELEMETRY_SECRET:secret,DB:brokenDb,WORKER_VERSION:{id:'version-under-test'}},ensureSchema);
+  assert.equal(schemaCalls,3);
+  assert.equal(stored.status,503);
+  assert.equal(stored.body.code,'worker_telemetry_store_unavailable');
+  assert.equal(stored.body.version_id,'version-under-test');
+  assert.equal(JSON.stringify(stored.body).includes(secret),false);
+  assert.equal(JSON.stringify(stored.body).includes('exploded'),false);
+  const get=await postTelemetry(new Request(endpoint,{method:'GET'}),{CONTROL_WORKER_TELEMETRY_SECRET:secret},ensureSchema);
+  assert.equal(get.status,405);
+  assert.equal(get.body.code,'read_only');
+});
+
+test('login gate and legacy worker catch do not own the telemetry route',async()=>{
+  const router=await readFile(new URL('../src/router-worker.js',import.meta.url),'utf8');
+  const video=await readFile(new URL('../src/video-testing/page-worker.js',import.meta.url),'utf8');
+  const legacy=await readFile(new URL('../src/worker.js',import.meta.url),'utf8');
+  assert.match(router,/videoTestingRoute/);
+  assert.doesNotMatch(router,/workers\/telemetry/);
+  assert.match(router,/return app\.fetch\(request, env, ctx\)/);
+  assert.doesNotMatch(video,/workers\/telemetry|CONTROL_WORKER_TELEMETRY_SECRET/);
+  assert.match(legacy,/Temporarily unavailable\. Please try again\./);
+  assert.doesNotMatch(legacy,/worker_telemetry_not_configured|worker_telemetry_unauthorized/);
+  const verdict=await inspectWorkerTelemetrySignature({secret,timestamp:'not-a-time',signature:'abc',body:'{}',now:clock});
+  assert.equal(verdict.reason,'timestamp_invalid');
+  assert.equal(await verifyWorkerTelemetrySignature({secret,timestamp:'1791547200',signature:'not-the-signature',body:'{}',now:clock}),false);
 });
