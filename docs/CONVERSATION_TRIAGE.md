@@ -105,6 +105,9 @@ follow-ups, real literal Next-field collisions, stale-cache refresh, source
 conflicts, waiting-only/missing records, D1 continuation shape, zero/one provider
 calls, no fallback, and hostile output. Provider responses are mocked; these
 tests prove wiring/cost/safety boundaries, not the model's semantic quality.
+The same frozen phrases are also reported by `npm run eval:phrasing`, which
+uses promptfoo with the local zero-call path only. That command does not
+replace these node tests or their receipts.
 
 The original pure ambiguity holdouts remain frozen. The service's former
 unqualified "What's next?", "what should happen next?" and missing-workstream

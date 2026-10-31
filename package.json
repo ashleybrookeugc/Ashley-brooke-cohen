@@ -9,9 +9,11 @@
     "test": "node --test",
     "check:my-work-requirements": "node scripts/check-my-work-requirements.mjs",
     "check:herdr-acceptance": "node --check scripts/acceptance/herdr-worker-adapter-live.mjs && node --check scripts/acceptance/herdr-worker-interface-live.mjs && node --check scripts/acceptance/herdr-worker-cloudflare-live.mjs",
-    "check:worker": "wrangler deploy --dry-run --outdir /tmp/control-worker-build"
+    "check:worker": "wrangler deploy --dry-run --outdir /tmp/control-worker-build",
+    "eval:phrasing": "node scripts/eval-phrasing.mjs"
   },
   "devDependencies": {
+    "promptfoo": "0.125.1",
     "wrangler": "^4.0.0"
   }
 }

@@ -1,5 +1,17 @@
 # Ashley Brooke Cohen Website — Troubleshooting & Recovery Log
 
+## 2026-10-31 — Signed heartbeat was not replaced with a push-ping service
+
+**Symptom:** The M4 worker dashboard still depends on the custom HMAC heartbeat, and the earlier signed HTTP 503 and signed HTTP 401 remain unresolved. A status-only push ping looked like a way to stop maintaining that signature path.
+
+**Failed approach:** Healthchecks.io (hosted free tier or the BSD-3 server) and Uptime Kuma push monitors (MIT) were compared against the dashboard contract. No account was created, no secret was set, and Cloudflare was not changed. A first promptfoo run of the existing phrasing cases also reported four model-dispatch errors for one follow-up sequence that the node provider run had already passed. Renaming the array from `inputs` to `phrases` did not stop the split.
+
+**Root cause:** A Healthchecks read-only API key can read `new` / `up` / `grace` / `down` / `paused` and status flips, and it hides the ping URL, but it cannot read the ping body that would have to carry the worker card. Reading that body needs a read-write key, which can also create, pause, and delete checks. Period and grace are at least 60 seconds, and more than five pings a minute can be dropped, so the existing 20-second connected-to-expired display cannot be represented. Uptime Kuma has no hosted free tier. A monitor on the Mac cannot tell “worker expired” from “monitor down” once the Mac is offline, and another always-on host would be a second service. The promptfoo errors were not triage regressions: promptfoo turns every top-level array variable into separate cases, and each single phrase then missed the prior-turn context.
+
+**Verified decision:** Leave the HMAC publisher, signature check, D1 snapshot, and dashboard display in place. Do not add a second heartbeat path. The phrasing suite passes 88/88 after the sequence is one JSON string. Receipts: `docs/test-receipts/2026-10-31-heartbeat-oss-evaluation.json` and `docs/test-receipts/2026-10-31-promptfoo-phrasing.json`.
+
+**Prevention:** Do not replace this bridge with a status-only ping unless a read-only credential can return the same worker cards at the existing freshness without a second always-on host. Do not rotate `CONTROL_WORKER_TELEMETRY_SECRET` from this evaluation. In promptfoo, do not put a phrase list in a top-level array variable. Keep the local provider’s model-dispatch throw so a split case fails instead of calling a provider.
+
 ## 2026-10-28 — Fresh MiniCPM runs followed by independent gate: bounded PASS
 
 Two new separate browser conversations used the same hash-verified speech/silent twins, identical prompt, Video-Audio Analysis preset,256tokens, voice output off. Actual fresh requests req_1793170096167 and req_1793170122435 completed (UI9.4s/8.9s). Speech again recovers the complete negation/fair/connector sentence. Silent output again hallucinates a loud yawn/groan and deep resonant voice, including a sound clause inside a visual paragraph; it also proposes an unadmitted15–16s interval beyond this15s clip.

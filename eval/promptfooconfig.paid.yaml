@@ -1,0 +1,15 @@
+description: >
+  Opt-in only. Not used by CI or npm run eval:phrasing. There is still no
+  model endpoint, so enabling the flag cannot spend money.
+providers:
+  - id: file://providers/paid-model-refused.js
+    label: paid-model-refused
+prompts:
+  - 'unused'
+tests:
+  - description: paid path stays refused
+    vars:
+      id: paid-refused
+    assert:
+      - type: javascript
+        value: 'false'
