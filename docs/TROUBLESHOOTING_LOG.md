@@ -1,5 +1,139 @@
 # Ashley Brooke Cohen Website — Troubleshooting & Recovery Log
 
+## 2026-10-31 — Grok Bot box session: iPhone `/video-test/` on the cloud computer
+
+**Session goal:** Make `/video-test/` usable from Ashley's iPhone (camera roll / iCloud Drive). Run the analyzer on the Grok Bot cloud Linux computer (the box) instead of the Mac Studio, with open-source tools only. Ashley approved footage upload to the box.
+
+**Disposition:** The box did not become a Cloudflare Tunnel host. The approved private Workers VPC binding `VIDEO_TEST_PRIVATE_SERVICE` stays. This records task changed no code, configuration, Cloudflare resource, or deployment. Full session receipt: `docs/test-receipts/2026-10-31-grokbot-video-box-session.json`.
+
+**Already recorded elsewhere (not copied):** The open-source extractor swap and its PyAV / OpenCV / PaddleOCR loops are on open [PR #65](https://github.com/ashleybrookeugc/Ashley-brooke-cohen/pull/65) (`cursor/oss-video-extractors-8f87`, receipt `docs/test-receipts/2026-10-31-video-analyzer-oss-extractors.json`). The Healthchecks.io / Uptime Kuma rejection and promptfoo 0.125.1 phrasing run are on open [PR #64](https://github.com/ashleybrookeugc/Ashley-brooke-cohen/pull/64) (`cursor/heartbeat-eval-promptfoo-196d`). Neither file is on `main` at `dd3ae117afbd0dfc81e31f8791bd8531423260a0`. The prevention rules below are the main-branch copy so a later reader does not need those unmerged branches.
+
+## 2026-10-31 — Named Cloudflare Tunnel cannot connect from the Grok Bot box
+
+**Symptom:** `cloudflared` on the Grok Bot box cannot bring up a named tunnel. The local adapter was healthy at the same time: `tools/video-testing/server.mjs` on `127.0.0.1:8789` with bearer auth.
+
+**Failed attempts:** QUIC (UDP 7844) and http2 (TCP 7844) to the Cloudflare edge both failed. Turning off the Grok Bot app setting "Route traffic through this computer" did not restore a connection. A hidden `cloudflared --edge` IP pin connected during a 25-second test. That pin circumvents the host's network controls, so it was stopped and rejected. No edge IP is recorded here.
+
+**Root cause:** The box uses fake-IP DNS (`198.18.0.1`) and an HTTPS-only egress proxy. Outbound QUIC and http2 on port 7844 to the Cloudflare edge are blocked. A MacBook Pro connected, so the account login is not the blocker.
+
+**Verified fix:** None on the box. Tunnel `abc-video-box` (id `09bad014-b1cc-45bd-be74-62b2cba0fd0a`) was created in Ashley's Cloudflare account with a 404-only ingress, no public hostname, and no route. It is unused and stopped. The local adapter was left as a loopback process only.
+
+**Prevention rule:** Do not plan Cloudflare Tunnel hosting on the Grok Bot box. Use a Mac (the MacBook Pro connected) or another host with normal outbound 7844 access. Test tunnel connectivity before building on a host. Do not use `cloudflared --edge` IP pinning to get around the box egress proxy.
+
+**Evidence:** `docs/test-receipts/2026-10-31-grokbot-video-box-session.json`.
+
+## 2026-10-31 — Cloudflare browser Authorize appeared to do nothing on the MacBook
+
+**Symptom:** During `cloudflared tunnel login` on the MacBook, the Cloudflare browser Authorize button appeared to do nothing.
+
+**Failed attempts:** Waiting on the browser after the login process had already exited. A later report that "nothing happens" was checked again and was a completed login, so a third login was not required.
+
+**Root cause:** The `cloudflared tunnel login` process stopped waiting after about two minutes, before the click. The callback had nothing listening.
+
+**Verified fix:** Run `cloudflared tunnel login` again and leave that process waiting until Authorize is clicked.
+
+**Prevention rule:** Keep the login process alive while the user authorizes. Check for `~/.cloudflared/cert.pem` before starting another login. This is separate from the 2026-10-14 iPhone frame-capture lesson in `docs/test-receipts/2026-10-14-cloudflare-browser-test-lesson.md`.
+
+**Evidence:** `docs/test-receipts/2026-10-31-grokbot-video-box-session.json`. Certificate contents were not copied.
+
+## 2026-10-31 — Tunnel `mk-video-test-private` is Ashley's Mac Studio tunnel
+
+**Symptom:** Live tunnel `mk-video-test-private` (`421e73e9-0364-4775-a0ca-6b27c9c3164b`) was not recognized and could have been treated as a foreign resource.
+
+**Failed attempts:** None against the resource. It was not edited, rerouted, or deleted.
+
+**Root cause:** The tunnel was already Ashley's private Mac Studio connector. `docs/test-receipts/2026-10-15-video-analyzer-mac-activation.json` records that id, VPC service `mk-video-test-loopback` (`01a141ad-d6e8-7ae0-804c-0f98e58320ad`), 404-only ingress, and binding `VIDEO_TEST_PRIVATE_SERVICE`.
+
+**Verified fix:** Left the tunnel and service untouched.
+
+**Prevention rule:** Read `docs/test-receipts/` before treating an unknown Cloudflare tunnel or VPC service as foreign or deleting it.
+
+**Evidence:** The 2026-10-15 activation receipt above. This 2026-10-31 check adds no new tunnel configuration.
+
+## 2026-10-31 — Codex handoff still describes a public hostname
+
+**Symptom:** `GROKBOT_VIDEO_ANALYZER_HANDOFF.md` in the ChatGPT project folder on the Mac tells the next session to use a public hostname.
+
+**Failed attempts:** None. The handoff was not executed.
+
+**Root cause:** That handoff is stale. The approved website design is the private Workers VPC binding `VIDEO_TEST_PRIVATE_SERVICE` (no public hostname or DNS route), already recorded in `tools/video-testing/README.md` and `docs/test-receipts/2026-10-15-video-analyzer-mac-activation.json`.
+
+**Verified fix:** The private design was kept. This checkout does not contain the handoff file; the staleness finding is the session report and was not re-read from the Mac during this records task.
+
+**Prevention rule:** For `/video-test/` transport, follow the private VPC binding in this repository. Treat `GROKBOT_VIDEO_ANALYZER_HANDOFF.md` as stale until someone replaces it on the Mac.
+
+**Evidence:** `docs/test-receipts/2026-10-31-grokbot-video-box-session.json`.
+
+## 2026-10-31 — Saved video corrections and the analyzer are not on `main`
+
+**Symptom:** Real saved corrections under `VIDEO_TEST_ROOT/<job>/feedback/*.json` exist on the Mac Studio and were never committed. `tools/video-analyzer` is not on `main`.
+
+**Failed attempts:** None in this records task. No correction file was copied into Git.
+
+**Root cause:** The 2026-10-15 activation already recorded the analyzer only on branch `video-analyzer/f003-source-time-fidelity` at `e5dfe3e4d3967615f23eb064896de1303f86ded9`, with corrections persisting locally and remote archival not configured. That branch location was already known. The new gap is that the Mac Studio feedback JSON was never given an export path into Git. Open [PR #65](https://github.com/ashleybrookeugc/Ashley-brooke-cohen/pull/65) targets the analyzer branch, not `main`, so it does not close the gap.
+
+**Verified fix:** None. Still open.
+
+**Prevention rule:** Commit the analyzer to `main` through a pull request, and define how `VIDEO_TEST_ROOT/<job>/feedback/*.json` is exported into Git. Do not treat the Mac Studio disk as the only copy of creator corrections.
+
+**Evidence:** `docs/test-receipts/2026-10-15-video-analyzer-mac-activation.json` (`known_limits.remote_evidence_archival`, `analyzer.head`). Session receipt: `docs/test-receipts/2026-10-31-grokbot-video-box-session.json`.
+
+## 2026-10-31 — Grok Bot box apt cannot reach Debian mirrors
+
+**Symptom:** `apt` on the Grok Bot box could not download packages from Debian mirrors through the egress proxy. Tesseract was the package being installed. System Python 3.13 and 3.14 could not be used for the analyzer's PocketSphinx environment.
+
+**Failed attempts:** Installing Tesseract through `apt` via the box proxy.
+
+**Root cause:** The box egress proxy does not provide a working path to the Debian mirrors. PocketSphinx 5.0.4 ran in a Python 3.12 virtual environment. The system 3.13 and 3.14 interpreters are unsuitable for that package on this box.
+
+**Verified fix:** The Tesseract `.deb` files were fetched with `curl` and checked by MD5. The MD5 strings were not supplied to this records task and are not invented here. PocketSphinx 5.0.4 was used from the Python 3.12 venv. This is a different host note from the Mac Studio activation, which used Python 3.11 for PocketSphinx 5.0.4.
+
+**Prevention rule:** On the Grok Bot box, do not assume `apt` can reach Debian mirrors through the egress proxy. Verify downloaded `.deb` checksums. Use Python 3.12 for PocketSphinx 5.0.4 on that box.
+
+**Evidence:** `docs/test-receipts/2026-10-31-grokbot-video-box-session.json`. [PR #65](https://github.com/ashleybrookeugc/Ashley-brooke-cohen/pull/65) later records Python 3.12.3 on its Linux x86_64 run and Tesseract 5.3.4 present for the pre-swap baseline only.
+
+## 2026-10-31 — Open-source extractor swap (same run as PR #65)
+
+**Symptom:** The frozen analyzer speech line was wrong under PocketSphinx, Tesseract was the OCR engine, and the ffmpeg scene threshold missed layout cuts. Replacing them on the analyzer branch had three install loops.
+
+**Failed attempts:** Unpinned PyAV resolved to 19.x and `faster-whisper` 1.2.1 crashed because `av.open` no longer accepts `metadata_errors`. An ordinary `pip install scenedetect` pulled OpenCV 5 (`opencv-python==5.0.0.93`), and `import scenedetect` failed because `cv2.INTER_NEAREST` is gone. PaddleOCR 3.7.0 on `paddlepaddle` 3.3.1 crashed the default CPU pipeline in oneDNN (`ConvertPirAttribute2RuntimeAttribute`). `paddlepaddle` 3.2.0 completed that call and was still not shipped.
+
+**Root cause:** Each failure is a dependency pin, not a fixture failure. Canonical measurement, including the oneDNN frame, model revision, and per-test list, is `docs/test-receipts/2026-10-31-video-analyzer-oss-extractors.json` on [PR #65](https://github.com/ashleybrookeugc/Ashley-brooke-cohen/pull/65). This entry does not repeat that file.
+
+**Verified fix:** On that PR, not on `main`: `faster-whisper==1.2.1` (`base.en`) with `av==16.1.0`; RapidOCR 3.10.0 (PP-OCRv6 via ONNX Runtime) instead of Tesseract; PySceneDetect 0.7.2 plus `imagehash==4.3.2`, with `opencv-python-headless==4.12.0.88` installed first and `scenedetect` installed `--no-deps`. The regional 64×64 sampler stays for F-004 and F-005. Frozen tests were not edited. faster-whisper returns the fair/connector sentence. The unchanged frozen ASR test still fails because it expects `extractor.name === 'PocketSphinx'`. Suite result on that run: 17 passed / 18 before, 19 passed / 20 after. Node test duration 18.44 s → 68.91 s. GNU time maximum RSS 206372 KiB → 387996 KiB (the session summary ~206 MB → ~388 MB is that KiB figure divided by 1000, not a second measurement).
+
+**Prevention rule:** Pin `av==16.1.0` beside faster-whisper 1.2.1. Do not let `scenedetect` resolve OpenCV 5; install the headless 4.12 wheel, then `scenedetect==0.7.2 --no-deps`. Do not ship PaddleOCR on paddlepaddle 3.3.1; a successful `import paddle` is not a successful OCR call. Prefer the pinned RapidOCR path unless a newer paddle pin passes `PaddleOCR().predict` on CPU. `tools/video-testing` on `main` still treats a missing `tesseract` binary as analyzer-unavailable (`ready()` in `tools/video-testing/server.mjs`). That health check is a known follow-up; this module swap does not update it.
+
+**Evidence:** PR #65 receipt and the three 2026-10-31 headings already on that branch (`faster-whisper` / PyAV 19, PySceneDetect / OpenCV 5, PaddleOCR / paddlepaddle 3.3.1). Wording strings disagree with an older receipt; see the session receipt's `conflicts_with_existing_records`.
+
+## 2026-10-31 — Healthchecks.io and Uptime Kuma were rejected; promptfoo records phrasing
+
+**Symptom:** The dashboard still depends on the custom HMAC heartbeat, whose signed HTTP 401 and signed HTTP 503 are unresolved (see the 2026-10-15 issue #31 entry). A hosted ping service looked like a replacement. Routing and phrasing also needed a repeatable eval.
+
+**Failed attempts:** Healthchecks.io and Uptime Kuma were compared and not adopted. No Healthchecks account, check, ping URL, or API key was created. No Uptime Kuma server was created. No Cloudflare setting was changed and `CONTROL_WORKER_TELEMETRY_SECRET` was not rotated. A first promptfoo layout that put phrases in a top-level array split one follow-up sequence; that split is recorded on PR #64 and is not a triage regression.
+
+**Root cause:** A Healthchecks read-only key exposes status (`new`, `up`, `grace`, `down`, and paused) and hides the ping URL. It cannot read the ping body the worker card needs. The body requires a read-write key, which can also create, pause, and delete checks. The minimum period is 60 seconds, against the dashboard's 20-second expiry. Uptime Kuma has no hosted free tier. A monitor on the Mac cannot tell worker expiry from the monitor being offline. The custom HMAC publisher, D1 snapshot, and `/control/` display stay.
+
+**Verified fix:** No heartbeat replacement. promptfoo 0.125.1 was added on [PR #64](https://github.com/ashleybrookeugc/Ashley-brooke-cohen/pull/64) for routing and phrasing evals: 88/88 passed. That PR reports `npm test` 210 passed, 4 skipped, 0 failed. The signed 401 and 503 remain unresolved.
+
+**Prevention rule:** Keep the custom HMAC heartbeat until a read-only credential can return the same worker cards inside the existing 20-second freshness window without a second always-on host. Do not rotate `CONTROL_WORKER_TELEMETRY_SECRET` as part of an evaluation. In promptfoo, do not put a phrase list in a top-level array variable.
+
+**Evidence:** PR #64 receipts `docs/test-receipts/2026-10-31-heartbeat-oss-evaluation.json` and `docs/test-receipts/2026-10-31-promptfoo-phrasing.json` (on that branch, not on `main`). This records task did not re-run promptfoo.
+
+## 2026-10-31 — No unlimited AI feedback plugin for unpublished uploads
+
+**Symptom:** vidIQ was tried for AI feedback on video and ran out of tokens. The goal was feedback on uploaded files that are not published YouTube videos.
+
+**Failed attempts:** vidIQ exhausted its token allowance. Research in the same session found no embeddable plugin that gives unlimited AI feedback on unpublished uploads. TubeBuddy and vidIQ operate on published YouTube videos. The OpusClip API is Pro-only at the session's noted price of $29/month. The Twelve Labs free tier caps unpublished video. No new account was recorded as created for those products, and this records task did not call them.
+
+**Root cause:** The products that were checked are built for published YouTube videos, a paid API, or a capped free tier. That is a product-boundary finding, not a website defect.
+
+**Verified fix:** None. Decision is pending with Russell and Ashley. Candidates left open: local Qwen3-VL or Gemma 4 on the Mac (free, private); Cloudflare Workers AI Gemma 4 vision (session figure: 10,000 free neurons/day, and the frames go to Cloudflare); Gemini API free tier (best video understanding among the notes, with the caveat that free-tier content may be used and human-reviewed by Google). Nothing was connected.
+
+**Prevention rule:** Do not treat a published-video browser extension as a feedback path for iPhone camera-roll uploads. Do not connect Gemini, Workers AI, or another hosted vision model until Russell and Ashley choose one. The existing picture descriptions already use pinned local `mlx-community/Qwen3-VL-8B-Instruct-4bit` (`tools/video-testing/visual-review.mjs`); this candidate list does not replace that consumer. The 2026-10-27 qualification already recorded Gemini as documentation-only with no inference (`docs/test-receipts/2026-10-27-video-service-qualification.json`). This session does not add an inference run.
+
+**Evidence:** `docs/test-receipts/2026-10-31-grokbot-video-box-session.json`.
+
 ## 2026-10-28 — Fresh MiniCPM runs followed by independent gate: bounded PASS
 
 Two new separate browser conversations used the same hash-verified speech/silent twins, identical prompt, Video-Audio Analysis preset,256tokens, voice output off. Actual fresh requests req_1793170096167 and req_1793170122435 completed (UI9.4s/8.9s). Speech again recovers the complete negation/fair/connector sentence. Silent output again hallucinates a loud yawn/groan and deep resonant voice, including a sound clause inside a visual paragraph; it also proposes an unadmitted15–16s interval beyond this15s clip.
@@ -858,6 +992,8 @@ Canonical [sanitized preflight receipt](https://github.com/ashleybrookeugc/resea
 **Current deployment boundary:** Production is 100% `ecb321a5-b2fe-486a-bbbd-b7edb433c862`, deployed at `23:06:04.495513Z`. Latest uploaded version is `a31083bc-d3f7-4892-9a50-2ee01e8e08d0` at `23:32:01.218875Z`, alias `feature-rep-atlas-representation-mvp-2-16ec`; it is a separate undeployed preview. The prior normal secret command's documented latest-not-deployed guard would apply again; it was not blindly repeated. Installed Wrangler 4.151.0 `versions secret put` patches `versions/latest` and has no base-version selector, so that command does not safely target the active code. A protected read-only API GET confirms the active version has the telemetry binding and seven modules. No secret value was retrieved, generated or rotated; no preview promoted, code/config changed or third worker run launched.
 
 **Unresolved failure:** The earlier signed HTTP 503 and later signed HTTP 401 still lack response bodies/per-request Worker-version evidence. Secret propagation, other-task changes and signing defects remain hypotheses. Do not call this fixed, repeat blind rotations, weaken signature checks, or manufacture a passing heartbeat.
+
+**2026-10-31 cross-reference:** Healthchecks.io and Uptime Kuma were evaluated and rejected as replacements. The custom HMAC path stays, and these signed 401 and 503 results are still unresolved. The evaluation receipts are on open [PR #64](https://github.com/ashleybrookeugc/Ashley-brooke-cohen/pull/64), not on `main`. The prevention rule is also in the 2026-10-31 heartbeat heading at the top of this file. No secret was rotated.
 
 **Concrete recovery path awaiting merge approval:** Merge this documentation-only PR through the normal GitHub main → Workers Builds path, after explicit approval (the previous approval covered PR #18 only). Wait until that exact main build is latest and active; recheck immediately before the already-authorized telemetry-only `wrangler secret put`. Keep the new credential alive in one protected parent process. First run bounded signed invalid-envelope probes: HTTP 400 `worker_telemetry_invalid` means authentication passed without storing synthetic telemetry; negative signatures must return 401. Capture safe code/time/CF-Ray and deployment IDs, require a consistent window, then execute the unchanged real Mac runner with separate authenticated lifecycle/expiry observations. Stop on not-configured, unexplained version changes or persistent 401; preserve all outcomes. Phone acceptance still requires Ashley's observation.
 
