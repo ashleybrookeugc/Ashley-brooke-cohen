@@ -1,0 +1,329 @@
+{
+  "schema": "ashley.grokbot-video-box-session.v1",
+  "metadata": {
+    "status": "record",
+    "date": "2026-10-31",
+    "timezone": "America/New_York",
+    "type": "evidence",
+    "topics": [
+      "video-understanding",
+      "deployment",
+      "cloudflare-tunnel",
+      "open-source-extractors"
+    ],
+    "products": [
+      "Ashley-brooke-cohen"
+    ],
+    "source_scope": "session-report",
+    "confidence": "high for facts supplied by the 2026-10-31 Grok Bot session; this records task did not re-run the tunnel, package installs, analyzer suite, promptfoo, or model calls"
+  },
+  "observed_on": "2026-10-31",
+  "timezone": "America/New_York",
+  "clock_times": "No clock times were supplied for the tunnel, login, apt, or research events. Durations that were supplied are recorded on those objects. PR #65's extractor receipt uses observed_at 2026-10-31T22:20:00Z (18:20 America/New_York, EDT).",
+  "website_main_when_recorded": "dd3ae117afbd0dfc81e31f8791bd8531423260a0",
+  "records_task": {
+    "independent_rerun": false,
+    "code_or_config_changed": false,
+    "cloudflare_changed_by_this_records_task": false,
+    "deploy": false,
+    "secrets_or_token_values_written": false,
+    "research_vault_updated": false,
+    "research_vault_reason": "The session instruction recorded this day in ashleybrookeugc/Ashley-brooke-cohen. AGENTS.md also sends durable cross-project research to ashleybrookeugc/research-vault. That vault contents API returned 404 from this environment, so no vault file was read or written.",
+    "workflow": "AGENTS.md requires solved loops in docs/TROUBLESHOOTING_LOG.md and does not require a direct commit to main. Delivery is a branch and pull request, which is what the session asked for."
+  },
+  "goal": {
+    "page": "/video-test/",
+    "client": "Ashley's iPhone, camera roll or iCloud Drive",
+    "analyzer_host_requested": "Grok Bot cloud Linux computer (the box), instead of the Mac Studio",
+    "tools": "open source only",
+    "footage_upload_to_the_box": "approved by Ashley",
+    "outcome": "The box did not become the tunnel host. The private VPC design was kept."
+  },
+  "box_tunnel": {
+    "status": "FAIL",
+    "connector": "cloudflared named tunnel",
+    "dns": "fake-IP resolver 198.18.0.1",
+    "egress": "HTTPS-only proxy",
+    "blocked": [
+      "QUIC UDP 7844 to the Cloudflare edge",
+      "http2 TCP 7844 to the Cloudflare edge"
+    ],
+    "grok_bot_setting_route_traffic_through_this_computer": "turned off; tunnel still could not connect",
+    "rejected_workaround": {
+      "method": "hidden cloudflared --edge IP pinning",
+      "connected_for_seconds": 25,
+      "edge_ip_recorded": false,
+      "disposition": "stopped and rejected because it circumvents the host network controls"
+    },
+    "comparison_host": "A MacBook Pro connected. The account is not the blocker.",
+    "tunnel_created": {
+      "name": "abc-video-box",
+      "id": "09bad014-b1cc-45bd-be74-62b2cba0fd0a",
+      "account": "Ashley's Cloudflare account",
+      "ingress": "404-only",
+      "public_hostname": false,
+      "route": false,
+      "state_at_record": "unused and stopped"
+    },
+    "local_adapter": {
+      "command": "tools/video-testing/server.mjs",
+      "bind": "127.0.0.1:8789",
+      "auth": "bearer",
+      "health": "healthy on the box",
+      "token_value_recorded": false
+    },
+    "prevention": "Do not plan Cloudflare Tunnel hosting on the Grok Bot box. Use a Mac or another host with normal outbound 7844 access. Test tunnel connectivity before building on a host."
+  },
+  "macbook_tunnel_login": {
+    "status": "FAIL then recovered",
+    "symptom": "Cloudflare browser Authorize appeared to do nothing",
+    "root_cause": "cloudflared tunnel login stopped waiting after about 2 minutes, before the click, so the callback had nothing listening",
+    "verified_fix": "Rerun cloudflared tunnel login and keep the process waiting through the click",
+    "second_report": "A later 'nothing happens' report was a completed login",
+    "prevention": "Keep the login process alive while the user authorizes. Check for ~/.cloudflared/cert.pem before starting another login.",
+    "certificate_contents_recorded": false,
+    "distinct_from": "docs/test-receipts/2026-10-14-cloudflare-browser-test-lesson.md is the iPhone frame-capture lesson, not this login callback"
+  },
+  "existing_mac_studio_tunnel": {
+    "status": "identified and left untouched",
+    "tunnel_name": "mk-video-test-private",
+    "tunnel_id": "421e73e9-0364-4775-a0ca-6b27c9c3164b",
+    "vpc_service_name": "mk-video-test-loopback",
+    "vpc_service_id": "01a141ad-d6e8-7ae0-804c-0f98e58320ad",
+    "identified_from": "docs/test-receipts/2026-10-15-video-analyzer-mac-activation.json",
+    "owner": "Ashley's private Mac Studio tunnel",
+    "action": "none",
+    "prevention": "Read docs/test-receipts before treating an unknown Cloudflare tunnel or VPC service as foreign or deleting it."
+  },
+  "stale_handoff": {
+    "file": "GROKBOT_VIDEO_ANALYZER_HANDOFF.md",
+    "location": "ChatGPT project folder on the Mac",
+    "present_in_this_checkout": false,
+    "reread_during_this_records_task": false,
+    "contradiction": "The handoff's public-hostname plan contradicts the approved private Workers VPC binding VIDEO_TEST_PRIVATE_SERVICE",
+    "disposition": "Private design kept",
+    "website_sources": [
+      "tools/video-testing/README.md",
+      "docs/test-receipts/2026-10-15-video-analyzer-mac-activation.json"
+    ]
+  },
+  "records_gap": {
+    "status": "open",
+    "corrections_path": "VIDEO_TEST_ROOT/<job>/feedback/*.json",
+    "corrections_location": "Mac Studio only",
+    "committed": false,
+    "analyzer": {
+      "path": "tools/video-analyzer",
+      "branch": "video-analyzer/f003-source-time-fidelity",
+      "head": "e5dfe3e4d3967615f23eb064896de1303f86ded9",
+      "on_main": false,
+      "already_recorded_in": "docs/test-receipts/2026-10-15-video-analyzer-mac-activation.json"
+    },
+    "pr_65_does_not_close_the_gap": "PR #65 targets video-analyzer/f003-source-time-fidelity, not main",
+    "prior_local_persistence_note": "The 2026-10-15 receipt known_limits.remote_evidence_archival already says corrections persist locally and remote archival is not configured. The new fact is that the saved feedback JSON was never exported to Git.",
+    "prevention": "Commit the analyzer to main through a pull request, and define how corrections are exported to Git."
+  },
+  "box_packages": {
+    "apt_through_egress_proxy": "could not reach Debian mirrors",
+    "tesseract_debs": "fetched with curl and verified by MD5",
+    "md5_values_recorded": false,
+    "md5_reason": "The checksum strings were not supplied to this records task",
+    "python_venv": "3.12 with pocketsphinx 5.0.4 worked",
+    "system_python_unsuitable": [
+      "3.13",
+      "3.14"
+    ],
+    "mac_studio_activation_python": "The 2026-10-15 receipt used Python 3.11 for PocketSphinx 5.0.4 on the Mac. That is a different host.",
+    "pr_65_python": "PR #65 records Python 3.12.3 on its Linux x86_64 run and Tesseract 5.3.4 present for the pre-swap baseline only"
+  },
+  "extractor_swap": {
+    "canonical_record": {
+      "pull_request": "https://github.com/ashleybrookeugc/Ashley-brooke-cohen/pull/65",
+      "state_when_recorded": "open",
+      "branch": "cursor/oss-video-extractors-8f87",
+      "base_branch": "video-analyzer/f003-source-time-fidelity",
+      "receipt_on_that_branch": "docs/test-receipts/2026-10-31-video-analyzer-oss-extractors.json",
+      "log_headings_on_that_branch": [
+        "2026-10-31 — faster-whisper 1.2.1 crashes on PyAV 19",
+        "2026-10-31 — PySceneDetect 0.7.2 breaks on the OpenCV 5 wheel pip selects",
+        "2026-10-31 — PaddleOCR's default CPU pipeline crashes on paddlepaddle 3.3.1"
+      ],
+      "on_main": false,
+      "duplicated_json_here": false
+    },
+    "session_summary": {
+      "speech": "faster-whisper 1.2.1 (base.en) replaced PocketSphinx and returns the fair sentence",
+      "frozen_asr_test": "still fails only because it expects extractor name PocketSphinx; the test file was not edited",
+      "ocr": "RapidOCR 3.10.0 (PP-OCRv6 via ONNX) replaced Tesseract",
+      "paddleocr": {
+        "version": "3.7.0",
+        "shipped": false,
+        "paddlepaddle_3_3_1": "crashes the CPU pipeline in oneDNN (ConvertPirAttribute2RuntimeAttribute)",
+        "paddlepaddle_3_2_0": "completes the same call and was still not shipped"
+      },
+      "shots": "PySceneDetect 0.7.2 plus imagehash 4.3.2 replaced the ffmpeg scene threshold",
+      "opencv_pin": "opencv-python-headless==4.12.0.88 because OpenCV 5 removes cv2.INTER_NEAREST",
+      "scenedetect_install": "--no-deps",
+      "regional_sampler_kept": "64x64 sampler kept for F-004 and F-005",
+      "tests_passed_over_total": "17/18 before, 19/20 after",
+      "node_test_seconds": "18.44 to 68.91",
+      "max_rss_session_summary": "about 206 MB to about 388 MB",
+      "known_follow_up": "tools/video-testing health check on main still requires a tesseract binary"
+    },
+    "measurement_from_pr_65_receipt": {
+      "node_test_duration_ms": {
+        "before": 18438.691563,
+        "after": 68909.375455
+      },
+      "maximum_resident_set_size_kib": {
+        "before": 206372,
+        "after": 387996
+      },
+      "wall_seconds_includes_install_and_model_download": {
+        "before": 22.56,
+        "after": 86.44
+      },
+      "rss_note": "206372 KiB / 1000 = 206.372 MB and 387996 KiB / 1000 = 387.996 MB. The session summary's megabytes match that decimal rounding. They are not a second measurement.",
+      "test_time_note": "The session's 18.44 s and 68.91 s match node test duration, not the wall clock.",
+      "main_health_check_confirmed_at_dd3ae11": "tools/video-testing/server.mjs ready() still requires ffmpeg, ffprobe, and tesseract"
+    }
+  },
+  "heartbeat_and_promptfoo": {
+    "canonical_record": {
+      "pull_request": "https://github.com/ashleybrookeugc/Ashley-brooke-cohen/pull/64",
+      "state_when_recorded": "open",
+      "branch": "cursor/heartbeat-eval-promptfoo-196d",
+      "receipts_on_that_branch": [
+        "docs/test-receipts/2026-10-31-heartbeat-oss-evaluation.json",
+        "docs/test-receipts/2026-10-31-promptfoo-phrasing.json"
+      ],
+      "on_main": false,
+      "duplicated_json_here": false
+    },
+    "promptfoo": {
+      "version": "0.125.1",
+      "purpose": "routing and phrasing evals",
+      "result": "88 passed, 0 failed",
+      "npm_test_reported_by_pr_64": "210 passed, 4 skipped, 0 failed",
+      "rerun_by_this_records_task": false
+    },
+    "rejected_replacements": {
+      "healthchecks_io": "The session list was up, down, grace, and new. PR #64's receipt also includes paused. A read-only key returns those statuses and hides the ping URL. The ping body needs a read-write key. Minimum period is 60 seconds. The dashboard expires a worker after 20 seconds.",
+      "uptime_kuma": "No hosted free tier. A monitor cannot distinguish worker expiry from the monitor being offline."
+    },
+    "decision": "Custom HMAC heartbeat stays",
+    "unresolved": "Signed HTTP 401 and signed HTTP 503 on the existing heartbeat remain unresolved",
+    "prior_record": "docs/TROUBLESHOOTING_LOG.md section 2026-10-15 — Issue #31 signed 401 diagnosis",
+    "secret_names_not_rotated": [
+      "CONTROL_WORKER_TELEMETRY_SECRET"
+    ],
+    "accounts_created": []
+  },
+  "unpublished_video_feedback_research": {
+    "vidiq": "tried for AI video feedback and ran out of tokens",
+    "finding": "No embeddable plugin was found that gives unlimited AI feedback on uploaded unpublished files",
+    "published_youtube_tools": [
+      "TubeBuddy",
+      "vidIQ"
+    ],
+    "opusclip_api": "Pro-only; session price note $29/month",
+    "twelve_labs_free_tier": "caps unpublished video; no numeric cap was supplied and none is invented here",
+    "candidates_decision_pending_with": [
+      "Russell",
+      "Ashley"
+    ],
+    "candidates": [
+      {
+        "name": "local Qwen3-VL or Gemma 4 on the Mac",
+        "cost": "free",
+        "privacy": "private",
+        "tested_this_session": false,
+        "existing_related_consumer": "Picture descriptions already use mlx-community/Qwen3-VL-8B-Instruct-4bit through mlx-vlm 0.7.8 in tools/video-testing/visual-review.mjs. This candidate does not replace that consumer."
+      },
+      {
+        "name": "Cloudflare Workers AI Gemma 4 vision",
+        "session_allowance_note": "10,000 free neurons/day",
+        "data_path": "frames go to Cloudflare",
+        "tested_this_session": false,
+        "allowance_rechecked_by_this_records_task": false
+      },
+      {
+        "name": "Gemini API free tier",
+        "session_note": "best video understanding among the notes; free-tier content may be used and human-reviewed by Google",
+        "tested_this_session": false,
+        "prior_record": "docs/test-receipts/2026-10-27-video-service-qualification.json already marks Gemini inference NOT_RUN and eligible false. This session does not add an inference run."
+      }
+    ],
+    "provider_connected": false
+  },
+  "conflicts_with_existing_records": [
+    {
+      "topic": "frozen ASR actual string",
+      "session_shorthand": "this is fair versus this is there",
+      "pr_65_baseline_and_its_2026_10_09_log": "expected 'i do not think this is fair because you know the answer'; PocketSphinx returned 'i do not think this is there because you know the answer'",
+      "main_2026_10_15_activation_receipt": "tests.unchanged_analyzer.actual is 'i do not think is is there because you know the answer'",
+      "main_video_testing_readme": "Current activation section says ASR reads this is fair as is is there",
+      "resolution": "Those strings are left as written. The 2026-10-31 swap claim follows the analyzer frozen test on PR #65 (this is there before, the fair sentence after). The 2026-10-15 live activation receipt is a different run and was not edited."
+    },
+    {
+      "topic": "analyzer branch location",
+      "resolution": "Already in the 2026-10-15 activation receipt. This session adds the uncommitted Mac Studio feedback JSON and the still-open export rule. PR #65 does not move the analyzer onto main."
+    },
+    {
+      "topic": "mk-video-test-private",
+      "resolution": "Already created and documented on 2026-10-15. The 2026-10-31 action was recognition and no change."
+    },
+    {
+      "topic": "signed heartbeat 401 and 503",
+      "resolution": "Already unresolved in the 2026-10-15 issue #31 log entry. The 2026-10-31 fact is that Healthchecks.io and Uptime Kuma were rejected and the HMAC path stays. PR #64 holds the evaluation JSON."
+    },
+    {
+      "topic": "Gemini",
+      "resolution": "The 2026-10-27 qualification recorded documentation review and no inference. This session adds a pending candidate and a free-tier review caveat. It does not mark Gemini eligible or tested."
+    }
+  ],
+  "process_failures": [
+    {
+      "date": "2026-11-01",
+      "category": "process / agent usage",
+      "status": "rule adopted 2026-11-01",
+      "symptom": "Between 2026-10-31 and 2026-11-01 the assistant (Ashley Bot / Grok Bot) launched about six Cursor cloud coding agents (PRs #64, #65, #66, #67, #68 and research-vault #28) plus long test runs, including an arm64 QEMU-emulated analyzer test that stalled on RapidOCR for over 74 minutes. The user got a 'this chat uses too much usage' warning after about an hour of chatting, with nothing live or merged yet.",
+      "failed_attempts": "Those agents and the emulated suite were started in parallel. The usage cost was not stated, and the user was not asked first. The overrun was not written to GitHub until the user asked for this entry.",
+      "root_cause": "The agent launched heavy background work in parallel without telling the user the usage cost or asking first, ran long tests on emulated hardware where they could not realistically finish, and did not automatically log the problem. The user had to ask for it to be logged.",
+      "verified_fix": "Rule adopted 2026-11-01. No product code change.",
+      "prevention": "(1) Ask the user before launching any cloud coding agent or long or heavy test run, and say it uses significant usage. (2) Run at most one cloud agent at a time. (3) Do not run full analyzer suites under QEMU/emulation; run them on the real target host. (4) Prefer small, direct edits over new agents for docs-only changes. (5) Log every failure and process mistake to GitHub automatically, without being asked.",
+      "research_vault": "Not written. GitHub API for ashleybrookeugc/research-vault returned 404 from this environment on 2026-11-01, so the lesson is in this receipt and docs/TROUBLESHOOTING_LOG.md."
+    },
+    {
+      "date": "2026-10-31 to 2026-11-01",
+      "category": "process / wasted emulation test",
+      "status": "PR #68 arm64 suite remains unverified until it runs on the real Oracle VM",
+      "symptom": "While building PR #68 (commit 0c66113, Oracle Always Free A1 setup), the agent ran the full video analyzer suite under QEMU arm64 emulation. All packages installed, but the suite stalled at test 8 (RapidOCR) for over 74 minutes and never finished, so it verified nothing.",
+      "failed_attempts": "The user never asked for this test; the agent added it on its own. Russell reports it used most of his Grok Bot usage for the session (user report; exact usage numbers could not be loaded).",
+      "root_cause": "Running a CPU-heavy OCR/ASR suite under full-system emulation, with no time limit, without asking the user first.",
+      "verified_fix": "None. The PR #68 arm64 suite remains unverified until it runs on the real Oracle VM.",
+      "prevention": "Never run analyzer suites under QEMU/emulation; run them only on the real target host; put a hard timeout on any long test; ask the user before any heavy or long test run.",
+      "related_entry": "2026-11-01 process / agent usage heading names this stall inside the broader overrun. This item is the suite-specific record.",
+      "research_vault": "Not written. The vault was not reachable from this environment (GitHub API 404 on 2026-11-01), so the lesson is in this receipt and docs/TROUBLESHOOTING_LOG.md."
+    }
+  ],
+  "facts_not_placed": [],
+  "limits": [
+    "Session report, not a new tunnel test, analyzer run, or model call",
+    "No secret, token, certificate body, or MD5 string is included",
+    "PR #64 and PR #65 receipts are cited and not copied; they are not on main",
+    "GROKBOT_VIDEO_ANALYZER_HANDOFF.md was not opened from the Mac during this records task",
+    "research-vault was not updated",
+    "Physical iPhone acceptance of /video-test/ remains unpassed"
+  ],
+  "audit_clarification_2026_11_01": {
+    "status": "DOCUMENTATION_CORRECTED_NOT_RUNTIME_FIXED",
+    "historical_process_failures_preserved": true,
+    "verified_fix_label_correction": "Rule adoption only. No executable dispatch concurrency, usage budget or stop-condition gate proven.",
+    "usage_attribution": "Reported warning and user-reported resource impact; exact token/billing attribution unknown.",
+    "qemu_scope": "Seven tests finished before stalled eighth; entire suite incomplete, not a native Oracle qualification.",
+    "oracle": "VM absent at original test; PR #68 native ARM64 and deployed acceptance NOT_RUN.",
+    "research_vault": "Later accessible via connected GitHub; reusable lesson now committed at shared-capabilities/ai-workflows/failures/2026-11-01-parallel-cloud-agent-usage-overrun.md.",
+    "next_acceptance": "One approved bounded native-host smoke test, then focused regressions; do not launch QEMU full suite or parallel cloud agents without explicit authorization."
+  }
+}
