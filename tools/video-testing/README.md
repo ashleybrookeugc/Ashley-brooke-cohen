@@ -92,7 +92,9 @@ The previously configured `VIDEO_TEST_ACCESS_TOKEN` is ignored. Do not direct As
 
 ## Start the adapter on the authorized machine
 
-Use Node 22+ plus the existing FFmpeg, ffprobe, Tesseract and optional existing ASR runtime. Supply `VIDEO_TEST_WORKER_TOKEN` via the machine's secret mechanism (do not put it in shell history or Git).
+Use Node 22+ plus FFmpeg and ffprobe. Supply `VIDEO_TEST_WORKER_TOKEN` via the machine's secret mechanism (do not put it in shell history or Git).
+
+When `VIDEO_ANALYZER_MODULE` points at the pinned RapidOCR analyzer (`tools/video-analyzer/core.mjs` with `runtime-self-check.py` beside it), health requires that checkout's Python 3.12 runtime self-check instead of a `tesseract` binary. OCR is RapidOCR in the virtualenv. An older PocketSphinx checkout has no self-check file, and health still requires `tesseract` for that checkout. The always-on Oracle host is documented in [docs/ORACLE_ANALYZER_RUNBOOK.md](../../docs/ORACLE_ANALYZER_RUNBOOK.md).
 
 ```sh
 VIDEO_ANALYZER_MODULE=/absolute/path/to/existing/analyzer-checkout/tools/video-analyzer/core.mjs \

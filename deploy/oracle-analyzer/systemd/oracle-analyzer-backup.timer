@@ -1,0 +1,10 @@
+[Unit]
+Description=Nightly video-test correction backup
+
+[Timer]
+OnCalendar=*-*-* 06:10:00 UTC
+Persistent=true
+RandomizedDelaySec=20min
+
+[Install]
+WantedBy=timers.target

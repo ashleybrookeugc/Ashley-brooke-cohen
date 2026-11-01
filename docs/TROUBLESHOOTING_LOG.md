@@ -1,5 +1,41 @@
 # Ashley Brooke Cohen Website — Troubleshooting & Recovery Log
 
+## 2026-10-31 — Video-test health still required tesseract after RapidOCR
+
+**Symptom:** `tools/video-testing/server.mjs` `ready()` required a `tesseract` binary. The pinned analyzer on `cursor/oss-video-extractors-8f87` (PR #65) uses RapidOCR and does not call Tesseract. A host set up for that analyzer would report `unavailable` and refuse uploads.
+
+**Failed / looping attempts:** None in this session. PR #65 and PR #66 had already recorded the mismatch. This change does not reinstall Tesseract to satisfy the old check.
+
+**Root cause:** The adapter health check was written for the PocketSphinx checkout, which shells out to `tesseract`. The new checkout proves OCR by `runtime-self-check.py` next to `core.mjs`.
+
+**Verified fix:** If `runtime-self-check.py` is beside the module, health runs that checkout's `.video-analysis-runtime/venv/bin/python` on it and does not call `tesseract`. If the self-check file is absent, health still requires `tesseract`, so the Mac Studio's older checkout is unchanged. `test/video-testing.test.js` covers both branches.
+
+**Prevention rule:** Do not install Tesseract to make the new analyzer look healthy. When `runtime-self-check.py` is present, a passing self-check is the OCR/ASR/scene gate.
+
+## 2026-10-31 — Unquoted analyzer env value was executed as a command
+
+**Symptom:** The first Arm64 bootstrap died with `/etc/oracle-analyzer/analyzer.env: line 16: preserves: command not found` and exit 127, before package install.
+
+**Failed / looping attempts:** The line was written without quotes because it looked like a plain assignment.
+
+**Root cause:** `bootstrap.sh` sources the env file with bash. `ORACLE_ANALYZER_ALLOWED_TEST_FAILURE=ASR preserves tested connector words...` is not one assignment. Bash ran `preserves` as a command.
+
+**Verified fix:** Quote the value in `deploy/oracle-analyzer/analyzer.env.example` and `cloud-init.yaml`. The Arm bootstrap was rerun after the quote and got past that line.
+
+**Prevention rule:** Any value in `/etc/oracle-analyzer/analyzer.env` that contains a space must be in single quotes. The file is sourced, not parsed as KEY=VALUE text.
+
+## 2026-10-31 — pip's TLS to PyPI failed inside the QEMU arm64 container
+
+**Symptom:** In `ubuntu:24.04` under `docker --platform linux/arm64` on this x86 host, `pip install` of the pinned requirements failed with `SSL: WRONG_VERSION_NUMBER` against `https://pypi.org/simple/anyio/`. `curl` and `urllib.request` to the same URL returned HTTP 200, and a direct `ssl` handshake to the same IPv4 addresses negotiated TLS 1.3.
+
+**Failed / looping attempts:** Retried pip. Compared IPv4 and IPv6. IPv6 is unreachable here (`ENETUNREACH`), which is a different error. Disabling certificate checks would not fix a handshake that does not complete. Reproduced with pip's vendored urllib3 `HTTPSConnection.connect`, not with Python's default SSL context.
+
+**Root cause:** Not fully isolated. The failure is in pip 24's vendored urllib3 path inside this QEMU user-mode container. It was not observed with the system TLS stack. This is not evidence that pip fails on a native Oracle Ampere VM.
+
+**Verified fix for the measurement:** Downloaded every pinned wheel on the host with `pip download` for Linux aarch64, then `pip install --no-index` inside the Arm container. The runtime self-check then printed Python 3.12.3, faster-whisper 1.2.1, RapidOCR 3.10.0, PySceneDetect 0.7.2, imagehash 4.3.2, and cv2 4.12.0. `base.en` revision `3d3d5dee26484f91867d81cb899cfcf72b96be6c` prefetched with int8. The bootstrap script was not changed to work around the emulator. The analyzer suite was started there. The first seven tests passed. The eighth, `ASR preserves tested connector words and negation with versioned word timestamps`, was still inside one RapidOCR call after 74 minutes of CPU time, so the suite was stopped before the frozen PocketSphinx failure could be observed on Arm. That is not an Arm pass and not an Arm fail of the frozen test.
+
+**Prevention rule:** Do not "fix" Oracle bootstrap by disabling TLS or switching PyPI because this emulator failed. If the native VM's pip shows `WRONG_VERSION_NUMBER`, capture whether `python3 -c 'import urllib.request; ...'` succeeds before changing the installer.
+
 ## 2026-10-28 — Fresh MiniCPM runs followed by independent gate: bounded PASS
 
 Two new separate browser conversations used the same hash-verified speech/silent twins, identical prompt, Video-Audio Analysis preset,256tokens, voice output off. Actual fresh requests req_1793170096167 and req_1793170122435 completed (UI9.4s/8.9s). Speech again recovers the complete negation/fair/connector sentence. Silent output again hallucinates a loud yawn/groan and deep resonant voice, including a sound clause inside a visual paragraph; it also proposes an unadmitted15–16s interval beyond this15s clip.

@@ -1,0 +1,29 @@
+[Unit]
+Description=Private cloudflared tunnel for the video analyzer
+After=network-online.target oracle-analyzer-adapter.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=analyzer
+Group=analyzer
+ExecStart=/usr/local/lib/oracle-analyzer/run-tunnel.sh
+Restart=on-failure
+RestartSec=5
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+LockPersonality=true
+RestrictRealtime=true
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+SystemCallArchitectures=native
+ReadWritePaths=/var/lib/oracle-analyzer
+
+[Install]
+WantedBy=multi-user.target
