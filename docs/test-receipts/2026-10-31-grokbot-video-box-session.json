@@ -129,7 +129,10 @@
     "md5_values_recorded": false,
     "md5_reason": "The checksum strings were not supplied to this records task",
     "python_venv": "3.12 with pocketsphinx 5.0.4 worked",
-    "system_python_unsuitable": ["3.13", "3.14"],
+    "system_python_unsuitable": [
+      "3.13",
+      "3.14"
+    ],
     "mac_studio_activation_python": "The 2026-10-15 receipt used Python 3.11 for PocketSphinx 5.0.4 on the Mac. That is a different host.",
     "pr_65_python": "PR #65 records Python 3.12.3 on its Linux x86_64 run and Tesseract 5.3.4 present for the pre-swap baseline only"
   },
@@ -312,5 +315,15 @@
     "GROKBOT_VIDEO_ANALYZER_HANDOFF.md was not opened from the Mac during this records task",
     "research-vault was not updated",
     "Physical iPhone acceptance of /video-test/ remains unpassed"
-  ]
+  ],
+  "audit_clarification_2026_11_01": {
+    "status": "DOCUMENTATION_CORRECTED_NOT_RUNTIME_FIXED",
+    "historical_process_failures_preserved": true,
+    "verified_fix_label_correction": "Rule adoption only. No executable dispatch concurrency, usage budget or stop-condition gate proven.",
+    "usage_attribution": "Reported warning and user-reported resource impact; exact token/billing attribution unknown.",
+    "qemu_scope": "Seven tests finished before stalled eighth; entire suite incomplete, not a native Oracle qualification.",
+    "oracle": "VM absent at original test; PR #68 native ARM64 and deployed acceptance NOT_RUN.",
+    "research_vault": "Later accessible via connected GitHub; reusable lesson now committed at shared-capabilities/ai-workflows/failures/2026-11-01-parallel-cloud-agent-usage-overrun.md.",
+    "next_acceptance": "One approved bounded native-host smoke test, then focused regressions; do not launch QEMU full suite or parallel cloud agents without explicit authorization."
+  }
 }
