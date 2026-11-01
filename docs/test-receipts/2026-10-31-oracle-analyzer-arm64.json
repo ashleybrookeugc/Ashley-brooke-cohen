@@ -1,0 +1,93 @@
+{
+  "schema": "ashley.oracle-analyzer-arm64.v1",
+  "metadata": {
+    "status": "partial",
+    "date": "2026-10-31",
+    "timezone": "UTC",
+    "type": "evidence",
+    "topics": ["video-understanding", "deployment", "arm64"],
+    "products": ["Ashley-brooke-cohen"],
+    "source_scope": "emulator",
+    "confidence": "high for the commands that finished; the analyzer suite did not finish"
+  },
+  "decision": {
+    "host": "Oracle Cloud Always Free Ampere A1",
+    "chosen_by": "Russell",
+    "chosen_on": "2026-10-31",
+    "account_existed": false,
+    "deployed": false,
+    "cloudflare_changed": false,
+    "merged": false
+  },
+  "branch_base": {
+    "chosen": "origin/main",
+    "not_chosen": "cursor/oss-video-extractors-8f87",
+    "reason": "That analyzer branch merges with main at 2a6ef04 and does not contain tools/video-testing/server.mjs. A pull request from it into main cannot carry the health-check fix or the adapter the VM runs. The VM clones main's descendant for the adapter and checks out cursor/oss-video-extractors-8f87 separately for VIDEO_ANALYZER_MODULE."
+  },
+  "arm64": {
+    "method": "docker run --platform linux/arm64 ubuntu:24.04, qemu-user-static binfmt on an x86_64 host",
+    "uname_m": "aarch64",
+    "native_oracle_vm": false,
+    "node": "v24.22.2",
+    "node_tarball_sha256": "eb187837a2230d4047161ac0be008584e16b46f726e9c9490ee35dc6b17d9ba8",
+    "cloudflared": "2026.10.7",
+    "cloudflared_deb_sha256": "d9407eb6e70ac31f54978a6b408a0320b51b664a6d0b498248692d7ac56bf836",
+    "ffmpeg": "6.1.1-3ubuntu5",
+    "analyzer_checkout": "727ddf816b80e10b17ea1a453cd19446dd5d2e08",
+    "wheels": "Every pinned requirement plus scenedetect==0.7.2 was downloaded on the host as a Linux aarch64 or pure-Python wheel and installed with pip --no-index inside the Arm container.",
+    "self_check": {
+      "python": "3.12.3",
+      "faster_whisper": "1.2.1",
+      "rapidocr": "3.10.0",
+      "scenedetect": "0.7.2",
+      "imagehash": "4.3.2",
+      "cv2": "4.12.0"
+    },
+    "whisper_prefetch": {
+      "prefetched": true,
+      "model_family": "base.en",
+      "model_revision": "3d3d5dee26484f91867d81cb899cfcf72b96be6c",
+      "compute_type": "int8"
+    },
+    "rapidocr_construct": "rapidocr-warm",
+    "suite": {
+      "finished": false,
+      "passed_before_stop": [
+        "direct-file intake decodes completely and persists a verified evidence package",
+        "incomplete/truncated input fails complete-source decode",
+        "failed persistence/read-back is detected after a successful write",
+        "evidence package missing a required lane is rejected",
+        "URL intake distinguishes access-blocked, unavailable, temporary, and unsupported sources",
+        "retrievable direct-media URL is processed as real media",
+        "safe-delete gate requires completed lanes, write, read-back, and retention state"
+      ],
+      "running_when_stopped": "ASR preserves tested connector words and negation with versioned word timestamps",
+      "running_for": "still inside one RapidOCR request of 21 images after 74 minutes",
+      "frozen_pocketsphinx_assertion": "not reached on Arm, so it was neither observed failing nor observed passing",
+      "stopped_reason": "QEMU user-mode made one OCR call longer than the rest of the session could wait. The container was still using CPU. This is not a completed suite."
+    },
+    "pip_from_pypi": {
+      "status": "FAIL in this container only",
+      "error": "SSL: WRONG_VERSION_NUMBER from pip 24 vendored urllib3 to https://pypi.org/simple/anyio/",
+      "curl_and_urllib": "HTTP 200",
+      "bootstrap_changed": false
+    },
+    "firewall": "No /etc/iptables/rules.v4 in the container, so bootstrap left inbound rules unchanged, as written.",
+    "systemd": "not running in the container; unit files were not enabled there"
+  },
+  "host_tests": {
+    "arch": "x86_64",
+    "node": "v22.23.4",
+    "files": [
+      "test/oracle-analyzer-host.test.js",
+      "test/video-testing.test.js"
+    ],
+    "result": "oracle-analyzer-host 4 passed, including the age-encrypted backup. video-testing health tests passed. The two real-analyzer integration tests skipped because tools/video-analyzer is not on main."
+  },
+  "not_done": [
+    "Oracle account and VM do not exist",
+    "No Cloudflare tunnel, VPC service, secret, or deploy",
+    "Mac Studio tunnel mk-video-test-private and VPC service 01a141ad-d6e8-7ae0-804c-0f98e58320ad were not touched",
+    "research-vault contents API returned 404 from this environment, so the vault was not updated"
+  ]
+}

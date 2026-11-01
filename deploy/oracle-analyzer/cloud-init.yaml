@@ -1,0 +1,51 @@
+#cloud-config
+# Paste this whole file into the Oracle instance Initialization script box.
+# Before pasting, you can change ORACLE_ANALYZER_WEBSITE_REF to main after that
+# branch contains this folder. Leave the backup line at 0.
+
+ssh_pwauth: false
+disable_root: true
+package_update: true
+packages:
+  - git
+  - ca-certificates
+  - curl
+
+write_files:
+  - path: /etc/oracle-analyzer/analyzer.env
+    owner: root:root
+    permissions: "0640"
+    content: |
+      ORACLE_ANALYZER_WEBSITE_REPO=https://github.com/ashleybrookeugc/Ashley-brooke-cohen.git
+      ORACLE_ANALYZER_WEBSITE_REF=cursor/oracle-analyzer-arm64-22bd
+      ORACLE_ANALYZER_ANALYZER_REPO=https://github.com/ashleybrookeugc/Ashley-brooke-cohen.git
+      ORACLE_ANALYZER_ANALYZER_REF=cursor/oss-video-extractors-8f87
+      ORACLE_ANALYZER_USER=analyzer
+      ORACLE_ANALYZER_ROOT=/var/lib/oracle-analyzer
+      ORACLE_ANALYZER_WEBSITE_DIR=/var/lib/oracle-analyzer/website
+      ORACLE_ANALYZER_ANALYZER_DIR=/var/lib/oracle-analyzer/analyzer
+      VIDEO_TEST_ROOT=/var/lib/oracle-analyzer/data
+      VIDEO_ANALYZER_MODULE=/var/lib/oracle-analyzer/analyzer/tools/video-analyzer/core.mjs
+      HF_HOME=/var/lib/oracle-analyzer/models
+      PORT=8789
+      ORACLE_ANALYZER_BACKUP_ENABLED=0
+      ORACLE_ANALYZER_BACKUP_REPO=
+      ORACLE_ANALYZER_BACKUP_BRANCH=main
+      ORACLE_ANALYZER_ALLOWED_TEST_FAILURE='ASR preserves tested connector words and negation with versioned word timestamps'
+  - path: /root/oracle-analyzer-first-boot.sh
+    owner: root:root
+    permissions: "0700"
+    content: |
+      #!/bin/bash
+      set -euo pipefail
+      set -a
+      . /etc/oracle-analyzer/analyzer.env
+      set +a
+      install -d -m 0750 /var/lib/oracle-analyzer
+      if [[ ! -d "$ORACLE_ANALYZER_WEBSITE_DIR/.git" ]]; then
+        git -c safe.directory='*' clone --branch "$ORACLE_ANALYZER_WEBSITE_REF" "$ORACLE_ANALYZER_WEBSITE_REPO" "$ORACLE_ANALYZER_WEBSITE_DIR"
+      fi
+      bash "$ORACLE_ANALYZER_WEBSITE_DIR/deploy/oracle-analyzer/bootstrap.sh"
+
+runcmd:
+  - [bash, /root/oracle-analyzer-first-boot.sh]

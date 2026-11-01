@@ -1,0 +1,9 @@
+[Unit]
+Description=Pull-test the private video analyzer and restart only when tests pass
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=root
+ExecStart=/usr/local/lib/oracle-analyzer/update.sh
+Nice=10

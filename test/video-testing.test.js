@@ -107,6 +107,45 @@ test('actual synthetic upload: unchanged analyzer, frames, source times, range p
  const reread=await send('/jobs/'+job.id+'/feedback').then(r=>r.json());assert.equal(reread.feedback.length,1);assert.equal(reread.feedback[0].text,feedback.text);assert.equal((await send('/jobs/'+job.id+'/result')).status,200);
  const invalid=await send('/jobs',{method:'POST',body:'not a video'}).then(r=>r.json());assert.equal((await wait(invalid.id)).state,'failed');assert.equal((await send('/jobs/'+invalid.id+'/result')).status,409);
 });
+async function rapidLayout(root,{selfCheck=true}={}){
+ const moduleDir=join(root,'tools','video-analyzer');
+ await mkdir(moduleDir,{recursive:true});
+ const modulePath=join(moduleDir,'core.mjs');
+ await writeFile(modulePath,'export {}\n');
+ if(selfCheck)await writeFile(join(moduleDir,'runtime-self-check.py'),'# rapidocr self-check\n');
+ const python=join(root,'.video-analysis-runtime','venv','bin','python');
+ await mkdir(join(root,'.video-analysis-runtime','venv','bin'),{recursive:true});
+ await writeFile(python,'#!/bin/sh\nexit 0\n',{mode:0o755});
+ return {modulePath,python};
+}
+test('RapidOCR analyzer health uses the runtime self-check and does not require tesseract',async t=>{
+ const root=await mkdtemp(join(tmpdir(),'video-rapid-health-'));
+ const {modulePath,python}=await rapidLayout(root);
+ const calls=[];let pythonStatus=0,ffmpegStatus=0;
+ const commandStatus=(cmd)=>{calls.push(cmd);if(cmd==='ffmpeg'||cmd==='ffprobe')return ffmpegStatus;if(cmd===python)return pythonStatus;if(cmd==='tesseract')return 9;return 1;};
+ const server=await createVideoWorker({root:join(root,'runs'),modulePath,token:env.VIDEO_TEST_WORKER_TOKEN,commandStatus}),base=await listen(server);t.after(()=>close(server));
+ const health=()=>fetch(base+'/video-worker/health',{headers:{authorization:'Bearer '+env.VIDEO_TEST_WORKER_TOKEN}}).then(r=>r.json());
+ assert.equal((await health()).state,'available');
+ assert.equal(calls.includes('tesseract'),false);
+ calls.length=0;pythonStatus=1;
+ assert.equal((await health()).state,'unavailable');
+ assert.equal(calls.includes('tesseract'),false);
+ calls.length=0;pythonStatus=0;ffmpegStatus=1;
+ assert.equal((await health()).state,'unavailable');
+ assert.equal(calls.includes('tesseract'),false);
+});
+test('older analyzer health still requires tesseract when the RapidOCR self-check is absent',async t=>{
+ const root=await mkdtemp(join(tmpdir(),'video-legacy-health-'));
+ const {modulePath}=await rapidLayout(root,{selfCheck:false});
+ const calls=[];let tesseractStatus=1;
+ const commandStatus=(cmd)=>{calls.push(cmd);if(cmd==='ffmpeg'||cmd==='ffprobe')return 0;if(cmd==='tesseract')return tesseractStatus;return 1;};
+ const server=await createVideoWorker({root:join(root,'runs'),modulePath,token:env.VIDEO_TEST_WORKER_TOKEN,commandStatus}),base=await listen(server);t.after(()=>close(server));
+ const health=()=>fetch(base+'/video-worker/health',{headers:{authorization:'Bearer '+env.VIDEO_TEST_WORKER_TOKEN}}).then(r=>r.json());
+ assert.equal((await health()).state,'unavailable');
+ assert.equal(calls.includes('tesseract'),true);
+ calls.length=0;tesseractStatus=0;
+ assert.equal((await health()).state,'available');
+});
 test('missing analyzer is unavailable; interrupted jobs become failed after restart',async t=>{
  const root=await mkdtemp(join(tmpdir(),'video-offline-')),id=randomUUID();await mkdir(join(root,id));await writeFile(join(root,id,'job.json'),JSON.stringify({id,state:'running'}));
  const server=await createVideoWorker({root,modulePath:join(root,'absent.mjs'),token}),base=await listen(server);t.after(()=>close(server));const headers={authorization:'Bearer '+token};

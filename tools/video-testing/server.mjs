@@ -13,11 +13,12 @@ const digest=v=>createHash('sha256').update(v).digest();
 const send=(res,status,body)=>{res.writeHead(status,{'content-type':'application/json','cache-control':'no-store','x-content-type-options':'nosniff'});res.end(JSON.stringify(body));};
 async function readJson(path){return JSON.parse(await readFile(path,'utf8'));}
 async function save(path,value){const temp=path+'.'+randomUUID()+'.tmp';await writeFile(temp,JSON.stringify(value),{mode:0o600});await rename(temp,path);}
-export async function createVideoWorker({root,modulePath,token,maxBytes=LIMIT}={}){
+export async function createVideoWorker({root,modulePath,token,maxBytes=LIMIT,commandStatus}={}){
   if(!token||token.length<32)throw Error('VIDEO_TEST_WORKER_TOKEN must contain at least 32 characters');
   root=resolve(root);modulePath=resolve(modulePath);
   await mkdir(root,{recursive:true,mode:0o700});
   let active=null;
+  const statusOf=commandStatus||((cmd,args)=>spawnSync(cmd,args,{stdio:'ignore'}).status);
   // A lost process is a failed run, never an invented running/completed state.
   for(const id of await readdir(root))if(/^[a-f0-9-]{36}$/.test(id)){
     const path=join(root,id,'job.json');
@@ -25,7 +26,15 @@ export async function createVideoWorker({root,modulePath,token,maxBytes=LIMIT}={
   }
   async function ready(){
     try{await stat(modulePath);}catch{return false;}
-    return ['ffmpeg','ffprobe','tesseract'].every(cmd=>spawnSync(cmd,[cmd==='tesseract'?'--version':'-version'],{stdio:'ignore'}).status===0);
+    if(statusOf('ffmpeg',['-version'])!==0||statusOf('ffprobe',['-version'])!==0)return false;
+    // The pinned RapidOCR analyzer ships runtime-self-check.py beside core.mjs.
+    // That runtime replaced the tesseract binary. Older PocketSphinx checkouts do not
+    // have the self-check, and those still need the tesseract executable.
+    const selfCheck=join(dirname(modulePath),'runtime-self-check.py');
+    try{await stat(selfCheck);}catch{return statusOf('tesseract',['--version'])===0;}
+    const python=resolve(dirname(modulePath),'../../.video-analysis-runtime/venv/bin/python');
+    try{await stat(python);}catch{return false;}
+    return statusOf(python,[selfCheck])===0;
   }
   async function jobFor(id){return readJson(join(root,id,'job.json'));}
   async function verifiedStoredResult(id){
