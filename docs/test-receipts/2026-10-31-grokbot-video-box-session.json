@@ -279,6 +279,19 @@
       "resolution": "The 2026-10-27 qualification recorded documentation review and no inference. This session adds a pending candidate and a free-tier review caveat. It does not mark Gemini eligible or tested."
     }
   ],
+  "process_failures": [
+    {
+      "date": "2026-11-01",
+      "category": "process / agent usage",
+      "status": "rule adopted 2026-11-01",
+      "symptom": "Between 2026-10-31 and 2026-11-01 the assistant (Ashley Bot / Grok Bot) launched about six Cursor cloud coding agents (PRs #64, #65, #66, #67, #68 and research-vault #28) plus long test runs, including an arm64 QEMU-emulated analyzer test that stalled on RapidOCR for over 74 minutes. The user got a 'this chat uses too much usage' warning after about an hour of chatting, with nothing live or merged yet.",
+      "failed_attempts": "Those agents and the emulated suite were started in parallel. The usage cost was not stated, and the user was not asked first. The overrun was not written to GitHub until the user asked for this entry.",
+      "root_cause": "The agent launched heavy background work in parallel without telling the user the usage cost or asking first, ran long tests on emulated hardware where they could not realistically finish, and did not automatically log the problem. The user had to ask for it to be logged.",
+      "verified_fix": "Rule adopted 2026-11-01. No product code change.",
+      "prevention": "(1) Ask the user before launching any cloud coding agent or long or heavy test run, and say it uses significant usage. (2) Run at most one cloud agent at a time. (3) Do not run full analyzer suites under QEMU/emulation; run them on the real target host. (4) Prefer small, direct edits over new agents for docs-only changes. (5) Log every failure and process mistake to GitHub automatically, without being asked.",
+      "research_vault": "Not written. GitHub API for ashleybrookeugc/research-vault returned 404 from this environment on 2026-11-01, so the lesson is in this receipt and docs/TROUBLESHOOTING_LOG.md."
+    }
+  ],
   "facts_not_placed": [],
   "limits": [
     "Session report, not a new tunnel test, analyzer run, or model call",

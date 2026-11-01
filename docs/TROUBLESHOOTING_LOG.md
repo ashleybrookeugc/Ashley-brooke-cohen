@@ -1,5 +1,19 @@
 # Ashley Brooke Cohen Website — Troubleshooting & Recovery Log
 
+## 2026-11-01 — Process / agent usage: parallel cloud agents overran usage
+
+**Symptom:** Between 2026-10-31 and 2026-11-01 the assistant (Ashley Bot / Grok Bot) launched about six Cursor cloud coding agents (PRs #64, #65, #66, #67, #68 and research-vault #28) plus long test runs, including an arm64 QEMU-emulated analyzer test that stalled on RapidOCR for over 74 minutes. The user got a "this chat uses too much usage" warning after about an hour of chatting, with nothing live or merged yet.
+
+**Failed attempts:** Those agents and the emulated suite were started in parallel. The usage cost was not stated, and the user was not asked first. The overrun was not written to GitHub until the user asked for this entry.
+
+**Root cause:** The agent launched heavy background work in parallel without telling the user the usage cost or asking first, ran long tests on emulated hardware where they could not realistically finish, and did not automatically log the problem. The user had to ask for it to be logged.
+
+**Verified fix:** Rule adopted 2026-11-01. No product code change.
+
+**Prevention rule:** (1) Ask the user before launching any cloud coding agent or long or heavy test run, and say it uses significant usage. (2) Run at most one cloud agent at a time. (3) Do not run full analyzer suites under QEMU/emulation; run them on the real target host. (4) Prefer small, direct edits over new agents for docs-only changes. (5) Log every failure and process mistake to GitHub automatically, without being asked.
+
+**Evidence:** `docs/test-receipts/2026-10-31-grokbot-video-box-session.json` (`process_failures`). The research vault was not reachable from this environment (GitHub API 404 on 2026-11-01), so this repository is the copy.
+
 ## 2026-10-31 — Grok Bot box session: iPhone `/video-test/` on the cloud computer
 
 **Session goal:** Make `/video-test/` usable from Ashley's iPhone (camera roll / iCloud Drive). Run the analyzer on the Grok Bot cloud Linux computer (the box) instead of the Mac Studio, with open-source tools only. Ashley approved footage upload to the box.
