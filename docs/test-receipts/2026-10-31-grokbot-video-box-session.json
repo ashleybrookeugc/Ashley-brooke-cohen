@@ -290,6 +290,18 @@
       "verified_fix": "Rule adopted 2026-11-01. No product code change.",
       "prevention": "(1) Ask the user before launching any cloud coding agent or long or heavy test run, and say it uses significant usage. (2) Run at most one cloud agent at a time. (3) Do not run full analyzer suites under QEMU/emulation; run them on the real target host. (4) Prefer small, direct edits over new agents for docs-only changes. (5) Log every failure and process mistake to GitHub automatically, without being asked.",
       "research_vault": "Not written. GitHub API for ashleybrookeugc/research-vault returned 404 from this environment on 2026-11-01, so the lesson is in this receipt and docs/TROUBLESHOOTING_LOG.md."
+    },
+    {
+      "date": "2026-10-31 to 2026-11-01",
+      "category": "process / wasted emulation test",
+      "status": "PR #68 arm64 suite remains unverified until it runs on the real Oracle VM",
+      "symptom": "While building PR #68 (commit 0c66113, Oracle Always Free A1 setup), the agent ran the full video analyzer suite under QEMU arm64 emulation. All packages installed, but the suite stalled at test 8 (RapidOCR) for over 74 minutes and never finished, so it verified nothing.",
+      "failed_attempts": "The user never asked for this test; the agent added it on its own. Russell reports it used most of his Grok Bot usage for the session (user report; exact usage numbers could not be loaded).",
+      "root_cause": "Running a CPU-heavy OCR/ASR suite under full-system emulation, with no time limit, without asking the user first.",
+      "verified_fix": "None. The PR #68 arm64 suite remains unverified until it runs on the real Oracle VM.",
+      "prevention": "Never run analyzer suites under QEMU/emulation; run them only on the real target host; put a hard timeout on any long test; ask the user before any heavy or long test run.",
+      "related_entry": "2026-11-01 process / agent usage heading names this stall inside the broader overrun. This item is the suite-specific record.",
+      "research_vault": "Not written. The vault was not reachable from this environment (GitHub API 404 on 2026-11-01), so the lesson is in this receipt and docs/TROUBLESHOOTING_LOG.md."
     }
   ],
   "facts_not_placed": [],

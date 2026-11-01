@@ -1,5 +1,19 @@
 # Ashley Brooke Cohen Website — Troubleshooting & Recovery Log
 
+## 2026-10-31 — QEMU arm64 analyzer suite on PR #68 verified nothing
+
+**Symptom:** From 2026-10-31 to 2026-11-01, while building PR #68 (commit `0c66113`, Oracle Always Free A1 setup), the agent ran the full video analyzer suite under QEMU arm64 emulation. All packages installed, but the suite stalled at test 8 (RapidOCR) for over 74 minutes and never finished, so it verified nothing.
+
+**Failed attempts:** The user never asked for this test. The agent added it on its own. Russell reports it used most of his Grok Bot usage for the session. That is a user report; exact usage numbers could not be loaded.
+
+**Root cause:** The agent ran a CPU-heavy OCR/ASR suite under full-system emulation, with no time limit, and without asking the user first.
+
+**Verified fix:** None. The PR #68 arm64 suite remains unverified until it runs on the real Oracle VM.
+
+**Prevention rule:** Never run analyzer suites under QEMU or other emulation. Run them only on the real target host. Put a hard timeout on any long test. Ask the user before any heavy or long test run.
+
+**Evidence:** `docs/test-receipts/2026-10-31-grokbot-video-box-session.json` (`process_failures`). The same stall is also named in the 2026-11-01 process / agent usage heading. This entry is the suite-specific record.
+
 ## 2026-11-01 — Process / agent usage: parallel cloud agents overran usage
 
 **Symptom:** Between 2026-10-31 and 2026-11-01 the assistant (Ashley Bot / Grok Bot) launched about six Cursor cloud coding agents (PRs #64, #65, #66, #67, #68 and research-vault #28) plus long test runs, including an arm64 QEMU-emulated analyzer test that stalled on RapidOCR for over 74 minutes. The user got a "this chat uses too much usage" warning after about an hour of chatting, with nothing live or merged yet.
