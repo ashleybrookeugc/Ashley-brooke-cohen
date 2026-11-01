@@ -14,6 +14,10 @@
 
 **Evidence:** `docs/test-receipts/2026-10-31-grokbot-video-box-session.json` (`process_failures`). The same stall is also named in the 2026-11-01 process / agent usage heading. This entry is the suite-specific record.
 
+### 2026-11-01 audit clarification — QEMU incident (preserve original wording above)
+
+**Status: failure documented; no repair verified.** The statement “verified nothing” refers to the **unfinished full suite**, not to the seven individual tests that completed before the stall. The 74-minute duration and resource impact come from the recorded session/user report; exact billing, token use, and attribution to this test are **not independently measured**. PR #68's CI success does not establish native Oracle ARM64 execution, because the VM did not exist. Do not retry a full analyzer suite in QEMU. Next permitted verification is a small native-host smoke test, then bounded regressions with an explicit timeout and approval for expensive work.
+
 ## 2026-11-01 — Process / agent usage: parallel cloud agents overran usage
 
 **Symptom:** Between 2026-10-31 and 2026-11-01 the assistant (Ashley Bot / Grok Bot) launched about six Cursor cloud coding agents (PRs #64, #65, #66, #67, #68 and research-vault #28) plus long test runs, including an arm64 QEMU-emulated analyzer test that stalled on RapidOCR for over 74 minutes. The user got a "this chat uses too much usage" warning after about an hour of chatting, with nothing live or merged yet.
@@ -27,6 +31,14 @@
 **Prevention rule:** (1) Ask the user before launching any cloud coding agent or long or heavy test run, and say it uses significant usage. (2) Run at most one cloud agent at a time. (3) Do not run full analyzer suites under QEMU/emulation; run them on the real target host. (4) Prefer small, direct edits over new agents for docs-only changes. (5) Log every failure and process mistake to GitHub automatically, without being asked.
 
 **Evidence:** `docs/test-receipts/2026-10-31-grokbot-video-box-session.json` (`process_failures`). The research vault was not reachable from this environment (GitHub API 404 on 2026-11-01), so this repository is the copy.
+
+### 2026-11-01 audit clarification — parallel agents and “Verified fix” label
+
+**Historical entry above is retained unaltered.** “Rule adopted” is **not a verified fix**: no dispatcher-enforced one-agent cap, resource budget gate, cancellation policy, or acceptance regression was implemented. The warning and overlapping PRs are reported evidence; exact platform usage cost and causality remain unmeasured. The correct current status is **PREVENTION ADOPTED / ENFORCEMENT NOT_RUN / USER-VISIBLE OUTCOME NOT_VERIFIED**. Future agents must not quote the historical “Verified fix” line without this qualification.
+
+**Pre-dispatch gate (effective process requirement; code enforcement pending):** check active agent count and existing work, prefer reusing the current worker, estimate incremental usage or mark UNKNOWN, state time/test limits, choose the smallest diagnostic, and ask before material cloud compute or long tests. Default maximum one new cloud coding agent; reject or queue additional dispatch unless explicitly authorized. Log an actual receipt with worker IDs, attempts, stop reason, and measured-versus-estimated usage. A green CI check, rule text, or started job is not evidence of completed deployment.
+
+**Cross-project sync correction:** the Grokbot environment reported a research-vault 404 at that time; a later authorized GitHub session successfully wrote the reusable lesson to [Project Truth](https://github.com/ashleybrookeugc/research-vault/blob/main/shared-capabilities/ai-workflows/failures/2026-11-01-parallel-cloud-agent-usage-overrun.md). The historical 404 report is retained as an environment-specific observation, not a continuing claim that the vault is inaccessible.
 
 ## 2026-10-31 — Grok Bot box session: iPhone `/video-test/` on the cloud computer
 
