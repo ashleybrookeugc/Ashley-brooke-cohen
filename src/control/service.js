@@ -3,6 +3,7 @@ import {routingDiagnostic} from './diagnostics.js';
 import {applyProposal,normalizeFactKey,parseActiveWork,parseCanonicalFacts,RouteValidationError,validateRoute,WRITE_REPO} from './contracts.js';
 import {buildMyWorkProjection} from './my-work.js';
 import {triageRequest} from './triage.js';
+import {evaluateUgcConceptGate} from './ugc-research-gate.js';
 const markerStart='<!-- mary-kate-control-write:';
 const markerEnd='-->';
 const encodeMarker=value=>btoa(unescape(encodeURIComponent(JSON.stringify(value)))).replaceAll('+','-').replaceAll('/','_').replaceAll('=','');
@@ -330,7 +331,11 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
         return buildMyWorkProjection({sourceStatus:'unavailable',generatedAt:new Date(now()).toISOString()});
       }
     },
-    async capture(text,{requiredFactKeys=[],contextWorkstream=null,refreshContext=false,conversationHistory=[],conversationId=null}={}) {
+    async capture(text,{requiredFactKeys=[],contextWorkstream=null,refreshContext=false,conversationHistory=[],conversationId=null,ugcConceptApproval=null}={}) {
+      if(ugcConceptApproval?.requested===true) {
+        const gate=evaluateUgcConceptGate({requiresCurrentResearch:ugcConceptApproval.requiresCurrentResearch===true,receipts:ugcConceptApproval.receipts,requestStage:'concept_lock'});
+        if(!gate.allowed) throw new PriorStateGateError('missing','UGC concept approval blocked: missing verified '+gate.missing.join(', '),{gate:gate.version,status:'blocked',blockers:gate.missing});
+      }
       const started=now();
       const trace={version:'control-retrieval-trace.v1',request_id:crypto.randomUUID(),deployment,stages:[]};
       const mark=(stage,details={})=>{trace.stages.push({stage,elapsed_ms:now()-started,...details});};
