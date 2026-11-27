@@ -3,29 +3,9 @@ import assert from 'node:assert/strict';
 import {triageRequest,modelTaskProfile} from '../src/control/triage.js';
 import {createControlService,createMemoryStore,createD1Store} from '../src/control/service.js';
 import {createWorkersAiRoutingAdapter,createPolicyRoutingAdapter} from '../src/control/adapters.js';
+import {actionPhrases,codingTaskPhrase,conversationTaskPhrases,ellipticalCodingPhrase,emptyWorkDocument,keywordCollisionPhrases,priorityFollowUps,priorityQuestions as questions,priorityWorkDocument as content,readOnlyAdvicePhrases,reasoningTaskPhrase,scopedPriorityPhrase,taskProfileContext} from '../eval/cases/phrasing-fixtures.js';
 
-const content=`## Current focus
-**Workstream:** Video analyzer
-**Do next:** Review a real video from start to finish and improve the edit advice.
-## Current active workstreams
-### Video analyzer — ACTIVE / PARALLEL
-**Next bounded action:** Verify the uploaded video.
-### Mary Kate — ACTIVE NOW
-**Next bounded action:** Check the repaired chat.
-**Current assessment:** Production acceptance is unverified.
-### B-Paid — BLOCKED
-**Current blocker:** Waiting for the signed agreement.
-## Session handoff rule
-`;
 const answer={route_kind:'temporary_context',responsibility:'ai_can_handle',confidence:'high',plain_summary:'Here is the answer.'};
-const questions=[
-  'what to prioritize next', 'What should I prioritize next?', 'What should I do today?',
-  'Could you tell me what deserves my attention?', 'Help me decide what to focus on.',
-  'Show me my current work.', 'Give me an overview of my active projects.',
-  'What should we tackle next?', 'Which priorities are blocked?', 'What are our blockers?',
-  'So, what should I focus on next?', 'What needs my attention today?',
-  "What's next?", 'What’s next?', 'Can you tell me what should happen next?'
-];
 function setup(router,clock=()=>0) {
   let reads=0,writes=0;const store=createMemoryStore({now:()=>new Date(clock()).toISOString()});
   const service=createControlService({store,router,now:clock,github:{
@@ -58,7 +38,7 @@ test('equivalent prioritization requests retrieve evidence and answer with zero 
 test('natural priority follow-ups are free and cached work is refreshed at expiry',async()=>{
   let time=0;const run=setup({route(){assert.fail('No model dispatch');}},()=>time);
   await run.service.capture('what to prioritize next');
-  for(const input of ['Which one first?', 'And what about the blockers?', 'Anything else?']){
+  for(const input of priorityFollowUps){
     const result=await run.service.capture(input);assert.equal(result.model_selection.calls,0,input);
     if(/blockers/.test(input)) {
       assert.match(result.plain_summary,/No specific blocker is saved for video processing/i);
@@ -71,17 +51,16 @@ test('natural priority follow-ups are free and cached work is refreshed at expir
 });
 test('explicit project advice stays scoped; missing evidence does not invent priorities',async()=>{
   const run=setup({route(){assert.fail('No model dispatch');}});
-  const result=await run.service.capture('What should I prioritize for Video analyzer?');
+  const result=await run.service.capture(scopedPriorityPhrase);
   assert.match(result.plain_summary,/Review a real video from start to finish/);
   assert.doesNotMatch(result.plain_summary,/Check the repaired chat|signed agreement/);
-  const empty=createControlService({store:createMemoryStore(),router:{route(){assert.fail();}},github:{readFile:async()=>({content:'# Empty work',sha:'empty'})}});
+  const empty=createControlService({store:createMemoryStore(),router:{route(){assert.fail();}},github:{readFile:async()=>({content:emptyWorkDocument,sha:'empty'})}});
   assert.match((await empty.capture('What should I prioritize?')).plain_summary,/could not find any current projects/i);
 });
 test('advice versus explicit or mixed action: no new mutation authority',()=>{
-  for(const input of ['Should I deploy this?', 'How would you fix this bug?', 'Do not deploy anything.', 'I mean which model should I select?'])
+  for(const input of readOnlyAdvicePhrases)
     assert.equal(triageRequest(input).read_only,true,input);
-  for(const input of ['Please deploy it.', 'Can you update Video analyzer?', 'What are my priorities? Delete the old files.',
-    'Tell me my priorities and then approve the proposal.', 'Show current work; send the report.', 'No, change Video analyzer stage.'])
+  for(const input of actionPhrases)
     assert.equal(triageRequest(input).read_only,false,input);
 });
 test('unfamiliar ordinary questions use the tool-free answering adapter and retain exact follow-up turns',async()=>{
@@ -109,13 +88,12 @@ test('hostile conversation output is still rejected, and mixed/unbound actions r
   assert.equal(run.writes,0);
 });
 test('difficulty is based on requested work, not project keywords or the previous difficult task',()=>{
-  const context={intent:'read_only_advice',recent_conversation:{turns:[{role:'user',content:'How should I debug this code?'}]}};
-  for(const input of ['Hello','What is the status of the code repair?', 'What should I prioritize next?',
-    'What does analysis mean?', 'I mean which model and thinking effort should I select?'])
+  const context=taskProfileContext;
+  for(const input of conversationTaskPhrases)
     assert.equal(modelTaskProfile(input,context),'conversation',input);
-  assert.equal(modelTaskProfile('How should I debug this code?',context),'coding');
-  assert.equal(modelTaskProfile('Compare these options',context),'reasoning');
-  assert.equal(modelTaskProfile('What about that?',context),'coding');
+  assert.equal(modelTaskProfile(codingTaskPhrase,context),'coding');
+  assert.equal(modelTaskProfile(reasoningTaskPhrase,context),'reasoning');
+  assert.equal(modelTaskProfile(ellipticalCodingPhrase,context),'coding');
 });
 
 test('ordinary advice uses at most one existing provider call and no provider fallback',async()=>{
@@ -174,7 +152,7 @@ test('a named priority and its elliptical follow-up do not silently switch to ot
   assert.match(result.plain_summary,/Review a real video from start to finish/);assert.doesNotMatch(result.plain_summary,/repaired chat/);
 });
 test('keyword collisions remain normal questions, not workload summaries or action permission',()=>{
-  for(const input of ['Which camera focus setting should I use?', 'What is a priority queue?', 'What does blocked mean?', 'How does CSS priority work?']) {
+  for(const input of keywordCollisionPhrases) {
     const result=triageRequest(input);assert.equal(result.mode,'conversation',input);assert.equal(result.read_only,true);
   }
 });

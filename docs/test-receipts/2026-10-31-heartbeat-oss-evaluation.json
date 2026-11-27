@@ -1,0 +1,40 @@
+{
+  "date": "2026-10-31",
+  "decision": "not_adopted",
+  "kept": [
+    "src/local-workers/cloudflare-telemetry.js HMAC publisher",
+    "src/control/worker-telemetry.js signature check and 20-second D1 freshness",
+    "GET /api/control/workers dashboard projection",
+    "POST /api/control/workers/telemetry",
+    "secret name CONTROL_WORKER_TELEMETRY_SECRET"
+  ],
+  "unchanged": ["Cloudflare configuration", "accounts", "secrets", "dashboard display", "triage behavior"],
+  "candidates": [
+    {
+      "name": "Healthchecks.io",
+      "license": "BSD-3-Clause",
+      "source": "https://github.com/healthchecks/healthchecks",
+      "fit": "not a replacement for this dashboard",
+      "why": "A read-only API key returns check status and flips and omits the ping URL. It cannot list pings or read a ping body, so the worker card (task, plan, identity, state) cannot be recovered without a read-write key. That key can also create, pause, and delete checks. Minimum period and grace are 60 seconds, and more than five pings per minute can be rate-limited. The current display expires after 20 seconds and refreshes every 5 seconds."
+    },
+    {
+      "name": "Uptime Kuma",
+      "license": "MIT",
+      "source": "https://github.com/louislam/uptime-kuma",
+      "fit": "not a replacement for this dashboard",
+      "why": "Push monitors are self-hosted. There is no hosted free tier. A monitor running on the Mac cannot distinguish an expired worker from the monitor itself being offline. Hosting it elsewhere adds a second always-on service. A public status page would expose worker text, and a private API still needs a credential on the Worker."
+    }
+  ],
+  "ashley_must_create": [],
+  "do_not_create": [
+    "Healthchecks.io account",
+    "Healthchecks project",
+    "Healthchecks check slug m4-herdr",
+    "Healthchecks read-only API key",
+    "Healthchecks ping URL",
+    "Uptime Kuma server",
+    "Uptime Kuma push monitor m4-herdr",
+    "Any new Cloudflare secret or variable"
+  ],
+  "unresolved": "The signed HTTP 503 and later signed HTTP 401 on the existing heartbeat remain unresolved. This evaluation does not rotate CONTROL_WORKER_TELEMETRY_SECRET."
+}

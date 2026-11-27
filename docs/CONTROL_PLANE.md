@@ -62,6 +62,10 @@ The Worker stores only the latest sanitized snapshot in the existing D1 binding.
 
 This is operational telemetry, not a second Project Truth. A connected heartbeat proves only current Herdr observation of an adapter-owned worker. It does not prove the worker result, canonical writeback, production mutation slice, broader permissions, or model/token/cost data that Herdr does not expose.
 
+## Heartbeat replacement evaluation (2026-10-31)
+
+Healthchecks.io push pings and Uptime Kuma push monitors were evaluated as replacements for this signed heartbeat. They were not adopted. The HMAC publisher, signature check, D1 snapshot, and dashboard display are unchanged. No account, secret, or Cloudflare setting was created. The earlier signed HTTP 401 and HTTP 503 remain unresolved; this evaluation is not a fix and it does not authorize another secret rotation. The comparison is in `docs/test-receipts/2026-10-31-heartbeat-oss-evaluation.json`.
+
 ## Read-only My Work projection (development only)
 
 `/control/my-work/` is the smallest authenticated My Work dashboard slice. Its API rereads `research-vault/ACTIVE_WORK.md` through the existing down-scoped GitHub adapter on every request, then derives current workstream state, blockers/waiting conditions, next actions, and founder-approved deferred work. The UI refreshes automatically every 60 seconds and exposes the GitHub blob SHA so stale-source questions are inspectable.

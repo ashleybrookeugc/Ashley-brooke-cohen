@@ -3,19 +3,11 @@ import assert from 'node:assert/strict';
 import {parseCanonicalFacts} from '../src/control/contracts.js';
 import {createAmbiguityGate,createControlService,createMemoryStore} from '../src/control/service.js';
 import {createWorkersAiRoutingAdapter} from '../src/control/adapters.js';
+import {mixedActionPhrases,mk,readonlyDocument as document,readonlyEmptyFactsPhrase,readonlyExplicitProjection,readonlyMutationPhrases,readonlyNegative,readonlyPositive as positive,readonlyPriority as priority,readonlySingleSectionDocument} from '../eval/cases/phrasing-fixtures.js';
 
 // Frozen user-facing outcomes, declared before implementing the repair. Include
 // the priority/projection collision in the actual authority, not just one MK row.
-const mk='Mary Kate / AI operating system — **ACTIVE NOW**';
-const priority='Mary Kate / Project Truth reconciliation';
-const document=['# Active Work','## Current execution priority',`### ${priority}`,
-  '**Current stage:** Earlier reconciliation','**Next bounded action:** Earlier canary',
-  '## Current active workstreams',`### ${mk}`,'**Current:** V1 proof remains pending',
-  '**Current assessment:** No V1 row is verified; production acceptance remains unproven.',
-  '**Next bounded action:** Repair the explicit read-only question',
-  '### Shared video-understanding / evidence engine — ACTIVE / PARALLEL','**Current stage:** Media proof',
-  '### ContentEase / UGC Creator App — ACTIVE / PARALLEL','**Current stage:** Review',
-  '## Session handoff rule'].join('\n');
+// The phrase table lives in eval/cases/phrasing-fixtures.js so promptfoo runs the same bytes.
 const index='| Mary Kate current V1 completion/gap/evidence status | `research/ai-workflows/current-completion.md` | `ACTIVE_WORK.md` |';
 const completion=['# V1 completion','**canonical_for:** V1 completion assessment and next-proof selection','',
   '1. **Intent/workstream resolver — PARTIAL.**',
@@ -27,15 +19,6 @@ const completion=['# V1 completion','**canonical_for:** V1 completion assessment
   '## Count and decision','**22 rows:** VERIFIED 0; PARTIAL 16; IMPLEMENTED — UNVERIFIED 5; NOT IMPLEMENTED 1.','',
   'Production acceptance remains unproven.'
 ].join('\n');
-const positive=Object.freeze([
-  'Do you think v1 of mk is complete?',
-  'Has MK reached V1 readiness?',
-  'Is Mary Kate V1 complete?',
-  'Give me a status assessment for MaryKate v1.',
-  'Where does Mary-Kate V1 stand?',
-  'Is the first version of our AI operating system finished?'
-]);
-
 test('explicit Mary Kate aliases bind despite duplicate project projections',()=>{
   for(const text of positive) {
     const result=createAmbiguityGate(text,parseCanonicalFacts(document));
@@ -44,17 +27,14 @@ test('explicit Mary Kate aliases bind despite duplicate project projections',()=
   }
   // An explicitly named projection remains that projection; mutation does not
   // get to silently choose one of two Mary Kate sections.
-  assert.equal(createAmbiguityGate('Update Mary Kate current stage',parseCanonicalFacts(document)).status,'blocked');
-  assert.equal(createAmbiguityGate('Update MK current stage',parseCanonicalFacts(document)).status,'blocked');
-  assert.equal(createAmbiguityGate('For Mary Kate / Project Truth reconciliation, update current stage',parseCanonicalFacts(document)).section,priority);
+  for(const text of readonlyMutationPhrases) assert.equal(createAmbiguityGate(text,parseCanonicalFacts(document)).status,'blocked',text);
+  assert.equal(createAmbiguityGate(readonlyExplicitProjection.input,parseCanonicalFacts(document)).section,priority);
 });
 
 test('independent negative controls retain ambiguity, including ordinary punctuation',()=>{
-  for(const text of ["What's next?",'What’s next?','Is MK or ContentEase ready?',
-    'Is Mary Kate V1 complete compared with Shared video-understanding / evidence engine?',
-    'Fine, carry on.']) assert.equal(createAmbiguityGate(text,parseCanonicalFacts(document)).status,'blocked',text);
-  assert.equal(createAmbiguityGate('Is MK V1 complete?',[]).status,'blocked');
-  const single=parseCanonicalFacts(`### ${mk}\n**Current stage:** Pending`);
+  for(const text of readonlyNegative) assert.equal(createAmbiguityGate(text,parseCanonicalFacts(document)).status,'blocked',text);
+  assert.equal(createAmbiguityGate(readonlyEmptyFactsPhrase,[]).status,'blocked');
+  const single=parseCanonicalFacts(readonlySingleSectionDocument);
   assert.equal(createAmbiguityGate('Is MK V1 complete?',single).section,mk);
 });
 
@@ -175,8 +155,7 @@ test('missing or contradictory current evidence and missing index authority fail
 });
 
 test('mixed read-and-action requests do not acquire read-only disambiguation',()=>{
-  for(const text of ['Is MK complete? Publish it.','Tell me whether MK is ready and delete the old assets.',
-    'Can you mark MK complete?', 'Assess MK V1 and send the private footage.']) {
+  for(const text of mixedActionPhrases) {
     assert.equal(createAmbiguityGate(text,parseCanonicalFacts(document)).status,'blocked',text);
   }
 });

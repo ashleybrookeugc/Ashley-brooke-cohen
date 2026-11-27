@@ -1,0 +1,13 @@
+{
+  "date": "2026-10-31",
+  "command": "npm run eval:phrasing",
+  "config": "eval/promptfooconfig.yaml",
+  "provider": "file://providers/local-routing.js",
+  "promptfoo_version": "0.125.1",
+  "promptfoo_exit": 0,
+  "cases": 88,
+  "failed": 0,
+  "passed": 88,
+  "failures": [],
+  "boundary": "Local triage, ambiguity gate, and zero-call priority capture only. No paid model call, no network provider, and the existing node test receipts stay in place."
+}
