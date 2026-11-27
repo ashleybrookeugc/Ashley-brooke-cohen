@@ -20,6 +20,11 @@ export function createGitHubAdapter({fetchImpl=fetch, tokenProvider}) {
     return response.json();
   }
   return {
+    async readMainRevision(repo) {
+      if (!READ_REPOS.has(repo)) throw new Error('Repository is not readable');
+      const data=await request('/repos/'+repo+'/git/ref/heads/main',{},'read');
+      return data.object.sha;
+    },
     async readFile(repo,path,ref='main') {
       if (!READ_REPOS.has(repo)) throw new Error('Repository is not readable');
       const data = await request('/repos/'+repo+'/contents/'+path+'?ref='+encodeURIComponent(ref),{},'read');
