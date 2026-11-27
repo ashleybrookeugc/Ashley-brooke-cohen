@@ -4,6 +4,20 @@ export class WorkerTelemetryPublisherError extends Error {
   constructor(code,message){super(message);this.code=code;}
 }
 
+function allowlistedTelemetryToken(value,pattern) {
+  return typeof value==='string'&&pattern.test(value)?value:'';
+}
+
+async function telemetryRejectionDetail(response) {
+  try {
+    const parsed=JSON.parse(await response.text());
+    const code=allowlistedTelemetryToken(parsed?.code,/^worker_telemetry_[a-z0-9_]{1,80}$/);
+    const reason=allowlistedTelemetryToken(parsed?.reason,/^[a-z_]{1,64}$/);
+    const parts=[code,reason].filter(Boolean);
+    return parts.length?` ${parts.join(' ')}`:'';
+  } catch { return ''; }
+}
+
 export function createCloudflareWorkerTelemetryPublisher({
   enabled=false,
   endpoint,
@@ -31,7 +45,7 @@ export function createCloudflareWorkerTelemetryPublisher({
       let response;
       try { response=await fetchImpl(target,{method:'POST',headers:{'content-type':'application/json','x-mk-telemetry-timestamp':timestamp,'x-mk-telemetry-signature':signature},body}); }
       catch { throw new WorkerTelemetryPublisherError('transport_unavailable','Mary Kate could not send the worker heartbeat'); }
-      if(!response.ok) throw new WorkerTelemetryPublisherError('telemetry_rejected',`Mary Kate's worker heartbeat was rejected with HTTP ${response.status}`);
+      if(!response.ok) throw new WorkerTelemetryPublisherError('telemetry_rejected',`Mary Kate's worker heartbeat was rejected with HTTP ${response.status}${await telemetryRejectionDetail(response)}`);
       return {accepted:true,status:response.status};
     },
   };

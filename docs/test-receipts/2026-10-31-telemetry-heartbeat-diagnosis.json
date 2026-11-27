@@ -1,0 +1,106 @@
+{
+  "schema": "ashley.telemetry-heartbeat-diagnosis.v1",
+  "metadata": {
+    "status": "diagnosed_not_live_verified",
+    "date": "2026-10-31",
+    "type": "evidence",
+    "topics": ["worker-telemetry", "cloudflare", "hmac"],
+    "products": ["Ashley-brooke-cohen"],
+    "source_scope": "repository main plus unmerged issue-31 and heartbeat branches",
+    "confidence": "high for the code paths and the recorded HTTP codes; live Worker version and both secret values were not readable from this environment"
+  },
+  "base_main": "dd3ae117afbd0dfc81e31f8791bd8531423260a0",
+  "branch": "cursor/telemetry-heartbeat-401-503-11b1",
+  "cloudflare_or_mac_accessed": false,
+  "deploy": false,
+  "secret_values_written": false,
+  "research_vault": {
+    "contents_api": "404",
+    "files_not_read": [
+      "research/ai-workflows/2026-10-15-issue-31-http-diagnosis.json",
+      "research/ai-workflows/2026-10-16-mac-studio-telemetry-acceptance.json"
+    ]
+  },
+  "sources_read": [
+    "docs/CONTROL_PLANE.md",
+    "docs/TROUBLESHOOTING_LOG.md on main",
+    "docs/TROUBLESHOOTING_LOG.md on cursor/grokbot-session-record-4815 (PR #66)",
+    "docs/TROUBLESHOOTING_LOG.md on cursor/heartbeat-eval-promptfoo-196d (PR #64)",
+    "issue #31 body",
+    "draft PR #42 commits on codex/issue-31-cloudflare-setup",
+    "src/control-worker.js",
+    "src/control/worker-telemetry.js",
+    "src/local-workers/cloudflare-telemetry.js",
+    "src/router-worker.js",
+    "src/video-testing/page-worker.js",
+    "src/worker.js",
+    "scripts/acceptance/herdr-worker-cloudflare-live.mjs",
+    "wrangler.jsonc"
+  ],
+  "ranked_causes": [
+    {
+      "rank": 1,
+      "symptom": "signed HTTP 503 worker_telemetry_not_configured",
+      "cause": "The answering Worker version had no non-empty CONTROL_WORKER_TELEMETRY_SECRET. The check is before HMAC.",
+      "not_the_cause": ["D1", "Mary Kate login gate", "legacy Temporarily unavailable catch", "video-test route"]
+    },
+    {
+      "rank": 2,
+      "symptom": "signed HTTP 401 worker_telemetry_unauthorized",
+      "cause": "A secret was present and verification failed. The old boolean did not separate value mismatch (including a one-sided trailing newline), timestamp skew, a millisecond timestamp, a short secret, or a changed body. The publisher discarded the response body.",
+      "supporting_records": [
+        "2026-10-15T23:42:21.027Z unsigned POST was the same 401 code, so the route and some secret were live",
+        "video-test receipt observed the secret name as secret_text from an unknown writer",
+        "Mac runner env is MK_WORKER_TELEMETRY_SECRET; Worker binding name is CONTROL_WORKER_TELEMETRY_SECRET"
+      ]
+    },
+    {
+      "rank": 3,
+      "symptom": "401 immediately after wrangler secret put, then 400 or 202 with the same credential",
+      "cause": "secret put deploys a new version. Requests in that window can still be verified by the previous secret. Observed 2026-10-15 (1 then 12) and 2026-10-16 (3 then 12, then 13 times HTTP 202). Not a stable canonicalization defect.",
+      "where_recorded": "draft PR #42 and issue #31; not previously in main's troubleshooting log"
+    }
+  ],
+  "canonicalization": {
+    "message": "utf8(timestamp + '.' + exact body string)",
+    "timestamp_unit": "unix seconds",
+    "skew_ms": 90000,
+    "mac_header_names": ["x-mk-telemetry-timestamp", "x-mk-telemetry-signature"],
+    "signature_encoding": "base64url without padding",
+    "algorithm": "HMAC-SHA256",
+    "shared_function": "signWorkerTelemetry",
+    "local_publisher_bytes_round_trip": "HTTP 202, then connected, then disconnected after 20001 ms"
+  },
+  "code_change": {
+    "purpose": "Make the next live probe separable. Do not accept a bad signature.",
+    "401_reasons": ["missing_timestamp", "timestamp_invalid", "timestamp_unit", "timestamp_skew", "missing_signature", "credential_unusable", "signature_mismatch"],
+    "503_missing_secret_reason": "missing_secret",
+    "503_after_valid_signature": "worker_telemetry_store_unavailable",
+    "d1_before_auth": false,
+    "invalid_envelope_still": "HTTP 400 worker_telemetry_invalid and no D1 write",
+    "deployed": false
+  },
+  "tests": {
+    "command": "node --test",
+    "passed": 210,
+    "failed": 0,
+    "skipped": 4,
+    "skipped_reasons": [
+      "AV_CONTROLS_DIR MiniCPM fixtures",
+      "existing analyzer checkout"
+    ],
+    "focused": [
+      "test/worker-telemetry.test.js",
+      "test/control-ui.test.js"
+    ]
+  },
+  "live_checks_still_required": [
+    "Unsigned POST to https://ashleybrookecohen.com/api/control/workers/telemetry before any signature debugging.",
+    "npx wrangler deployments status --name ashley-brooke-cohen --json and compare that active version with the Workers Build for the deployed main commit.",
+    "npx wrangler versions view <active-version-id> --name ashley-brooke-cohen --json and confirm CONTROL_WORKER_TELEMETRY_SECRET is a secret on that version.",
+    "Do not treat npx wrangler secret list --name ashley-brooke-cohen --format json as proof when latest and active differ.",
+    "On the Mac, print only presence, length, and trailing-newline boolean for MK_WORKER_TELEMETRY_SECRET.",
+    "After this revision is active: signed invalid envelope with a fresh timestamp expects HTTP 400; a 10-minute-old timestamp expects timestamp_skew; a wrong signature expects signature_mismatch.",
+    "Do not wrangler deploy, secret put, versions secret put, or rotate the secret as part of the check."
+  ]
+}

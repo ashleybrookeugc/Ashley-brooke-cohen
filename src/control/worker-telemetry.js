@@ -3,6 +3,12 @@ const STATES=new Set(['running','idle','completed','blocked','disconnected','unk
 const PLAN_STEP_STATES=new Set(['completed','current','next','pending','blocked']);
 const TELEMETRY_VERSION='mary-kate.worker-telemetry.v1';
 const DEFAULT_FRESH_MS=20000;
+const TIMESTAMP_SKEW_MS=90000;
+const MAX_UNIX_SECONDS=10_000_000_000;
+
+export class WorkerTelemetryPayloadError extends Error {
+  constructor(message){super(message);this.name='WorkerTelemetryPayloadError';}
+}
 
 const base64url=bytes=>btoa(String.fromCharCode(...new Uint8Array(bytes))).replaceAll('+','-').replaceAll('/','_').replaceAll('=','');
 
@@ -60,7 +66,7 @@ function cleanPlan(plan) {
 function cleanWorker(worker) {
   const id=cleanString(worker?.id,180);
   const taskId=cleanString(worker?.task?.id,64);
-  if(!id||!taskId) throw new Error('Worker identity is required');
+  if(!id||!taskId) throw new WorkerTelemetryPayloadError('Worker identity is required');
   const state=STATES.has(worker?.state)?worker.state:'unknown';
   const telemetryStatus=worker?.telemetry?.status==='unavailable'?'unavailable':'available';
   return {
@@ -88,10 +94,10 @@ function cleanWorker(worker) {
 }
 
 export function normalizeWorkerTelemetry(input,{receivedAt=new Date().toISOString()}={}) {
-  if(input?.version!=='mary-kate.local-workers.v1'||input?.read_only!==true||input?.enabled!==true) throw new Error('Unsupported telemetry envelope');
-  if(!Array.isArray(input.workers)||input.workers.length>20) throw new Error('Worker inventory is invalid');
+  if(input?.version!=='mary-kate.local-workers.v1'||input?.read_only!==true||input?.enabled!==true) throw new WorkerTelemetryPayloadError('Unsupported telemetry envelope');
+  if(!Array.isArray(input.workers)||input.workers.length>20) throw new WorkerTelemetryPayloadError('Worker inventory is invalid');
   const observedAt=cleanTime(input.observed_at);
-  if(!observedAt) throw new Error('Telemetry observation time is invalid');
+  if(!observedAt) throw new WorkerTelemetryPayloadError('Telemetry observation time is invalid');
   return {
     version:TELEMETRY_VERSION,
     source_id:'m4-herdr',
@@ -110,11 +116,68 @@ export async function signWorkerTelemetry(secret,timestamp,body) {
   return base64url(await crypto.subtle.sign('HMAC',key,encoder.encode(`${timestamp}.${body}`)));
 }
 
-export async function verifyWorkerTelemetrySignature({secret,timestamp,signature,body,now=Date.now(),maxSkewMs=90000}) {
+function unauthorized(reason) {
+  return {ok:false,status:401,code:'worker_telemetry_unauthorized',reason};
+}
+
+export function workerTelemetryVersionId(env) {
+  const id=env?.WORKER_VERSION?.id;
+  return typeof id==='string'&&/^[A-Za-z0-9-]{1,80}$/.test(id)?id:null;
+}
+
+export async function inspectWorkerTelemetrySignature({secret,timestamp,signature,body,now=Date.now(),maxSkewMs=TIMESTAMP_SKEW_MS}={}) {
+  if(typeof secret!=='string'||secret.length===0) return {ok:false,status:503,code:'worker_telemetry_not_configured',reason:'missing_secret'};
+  if(secret.length<32) return unauthorized('credential_unusable');
+  if(timestamp==null||timestamp==='') return unauthorized('missing_timestamp');
+  if(typeof timestamp!=='string'||!/^[0-9]{1,16}$/.test(timestamp)) return unauthorized('timestamp_invalid');
   const seconds=Number(timestamp);
-  if(!Number.isInteger(seconds)||Math.abs(now-seconds*1000)>maxSkewMs) return false;
-  try { return constantTimeEqual(await signWorkerTelemetry(secret,timestamp,body),signature); }
-  catch { return false; }
+  if(!Number.isSafeInteger(seconds)) return unauthorized('timestamp_invalid');
+  if(seconds>MAX_UNIX_SECONDS) return unauthorized('timestamp_unit');
+  if(Math.abs(now-seconds*1000)>maxSkewMs) return unauthorized('timestamp_skew');
+  if(typeof signature!=='string'||signature.length===0) return unauthorized('missing_signature');
+  try {
+    const expected=await signWorkerTelemetry(secret,timestamp,body);
+    if(!constantTimeEqual(expected,signature)) return unauthorized('signature_mismatch');
+  } catch { return unauthorized('signature_mismatch'); }
+  return {ok:true};
+}
+
+export async function verifyWorkerTelemetrySignature(input) {
+  return (await inspectWorkerTelemetrySignature(input)).ok===true;
+}
+
+function telemetryResponse(env,body,status) {
+  const versionId=workerTelemetryVersionId(env);
+  const payload=versionId?{...body,version_id:versionId}:body;
+  return new Response(JSON.stringify(payload),{status,headers:{'content-type':'application/json','cache-control':'no-store'}});
+}
+
+export async function handleWorkerTelemetryRequest(request,env,{ensureSchema=async()=>{},now=()=>Date.now()}={}) {
+  if(request.method!=='POST') return telemetryResponse(env,{error:'Method not allowed',code:'read_only'},405);
+  const raw=await request.text();
+  if(raw.length>65536) return telemetryResponse(env,{error:'Worker telemetry payload is too large',code:'worker_telemetry_payload_too_large'},413);
+  const clock=now();
+  const verdict=await inspectWorkerTelemetrySignature({secret:env?.CONTROL_WORKER_TELEMETRY_SECRET,timestamp:request.headers.get('x-mk-telemetry-timestamp'),signature:request.headers.get('x-mk-telemetry-signature'),body:raw,now:clock});
+  if(!verdict.ok) {
+    const error=verdict.status===503?'Worker telemetry is not configured':'Unauthorized';
+    return telemetryResponse(env,{error,code:verdict.code,reason:verdict.reason},verdict.status);
+  }
+  let payload;
+  try { payload=JSON.parse(raw); }
+  catch { return telemetryResponse(env,{error:'Valid JSON body required',code:'worker_telemetry_invalid'},400); }
+  try { normalizeWorkerTelemetry(payload); }
+  catch(error) {
+    if(error instanceof WorkerTelemetryPayloadError) return telemetryResponse(env,{error:'Worker telemetry payload is invalid',code:'worker_telemetry_invalid'},400);
+    throw error;
+  }
+  try {
+    await ensureSchema(env);
+    const stored=await createWorkerTelemetryStore(env.DB,{now:()=>new Date(clock).toISOString()}).put(payload);
+    return telemetryResponse(env,stored,202);
+  } catch(error) {
+    if(error instanceof WorkerTelemetryPayloadError) return telemetryResponse(env,{error:'Worker telemetry payload is invalid',code:'worker_telemetry_invalid'},400);
+    return telemetryResponse(env,{error:'Worker telemetry could not be stored',code:'worker_telemetry_store_unavailable'},503);
+  }
 }
 
 export function createWorkerTelemetryStore(db,{now=()=>new Date().toISOString(),freshMs=DEFAULT_FRESH_MS}={}) {
