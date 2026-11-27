@@ -1,0 +1,10 @@
+[Unit]
+Description=Daily pull of the private video analyzer
+
+[Timer]
+OnCalendar=*-*-* 07:30:00 UTC
+Persistent=true
+RandomizedDelaySec=30min
+
+[Install]
+WantedBy=timers.target

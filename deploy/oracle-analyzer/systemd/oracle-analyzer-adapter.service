@@ -1,0 +1,31 @@
+[Unit]
+Description=Private video analyzer adapter on loopback port 8789
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=analyzer
+Group=analyzer
+WorkingDirectory=/var/lib/oracle-analyzer/website
+EnvironmentFile=-/etc/oracle-analyzer/analyzer.env
+ExecStart=/usr/local/lib/oracle-analyzer/run-adapter.sh
+Restart=on-failure
+RestartSec=5
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+LockPersonality=true
+RestrictRealtime=true
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+SystemCallArchitectures=native
+ReadWritePaths=/var/lib/oracle-analyzer
+
+[Install]
+WantedBy=multi-user.target

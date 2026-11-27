@@ -1,0 +1,8 @@
+[Unit]
+Description=Back up video-test correction JSON when backup is enabled
+
+[Service]
+Type=oneshot
+User=root
+ExecStart=/usr/local/lib/oracle-analyzer/backup-corrections.sh
+Nice=10

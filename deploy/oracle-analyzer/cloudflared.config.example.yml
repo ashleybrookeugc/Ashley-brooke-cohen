@@ -1,0 +1,8 @@
+# Example only. install-tunnel-credentials.sh writes the real file on the VM.
+# There is no hostname and no DNS route. Public requests receive 404.
+# The website reaches the adapter through the Workers VPC service, which
+# targets 127.0.0.1:8789 on this tunnel.
+tunnel: 00000000-0000-0000-0000-000000000000
+credentials-file: /etc/oracle-analyzer/cloudflared/00000000-0000-0000-0000-000000000000.json
+ingress:
+  - service: http_status:404
