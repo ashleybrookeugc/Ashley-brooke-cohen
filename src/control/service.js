@@ -1,4 +1,5 @@
-import {isReadQuestion,isPriorityQuestion,authorityKind,retrieveIndexedEvidence} from './retrieval.js';
+import {inspectMilestoneBoundary} from "./milestone-acceptance.js";
+import {isReadQuestion,isPriorityQuestion,authorityKind,retrieveIndexedEvidence} from "./retrieval.js";
 import {routingDiagnostic} from './diagnostics.js';
 import {applyProposal,normalizeFactKey,parseActiveWork,parseCanonicalFacts,RouteValidationError,validateRoute,WRITE_REPO} from './contracts.js';
 import {buildMyWorkProjection} from './my-work.js';
@@ -41,6 +42,23 @@ const textWords=value=>' '+normalizedInput(value).toLowerCase().replace(/[^a-z0-
 const maryKateInput=text=>textWords(text).replace(/\b(?:mk|marykate)\b/g,'mary kate');
 const namesMaryKate=text=>/\b(?:mary kate|ai operating system)\b/.test(maryKateInput(text));
 const maryKateSection=section=>/^mary kate(?:\s*\/|$)/i.test(canonicalSectionName(section));
+const numberedMilestone=text=>text.match(/\b(?:step|stage|milestone)\s*([1-5])\b/i)?.[1];
+const roadmapContext=text=>namesMaryKate(text)&&(numberedMilestone(text)||/\b(?:roadmap|implementation (?:plan|sequence)|milestone)\b/i.test(text));
+function milestoneRequest(text,history) {
+  const mode=/\b(?:complete|completion|completed|finish|finished|passed|done|advance|move on)\b/i.test(text)?'completion':
+    /\b(?:resume|continue|pick up|start|implement|status|updated|verify|check)\b/i.test(text)?'resume':null;
+  if(!mode) return null;
+  const lastUser=history.filter(turn=>turn.role==='user').at(-1)?.text||'';
+  const inherited=/^(?:please\s+)?(?:resume|continue|advance|move on)(?:\s+(?:with )?(?:it|that(?: prompt execution)?|this|to the next step))?[.!?\s]*$/i.test(text.trim())&&roadmapContext(lastUser);
+  if(!inherited&&!roadmapContext(text)) return null;
+  return {mode,milestone:numberedMilestone(text)||(inherited?numberedMilestone(lastUser):undefined)};
+}
+function isMilestoneStageWrite(proposal) {
+  return proposal?.target_path==='ACTIVE_WORK.md'&&maryKateSection(proposal.section)&&proposal.field==='Current stage';
+}
+function rejectMilestoneStageWrite() {
+  throw new CanonicalWriteError('milestone_record_required','Mary Kate’s stage can only be confirmed from the current roadmap and verified evidence. No stage change was saved.');
+}
 // Mixed assessment/action requests keep the action gates and cannot borrow
 // the read-only preference for the canonical operating-system projection.
 const readOnlyAssessment=text=>{
@@ -340,6 +358,24 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
       const history=normalizeConversationHistory(conversationHistory);
       if(conversationId!=null&&!/^[A-Za-z0-9_-]{8,80}$/.test(conversationId)) throw new PriorStateGateError('invalid_request','conversation_id is invalid');
       mark('conversation',{messages:history.length});
+      const boundary=milestoneRequest(text,history);
+      if(boundary) {
+        const evidence=await inspectMilestoneBoundary(github,boundary.milestone);
+        mark('milestone_freshness',{operation:boundary.mode,...evidence});
+        const step=evidence.current?'Step '+evidence.current.milestone:'This milestone';
+        const missing=evidence.missing?.slice(0,3).map(id=>id.replaceAll('-',' ')).join(', ');
+        const summary=evidence.code==='authority_unavailable'?evidence.message:evidence.allowed
+          ? step+' has verified evidence for the current requirements.'
+          : step+' is still open. I checked the latest roadmap. '+(missing?'Evidence still needed: '+missing+'.':'The saved result needs to be checked against the updated records.');
+        const route={route_kind:'temporary_context',responsibility:'ai_can_handle',confidence:'high',plain_summary:summary,
+          outcome_status:evidence.allowed?'answered':'blocked',retrieval_trace:trace};
+        const interaction=await store.addInteraction({raw_text:'[milestone check; request content omitted]',route});
+        try {observe(trace);} catch { /* The durable interaction holds the exact check. */ }
+        return {retrieval_trace:trace,interaction_id:interaction.id,conversation_id:conversationId,
+          plain_summary:summary,route_kind:route.route_kind,responsibility:route.responsibility,queue_item:null,
+          handoff:{status:'conversation_active',can_clear:false,message:'No milestone was advanced and no worker was started.'},
+          model_selection:{provider:'none',calls:0,task:'milestone-freshness'}};
+      }
       const initial=await state({refresh:refreshContext===true});
       // Scope each requested fact against the actual canonical facts, not the de-duplicated key list.
       const packet=await store.getContextPacket('active-work.v1');
@@ -477,6 +513,7 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
         throw error;
       }
       const route=enforceResolvedWriteTarget({...candidate,triage,prior_state:snapshot.prior_state,...(snapshot.completion_authority?{retrieval_authority:{source:snapshot.completion_authority.source,routing_source:snapshot.completion_authority.routing_source}}:{})},snapshot.prior_state,ambiguity_gate);
+      if(isMilestoneStageWrite(route.proposal)) rejectMilestoneStageWrite();
       if(route.proposal) {
         const reviewed=route.proposal.target_path==='ACTIVE_WORK.md'?snapshot.source:await github.readFile(route.proposal.target_repo,route.proposal.target_path);
         if(!reviewed.sha) throw new CanonicalWriteError('canonical_review_missing','Mary Kate could not verify the proposal source version. Nothing was queued.');
@@ -497,6 +534,7 @@ export function createControlService({github,router,store,now=()=>Date.now(),pac
     async approve(id,note='') {
       const item=await store.getQueueItem(id);
       if(!item||!['pending','approved'].includes(item.status)||!item.proposal) throw new Error('Pending item not found');
+      if(isMilestoneStageWrite(item.proposal)) rejectMilestoneStageWrite();
       const target={repo:item.proposal.target_repo,path:item.proposal.target_path};
       const current=await github.readFile(target.repo,target.path);
       const payload_digest=await hash(canonicalPayload(target,item.proposal));
@@ -557,6 +595,14 @@ export function createD1Store(db,{id=()=>crypto.randomUUID(),now=()=>new Date().
     async invalidateContextPacket(key){await db.prepare('UPDATE control_context_packets SET invalidated_at=? WHERE packet_key=?').bind(now(),key).run();},
     async addInteraction(x){const key=id(),at=now();await db.prepare('INSERT INTO control_interactions (id,raw_text,route_json,plain_summary,project_id,route_kind,responsibility,confidence,created_at) VALUES (?,?,?,?,?,?,?,?,?)').bind(key,x.raw_text,JSON.stringify(x.route),x.route.plain_summary,x.route.project_id||null,x.route.route_kind,x.route.responsibility,x.route.confidence,at).run();return{id:key,created_at:at};},
     async addQueueItem(x){const key=id(),at=now();await db.prepare('INSERT INTO control_queue_items (id,interaction_id,responsibility,status,plain_summary,why,proposal_json,created_at) VALUES (?,?,?,?,?,?,?,?)').bind(key,x.interaction_id,x.responsibility,'pending',x.plain_summary,x.why||null,JSON.stringify(x.proposal),at).run();return{id:key,status:'pending',responsibility:x.responsibility,plain_summary:x.plain_summary};},
+    async getInteractionEvidence(key){
+      const row=await db.prepare('SELECT i.id,i.route_json,i.created_at,q.status,q.technical_receipt_json FROM control_interactions i LEFT JOIN control_queue_items q ON q.interaction_id=i.id WHERE i.id=?').bind(key).first();
+      if(!row) return null;
+      const route=JSON.parse(row.route_json||'{}');
+      return {interaction_id:row.id,created_at:row.created_at,outcome_status:route.outcome_status||row.status||'captured',
+        retrieval_trace:route.retrieval_trace??null,diagnostic:route.diagnostic??null,
+        receipt:row.technical_receipt_json?JSON.parse(row.technical_receipt_json):null};
+    },
     async getQueueItem(key){return parse(await db.prepare('SELECT * FROM control_queue_items WHERE id=?').bind(key).first());},
     async resolveQueueItem(key,status,note,receipt){await db.prepare('UPDATE control_queue_items SET status=?,resolution_note=?,technical_receipt_json=?,resolved_at=? WHERE id=?').bind(status,note||null,receipt?JSON.stringify(receipt):null,now(),key).run();},
     async listQueues(){const rows=(await db.prepare("SELECT * FROM control_queue_items WHERE status='pending' ORDER BY created_at DESC").all()).results||[];return{needs_ashley:rows.filter(x=>x.responsibility==='needs_ashley').map(parse),ai_can_handle:rows.filter(x=>x.responsibility==='ai_can_handle').map(parse)};},

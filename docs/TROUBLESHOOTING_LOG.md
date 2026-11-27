@@ -919,3 +919,7 @@ Local regression tests include the production phrasings, natural follow-ups, an 
 **Verified fix:** Project Truth's optional `Last verified work` field is shown separately from live Herdr status on Today and every project card. A Herdr worker appears on a project only when its allowlisted `task.project_id` exactly matches that project's saved ID and the connection is fresh. Unknown, unlinked, stale, and unavailable workers never appear as currently working. The worker adapter retains the explicit association without widening its read-only authorization. Project and telemetry tests pass.
 
 **Prevention rule:** Save a dated, evidence-backed progress sentence per active workstream when a meaningful milestone is verified. Link workers by explicit project ID. Do not infer live work from task wording, a saved priority, or a ChatGPT Work conversation that Herdr cannot observe.
+
+## 2026-11-27 — A roadmap edit needed a user reminder
+
+The standalone milestone check worked when invoked, but control chat did not invoke it on resume or completion. The isolated service now checks the current roadmap and evidence automatically for scoped milestone requests, records its result, and rejects an ordinary approval that would set Mary Kate's stage from prose. Regression coverage uses separate sessions, a newly added criterion, an old approval, and an unavailable GitHub source. Production activation and external publisher enforcement are pending.

@@ -1,3 +1,4 @@
+import {projectRoutingOutcome} from './control/outcome.js';
 import app,{isAdmin} from './auth-worker.js';
 import controlPage from '../public/control/index.html';
 import myWorkPage from '../public/control/my-work/index.html';
@@ -58,7 +59,12 @@ async function control(request,env) {
   if(path==='/api/control/my-work'&&request.method==='GET') return json(await core.myWork());
   if(path==='/api/control/workers'&&request.method==='GET') return json(env.CONTROL_WORKER_TELEMETRY_SECRET?await createWorkerTelemetryStore(env.DB).read():{version:'mary-kate.worker-telemetry.v1',enabled:false,read_only:true,observed_at:new Date().toISOString(),connection:{state:'disconnected',fresh:false,last_received_at:null},workers:[]});
   if(path==='/api/control/state'&&request.method==='GET') return json(await core.state({refresh:new URL(request.url).searchParams.get('refresh')==='1'}));
-  if(path==='/api/control/interactions'&&request.method==='POST'){try{const data=await body(request);return json(await core.capture(data.text,{requiredFactKeys:data.required_fact_keys||[],contextWorkstream:data.context_workstream||null,refreshContext:data.refresh_context===true,conversationHistory:data.conversation_history||[],conversationId:data.conversation_id||null}),201)}catch(error){const response=controlErrorResponse(error);return json(response,error.status||400)}}
+  if(path==='/api/control/interactions'&&request.method==='POST'){try{const data=await body(request);return json(projectRoutingOutcome(await core.capture(data.text,{requiredFactKeys:data.required_fact_keys||[],contextWorkstream:data.context_workstream||null,refreshContext:data.refresh_context===true,conversationHistory:data.conversation_history||[],conversationId:data.conversation_id||null})),201)}catch(error){const response=controlErrorResponse(error);return json(projectRoutingOutcome(response,{error:true}),error.status||400)}}
+  const evidenceMatch=path.match(/^\/api\/control\/interactions\/([\w-]{1,80})\/evidence$/);
+  if(evidenceMatch&&request.method==='GET'){
+    const record=await createD1Store(env.DB).getInteractionEvidence(evidenceMatch[1]);
+    return record?json(record):json({error:'No saved interaction evidence was found.'},404);
+  }
   const match=path.match(/^\/api\/control\/items\/([\w-]+)\/(approve|reject)$/);
   if(match&&request.method==='POST'){try{const data=await body(request);return json(match[2]==='approve'?await core.approve(match[1],data.note):await core.reject(match[1],data.note));}catch(error){return json({error:error?.message||'Mary Kate could not verify the approved change. Nothing was recorded as successful.',code:error?.code||'control_write_failed'},error?.status||400)}}
   return json({error:'Not found'},404);
